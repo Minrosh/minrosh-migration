@@ -13,6 +13,70 @@ const tabs = [
   { id: "contact", label: "Contact" },
 ];
 
+const quizSteps = [
+  {
+    key: "age",
+    label: "Age",
+    prompt: "Choose the age range that best matches your profile.",
+    type: "select",
+    options: quizOptions.age.map((option) => ({
+      value: option.value,
+      label: option.label,
+    })),
+  },
+  {
+    key: "occupation",
+    label: "Occupation",
+    prompt: "Is your occupation currently on a relevant skilled list?",
+    type: "choice",
+    options: [
+      { value: "yes", label: "Yes, it is on the list" },
+      { value: "unsure", label: "I'm not sure yet" },
+      { value: "no", label: "No, or I don't think so" },
+    ],
+  },
+  {
+    key: "english",
+    label: "English",
+    prompt: "Select your strongest current English test band.",
+    type: "choice",
+    options: quizOptions.english.map((option) => ({
+      value: option.value,
+      label: option.label,
+    })),
+  },
+  {
+    key: "overseasExperience",
+    label: "Experience",
+    prompt: "How much overseas skilled experience can you count?",
+    type: "choice",
+    options: quizOptions.overseasExperience.map((option) => ({
+      value: option.value,
+      label: option.label,
+    })),
+  },
+  {
+    key: "education",
+    label: "Education",
+    prompt: "What is your highest qualification level?",
+    type: "choice",
+    options: quizOptions.education.map((option) => ({
+      value: option.value,
+      label: option.label,
+    })),
+  },
+  {
+    key: "partner",
+    label: "Partner",
+    prompt: "Select the statement that best matches your partner status.",
+    type: "choice",
+    options: quizOptions.partner.map((option) => ({
+      value: option.value,
+      label: option.label,
+    })),
+  },
+];
+
 const initialQuiz = {
   age: "",
   occupation: "unsure",
@@ -35,7 +99,9 @@ const initialForm = {
 export function PortalPage({ siteData, newsData }) {
   const [activeTab, setActiveTab] = useState("home");
   const [menuOpen, setMenuOpen] = useState(false);
+  const [headerCompact, setHeaderCompact] = useState(false);
   const [quizForm, setQuizForm] = useState(initialQuiz);
+  const [quizStepIndex, setQuizStepIndex] = useState(0);
   const [contactForm, setContactForm] = useState(initialForm);
   const [contactState, setContactState] = useState({ status: "idle", message: "" });
   const [chatMessages, setChatMessages] = useState([
@@ -49,6 +115,16 @@ export function PortalPage({ siteData, newsData }) {
   const [chatState, setChatState] = useState({ loading: false, error: "" });
 
   const quizResult = useMemo(() => calculateQuizResult(quizForm), [quizForm]);
+  const currentQuizStep = quizSteps[quizStepIndex];
+  const progressPercent = ((quizStepIndex + 1) / quizSteps.length) * 100;
+  const currentQuizValue = quizForm[currentQuizStep.key];
+  const canAdvance = currentQuizStep.key === "occupation" ? true : Boolean(currentQuizValue);
+  const quizComplete = quizSteps.every((step) => {
+    if (step.key === "occupation") {
+      return true;
+    }
+    return Boolean(quizForm[step.key]);
+  });
 
   useEffect(() => {
     document.body.dataset.menu = menuOpen ? "open" : "closed";
@@ -58,7 +134,17 @@ export function PortalPage({ siteData, newsData }) {
   }, [menuOpen]);
 
   useEffect(() => {
-    if (!quizResult) {
+    function handleScroll() {
+      setHeaderCompact(window.scrollY > 18);
+    }
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    if (!quizResult || !quizComplete) {
       return;
     }
 
@@ -81,7 +167,7 @@ export function PortalPage({ siteData, newsData }) {
         message: current.message.trim() ? `${current.message.trim()}\n\n${summary}` : summary,
       };
     });
-  }, [quizForm.occupation, quizResult]);
+  }, [quizComplete, quizForm.occupation, quizResult]);
 
   const currentStep = quizResult?.restricted
     ? "Employer-sponsored review"
@@ -89,16 +175,28 @@ export function PortalPage({ siteData, newsData }) {
       ? "Visa Lodgement"
       : activeTab === "pathways"
         ? "Skills Assessment"
-        : "Initial Assessment";
+        : activeTab === "quiz"
+          ? "Initial Assessment"
+          : "Initial Assessment";
 
   function handleTabChange(tabId) {
     setActiveTab(tabId);
     setMenuOpen(false);
   }
 
-  function handleQuizChange(event) {
-    const { name, value } = event.target;
-    setQuizForm((current) => ({ ...current, [name]: value }));
+  function setQuizValue(key, value) {
+    setQuizForm((current) => ({ ...current, [key]: value }));
+  }
+
+  function goToNextQuizStep() {
+    if (!canAdvance) {
+      return;
+    }
+    setQuizStepIndex((current) => Math.min(current + 1, quizSteps.length - 1));
+  }
+
+  function goToPreviousQuizStep() {
+    setQuizStepIndex((current) => Math.max(current - 1, 0));
   }
 
   function handleContactChange(event) {
@@ -186,7 +284,7 @@ export function PortalPage({ siteData, newsData }) {
 
   return (
     <div className="portal-shell">
-      <header className="site-header">
+      <header className={`site-header ${headerCompact ? "is-compact" : ""}`}>
         <div className="site-header__inner">
           <button
             type="button"
@@ -219,6 +317,7 @@ export function PortalPage({ siteData, newsData }) {
                 type="button"
                 className={`site-nav__link ${activeTab === tab.id ? "is-active" : ""}`}
                 onClick={() => handleTabChange(tab.id)}
+                aria-current={activeTab === tab.id ? "page" : undefined}
               >
                 {tab.label}
               </button>
@@ -238,35 +337,37 @@ export function PortalPage({ siteData, newsData }) {
         <section className={`tab-panel ${activeTab === "home" ? "is-active" : ""}`}>
           <section className="hero">
             <div className="hero__content">
-              <p className="eyebrow">{siteData.hero.eyebrow}</p>
-              <h1>{siteData.hero.title}</h1>
-              <p className="hero__lead">{siteData.hero.description}</p>
-              <div className="hero__actions">
-                <button
-                  type="button"
-                  className="btn btn-primary"
-                  onClick={() => handleTabChange("quiz")}
-                >
-                  {siteData.hero.primaryCta}
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-ghost"
-                  onClick={() => handleTabChange("contact")}
-                >
-                  {siteData.hero.secondaryCta}
-                </button>
-              </div>
-              <div className="hero__stats">
-                {siteData.stats.map((stat) => (
-                  <div key={stat.label} className="hero__stat">
-                    <strong>{stat.value}</strong>
-                    <span>{stat.label}</span>
-                  </div>
-                ))}
+              <div className="hero__glass">
+                <p className="eyebrow">{siteData.hero.eyebrow}</p>
+                <h1>{siteData.hero.title}</h1>
+                <p className="hero__lead">{siteData.hero.description}</p>
+                <div className="hero__actions">
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    onClick={() => handleTabChange("quiz")}
+                  >
+                    {siteData.hero.primaryCta}
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-ghost"
+                    onClick={() => handleTabChange("contact")}
+                  >
+                    {siteData.hero.secondaryCta}
+                  </button>
+                </div>
+                <div className="hero__stats">
+                  {siteData.stats.map((stat) => (
+                    <div key={stat.label} className="hero__stat">
+                      <strong>{stat.value}</strong>
+                      <span>{stat.label}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
-            <div className="hero__media">
+            <div className="hero__media" aria-hidden="true">
               <Image
                 src="/images/hero-australia.svg"
                 alt="Illustrated Australian harbour skyline"
@@ -279,7 +380,7 @@ export function PortalPage({ siteData, newsData }) {
 
           <section className="trust-strip">
             {siteData.services.slice(0, 3).map((service) => (
-              <article key={service.title} className="trust-strip__item">
+              <article key={service.title} className="trust-strip__item bento-hover">
                 <p className="section-label">{service.title}</p>
                 <p>{service.summary}</p>
               </article>
@@ -297,7 +398,7 @@ export function PortalPage({ siteData, newsData }) {
                 ))}
               </ul>
             </div>
-            <div className="image-card">
+            <div className="image-card bento-hover">
               <Image
                 src="/images/team-guidance.svg"
                 alt="Illustrated MinRosh guidance workspace"
@@ -323,7 +424,7 @@ export function PortalPage({ siteData, newsData }) {
             </div>
             <div className="news-grid">
               {newsData.map((item) => (
-                <article key={item.title} className="news-card">
+                <article key={item.title} className="news-card bento-hover">
                   <time dateTime={item.date}>
                     {new Date(item.date).toLocaleDateString("en-AU")}
                   </time>
@@ -338,11 +439,11 @@ export function PortalPage({ siteData, newsData }) {
         <section className={`tab-panel ${activeTab === "quiz" ? "is-active" : ""}`}>
           <div className="panel-hero">
             <div>
-              <p className="section-label">Preliminary points calculator</p>
-              <h2>Estimate your 189 / 190 profile before you book</h2>
+              <p className="section-label">Executive points wizard</p>
+              <h2>Move through your profile one decision at a time</h2>
               <p>
-                This quiz is a preliminary guide only. Final eligibility depends on current policy,
-                occupation settings, evidence, and pathway competition.
+                This is still preliminary guidance, but the experience now mirrors a real advisory
+                intake rather than a long checklist.
               </p>
             </div>
             <div className="current-step">
@@ -351,91 +452,92 @@ export function PortalPage({ siteData, newsData }) {
             </div>
           </div>
 
-          <div className="quiz-layout">
-            <form className="quiz-card" onSubmit={(event) => event.preventDefault()}>
-              <div className="quiz-grid">
-                <label>
-                  <span>Age</span>
-                  <select name="age" value={quizForm.age} onChange={handleQuizChange}>
-                    <option value="">Select age range</option>
-                    {quizOptions.age.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-
-                <label>
-                  <span>Occupation on a skilled list?</span>
-                  <select
-                    name="occupation"
-                    value={quizForm.occupation}
-                    onChange={handleQuizChange}
-                  >
-                    <option value="yes">Yes</option>
-                    <option value="unsure">Not sure yet</option>
-                    <option value="no">No</option>
-                  </select>
-                </label>
-
-                <label>
-                  <span>English level</span>
-                  <select name="english" value={quizForm.english} onChange={handleQuizChange}>
-                    <option value="">Select English level</option>
-                    {quizOptions.english.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-
-                <label>
-                  <span>Overseas work experience</span>
-                  <select
-                    name="overseasExperience"
-                    value={quizForm.overseasExperience}
-                    onChange={handleQuizChange}
-                  >
-                    <option value="">Select years</option>
-                    {quizOptions.overseasExperience.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-
-                <label>
-                  <span>Education</span>
-                  <select name="education" value={quizForm.education} onChange={handleQuizChange}>
-                    <option value="">Select highest qualification</option>
-                    {quizOptions.education.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-
-                <label>
-                  <span>Partner status</span>
-                  <select name="partner" value={quizForm.partner} onChange={handleQuizChange}>
-                    <option value="">Select partner status</option>
-                    {quizOptions.partner.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
-                </label>
+          <div className="quiz-shell">
+            <section className="quiz-card bento-hover">
+              <div className="quiz-wizard__meta">
+                <div>
+                  <p className="section-label">Step {quizStepIndex + 1}</p>
+                  <h3>{currentQuizStep.label}</h3>
+                </div>
+                <span className="quiz-wizard__count">
+                  {quizStepIndex + 1} / {quizSteps.length}
+                </span>
               </div>
-            </form>
 
-            <aside className="quiz-result">
+              <div className="quiz-progress" aria-hidden="true">
+                <span className="quiz-progress__bar" style={{ width: `${progressPercent}%` }} />
+              </div>
+
+              <div className="quiz-step">
+                <p className="quiz-step__prompt">{currentQuizStep.prompt}</p>
+
+                {currentQuizStep.type === "select" ? (
+                  <label className="quiz-step__field">
+                    <span>Select an option</span>
+                    <select
+                      value={quizForm[currentQuizStep.key]}
+                      onChange={(event) => setQuizValue(currentQuizStep.key, event.target.value)}
+                    >
+                      <option value="">Choose one</option>
+                      {currentQuizStep.options.map((option) => (
+                        <option key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                ) : (
+                  <div className="quiz-options">
+                    {currentQuizStep.options.map((option) => (
+                      <button
+                        key={option.value}
+                        type="button"
+                        className={`quiz-option ${
+                          quizForm[currentQuizStep.key] === option.value ? "is-selected" : ""
+                        }`}
+                        onClick={() => setQuizValue(currentQuizStep.key, option.value)}
+                      >
+                        {option.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <div className="quiz-wizard__actions">
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={goToPreviousQuizStep}
+                  disabled={quizStepIndex === 0}
+                >
+                  Previous
+                </button>
+                {quizStepIndex < quizSteps.length - 1 ? (
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    onClick={goToNextQuizStep}
+                    disabled={!canAdvance}
+                  >
+                    Next
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    onClick={() => handleTabChange("contact")}
+                    disabled={!quizComplete}
+                  >
+                    Continue to Full Report
+                  </button>
+                )}
+              </div>
+            </section>
+
+            <aside className="quiz-result bento-hover">
               <p className="section-label">Result</p>
-              {quizResult ? (
+              {quizResult && quizComplete ? (
                 <>
                   <h3>
                     {quizResult.restricted
@@ -457,10 +559,10 @@ export function PortalPage({ siteData, newsData }) {
                 </>
               ) : (
                 <>
-                  <h3>Build your profile</h3>
+                  <h3>Progressive intake</h3>
                   <p>
-                    Fill out the quiz to get a preliminary score estimate and a clearer sense of
-                    your next step.
+                    Complete each step to reveal your preliminary score and move into the enquiry
+                    flow with a cleaner summary.
                   </p>
                 </>
               )}
@@ -484,7 +586,7 @@ export function PortalPage({ siteData, newsData }) {
             {siteData.pathwaySteps.map((step, index) => (
               <article
                 key={step.title}
-                className={`timeline-step ${index === 0 ? "is-current" : ""}`}
+                className={`timeline-step bento-hover ${index === 0 ? "is-current" : ""}`}
               >
                 <span className="timeline-step__number">{index + 1}</span>
                 <h3>{step.title}</h3>
@@ -503,7 +605,7 @@ export function PortalPage({ siteData, newsData }) {
           </div>
           <div className="services-layout">
             {siteData.services.map((service) => (
-              <article key={service.title} className="service-block">
+              <article key={service.title} className="service-block bento-hover">
                 <h3>{service.title}</h3>
                 <p>{service.summary}</p>
                 <ul className="feature-list">
@@ -520,16 +622,24 @@ export function PortalPage({ siteData, newsData }) {
           <div className="panel-hero">
             <div>
               <p className="section-label">Success Stories</p>
-              <h2>Trust-building stories around 189-focused planning</h2>
+              <h2>Executive-style testimonials that signal trust before consultation</h2>
             </div>
           </div>
           <div className="stories-grid">
             {siteData.successStories.map((story) => (
-              <article key={story.name} className="story-card">
-                <p className="story-card__visa">{story.visa}</p>
-                <h3>{story.name}</h3>
-                <p className="story-card__location">{story.location}</p>
+              <article key={story.name} className="story-card bento-hover">
+                <div className="story-card__top">
+                  <p className="story-card__visa">{story.visa}</p>
+                  <span className="story-card__badge">Outcome</span>
+                </div>
+                <div className="story-card__quote-mark" aria-hidden="true">
+                  “
+                </div>
                 <blockquote>{story.quote}</blockquote>
+                <div className="story-card__person">
+                  <h3>{story.name}</h3>
+                  <p className="story-card__location">{story.location}</p>
+                </div>
                 <p className="story-card__outcome">{story.outcome}</p>
               </article>
             ))}
@@ -569,7 +679,7 @@ export function PortalPage({ siteData, newsData }) {
               </div>
             </div>
 
-            <form className="contact-form" onSubmit={handleContactSubmit}>
+            <form className="contact-form bento-hover" onSubmit={handleContactSubmit}>
               <div className="contact-grid">
                 <label>
                   <span>First name</span>
@@ -665,7 +775,7 @@ export function PortalPage({ siteData, newsData }) {
                 <h2>Ask a preliminary migration question</h2>
               </div>
             </div>
-            <div className="assistant-chat">
+            <div className="assistant-chat bento-hover">
               <div className="assistant-chat__log">
                 {chatMessages.map((message, index) => (
                   <div
@@ -718,7 +828,9 @@ export function PortalPage({ siteData, newsData }) {
           </div>
           <div className="site-footer__contact">
             <a href={`mailto:${siteData.brand.email}`}>{siteData.brand.email}</a>
-            <a href={`tel:${siteData.brand.phone.replace(/\s+/g, "")}`}>{siteData.brand.phone}</a>
+            <a href={`tel:${siteData.brand.phone.replace(/\s+/g, "")}`}>
+              {siteData.brand.phone}
+            </a>
           </div>
         </div>
       </footer>
