@@ -31,7 +31,10 @@ export function SiteShell({ siteData, currentPath, children }) {
                 {link.label}
               </Link>
             ))}
-            <Link href="/#quiz" className="btn btn-primary site-nav__cta">
+            <Link href="/book-consultation" className="btn btn-primary site-nav__cta">
+              Book Consultation
+            </Link>
+            <Link href="/#quiz" className="btn btn-ghost site-nav__cta-secondary">
               Check Eligibility
             </Link>
           </nav>

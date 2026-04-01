@@ -72,7 +72,7 @@ export function ContentPage({
             <h3>{ctaTitle}</h3>
             <p>{ctaBody}</p>
             <div className="content-aside-card__actions">
-              <Link href="/contact" className="btn btn-primary">
+              <Link href="/book-consultation" className="btn btn-primary">
                 Book Consultation
               </Link>
               <Link href="/#quiz" className="btn btn-ghost">

@@ -4,6 +4,7 @@ export default function sitemap() {
     "/skilled-migration",
     "/partner-visa-australia",
     "/student-visa-australia",
+    "/book-consultation",
     "/contact",
     "/partner-visa-australia-guide",
     "/student-visa-australia-requirements",
@@ -12,6 +13,7 @@ export default function sitemap() {
 
   const priorities = {
     "/": 1,
+    "/book-consultation": 0.95,
     "/contact": 0.9,
     "/skilled-migration": 0.9,
     "/partner-visa-australia": 0.9,

@@ -167,6 +167,10 @@ a {
   gap: 14px;
 }
 
+.site-nav__cta-secondary {
+  min-height: 52px;
+}
+
 .site-nav--static {
   margin-left: auto;
 }
