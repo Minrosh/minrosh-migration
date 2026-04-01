@@ -167,6 +167,10 @@ a {
   gap: 14px;
 }
 
+.site-nav--static {
+  margin-left: auto;
+}
+
 .site-nav__link {
   position: relative;
   border: 0;
@@ -377,6 +381,7 @@ a {
 
 .btn:focus-visible,
 .text-button:focus-visible,
+.site-footer__links a:focus-visible,
 .site-footer__links button:focus-visible,
 .contact-details a:focus-visible,
 .site-footer__contact a:focus-visible,
@@ -629,6 +634,21 @@ a {
 
 .trust-strip__item {
   padding: 22px 22px 20px;
+}
+
+.trust-strip__link,
+.news-card__link,
+.service-block__link,
+.content-links__item,
+.breadcrumbs a {
+  text-decoration: none;
+}
+
+.trust-strip__link,
+.news-card__link,
+.service-block__link {
+  display: block;
+  color: inherit;
 }
 
 .trust-strip__item .section-label {
@@ -926,10 +946,154 @@ a {
 
 .services-layout,
 .stories-grid,
-.news-grid {
+.news-grid,
+.faq-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 22px;
+}
+
+.content-page {
+  display: grid;
+  gap: 28px;
+}
+
+.breadcrumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.breadcrumbs a {
+  color: var(--deel-blue);
+}
+
+.breadcrumbs__sep {
+  display: inline-block;
+  margin-right: 10px;
+  color: var(--muted);
+}
+
+.content-hero,
+.content-section,
+.content-aside-card {
+  border-radius: var(--radius-xl);
+  background: #ffffff;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-soft);
+}
+
+.content-hero {
+  padding: 32px;
+}
+
+.content-hero h1 {
+  margin: 0;
+  font-size: clamp(2.1rem, 4.8vw, 4rem);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+.content-hero p:last-child {
+  max-width: 52rem;
+  margin: 18px 0 0;
+  color: var(--muted);
+}
+
+.content-page__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 0.44fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.content-page__main,
+.content-page__aside {
+  display: grid;
+  gap: 22px;
+}
+
+.content-section {
+  padding: 28px;
+}
+
+.content-section h2 {
+  margin: 0 0 12px;
+  font-size: clamp(1.5rem, 2.8vw, 2.25rem);
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+}
+
+.content-section p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.content-aside-card {
+  padding: 24px;
+}
+
+.content-aside-card h3 {
+  margin: 0;
+  font-size: 1.3rem;
+  line-height: 1.2;
+}
+
+.content-aside-card p {
+  color: var(--muted);
+}
+
+.content-aside-card__actions {
+  display: grid;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.content-links {
+  display: grid;
+  gap: 12px;
+}
+
+.content-links__item {
+  display: grid;
+  gap: 4px;
+  padding: 16px 18px;
+  border-radius: 18px;
+  border: 1px solid var(--line);
+  background: #fcfcfd;
+  color: var(--ink);
+}
+
+.content-links__item span {
+  color: var(--deel-blue);
+  font-size: 0.92rem;
+}
+
+.faq-section {
+  margin-top: 34px;
+}
+
+.faq-card {
+  padding: 24px 26px;
+  border-radius: var(--radius-xl);
+  background: #ffffff;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-soft);
+}
+
+.faq-card h3 {
+  margin: 0 0 12px;
+  font-size: 1.15rem;
+  line-height: 1.35;
+  letter-spacing: -0.02em;
+}
+
+.faq-card p {
+  margin: 0;
+  color: var(--muted);
 }
 
 .service-block {
@@ -1214,6 +1378,7 @@ a {
   gap: 10px 14px;
 }
 
+.site-footer__links a,
 .site-footer__links button {
   border: 0;
   background: transparent;
@@ -1340,7 +1505,12 @@ a {
   .services-layout,
   .trust-strip,
   .stories-grid,
-  .news-grid {
+  .news-grid,
+  .faq-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .content-page__grid {
     grid-template-columns: 1fr;
   }
 
@@ -1398,6 +1568,21 @@ a {
     box-shadow: -20px 0 50px rgba(8, 21, 40, 0.08);
   }
 
+  .site-nav--static {
+    position: static;
+    top: auto;
+    right: auto;
+    bottom: auto;
+    width: auto;
+    padding: 0;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    background: transparent;
+    transform: none;
+    box-shadow: none;
+  }
+
   .site-nav.is-open {
     transform: translateX(0);
   }
@@ -1405,6 +1590,11 @@ a {
   .site-nav__link,
   .site-nav__cta {
     width: 100%;
+  }
+
+  .site-nav--static .site-nav__link,
+  .site-nav--static .site-nav__cta {
+    width: auto;
   }
 
   body[data-menu="open"] {
@@ -1447,7 +1637,8 @@ a {
   .contact-form,
   .assistant-chat__log,
   .assistant-chat__form,
-  .news-card {
+  .news-card,
+  .faq-card {
     padding-left: 20px;
     padding-right: 20px;
   }

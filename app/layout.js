@@ -1,5 +1,8 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
+import siteData from "../data/site.json";
+import { StructuredData } from "../components/structured-data";
+import { businessJsonLd } from "../lib/seo";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -8,21 +11,18 @@ const inter = Inter({
 
 export const metadata = {
   metadataBase: new URL("https://minroshmigration.com.au"),
-  title: "MinRosh Migration | Premium Australian Migration Guidance",
+  title: "MinRosh Migration",
   description:
-    "MinRosh Migration helps skilled workers, families, and students understand Australian migration pathways with calm, structured guidance.",
+    "Brisbane-based migration guidance for skilled migration, partner visas, student visas, and employer-sponsored pathways.",
   keywords: [
     "MinRosh Migration",
-    "Australian migration",
-    "Skilled migration",
-    "Subclass 189",
-    "Subclass 190",
-    "Visa eligibility quiz",
+    "Australian migration guidance",
+    "Brisbane migration",
   ],
   openGraph: {
-    title: "MinRosh Migration | Premium Australian Migration Guidance",
+    title: "MinRosh Migration",
     description:
-      "Preliminary visa guidance, points estimation, pathway planning, and clear next steps for Australian migration.",
+      "Brisbane-based migration guidance for skilled migration, student visas, partner visas, and employer-sponsored pathways.",
     url: "https://minroshmigration.com.au",
     siteName: "MinRosh Migration",
     locale: "en_AU",
@@ -30,9 +30,9 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "MinRosh Migration",
+    title: "Migration Agent Brisbane | MinRosh Migration",
     description:
-      "Calm, structured guidance for skilled, student, employer-sponsored, and family migration pathways.",
+      "Expert visa help in Brisbane for skilled migration, partner visas, student visas, and employer-sponsored pathways.",
   },
   robots: {
     index: true,
@@ -46,7 +46,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${inter.variable}`}>{children}</body>
+      <body className={`${inter.variable}`}>
+        <StructuredData data={businessJsonLd(siteData)} />
+        {children}
+      </body>
     </html>
   );
 }

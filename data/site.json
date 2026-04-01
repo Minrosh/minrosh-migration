@@ -1,77 +1,91 @@
 {
   "brand": {
     "name": "MinRosh Migration",
-    "tagline": "Your future in Australia, guided with clarity.",
+    "tagline": "Registered migration guidance for Brisbane and clients across Australia.",
     "email": "info@minroshmigration.com.au",
     "phone": "0478 100 542",
     "whatsapp": "61478100542",
     "location": "Brisbane, Queensland"
   },
   "hero": {
-    "eyebrow": "Australian migration guidance",
-    "title": "Unlock New Horizons: Your trusted partner in Australian migration.",
-    "description": "Preliminary guidance for skilled, employer-sponsored, student, and family pathways, shaped into a calm plan you can actually follow.",
+    "eyebrow": "Registered migration agent Brisbane",
+    "title": "Registered Migration Agent in Brisbane for Skilled, Student, and Family Visa Help.",
+    "description": "Looking for a reliable migration agent in Brisbane? MinRosh Migration provides clear, structured guidance for skilled migration, student visas, partner visas, employer-sponsored pathways, and other Australian visa options.",
     "primaryCta": "Start Eligibility Quiz",
     "secondaryCta": "Book Consultation"
   },
   "stats": [
     {
-      "value": "189 / 190",
-      "label": "Core skilled pathways covered"
+      "value": "Brisbane-based",
+      "label": "Local migration support for Queensland and remote clients Australia-wide"
     },
     {
-      "value": "Step-by-step",
-      "label": "Structured guidance from eligibility to lodgement"
+      "value": "189 / 190 / 491",
+      "label": "Skilled migration strategy across direct PR and nomination pathways"
     },
     {
       "value": "Clear next steps",
-      "label": "Focused enquiries, WhatsApp access, and consultation booking"
+      "label": "Consultation-first support with practical guidance and document planning"
     }
   ],
   "about": {
-    "title": "Guidance that feels calm, clear, and practical",
-    "body": "MinRosh Migration is designed for people who need order in a complex process. We break migration planning into clear stages, explain what matters now, and help you prepare for the right next move rather than rushing toward the wrong application.",
+    "title": "Migration services in Brisbane you can trust",
+    "body": "At MinRosh Migration, we help individuals and families navigate the Australian visa process with confidence and clarity. We understand that every case is different, so we focus on structured guidance, practical planning, and clear communication rather than generic one-size-fits-all advice.",
     "points": [
-      "Preliminary points guidance for skilled migration pathways",
-      "Support for students, families, and employer-sponsored options",
-      "Structured preparation before formal case review or lodgement"
+      "Registered migration guidance for skilled migration, student, partner, and employer-sponsored pathways",
+      "Personalised visa strategies aligned to your background, timing, and goals",
+      "Structured preparation before formal case review, nomination planning, and visa lodgement"
     ]
   },
   "services": [
     {
       "title": "Skilled Migration",
-      "summary": "Strategic guidance for subclass 189, 190, and related skilled pathways, including points planning, EOI readiness, and document preparation.",
+      "href": "/skilled-migration",
+      "summary": "Strategic support for subclass 189, 190, and related skilled migration pathways, including points planning, occupation positioning, Expression of Interest readiness, and document preparation.",
       "highlights": [
-        "Preliminary points review",
-        "Occupation and pathway positioning",
-        "EOI and nomination readiness"
+        "Preliminary points review and 2026 competitiveness planning",
+        "Occupation and pathway positioning for 189, 190, and 491 options",
+        "EOI, state nomination, and supporting evidence readiness"
       ]
     },
     {
-      "title": "Employer-Sponsored Options",
-      "summary": "Support for applicants exploring employer-backed pathways when direct PR is not the strongest immediate option.",
+      "title": "Employer-Sponsored Visas",
+      "href": "/contact",
+      "summary": "Guidance for applicants and workers exploring employer-sponsored visa options when direct PR is not the strongest immediate pathway.",
       "highlights": [
-        "Eligibility mapping",
-        "Work history and evidence planning",
-        "Alternative pathway strategy"
+        "Eligibility mapping for employer-backed pathways",
+        "Work history, occupation, and evidence planning",
+        "Alternative strategy when direct PR is not immediately competitive"
       ]
     },
     {
-      "title": "Student & Graduate Support",
-      "summary": "Guidance for education-linked migration planning, course selection context, and how study choices can connect to longer-term goals.",
+      "title": "Student Visas",
+      "href": "/student-visa-australia",
+      "summary": "Support for student visa applicants who need clear guidance around enrolment, document preparation, financial capacity, and longer-term migration planning.",
       "highlights": [
-        "Study pathway planning",
-        "Graduate transition guidance",
-        "Long-term migration positioning"
+        "Study pathway planning and visa document preparation",
+        "Graduate transition guidance and long-term migration positioning",
+        "Clear explanation of student visa requirements and timing"
       ]
     },
     {
-      "title": "Family & Complex Cases",
-      "summary": "Clear initial guidance for family-based situations and cases that need careful sequencing, documentation, or referral to formal advice.",
+      "title": "Partner & Family Visas",
+      "href": "/partner-visa-australia",
+      "summary": "Guidance for partner and family-based visa matters where relationship evidence, timing, and consistency of documentation are critical.",
       "highlights": [
-        "Relationship and evidence planning",
-        "Complex timeline coordination",
-        "Clear next-step triage"
+        "Relationship evidence and application planning",
+        "Onshore and offshore partner visa support",
+        "Clear next-step triage for complex family situations"
+      ]
+    },
+    {
+      "title": "Visitor Visas",
+      "href": "/contact",
+      "summary": "Straightforward guidance for visitor visa applications where clean documentation and clear travel purpose are important.",
+      "highlights": [
+        "Visitor visa eligibility guidance",
+        "Document review and application support",
+        "Clear advice on common refusal risks"
       ]
     }
   ],
@@ -121,6 +135,20 @@
       "quote": "MinRosh explained the points system in plain language and helped us understand where we actually stood.",
       "outcome": "Identified a realistic skilled pathway and prepared for the next stage with confidence.",
       "timeline": "Result achieved in 7 months"
+    }
+  ],
+  "faq": [
+    {
+      "question": "How long does an Australian visa take?",
+      "answer": "Processing times vary depending on the visa category and the quality of the application. Some student visas may be processed faster, while partner and skilled pathways can take much longer depending on evidence, nomination, and government processing times."
+    },
+    {
+      "question": "Do I need a migration agent?",
+      "answer": "A migration agent is not legally required for every application, but professional guidance can reduce errors, improve document quality, and help you avoid weak strategy decisions before you lodge."
+    },
+    {
+      "question": "How much does an Australian visa cost?",
+      "answer": "Visa application charges vary by visa type, and there can also be costs for English tests, skills assessments, health checks, and supporting documents. Contact MinRosh Migration for a clearer estimate based on your situation."
     }
   ]
 }

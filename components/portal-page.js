@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { calculateQuizResult, quizOptions } from "../lib/quiz";
 
 const tabs = [
@@ -119,6 +120,19 @@ export function PortalPage({ siteData, newsData }) {
   }, []);
 
   useEffect(() => {
+    function syncTabWithHash() {
+      const nextTab = window.location.hash.replace("#", "");
+      if (tabs.some((tab) => tab.id === nextTab)) {
+        setActiveTab(nextTab);
+      }
+    }
+
+    syncTabWithHash();
+    window.addEventListener("hashchange", syncTabWithHash);
+    return () => window.removeEventListener("hashchange", syncTabWithHash);
+  }, []);
+
+  useEffect(() => {
     if (!quizResult || !quizComplete) return;
     const summary = [
       `Quiz result: Estimated ${quizResult.score} points.`,
@@ -152,6 +166,9 @@ export function PortalPage({ siteData, newsData }) {
   function handleTabChange(tabId) {
     setActiveTab(tabId);
     setMenuOpen(false);
+    if (typeof window !== "undefined") {
+      window.history.replaceState(null, "", `/#${tabId}`);
+    }
   }
 
   function setQuizValue(key, value) {
@@ -242,7 +259,9 @@ export function PortalPage({ siteData, newsData }) {
               {siteData.hero.secondaryCta}
             </button>
           </div>
-          <p className="hero__trust-note">OMARA Code of Conduct aligned. MARN placeholder: 0000000.</p>
+          <p className="hero__trust-note">
+            Brisbane-based migration guidance. OMARA Code of Conduct aligned. MARN placeholder: 0000000.
+          </p>
           <div className="hero__stats">
             {siteData.stats.map((stat) => (
               <div key={stat.label} className="hero__stat">
@@ -271,16 +290,16 @@ export function PortalPage({ siteData, newsData }) {
 
       <section className="trust-strip">
         {siteData.services.slice(0, 3).map((service) => (
-          <article key={service.title} className="trust-strip__item bento-hover">
+          <Link key={service.title} href={service.href} className="trust-strip__item bento-hover trust-strip__link">
             <p className="section-label">{service.title}</p>
             <p>{service.summary}</p>
-          </article>
+          </Link>
         ))}
       </section>
 
       <section className="split-section">
         <div>
-          <p className="section-label">About MinRosh</p>
+          <p className="section-label">Why Choose MinRosh</p>
           <h2>{siteData.about.title}</h2>
           <p>{siteData.about.body}</p>
           <ul className="feature-list">
@@ -302,8 +321,8 @@ export function PortalPage({ siteData, newsData }) {
       <section className="news-section">
         <div className="section-head">
           <div>
-            <p className="section-label">Latest guidance</p>
-            <h2>What clients usually need to know first</h2>
+            <p className="section-label">Guides & Insights</p>
+            <h2>Helpful migration content designed to answer real search questions</h2>
           </div>
           <button type="button" className="text-button" onClick={() => handleTabChange("contact")}>
             Ask a question
@@ -311,10 +330,27 @@ export function PortalPage({ siteData, newsData }) {
         </div>
         <div className="news-grid">
           {newsData.map((item) => (
-            <article key={item.title} className="news-card bento-hover">
+            <Link key={item.title} href={item.href} className="news-card bento-hover news-card__link">
               <time dateTime={item.date}>{new Date(item.date).toLocaleDateString("en-AU")}</time>
               <h3>{item.title}</h3>
               <p>{item.summary}</p>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      <section className="faq-section">
+        <div className="section-head">
+          <div>
+            <p className="section-label">Frequently Asked Questions</p>
+            <h2>Answers to common Australian visa questions</h2>
+          </div>
+        </div>
+        <div className="faq-grid">
+          {siteData.faq.map((item) => (
+            <article key={item.question} className="faq-card bento-hover">
+              <h3>{item.question}</h3>
+              <p>{item.answer}</p>
             </article>
           ))}
         </div>
@@ -323,7 +359,7 @@ export function PortalPage({ siteData, newsData }) {
   );
 
   const quizTab = (
-    <section className={`tab-panel ${activeTab === "quiz" ? "is-active" : ""}`}>
+    <section id="quiz" className={`tab-panel ${activeTab === "quiz" ? "is-active" : ""}`}>
       <div className="panel-hero">
         <div>
           <p className="section-label">2026 Points Wizard</p>
@@ -560,7 +596,7 @@ export function PortalPage({ siteData, newsData }) {
   );
 
   const pathwaysTab = (
-    <section className={`tab-panel ${activeTab === "pathways" ? "is-active" : ""}`}>
+    <section id="pathways" className={`tab-panel ${activeTab === "pathways" ? "is-active" : ""}`}>
       <div className="panel-hero">
         <div>
           <p className="section-label">5-Step Pathway to PR</p>
@@ -587,7 +623,7 @@ export function PortalPage({ siteData, newsData }) {
   );
 
   const servicesTab = (
-    <section className={`tab-panel ${activeTab === "services" ? "is-active" : ""}`}>
+    <section id="services" className={`tab-panel ${activeTab === "services" ? "is-active" : ""}`}>
       <div className="panel-hero">
         <div>
           <p className="section-label">Services</p>
@@ -596,7 +632,7 @@ export function PortalPage({ siteData, newsData }) {
       </div>
       <div className="services-layout">
         {siteData.services.map((service) => (
-          <article key={service.title} className="service-block bento-hover">
+          <Link key={service.title} href={service.href} className="service-block bento-hover service-block__link">
             <h3>{service.title}</h3>
             <p>{service.summary}</p>
             <ul className="feature-list">
@@ -604,14 +640,14 @@ export function PortalPage({ siteData, newsData }) {
                 <li key={item}>{item}</li>
               ))}
             </ul>
-          </article>
+          </Link>
         ))}
       </div>
     </section>
   );
 
   const storiesTab = (
-    <section className={`tab-panel ${activeTab === "stories" ? "is-active" : ""}`}>
+    <section id="stories" className={`tab-panel ${activeTab === "stories" ? "is-active" : ""}`}>
       <div className="panel-hero">
         <div>
           <p className="section-label">Success Stories</p>
@@ -626,7 +662,7 @@ export function PortalPage({ siteData, newsData }) {
               <span className="story-card__badge">Outcome</span>
             </div>
             <div className="story-card__quote-mark" aria-hidden="true">
-              “
+              &ldquo;
             </div>
             <blockquote>{story.quote}</blockquote>
             <div className="story-card__person">
@@ -642,7 +678,7 @@ export function PortalPage({ siteData, newsData }) {
   );
 
   const contactTab = (
-    <section className={`tab-panel ${activeTab === "contact" ? "is-active" : ""}`}>
+    <section id="contact" className={`tab-panel ${activeTab === "contact" ? "is-active" : ""}`}>
       <div className="contact-layout">
         <div className="contact-copy">
           <p className="section-label">Contact</p>
