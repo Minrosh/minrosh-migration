@@ -274,10 +274,10 @@ export function PortalPage({ siteData, newsData }) {
       </div>
       <div className="hero__media" aria-hidden="true">
         <Image
-          src="/images/hero-australia.svg"
-          alt="Illustrated Australian harbour skyline"
-          width={760}
-          height={780}
+          src="/images/hero-sydney-real.jpg"
+          alt="Sydney harbour cityscape at golden hour"
+          width={1600}
+          height={1067}
           priority
         />
       </div>
@@ -310,10 +310,10 @@ export function PortalPage({ siteData, newsData }) {
         </div>
         <div className="image-card bento-hover">
           <Image
-            src="/images/team-guidance.svg"
-            alt="Illustrated MinRosh guidance workspace"
-            width={620}
-            height={540}
+            src="/images/team-office-real.jpg"
+            alt="Professional team meeting in a modern office"
+            width={1200}
+            height={800}
           />
         </div>
       </section>

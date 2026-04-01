@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export function ContentPage({
   eyebrow,
@@ -25,9 +26,21 @@ export function ContentPage({
       ) : null}
 
       <section className="content-hero">
-        <p className="section-label">{eyebrow}</p>
-        <h1>{title}</h1>
-        <p>{intro}</p>
+        <div className="content-hero__grid">
+          <div className="content-hero__copy">
+            <p className="section-label">{eyebrow}</p>
+            <h1>{title}</h1>
+            <p>{intro}</p>
+          </div>
+          <div className="content-hero__media" aria-hidden="true">
+            <Image
+              src="/images/hero-sydney-real.jpg"
+              alt="Sydney harbour cityscape"
+              width={1600}
+              height={1067}
+            />
+          </div>
+        </div>
       </section>
 
       <div className="content-page__grid">
