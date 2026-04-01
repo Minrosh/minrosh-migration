@@ -15,69 +15,44 @@ const tabs = [
 
 const quizSteps = [
   {
-    key: "age",
-    label: "Age",
-    prompt: "Choose the age range that best matches your profile.",
-    type: "select",
-    options: quizOptions.age.map((option) => ({
-      value: option.value,
-      label: option.label,
-    })),
+    id: "basics",
+    label: "Basics",
+    title: "Profile Basics",
+    description: "Start with age and whether your occupation sits on a relevant skilled list.",
+    fields: ["occupationName", "age", "occupation"],
   },
   {
-    key: "occupation",
-    label: "Occupation",
-    prompt: "Is your occupation currently on a relevant skilled list?",
-    type: "choice",
-    options: [
-      { value: "yes", label: "Yes, it is on the list" },
-      { value: "unsure", label: "I'm not sure yet" },
-      { value: "no", label: "No, or I don't think so" },
-    ],
-  },
-  {
-    key: "english",
+    id: "english",
     label: "English",
-    prompt: "Select your strongest current English test band.",
-    type: "choice",
-    options: quizOptions.english.map((option) => ({
-      value: option.value,
-      label: option.label,
-    })),
+    title: "English Proficiency",
+    description: "Your English result can materially change invitation competitiveness.",
+    fields: ["english"],
   },
   {
-    key: "overseasExperience",
-    label: "Experience",
-    prompt: "How much overseas skilled experience can you count?",
-    type: "choice",
-    options: quizOptions.overseasExperience.map((option) => ({
-      value: option.value,
-      label: option.label,
-    })),
+    id: "work",
+    label: "Work",
+    title: "Work Experience",
+    description: "Count overseas skilled experience carefully and conservatively.",
+    fields: ["overseasExperience"],
   },
   {
-    key: "education",
+    id: "education",
     label: "Education",
-    prompt: "What is your highest qualification level?",
-    type: "choice",
-    options: quizOptions.education.map((option) => ({
-      value: option.value,
-      label: option.label,
-    })),
+    title: "Education",
+    description: "Your highest qualification contributes to the overall points profile.",
+    fields: ["education"],
   },
   {
-    key: "partner",
+    id: "partner",
     label: "Partner",
-    prompt: "Select the statement that best matches your partner status.",
-    type: "choice",
-    options: quizOptions.partner.map((option) => ({
-      value: option.value,
-      label: option.label,
-    })),
+    title: "Partner",
+    description: "Partner status can add valuable points and change your strategy.",
+    fields: ["partner"],
   },
 ];
 
 const initialQuiz = {
+  occupationName: "",
   age: "",
   occupation: "unsure",
   english: "",
@@ -95,6 +70,11 @@ const initialForm = {
   mainNeed: "Skilled Migration",
   message: "",
 };
+
+function fieldIsComplete(field, quizForm) {
+  if (field === "occupationName") return Boolean(quizForm.occupationName.trim());
+  return Boolean(quizForm[field]);
+}
 
 export function PortalPage({ siteData, newsData }) {
   const [activeTab, setActiveTab] = useState("home");
@@ -116,15 +96,11 @@ export function PortalPage({ siteData, newsData }) {
 
   const quizResult = useMemo(() => calculateQuizResult(quizForm), [quizForm]);
   const currentQuizStep = quizSteps[quizStepIndex];
-  const progressPercent = ((quizStepIndex + 1) / quizSteps.length) * 100;
-  const currentQuizValue = quizForm[currentQuizStep.key];
-  const canAdvance = currentQuizStep.key === "occupation" ? true : Boolean(currentQuizValue);
-  const quizComplete = quizSteps.every((step) => {
-    if (step.key === "occupation") {
-      return true;
-    }
-    return Boolean(quizForm[step.key]);
-  });
+  const quizStepProgress = ((quizStepIndex + 1) / quizSteps.length) * 100;
+  const canAdvance = currentQuizStep.fields.every((field) => fieldIsComplete(field, quizForm));
+  const quizComplete = quizSteps.every((step) =>
+    step.fields.every((field) => fieldIsComplete(field, quizForm))
+  );
 
   useEffect(() => {
     document.body.dataset.menu = menuOpen ? "open" : "closed";
@@ -137,41 +113,35 @@ export function PortalPage({ siteData, newsData }) {
     function handleScroll() {
       setHeaderCompact(window.scrollY > 18);
     }
-
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   useEffect(() => {
-    if (!quizResult || !quizComplete) {
-      return;
-    }
-
-    const summary = quizResult.restricted
-      ? "Quiz result: Age 45+ selected. Direct PR may be restricted and employer-sponsored or alternative options should be reviewed."
-      : `Quiz result: Estimated ${quizResult.score} points. ${
-          quizResult.thresholdMet
-            ? "Meets the minimum 65-point EOI threshold."
-            : "Below the minimum 65-point EOI threshold."
-        } Occupation status: ${quizForm.occupation}.`;
-
+    if (!quizResult || !quizComplete) return;
+    const summary = [
+      `Quiz result: Estimated ${quizResult.score} points.`,
+      quizResult.marketInsight ? `2026 Market Insight: ${quizResult.marketInsight}` : "",
+      `Occupation: ${quizResult.selectedOccupation}.`,
+      `Breakdown: ${quizResult.pointBreakdownText}.`,
+    ]
+      .filter(Boolean)
+      .join(" ");
     setContactForm((current) => {
       if (current.message.includes("Quiz result:")) {
         const nextMessage = current.message.replace(/Quiz result:[\s\S]*$/m, "").trim();
         return { ...current, message: nextMessage ? `${nextMessage}\n\n${summary}` : summary };
       }
-
       return {
         ...current,
         message: current.message.trim() ? `${current.message.trim()}\n\n${summary}` : summary,
       };
     });
-  }, [quizComplete, quizForm.occupation, quizResult]);
+  }, [quizComplete, quizResult]);
 
-  const currentStep = quizResult?.restricted
-    ? "Employer-sponsored review"
-    : activeTab === "contact"
+  const currentPathwayStep =
+    activeTab === "contact"
       ? "Visa Lodgement"
       : activeTab === "pathways"
         ? "Skills Assessment"
@@ -189,9 +159,7 @@ export function PortalPage({ siteData, newsData }) {
   }
 
   function goToNextQuizStep() {
-    if (!canAdvance) {
-      return;
-    }
+    if (!canAdvance) return;
     setQuizStepIndex((current) => Math.min(current + 1, quizSteps.length - 1));
   }
 
@@ -207,31 +175,20 @@ export function PortalPage({ siteData, newsData }) {
   async function handleContactSubmit(event) {
     event.preventDefault();
     setContactState({ status: "loading", message: "" });
-
     const payload = {
       ...contactForm,
       quizSummary: quizResult
-        ? quizResult.restricted
-          ? "Age 45+ selected. Review employer-sponsored or alternative options."
-          : `Estimated points: ${quizResult.score}. Threshold met: ${quizResult.thresholdMet ? "yes" : "no"}.`
+        ? `Estimated points: ${quizResult.score}. ${quizResult.pointBreakdownText}.`
         : "",
     };
-
     try {
       const response = await fetch("/api/contact", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify(payload),
       });
-
       const data = await response.json();
-      if (!response.ok || !data.ok) {
-        throw new Error(data.error || "Could not submit enquiry.");
-      }
-
+      if (!response.ok || !data.ok) throw new Error(data.error || "Could not submit enquiry.");
       setContactState({
         status: "success",
         message:
@@ -249,32 +206,20 @@ export function PortalPage({ siteData, newsData }) {
 
   async function handleChatSubmit(event) {
     event.preventDefault();
-    if (!chatInput.trim()) {
-      return;
-    }
-
+    if (!chatInput.trim()) return;
     const nextMessages = [...chatMessages, { role: "user", content: chatInput.trim() }];
     setChatMessages(nextMessages);
     setChatInput("");
     setChatState({ loading: true, error: "" });
-
     try {
       const response = await fetch("/api/chat", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify({ messages: nextMessages }),
       });
-
       const data = await response.json();
       const reply = data?.choices?.[0]?.message?.content;
-
-      if (!response.ok || !reply) {
-        throw new Error(data.error || "Chat is not available right now.");
-      }
-
+      if (!response.ok || !reply) throw new Error(data.error || "Chat is not available right now.");
       setChatMessages((current) => [...current, { role: "assistant", content: reply }]);
       setChatState({ loading: false, error: "" });
     } catch (error) {
@@ -282,23 +227,558 @@ export function PortalPage({ siteData, newsData }) {
     }
   }
 
+  const hero = (
+    <section className="hero">
+      <div className="hero__content">
+        <div className="hero__glass">
+          <p className="eyebrow">{siteData.hero.eyebrow}</p>
+          <h1>{siteData.hero.title}</h1>
+          <p className="hero__lead">{siteData.hero.description}</p>
+          <div className="hero__actions">
+            <button type="button" className="btn btn-primary" onClick={() => handleTabChange("quiz")}>
+              {siteData.hero.primaryCta}
+            </button>
+            <button type="button" className="btn btn-ghost" onClick={() => handleTabChange("contact")}>
+              {siteData.hero.secondaryCta}
+            </button>
+          </div>
+          <p className="hero__trust-note">OMARA Code of Conduct aligned. MARN placeholder: 0000000.</p>
+          <div className="hero__stats">
+            {siteData.stats.map((stat) => (
+              <div key={stat.label} className="hero__stat">
+                <strong>{stat.value}</strong>
+                <span>{stat.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+      <div className="hero__media" aria-hidden="true">
+        <Image
+          src="/images/hero-australia.svg"
+          alt="Illustrated Australian harbour skyline"
+          width={760}
+          height={780}
+          priority
+        />
+      </div>
+    </section>
+  );
+
+  const homeTab = (
+    <section className={`tab-panel ${activeTab === "home" ? "is-active" : ""}`}>
+      {hero}
+
+      <section className="trust-strip">
+        {siteData.services.slice(0, 3).map((service) => (
+          <article key={service.title} className="trust-strip__item bento-hover">
+            <p className="section-label">{service.title}</p>
+            <p>{service.summary}</p>
+          </article>
+        ))}
+      </section>
+
+      <section className="split-section">
+        <div>
+          <p className="section-label">About MinRosh</p>
+          <h2>{siteData.about.title}</h2>
+          <p>{siteData.about.body}</p>
+          <ul className="feature-list">
+            {siteData.about.points.map((point) => (
+              <li key={point}>{point}</li>
+            ))}
+          </ul>
+        </div>
+        <div className="image-card bento-hover">
+          <Image
+            src="/images/team-guidance.svg"
+            alt="Illustrated MinRosh guidance workspace"
+            width={620}
+            height={540}
+          />
+        </div>
+      </section>
+
+      <section className="news-section">
+        <div className="section-head">
+          <div>
+            <p className="section-label">Latest guidance</p>
+            <h2>What clients usually need to know first</h2>
+          </div>
+          <button type="button" className="text-button" onClick={() => handleTabChange("contact")}>
+            Ask a question
+          </button>
+        </div>
+        <div className="news-grid">
+          {newsData.map((item) => (
+            <article key={item.title} className="news-card bento-hover">
+              <time dateTime={item.date}>{new Date(item.date).toLocaleDateString("en-AU")}</time>
+              <h3>{item.title}</h3>
+              <p>{item.summary}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+    </section>
+  );
+
+  const quizTab = (
+    <section className={`tab-panel ${activeTab === "quiz" ? "is-active" : ""}`}>
+      <div className="panel-hero">
+        <div>
+          <p className="section-label">2026 Points Wizard</p>
+          <h2>Work through your profile in a clean 5-step assessment</h2>
+          <p>
+            This wizard is designed to feel closer to a real intake review while still remaining
+            preliminary guidance.
+          </p>
+        </div>
+        <div className="current-step">
+          <span>Current Step</span>
+          <strong>{currentQuizStep.title}</strong>
+        </div>
+      </div>
+
+      <div className="quiz-shell">
+        <section className="quiz-card bento-hover">
+          <div className="quiz-wizard__meta">
+            <div>
+              <p className="section-label">{currentQuizStep.label}</p>
+              <h3>{currentQuizStep.title}</h3>
+            </div>
+            <span className="quiz-wizard__count">
+              {quizStepIndex + 1} / {quizSteps.length}
+            </span>
+          </div>
+
+          <div className="quiz-progress" aria-hidden="true">
+            <span className="quiz-progress__bar" style={{ width: `${quizStepProgress}%` }} />
+          </div>
+
+          <div className="quiz-step">
+            <p className="quiz-step__prompt">{currentQuizStep.description}</p>
+
+            {currentQuizStep.id === "basics" ? (
+              <div className="quiz-step__stack">
+                <label className="quiz-step__field">
+                  <span>Occupation / Field</span>
+                  <input
+                    type="text"
+                    value={quizForm.occupationName}
+                    onChange={(event) => setQuizValue("occupationName", event.target.value)}
+                    placeholder="e.g. Software Engineer"
+                  />
+                </label>
+                <label className="quiz-step__field">
+                  <span>Age</span>
+                  <select
+                    value={quizForm.age}
+                    onChange={(event) => setQuizValue("age", event.target.value)}
+                  >
+                    <option value="">Choose one</option>
+                    {quizOptions.age.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <div className="quiz-options">
+                  {quizOptions.occupationStatus.map((option) => (
+                    <button
+                      key={option.value}
+                      type="button"
+                      className={`quiz-option ${
+                        quizForm.occupation === option.value ? "is-selected" : ""
+                      }`}
+                      onClick={() => setQuizValue("occupation", option.value)}
+                    >
+                      {option.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ) : null}
+
+            {currentQuizStep.id === "english" ? (
+              <div className="quiz-options">
+                {quizOptions.english.map((option) => (
+                  <button
+                    key={option.value}
+                    type="button"
+                    className={`quiz-option ${
+                      quizForm.english === option.value ? "is-selected" : ""
+                    }`}
+                    onClick={() => setQuizValue("english", option.value)}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+            ) : null}
+
+            {currentQuizStep.id === "work" ? (
+              <div className="quiz-options">
+                {quizOptions.overseasExperience.map((option) => (
+                  <button
+                    key={option.value}
+                    type="button"
+                    className={`quiz-option ${
+                      quizForm.overseasExperience === option.value ? "is-selected" : ""
+                    }`}
+                    onClick={() => setQuizValue("overseasExperience", option.value)}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+            ) : null}
+
+            {currentQuizStep.id === "education" ? (
+              <div className="quiz-options">
+                {quizOptions.education.map((option) => (
+                  <button
+                    key={option.value}
+                    type="button"
+                    className={`quiz-option ${
+                      quizForm.education === option.value ? "is-selected" : ""
+                    }`}
+                    onClick={() => setQuizValue("education", option.value)}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+            ) : null}
+
+            {currentQuizStep.id === "partner" ? (
+              <div className="quiz-options">
+                {quizOptions.partner.map((option) => (
+                  <button
+                    key={option.value}
+                    type="button"
+                    className={`quiz-option ${
+                      quizForm.partner === option.value ? "is-selected" : ""
+                    }`}
+                    onClick={() => setQuizValue("partner", option.value)}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+            ) : null}
+          </div>
+
+          <div className="quiz-wizard__actions">
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={goToPreviousQuizStep}
+              disabled={quizStepIndex === 0}
+            >
+              Previous
+            </button>
+            {quizStepIndex < quizSteps.length - 1 ? (
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={goToNextQuizStep}
+                disabled={!canAdvance}
+              >
+                Next
+              </button>
+            ) : (
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={() => handleTabChange("contact")}
+                disabled={!quizComplete}
+              >
+                Continue to Full Report
+              </button>
+            )}
+          </div>
+        </section>
+
+        <aside className="quiz-result bento-hover">
+          <p className="section-label">Result</p>
+          {quizResult && quizComplete ? (
+            <>
+              <h3>
+                {quizResult.restricted
+                  ? "Alternative pathway review needed"
+                  : `${quizResult.score} points estimated`}
+              </h3>
+              <ul className="result-list">
+                {quizResult.messages.map((message) => (
+                  <li key={message}>{message}</li>
+                ))}
+              </ul>
+              {quizResult.marketInsight ? (
+                <div className="insight-card">
+                  <span className="insight-card__badge">2026 Market Insight</span>
+                  <p>{quizResult.marketInsight}</p>
+                </div>
+              ) : null}
+              <div className="points-breakdown">
+                <h4>Points Breakdown</h4>
+                <ul>
+                  {quizResult.pointsBreakdown.map((item) => (
+                    <li key={item.label}>
+                      <span>{item.label}</span>
+                      <strong>{item.points} pts</strong>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              {quizResult.boosters.length ? (
+                <div className="booster-card">
+                  <h4>Path to PR</h4>
+                  <ul className="result-list">
+                    {quizResult.boosters.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              ) : null}
+              <button type="button" className="btn btn-primary" onClick={() => handleTabChange("contact")}>
+                Get Full Report
+              </button>
+            </>
+          ) : (
+            <>
+              <h3>Build your profile</h3>
+              <p>
+                Complete each step to reveal your score, a 2026 market insight, and a pathway
+                improvement checklist.
+              </p>
+            </>
+          )}
+        </aside>
+      </div>
+    </section>
+  );
+
+  const pathwaysTab = (
+    <section className={`tab-panel ${activeTab === "pathways" ? "is-active" : ""}`}>
+      <div className="panel-hero">
+        <div>
+          <p className="section-label">5-Step Pathway to PR</p>
+          <h2>A clearer journey from first review to visa lodgement</h2>
+        </div>
+        <div className="current-step">
+          <span>Current Step</span>
+          <strong>{currentPathwayStep}</strong>
+        </div>
+      </div>
+      <div className="timeline">
+        {siteData.pathwaySteps.map((step, index) => (
+          <article
+            key={step.title}
+            className={`timeline-step bento-hover ${index === 0 ? "is-current" : ""}`}
+          >
+            <span className="timeline-step__number">{index + 1}</span>
+            <h3>{step.title}</h3>
+            <p>{step.description}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+
+  const servicesTab = (
+    <section className={`tab-panel ${activeTab === "services" ? "is-active" : ""}`}>
+      <div className="panel-hero">
+        <div>
+          <p className="section-label">Services</p>
+          <h2>Support shaped around real migration decisions</h2>
+        </div>
+      </div>
+      <div className="services-layout">
+        {siteData.services.map((service) => (
+          <article key={service.title} className="service-block bento-hover">
+            <h3>{service.title}</h3>
+            <p>{service.summary}</p>
+            <ul className="feature-list">
+              {service.highlights.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+
+  const storiesTab = (
+    <section className={`tab-panel ${activeTab === "stories" ? "is-active" : ""}`}>
+      <div className="panel-hero">
+        <div>
+          <p className="section-label">Success Stories</p>
+          <h2>Executive-style testimonials that signal trust before consultation</h2>
+        </div>
+      </div>
+      <div className="stories-grid">
+        {siteData.successStories.map((story) => (
+          <article key={story.name} className="story-card bento-hover">
+            <div className="story-card__top">
+              <p className="story-card__visa">{story.visa}</p>
+              <span className="story-card__badge">Outcome</span>
+            </div>
+            <div className="story-card__quote-mark" aria-hidden="true">
+              “
+            </div>
+            <blockquote>{story.quote}</blockquote>
+            <div className="story-card__person">
+              <h3>{story.name}</h3>
+              <p className="story-card__location">{story.location}</p>
+              <p className="story-card__timeline">{story.timeline}</p>
+            </div>
+            <p className="story-card__outcome">{story.outcome}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+
+  const contactTab = (
+    <section className={`tab-panel ${activeTab === "contact" ? "is-active" : ""}`}>
+      <div className="contact-layout">
+        <div className="contact-copy">
+          <p className="section-label">Contact</p>
+          <h2>Start with a clear enquiry and we&apos;ll help shape the next steps.</h2>
+          <p>
+            Share your background, timing, and main goal. We&apos;ll review the enquiry and respond
+            with the most relevant next move.
+          </p>
+          <div className="contact-details">
+            <div>
+              <span>Email</span>
+              <a href={`mailto:${siteData.brand.email}`}>{siteData.brand.email}</a>
+            </div>
+            <div>
+              <span>Phone</span>
+              <a href={`tel:${siteData.brand.phone.replace(/\s+/g, "")}`}>{siteData.brand.phone}</a>
+            </div>
+            <div>
+              <span>WhatsApp</span>
+              <a
+                href={`https://wa.me/${siteData.brand.whatsapp}?text=Hi%20MinRosh%20Migration,%20I%20am%20interested%20in%20Australian%20visa%20options.`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                +61 478 100 542
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <form className="contact-form bento-hover" onSubmit={handleContactSubmit}>
+          <div className="contact-grid">
+            <label>
+              <span>First name</span>
+              <input name="firstName" value={contactForm.firstName} onChange={handleContactChange} required />
+            </label>
+            <label>
+              <span>Last name</span>
+              <input name="lastName" value={contactForm.lastName} onChange={handleContactChange} />
+            </label>
+            <label>
+              <span>Email</span>
+              <input type="email" name="email" value={contactForm.email} onChange={handleContactChange} required />
+            </label>
+            <label>
+              <span>Phone</span>
+              <input name="phone" value={contactForm.phone} onChange={handleContactChange} />
+            </label>
+            <label>
+              <span>Preferred country</span>
+              <select name="preferredCountry" value={contactForm.preferredCountry} onChange={handleContactChange}>
+                <option>Australia</option>
+                <option>New Zealand</option>
+                <option>Canada</option>
+                <option>United Kingdom</option>
+              </select>
+            </label>
+            <label>
+              <span>Main need</span>
+              <select name="mainNeed" value={contactForm.mainNeed} onChange={handleContactChange}>
+                <option>Skilled Migration</option>
+                <option>Employer-Sponsored</option>
+                <option>Student Pathway</option>
+                <option>Family / Complex Case</option>
+              </select>
+            </label>
+            <label className="contact-grid__full">
+              <span>Your enquiry</span>
+              <textarea
+                name="message"
+                rows="6"
+                value={contactForm.message}
+                onChange={handleContactChange}
+                required
+              />
+            </label>
+          </div>
+          <button type="submit" className="btn btn-primary" disabled={contactState.status === "loading"}>
+            {contactState.status === "loading" ? "Sending..." : "Submit enquiry"}
+          </button>
+          {contactState.message ? (
+            <p className={`form-feedback is-${contactState.status}`}>{contactState.message}</p>
+          ) : null}
+        </form>
+      </div>
+
+      <section className="assistant-panel">
+        <div className="section-head">
+          <div>
+            <p className="section-label">AI Assistant</p>
+            <h2>Ask a preliminary migration question</h2>
+          </div>
+        </div>
+        <div className="assistant-chat bento-hover">
+          <div className="assistant-chat__log">
+            {chatMessages.map((message, index) => (
+              <div
+                key={`${message.role}-${index}`}
+                className={`assistant-chat__message assistant-chat__message--${message.role}`}
+              >
+                <p>{message.content}</p>
+              </div>
+            ))}
+          </div>
+          <form className="assistant-chat__form" onSubmit={handleChatSubmit}>
+            <textarea
+              rows="3"
+              value={chatInput}
+              onChange={(event) => setChatInput(event.target.value)}
+              placeholder="Ask about skilled migration, employer sponsorship, student pathways, or next steps."
+            />
+            <button type="submit" className="btn btn-primary" disabled={chatState.loading}>
+              {chatState.loading ? "Thinking..." : "Send"}
+            </button>
+          </form>
+          {chatState.error ? <p className="form-feedback is-error">{chatState.error}</p> : null}
+          <p className="assistant-note">
+            General information only. Always verify current requirements and seek formal advice for
+            your situation.
+          </p>
+        </div>
+      </section>
+    </section>
+  );
+
   return (
     <div className="portal-shell">
       <header className={`site-header ${headerCompact ? "is-compact" : ""}`}>
         <div className="site-header__inner">
-          <button
-            type="button"
-            className="brand"
-            onClick={() => handleTabChange("home")}
-            aria-label="Open home tab"
-          >
+          <button type="button" className="brand" onClick={() => handleTabChange("home")} aria-label="Open home tab">
             <span className="brand__mark">MR</span>
             <span className="brand__text">
               <strong>{siteData.brand.name}</strong>
               <span>{siteData.brand.tagline}</span>
             </span>
           </button>
-
           <button
             type="button"
             className="menu-toggle"
@@ -309,7 +789,6 @@ export function PortalPage({ siteData, newsData }) {
             <span />
             <span />
           </button>
-
           <nav className={`site-nav ${menuOpen ? "is-open" : ""}`} aria-label="Primary">
             {tabs.map((tab) => (
               <button
@@ -322,11 +801,7 @@ export function PortalPage({ siteData, newsData }) {
                 {tab.label}
               </button>
             ))}
-            <button
-              type="button"
-              className="btn btn-primary site-nav__cta"
-              onClick={() => handleTabChange("quiz")}
-            >
+            <button type="button" className="btn btn-primary site-nav__cta" onClick={() => handleTabChange("quiz")}>
               Check Eligibility
             </button>
           </nav>
@@ -334,483 +809,12 @@ export function PortalPage({ siteData, newsData }) {
       </header>
 
       <main className="portal-main">
-        <section className={`tab-panel ${activeTab === "home" ? "is-active" : ""}`}>
-          <section className="hero">
-            <div className="hero__content">
-              <div className="hero__glass">
-                <p className="eyebrow">{siteData.hero.eyebrow}</p>
-                <h1>{siteData.hero.title}</h1>
-                <p className="hero__lead">{siteData.hero.description}</p>
-                <div className="hero__actions">
-                  <button
-                    type="button"
-                    className="btn btn-primary"
-                    onClick={() => handleTabChange("quiz")}
-                  >
-                    {siteData.hero.primaryCta}
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-ghost"
-                    onClick={() => handleTabChange("contact")}
-                  >
-                    {siteData.hero.secondaryCta}
-                  </button>
-                </div>
-                <div className="hero__stats">
-                  {siteData.stats.map((stat) => (
-                    <div key={stat.label} className="hero__stat">
-                      <strong>{stat.value}</strong>
-                      <span>{stat.label}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-            <div className="hero__media" aria-hidden="true">
-              <Image
-                src="/images/hero-australia.svg"
-                alt="Illustrated Australian harbour skyline"
-                width={760}
-                height={780}
-                priority
-              />
-            </div>
-          </section>
-
-          <section className="trust-strip">
-            {siteData.services.slice(0, 3).map((service) => (
-              <article key={service.title} className="trust-strip__item bento-hover">
-                <p className="section-label">{service.title}</p>
-                <p>{service.summary}</p>
-              </article>
-            ))}
-          </section>
-
-          <section className="split-section">
-            <div>
-              <p className="section-label">About MinRosh</p>
-              <h2>{siteData.about.title}</h2>
-              <p>{siteData.about.body}</p>
-              <ul className="feature-list">
-                {siteData.about.points.map((point) => (
-                  <li key={point}>{point}</li>
-                ))}
-              </ul>
-            </div>
-            <div className="image-card bento-hover">
-              <Image
-                src="/images/team-guidance.svg"
-                alt="Illustrated MinRosh guidance workspace"
-                width={620}
-                height={540}
-              />
-            </div>
-          </section>
-
-          <section className="news-section">
-            <div className="section-head">
-              <div>
-                <p className="section-label">Latest guidance</p>
-                <h2>What clients usually need to know first</h2>
-              </div>
-              <button
-                type="button"
-                className="text-button"
-                onClick={() => handleTabChange("contact")}
-              >
-                Ask a question
-              </button>
-            </div>
-            <div className="news-grid">
-              {newsData.map((item) => (
-                <article key={item.title} className="news-card bento-hover">
-                  <time dateTime={item.date}>
-                    {new Date(item.date).toLocaleDateString("en-AU")}
-                  </time>
-                  <h3>{item.title}</h3>
-                  <p>{item.summary}</p>
-                </article>
-              ))}
-            </div>
-          </section>
-        </section>
-
-        <section className={`tab-panel ${activeTab === "quiz" ? "is-active" : ""}`}>
-          <div className="panel-hero">
-            <div>
-              <p className="section-label">Executive points wizard</p>
-              <h2>Move through your profile one decision at a time</h2>
-              <p>
-                This is still preliminary guidance, but the experience now mirrors a real advisory
-                intake rather than a long checklist.
-              </p>
-            </div>
-            <div className="current-step">
-              <span>Current Step</span>
-              <strong>{currentStep}</strong>
-            </div>
-          </div>
-
-          <div className="quiz-shell">
-            <section className="quiz-card bento-hover">
-              <div className="quiz-wizard__meta">
-                <div>
-                  <p className="section-label">Step {quizStepIndex + 1}</p>
-                  <h3>{currentQuizStep.label}</h3>
-                </div>
-                <span className="quiz-wizard__count">
-                  {quizStepIndex + 1} / {quizSteps.length}
-                </span>
-              </div>
-
-              <div className="quiz-progress" aria-hidden="true">
-                <span className="quiz-progress__bar" style={{ width: `${progressPercent}%` }} />
-              </div>
-
-              <div className="quiz-step">
-                <p className="quiz-step__prompt">{currentQuizStep.prompt}</p>
-
-                {currentQuizStep.type === "select" ? (
-                  <label className="quiz-step__field">
-                    <span>Select an option</span>
-                    <select
-                      value={quizForm[currentQuizStep.key]}
-                      onChange={(event) => setQuizValue(currentQuizStep.key, event.target.value)}
-                    >
-                      <option value="">Choose one</option>
-                      {currentQuizStep.options.map((option) => (
-                        <option key={option.value} value={option.value}>
-                          {option.label}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-                ) : (
-                  <div className="quiz-options">
-                    {currentQuizStep.options.map((option) => (
-                      <button
-                        key={option.value}
-                        type="button"
-                        className={`quiz-option ${
-                          quizForm[currentQuizStep.key] === option.value ? "is-selected" : ""
-                        }`}
-                        onClick={() => setQuizValue(currentQuizStep.key, option.value)}
-                      >
-                        {option.label}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              <div className="quiz-wizard__actions">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  onClick={goToPreviousQuizStep}
-                  disabled={quizStepIndex === 0}
-                >
-                  Previous
-                </button>
-                {quizStepIndex < quizSteps.length - 1 ? (
-                  <button
-                    type="button"
-                    className="btn btn-primary"
-                    onClick={goToNextQuizStep}
-                    disabled={!canAdvance}
-                  >
-                    Next
-                  </button>
-                ) : (
-                  <button
-                    type="button"
-                    className="btn btn-primary"
-                    onClick={() => handleTabChange("contact")}
-                    disabled={!quizComplete}
-                  >
-                    Continue to Full Report
-                  </button>
-                )}
-              </div>
-            </section>
-
-            <aside className="quiz-result bento-hover">
-              <p className="section-label">Result</p>
-              {quizResult && quizComplete ? (
-                <>
-                  <h3>
-                    {quizResult.restricted
-                      ? "Special pathway review needed"
-                      : `${quizResult.score} points estimated`}
-                  </h3>
-                  <ul className="result-list">
-                    {quizResult.messages.map((message) => (
-                      <li key={message}>{message}</li>
-                    ))}
-                  </ul>
-                  <button
-                    type="button"
-                    className="btn btn-primary"
-                    onClick={() => handleTabChange("contact")}
-                  >
-                    Get Full Report
-                  </button>
-                </>
-              ) : (
-                <>
-                  <h3>Progressive intake</h3>
-                  <p>
-                    Complete each step to reveal your preliminary score and move into the enquiry
-                    flow with a cleaner summary.
-                  </p>
-                </>
-              )}
-            </aside>
-          </div>
-        </section>
-
-        <section className={`tab-panel ${activeTab === "pathways" ? "is-active" : ""}`}>
-          <div className="panel-hero">
-            <div>
-              <p className="section-label">5-Step Pathway to PR</p>
-              <h2>A clearer journey from first review to visa lodgement</h2>
-            </div>
-            <div className="current-step">
-              <span>Current Step</span>
-              <strong>{currentStep}</strong>
-            </div>
-          </div>
-
-          <div className="timeline">
-            {siteData.pathwaySteps.map((step, index) => (
-              <article
-                key={step.title}
-                className={`timeline-step bento-hover ${index === 0 ? "is-current" : ""}`}
-              >
-                <span className="timeline-step__number">{index + 1}</span>
-                <h3>{step.title}</h3>
-                <p>{step.description}</p>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section className={`tab-panel ${activeTab === "services" ? "is-active" : ""}`}>
-          <div className="panel-hero">
-            <div>
-              <p className="section-label">Services</p>
-              <h2>Support shaped around real migration decisions</h2>
-            </div>
-          </div>
-          <div className="services-layout">
-            {siteData.services.map((service) => (
-              <article key={service.title} className="service-block bento-hover">
-                <h3>{service.title}</h3>
-                <p>{service.summary}</p>
-                <ul className="feature-list">
-                  {service.highlights.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section className={`tab-panel ${activeTab === "stories" ? "is-active" : ""}`}>
-          <div className="panel-hero">
-            <div>
-              <p className="section-label">Success Stories</p>
-              <h2>Executive-style testimonials that signal trust before consultation</h2>
-            </div>
-          </div>
-          <div className="stories-grid">
-            {siteData.successStories.map((story) => (
-              <article key={story.name} className="story-card bento-hover">
-                <div className="story-card__top">
-                  <p className="story-card__visa">{story.visa}</p>
-                  <span className="story-card__badge">Outcome</span>
-                </div>
-                <div className="story-card__quote-mark" aria-hidden="true">
-                  “
-                </div>
-                <blockquote>{story.quote}</blockquote>
-                <div className="story-card__person">
-                  <h3>{story.name}</h3>
-                  <p className="story-card__location">{story.location}</p>
-                </div>
-                <p className="story-card__outcome">{story.outcome}</p>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section className={`tab-panel ${activeTab === "contact" ? "is-active" : ""}`}>
-          <div className="contact-layout">
-            <div className="contact-copy">
-              <p className="section-label">Contact</p>
-              <h2>Start with a clear enquiry and we&apos;ll help shape the next steps.</h2>
-              <p>
-                Share your background, timing, and main goal. We&apos;ll review the enquiry and
-                respond with the most relevant next move.
-              </p>
-              <div className="contact-details">
-                <div>
-                  <span>Email</span>
-                  <a href={`mailto:${siteData.brand.email}`}>{siteData.brand.email}</a>
-                </div>
-                <div>
-                  <span>Phone</span>
-                  <a href={`tel:${siteData.brand.phone.replace(/\s+/g, "")}`}>
-                    {siteData.brand.phone}
-                  </a>
-                </div>
-                <div>
-                  <span>WhatsApp</span>
-                  <a
-                    href={`https://wa.me/${siteData.brand.whatsapp}?text=Hi%20MinRosh%20Migration,%20I%20am%20interested%20in%20Australian%20visa%20options.`}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    +61 478 100 542
-                  </a>
-                </div>
-              </div>
-            </div>
-
-            <form className="contact-form bento-hover" onSubmit={handleContactSubmit}>
-              <div className="contact-grid">
-                <label>
-                  <span>First name</span>
-                  <input
-                    name="firstName"
-                    value={contactForm.firstName}
-                    onChange={handleContactChange}
-                    required
-                  />
-                </label>
-                <label>
-                  <span>Last name</span>
-                  <input
-                    name="lastName"
-                    value={contactForm.lastName}
-                    onChange={handleContactChange}
-                  />
-                </label>
-                <label>
-                  <span>Email</span>
-                  <input
-                    type="email"
-                    name="email"
-                    value={contactForm.email}
-                    onChange={handleContactChange}
-                    required
-                  />
-                </label>
-                <label>
-                  <span>Phone</span>
-                  <input
-                    name="phone"
-                    value={contactForm.phone}
-                    onChange={handleContactChange}
-                  />
-                </label>
-                <label>
-                  <span>Preferred country</span>
-                  <select
-                    name="preferredCountry"
-                    value={contactForm.preferredCountry}
-                    onChange={handleContactChange}
-                  >
-                    <option>Australia</option>
-                    <option>New Zealand</option>
-                    <option>Canada</option>
-                    <option>United Kingdom</option>
-                  </select>
-                </label>
-                <label>
-                  <span>Main need</span>
-                  <select
-                    name="mainNeed"
-                    value={contactForm.mainNeed}
-                    onChange={handleContactChange}
-                  >
-                    <option>Skilled Migration</option>
-                    <option>Employer-Sponsored</option>
-                    <option>Student Pathway</option>
-                    <option>Family / Complex Case</option>
-                  </select>
-                </label>
-                <label className="contact-grid__full">
-                  <span>Your enquiry</span>
-                  <textarea
-                    name="message"
-                    rows="6"
-                    value={contactForm.message}
-                    onChange={handleContactChange}
-                    required
-                  />
-                </label>
-              </div>
-              <button
-                type="submit"
-                className="btn btn-primary"
-                disabled={contactState.status === "loading"}
-              >
-                {contactState.status === "loading" ? "Sending..." : "Submit enquiry"}
-              </button>
-              {contactState.message ? (
-                <p className={`form-feedback is-${contactState.status}`}>
-                  {contactState.message}
-                </p>
-              ) : null}
-            </form>
-          </div>
-
-          <section className="assistant-panel">
-            <div className="section-head">
-              <div>
-                <p className="section-label">AI Assistant</p>
-                <h2>Ask a preliminary migration question</h2>
-              </div>
-            </div>
-            <div className="assistant-chat bento-hover">
-              <div className="assistant-chat__log">
-                {chatMessages.map((message, index) => (
-                  <div
-                    key={`${message.role}-${index}`}
-                    className={`assistant-chat__message assistant-chat__message--${message.role}`}
-                  >
-                    <p>{message.content}</p>
-                  </div>
-                ))}
-              </div>
-              <form className="assistant-chat__form" onSubmit={handleChatSubmit}>
-                <textarea
-                  rows="3"
-                  value={chatInput}
-                  onChange={(event) => setChatInput(event.target.value)}
-                  placeholder="Ask about skilled migration, employer sponsorship, student pathways, or next steps."
-                />
-                <button
-                  type="submit"
-                  className="btn btn-primary"
-                  disabled={chatState.loading}
-                >
-                  {chatState.loading ? "Thinking..." : "Send"}
-                </button>
-              </form>
-              {chatState.error ? (
-                <p className="form-feedback is-error">{chatState.error}</p>
-              ) : null}
-              <p className="assistant-note">
-                General information only. Always verify current requirements and seek formal advice
-                for your situation.
-              </p>
-            </div>
-          </section>
-        </section>
+        {homeTab}
+        {quizTab}
+        {pathwaysTab}
+        {servicesTab}
+        {storiesTab}
+        {contactTab}
       </main>
 
       <footer className="site-footer">
@@ -828,12 +832,27 @@ export function PortalPage({ siteData, newsData }) {
           </div>
           <div className="site-footer__contact">
             <a href={`mailto:${siteData.brand.email}`}>{siteData.brand.email}</a>
-            <a href={`tel:${siteData.brand.phone.replace(/\s+/g, "")}`}>
-              {siteData.brand.phone}
-            </a>
+            <a href={`tel:${siteData.brand.phone.replace(/\s+/g, "")}`}>{siteData.brand.phone}</a>
           </div>
         </div>
+        <div className="site-footer__compliance">
+          <p>
+            MinRosh Migration operates under the Migration Agents Regulations 2026 and the OMARA Code of Conduct.
+          </p>
+          <p>MARN placeholder: 0000000</p>
+          <a
+            href="https://www.mara.gov.au/get-help-with-a-visa/help-from-registered-agents-and-lawyers/code-of-conduct/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            View the OMARA Code of Conduct
+          </a>
+        </div>
       </footer>
+
+      <button type="button" className="mobile-sticky-cta" onClick={() => handleTabChange("quiz")}>
+        Check Eligibility
+      </button>
 
       <a
         className="whatsapp-float"
