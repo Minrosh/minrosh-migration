@@ -1,0 +1,123 @@
+{
+  "brand": {
+    "name": "MinRosh Migration",
+    "tagline": "Your future in Australia, guided with clarity.",
+    "email": "info@minroshmigration.com.au",
+    "phone": "0478 100 542",
+    "whatsapp": "61478100542",
+    "location": "Brisbane, Queensland"
+  },
+  "hero": {
+    "eyebrow": "Australian migration guidance",
+    "title": "Unlock New Horizons: Your trusted partner in Australian migration.",
+    "description": "Preliminary guidance for skilled, employer-sponsored, student, and family pathways, shaped into a calm plan you can actually follow.",
+    "primaryCta": "Start Eligibility Quiz",
+    "secondaryCta": "Book Consultation"
+  },
+  "stats": [
+    {
+      "value": "189 / 190",
+      "label": "Core skilled pathways covered"
+    },
+    {
+      "value": "Step-by-step",
+      "label": "Structured guidance from eligibility to lodgement"
+    },
+    {
+      "value": "Clear next steps",
+      "label": "Focused enquiries, WhatsApp access, and consultation booking"
+    }
+  ],
+  "about": {
+    "title": "Guidance that feels calm, clear, and practical",
+    "body": "MinRosh Migration is designed for people who need order in a complex process. We break migration planning into clear stages, explain what matters now, and help you prepare for the right next move rather than rushing toward the wrong application.",
+    "points": [
+      "Preliminary points guidance for skilled migration pathways",
+      "Support for students, families, and employer-sponsored options",
+      "Structured preparation before formal case review or lodgement"
+    ]
+  },
+  "services": [
+    {
+      "title": "Skilled Migration",
+      "summary": "Strategic guidance for subclass 189, 190, and related skilled pathways, including points planning, EOI readiness, and document preparation.",
+      "highlights": [
+        "Preliminary points review",
+        "Occupation and pathway positioning",
+        "EOI and nomination readiness"
+      ]
+    },
+    {
+      "title": "Employer-Sponsored Options",
+      "summary": "Support for applicants exploring employer-backed pathways when direct PR is not the strongest immediate option.",
+      "highlights": [
+        "Eligibility mapping",
+        "Work history and evidence planning",
+        "Alternative pathway strategy"
+      ]
+    },
+    {
+      "title": "Student & Graduate Support",
+      "summary": "Guidance for education-linked migration planning, course selection context, and how study choices can connect to longer-term goals.",
+      "highlights": [
+        "Study pathway planning",
+        "Graduate transition guidance",
+        "Long-term migration positioning"
+      ]
+    },
+    {
+      "title": "Family & Complex Cases",
+      "summary": "Clear initial guidance for family-based situations and cases that need careful sequencing, documentation, or referral to formal advice.",
+      "highlights": [
+        "Relationship and evidence planning",
+        "Complex timeline coordination",
+        "Clear next-step triage"
+      ]
+    }
+  ],
+  "pathwaySteps": [
+    {
+      "title": "Initial Assessment",
+      "description": "Check your age, points profile, occupation fit, and likely pathway options."
+    },
+    {
+      "title": "Skills Assessment",
+      "description": "Verify qualifications and employment evidence with the relevant assessing authority."
+    },
+    {
+      "title": "English Test & EOI",
+      "description": "Strengthen your points profile and prepare a competitive Expression of Interest."
+    },
+    {
+      "title": "State Nomination",
+      "description": "Explore nomination pathways that can lift your competitiveness for 190 or regional options."
+    },
+    {
+      "title": "Visa Lodgement",
+      "description": "Prepare the final application package with a clean, consistent document set."
+    }
+  ],
+  "successStories": [
+    {
+      "name": "A. Fernando",
+      "location": "Brisbane",
+      "visa": "Skilled Independent visa (subclass 189)",
+      "quote": "The structured points review made the process feel manageable. We knew exactly what to improve before moving forward.",
+      "outcome": "Moved from a scattered document set to a confident 189-ready pathway."
+    },
+    {
+      "name": "R. Perera",
+      "location": "Melbourne",
+      "visa": "Skilled Independent visa (subclass 189)",
+      "quote": "What helped most was the clarity. Instead of generic advice, we got a sequence that made sense for our profile and timing.",
+      "outcome": "Improved English planning and evidence readiness before EOI."
+    },
+    {
+      "name": "S. Wickramasinghe",
+      "location": "Adelaide",
+      "visa": "Skilled Independent visa (subclass 189)",
+      "quote": "MinRosh explained the points system in plain language and helped us understand where we actually stood.",
+      "outcome": "Identified a realistic skilled pathway and prepared for the next stage with confidence."
+    }
+  ]
+}
