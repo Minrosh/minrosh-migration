@@ -1,0 +1,71 @@
+HEAD is now at 8b1c2e6 Refine MinRosh branding and hero visuals
+
+up to date, audited 23 packages in 435ms
+
+6 packages are looking for funding
+  run `npm fund` for details
+
+1 high severity vulnerability
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+
+> minrosh-migration-next@2.0.0 build
+> next build
+
+   ▲ Next.js 15.5.14
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 1432ms
+   Linting and checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/17) ...
+   Generating static pages (4/17) 
+   Generating static pages (8/17) 
+   Generating static pages (12/17) 
+ ✓ Generating static pages (17/17)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                       Size  First Load JS
+┌ ○ /                                          7.98 kB         119 kB
+├ ○ /_not-found                                  138 B         102 kB
+├ ƒ /api/chat                                    138 B         102 kB
+├ ƒ /api/contact                                 138 B         102 kB
+├ ƒ /api/news                                    138 B         102 kB
+├ ○ /book-consultation                         1.22 kB         112 kB
+├ ○ /contact                                   1.22 kB         112 kB
+├ ○ /partner-visa-australia                      185 B         111 kB
+├ ○ /partner-visa-australia-guide                185 B         111 kB
+├ ○ /robots.txt                                  138 B         102 kB
+├ ○ /sitemap.xml                                 138 B         102 kB
+├ ○ /skilled-migration                           185 B         111 kB
+├ ○ /skilled-migration-australia-points-guide    185 B         111 kB
+├ ○ /student-visa-australia                      185 B         111 kB
+└ ○ /student-visa-australia-requirements         185 B         111 kB
++ First Load JS shared by all                   102 kB
+  ├ chunks/255-38b49df12a94ee57.js               46 kB
+  ├ chunks/4bd1b696-c023c6e3521b1417.js        54.2 kB
+  └ other shared chunks (total)                1.92 kB
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+[1m[34mUse --update-env to update environment variables[39m[22m
+[32m[PM2] [39mApplying action restartProcessId on app [minrosh-next](ids: [ 0 ])
+[32m[PM2] [39m[minrosh-next](0) ✓
+┌────┬─────────────────┬─────────────┬─────────┬─────────┬──────────┬────────┬──────┬───────────┬──────────┬──────────┬──────────┬──────────┐
+│ id │ name            │ namespace   │ version │ mode    │ pid      │ uptime │ ↺    │ status    │ cpu      │ mem      │ user     │ watching │
+├────┼─────────────────┼─────────────┼─────────┼─────────┼──────────┼────────┼──────┼───────────┼──────────┼──────────┼──────────┼──────────┤
+│ [1m[36m0[39m[22m  │ minrosh-next    │ default     │ 15.5.14 │ [7m[1mfork[22m[27m    │ 36522    │ 0s     │ 16   │ [32m[1monline[22m[39m    │ 0%       │ 14.4mb   │ [1mminrosh[22m  │ [90mdisabled[39m │
+└────┴─────────────────┴─────────────┴─────────┴─────────┴──────────┴────────┴──────┴───────────┴──────────┴──────────┴──────────┴──────────┘
+[32m[PM2] [39mSaving current process list...
+[32m[PM2] [39mSuccessfully saved in /home/minrosh/.pm2/dump.pm2
+┌────┬─────────────────┬─────────────┬─────────┬─────────┬──────────┬────────┬──────┬───────────┬──────────┬──────────┬──────────┬──────────┐
+│ id │ name            │ namespace   │ version │ mode    │ pid      │ uptime │ ↺    │ status    │ cpu      │ mem      │ user     │ watching │
+├────┼─────────────────┼─────────────┼─────────┼─────────┼──────────┼────────┼──────┼───────────┼──────────┼──────────┼──────────┼──────────┤
+│ [1m[36m0[39m[22m  │ minrosh-next    │ default     │ 15.5.14 │ [7m[1mfork[22m[27m    │ 36522    │ 0s     │ 16   │ [32m[1monline[22m[39m    │ 0%       │ 88.1mb   │ [1mminrosh[22m  │ [90mdisabled[39m │
+└────┴─────────────────┴─────────────┴─────────┴─────────┴──────────┴────────┴──────┴───────────┴──────────┴──────────┴──────────┴──────────┘
