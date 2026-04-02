@@ -33,7 +33,7 @@ export default function UpdatesPage() {
               </p>
             </div>
             <div className="content-hero__media" aria-hidden="true">
-              <img src="/images/brisbane-skyline.jpg" alt="Brisbane skyline and riverfront" />
+              <img src="/images/brisbane-skyline.svg" alt="Brisbane skyline and riverfront" />
             </div>
           </div>
         </section>

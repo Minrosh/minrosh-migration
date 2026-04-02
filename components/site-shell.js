@@ -27,7 +27,7 @@ export function SiteShell({ siteData, currentPath, children }) {
           <Link href="/" className="brand" aria-label="Go to MinRosh homepage">
             <span className="brand__mark" aria-hidden="true">
               <Image
-                src="/images/minrosh-logo.png"
+                src="/images/minrosh-logo.svg"
                 alt=""
                 width={46}
                 height={46}
@@ -36,7 +36,6 @@ export function SiteShell({ siteData, currentPath, children }) {
             </span>
             <span className="brand__text">
               <strong>{siteData.brand.name}</strong>
-              <span>{siteData.brand.tagline}</span>
             </span>
           </Link>
           <nav className="site-nav site-nav--static" aria-label="Primary">

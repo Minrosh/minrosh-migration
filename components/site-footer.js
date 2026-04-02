@@ -76,7 +76,7 @@ export function SiteFooter({ siteData, initialStats }) {
         <div className="site-footer__brand-col">
           <Link href="/" className="brand footer-brand" aria-label="Go to MinRosh homepage">
             <span className="brand__mark" aria-hidden="true">
-              <Image src="/images/minrosh-logo.png" alt="" width={60} height={60} />
+              <Image src="/images/minrosh-logo.svg" alt="" width={60} height={60} />
             </span>
             <span className="brand__text">
               <strong>{siteData.brand.name}</strong>

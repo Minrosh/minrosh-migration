@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1200" viewBox="0 0 1800 1200" role="img" aria-labelledby="title desc">
+  <title id="title">Sydney Harbour illustration</title>
+  <desc id="desc">Stylized Sydney skyline with harbour water and warm sky.</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f6e6f0"/>
+      <stop offset="100%" stop-color="#fffaf3"/>
+    </linearGradient>
+  </defs>
+  <rect width="1800" height="1200" fill="url(#sky)"/>
+  <rect y="700" width="1800" height="500" fill="#e8d8e2"/>
+  <path d="M0 760c170 40 260 40 430 0s260-40 430 0 260 40 430 0 260-40 510 0v440H0z" fill="#8b3d6a" opacity=".2"/>
+  <g fill="#4a1d42" opacity=".85">
+    <rect x="1120" y="450" width="40" height="250"/>
+    <rect x="1170" y="400" width="55" height="300"/>
+    <rect x="1240" y="480" width="35" height="220"/>
+    <rect x="1290" y="430" width="45" height="270"/>
+  </g>
+  <path d="M420 710c130-210 250-210 380 0h-90c-70-120-130-120-200 0z" fill="#4a1d42"/>
+  <path d="M800 710c130-210 250-210 380 0h-90c-70-120-130-120-200 0z" fill="#8b3d6a"/>
+</svg>

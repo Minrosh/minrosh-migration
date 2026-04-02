@@ -306,10 +306,10 @@ export function PortalPage({ siteData, newsData, footerStats }) {
       </div>
       <div className="hero__media" aria-hidden="true">
         <Image
-          src="/images/brisbane-skyline.jpg"
-          alt="Brisbane skyline and river at golden hour"
-          width={1600}
-          height={900}
+          src="/images/hero-sydney.svg"
+          alt="Sydney Harbour with ferries on the water and the Opera House"
+          width={1800}
+          height={1200}
           priority
         />
       </div>
@@ -350,7 +350,7 @@ export function PortalPage({ siteData, newsData, footerStats }) {
         </div>
         <div className="image-card bento-hover">
           <Image
-            src="/images/team-office-real.jpg"
+            src="/images/team-office.svg"
             alt="Professional team meeting in a modern office"
             width={1200}
             height={800}
@@ -738,7 +738,7 @@ export function PortalPage({ siteData, newsData, footerStats }) {
         </div>
         <div className="story-feature__media">
           <Image
-            src={storyIndex % 2 === 0 ? "/images/team-office-real.jpg" : "/images/brisbane-skyline.jpg"}
+            src={storyIndex % 2 === 0 ? "/images/team-office.svg" : "/images/brisbane-skyline.svg"}
             alt="MinRosh migration guidance and Brisbane lifestyle"
             width={1200}
             height={900}
@@ -913,18 +913,17 @@ export function PortalPage({ siteData, newsData, footerStats }) {
           <button type="button" className="brand" onClick={() => handleTabChange("home")} aria-label="Open home tab">
             <span className="brand__mark" aria-hidden="true">
               <Image
-                src="/images/minrosh-logo.png"
+                src="/images/minrosh-logo.svg"
                 alt=""
                 width={46}
                 height={46}
                 priority
               />
             </span>
-            <span className="brand__text">
-              <strong>{siteData.brand.name}</strong>
-              <span>{siteData.brand.tagline}</span>
-            </span>
-          </button>
+          <span className="brand__text">
+            <strong>{siteData.brand.name}</strong>
+          </span>
+        </button>
           <button
             type="button"
             className="menu-toggle"

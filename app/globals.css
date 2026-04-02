@@ -542,14 +542,14 @@ a {
 .hero__media {
   position: relative;
   overflow: hidden;
-  min-height: 100%;
-  max-height: 520px;
-  height: 100%;
+  width: 100%;
   border-radius: 32px;
   background: #ffffff;
   border: 1px solid var(--line);
   box-shadow: var(--shadow-soft);
   align-self: stretch;
+  aspect-ratio: 16 / 9;
+  min-height: 360px;
 }
 
 .hero__media::before {
@@ -2452,8 +2452,9 @@ a {
 
   .hero__media {
     min-height: 320px;
-    max-height: 340px;
+    max-height: none;
     height: auto;
+    aspect-ratio: 16 / 9;
   }
 
   .content-hero__grid {
@@ -2679,8 +2680,9 @@ a {
   }
 
   .hero__media {
-    min-height: 190px;
-    max-height: 220px;
+    min-height: 220px;
+    max-height: none;
+    aspect-ratio: 16 / 9;
   }
 
   .hero__stats {

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Brisbane skyline illustration</title>
+  <desc id="desc">Stylized skyline with river foreground.</desc>
+  <rect width="1600" height="900" fill="#fffaf3"/>
+  <rect y="560" width="1600" height="340" fill="#f2e8ee"/>
+  <path d="M0 630c120 40 240 40 360 0s240-40 360 0 240 40 360 0 240-40 520 0v270H0z" fill="#8b3d6a" opacity=".2"/>
+  <g fill="#4a1d42">
+    <rect x="300" y="300" width="70" height="260"/>
+    <rect x="390" y="240" width="80" height="320"/>
+    <rect x="490" y="320" width="65" height="240"/>
+    <rect x="790" y="280" width="75" height="280"/>
+    <rect x="885" y="220" width="90" height="340"/>
+    <rect x="995" y="340" width="65" height="220"/>
+    <rect x="1170" y="300" width="75" height="260"/>
+  </g>
+</svg>

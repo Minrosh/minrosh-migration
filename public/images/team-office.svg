@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" role="img" aria-labelledby="title desc">
+  <title id="title">Office team illustration</title>
+  <desc id="desc">Abstract team meeting scene in an office setting.</desc>
+  <rect width="1200" height="800" fill="#fffaf3"/>
+  <rect x="80" y="120" width="1040" height="560" rx="28" fill="#f2e8ee"/>
+  <rect x="180" y="470" width="840" height="40" rx="20" fill="#8b3d6a" opacity=".5"/>
+  <circle cx="350" cy="360" r="70" fill="#4a1d42"/>
+  <circle cx="600" cy="340" r="70" fill="#8b3d6a"/>
+  <circle cx="850" cy="360" r="70" fill="#b86d93"/>
+  <rect x="280" y="440" width="140" height="130" rx="30" fill="#4a1d42"/>
+  <rect x="530" y="420" width="140" height="150" rx="30" fill="#8b3d6a"/>
+  <rect x="780" y="440" width="140" height="130" rx="30" fill="#b86d93"/>
+</svg>
