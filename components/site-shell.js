@@ -6,9 +6,9 @@ import { getFooterStats } from "../lib/site-stats";
 
 const primaryLinks = [
   { href: "/", label: "Home" },
-  { href: "/skilled-migration", label: "Skilled Migration" },
-  { href: "/partner-visa-australia", label: "Partner Visa" },
-  { href: "/student-visa-australia", label: "Student Visa" },
+  { href: "/skilled-migration", label: "Skilled" },
+  { href: "/partner-visa-australia", label: "Partner" },
+  { href: "/student-visa-australia", label: "Student" },
   { href: "/education-consultation", label: "Education" },
   { href: "/updates", label: "Updates" },
   { href: "/faq", label: "FAQ" },

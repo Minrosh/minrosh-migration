@@ -23,6 +23,8 @@
   --radius-lg: 24px;
   --radius-md: 18px;
   --header-height: 88px;
+  --content-max: 1560px;
+  --content-pad: clamp(20px, 3.2vw, 44px);
 }
 
 *,
@@ -104,9 +106,9 @@ a {
 }
 
 .site-topbar__inner {
-  max-width: 1260px;
+  max-width: var(--content-max);
   margin: 0 auto;
-  padding: 8px 32px;
+  padding: 8px var(--content-pad);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -143,13 +145,13 @@ a {
 }
 
 .site-header__inner {
-  max-width: 1260px;
+  max-width: var(--content-max);
   margin: 0 auto;
   min-height: var(--header-height);
-  padding: 0 32px;
+  padding: 0 var(--content-pad);
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 28px;
   transition: min-height 0.26s ease;
 }
 
@@ -200,7 +202,7 @@ a {
 }
 
 .brand__text strong {
-  font-size: 1.48rem;
+  font-size: 1.4rem;
   letter-spacing: -0.03em;
 }
 
@@ -222,7 +224,7 @@ a {
   margin-left: auto;
   display: flex;
   align-items: center;
-  gap: 22px;
+  gap: 14px;
 }
 
 .site-nav__cta-secondary {
@@ -231,6 +233,9 @@ a {
 
 .site-nav--static {
   margin-left: auto;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  row-gap: 10px;
 }
 
 .site-nav__link {
@@ -238,9 +243,10 @@ a {
   border: 0;
   background: transparent;
   color: var(--muted);
-  padding: 8px 2px 8px;
+  padding: 6px 2px 8px;
   cursor: pointer;
-  font-weight: 650;
+  font-weight: 600;
+  font-size: 0.93rem;
   transition: color 0.22s ease, transform 0.22s ease;
 }
 
@@ -300,9 +306,9 @@ a {
 }
 
 .portal-main {
-  max-width: 1260px;
+  max-width: var(--content-max);
   margin: 0 auto;
-  padding: 20px 24px 64px;
+  padding: 28px var(--content-pad) 72px;
 }
 
 .tab-panel {
@@ -327,9 +333,9 @@ a {
 
 .hero {
   display: grid;
-  grid-template-columns: minmax(0, 1.18fr) minmax(280px, 0.82fr);
+  grid-template-columns: minmax(0, 1fr) minmax(440px, 0.92fr);
   min-height: auto;
-  gap: 22px;
+  gap: 28px;
   align-items: stretch;
 }
 
@@ -390,15 +396,15 @@ a {
 }
 
 .hero h1 {
-  max-width: 12ch;
-  font-size: clamp(1.45rem, 2.8vw, 2.55rem);
+  max-width: 16ch;
+  font-size: clamp(1.8rem, 2.8vw, 3.05rem);
   line-height: 1.1;
   letter-spacing: -0.02em;
 }
 
 .hero__lead {
   max-width: 36rem;
-  margin: 18px 0 0;
+  margin: 20px 0 0;
   color: rgba(34, 34, 34, 0.9);
   font-size: 1rem;
   line-height: 1.66;
@@ -548,8 +554,8 @@ a {
   border: 1px solid var(--line);
   box-shadow: var(--shadow-soft);
   align-self: stretch;
-  aspect-ratio: 16 / 9;
-  min-height: 360px;
+  aspect-ratio: auto;
+  min-height: 520px;
 }
 
 .hero__media::before {
@@ -587,11 +593,37 @@ a {
 
 .split-section,
 .contact-layout {
-  margin-top: 28px;
+  margin-top: 34px;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(320px, 0.92fr);
   gap: 28px;
   align-items: flex-start;
+}
+
+.split-section > div:first-child,
+.content-hero__copy {
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px;
+}
+
+.split-section > div:first-child::before,
+.content-hero__copy::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(125deg, rgba(255, 255, 255, 0.92), rgba(255, 250, 245, 0.9)),
+    url("/images/hero-sydney.svg") center/cover no-repeat;
+  opacity: 0.3;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.split-section > div:first-child > *,
+.content-hero__copy > * {
+  position: relative;
+  z-index: 1;
 }
 
 .split-section h2,
@@ -1178,24 +1210,25 @@ a {
 }
 
 .content-hero {
-  padding: 18px;
+  padding: 20px;
   overflow: hidden;
 }
 
 .content-hero__grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(260px, 0.52fr);
-  gap: 18px;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 0.62fr);
+  gap: 24px;
   align-items: stretch;
 }
 
 .content-hero__copy {
-  padding: 18px 14px 18px 14px;
+  padding: 22px 18px;
+  border: 1px solid rgba(139, 61, 106, 0.12);
 }
 
 .content-hero__media {
   position: relative;
-  min-height: 260px;
+  min-height: 340px;
   border-radius: 24px;
   overflow: hidden;
   border: 1px solid var(--line);
@@ -1841,13 +1874,16 @@ a {
 }
 
 .site-footer--rich {
-  padding: 0 24px 32px;
+  padding: 12px var(--content-pad) 40px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(255, 250, 245, 0.98)),
+    url("/images/brisbane-skyline.svg") center/cover no-repeat;
 }
 
 .site-footer__inner {
-  max-width: 1260px;
+  max-width: var(--content-max);
   margin: 0 auto;
-  padding: 24px;
+  padding: 28px;
   display: grid;
   grid-template-columns: 1.1fr 1fr 0.8fr;
   gap: 20px;
@@ -1855,8 +1891,9 @@ a {
 }
 
 .site-footer__inner--rich {
-  grid-template-columns: 1.3fr 0.9fr 0.9fr 1.05fr;
-  padding: 28px 0 18px;
+  grid-template-columns: 1.5fr 0.9fr 0.9fr 1.1fr;
+  padding: 28px 0 22px;
+  gap: 28px;
 }
 
 .footer-brand {
@@ -1881,7 +1918,7 @@ a {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 14px;
-  max-width: 360px;
+  max-width: 440px;
 }
 
 .site-footer__stat {
@@ -1987,7 +2024,7 @@ a {
 }
 
 .site-footer__notice-wrap {
-  max-width: 1260px;
+  max-width: var(--content-max);
   margin: 0 auto;
   padding-top: 8px;
 }
@@ -2002,7 +2039,7 @@ a {
 }
 
 .site-footer__legalbar {
-  max-width: 1260px;
+  max-width: var(--content-max);
   margin: 0 auto;
   padding-top: 18px;
   display: flex;
@@ -2062,9 +2099,9 @@ a {
 }
 
 .site-footer__compliance {
-  max-width: 1260px;
+  max-width: var(--content-max);
   margin: 0 auto;
-  padding: 0 24px 24px;
+  padding: 0 var(--content-pad) 24px;
   display: grid;
   gap: 8px;
   color: var(--muted);
@@ -2528,6 +2565,7 @@ a {
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
+    flex-wrap: wrap;
     background: transparent;
     transform: none;
     box-shadow: none;
@@ -2555,8 +2593,8 @@ a {
 @media (max-width: 720px) {
   .site-header__inner,
   .portal-main {
-    padding-left: 18px;
-    padding-right: 18px;
+    padding-left: 16px;
+    padding-right: 16px;
   }
 
   .portal-main {
@@ -2566,18 +2604,18 @@ a {
 
   .site-footer__inner {
     grid-template-columns: 1fr;
-    padding-left: 18px;
-    padding-right: 18px;
+    padding-left: 16px;
+    padding-right: 16px;
   }
 
   .site-footer--rich {
-    padding-left: 18px;
-    padding-right: 18px;
+    padding-left: 16px;
+    padding-right: 16px;
   }
 
   .site-footer__compliance {
-    padding-left: 18px;
-    padding-right: 18px;
+    padding-left: 16px;
+    padding-right: 16px;
     padding-bottom: 96px;
   }
 
