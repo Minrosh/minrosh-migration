@@ -137,7 +137,7 @@ export function AIConcierge({ siteData }) {
   }
 
   return (
-    <div className="floating-tools" aria-label="Quick contact tools">
+    <div className={`floating-tools ${open ? "is-open" : ""}`} aria-label="Quick contact tools">
       {open ? (
         <div className="ai-concierge">
           <div className="ai-concierge__head">

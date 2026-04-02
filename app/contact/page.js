@@ -5,6 +5,7 @@ import { SiteShell } from "../../components/site-shell";
 import { StructuredData } from "../../components/structured-data";
 import { buildMetadata, breadcrumbJsonLd } from "../../lib/seo";
 import Link from "next/link";
+import Image from "next/image";
 
 const pageData = seoPages.servicePages.contact;
 
@@ -35,9 +36,27 @@ export default function ContactPage() {
           </span>
         </nav>
         <section className="content-hero">
-          <p className="section-label">Contact MinRosh Migration</p>
-          <h1>{pageData.headline}</h1>
-          <p>{pageData.intro}</p>
+          <div className="content-hero__grid">
+            <div className="content-hero__copy">
+              <p className="section-label">Contact MinRosh Migration</p>
+              <h1>{pageData.headline}</h1>
+              <p>{pageData.intro}</p>
+              <ul className="feature-list">
+                <li>Clear next-step guidance based on your current profile and timing</li>
+                <li>Support for skilled, student, partner, and complex case pathways</li>
+                <li>Practical preparation notes before formal consultation</li>
+              </ul>
+            </div>
+            <div className="content-hero__media" aria-hidden="true">
+              <Image
+                src="/images/brisbane-skyline.svg"
+                alt="Brisbane skyline and riverfront"
+                width={1600}
+                height={900}
+                priority
+              />
+            </div>
+          </div>
         </section>
         <div className="contact-layout">
           <div className="contact-copy">
