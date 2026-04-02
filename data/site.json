@@ -39,6 +39,44 @@
       "Structured preparation before formal case review, nomination planning, and visa lodgement"
     ]
   },
+  "countries": {
+    "australia": {
+      "title": "Australia",
+      "copy": "Support across student, skilled, employer-sponsored, partner, and longer-term pathways, with education planning and structured next-step guidance.",
+      "highlights": [
+        "Student, graduate, skilled, and family pathways",
+        "Points, nomination, and timing strategy",
+        "Education support aligned with longer-term planning"
+      ]
+    },
+    "nz": {
+      "title": "New Zealand",
+      "copy": "Guidance for study, work, and residence-related pathways, with practical support around documentation and next-step planning.",
+      "highlights": [
+        "Study and post-study route awareness",
+        "Work and residence pathway comparisons",
+        "Clear early-stage planning before commitments"
+      ]
+    },
+    "canada": {
+      "title": "Canada",
+      "copy": "Structured guidance for study permits, skilled-style pathways, family migration, and the practical issues that affect document readiness.",
+      "highlights": [
+        "Study and institution planning context",
+        "Skilled migration and family route awareness",
+        "Official updates tracking through the updates hub"
+      ]
+    },
+    "uk": {
+      "title": "United Kingdom",
+      "copy": "Migration and education support for student routes, skilled worker planning, and family-based applications where structured next steps matter.",
+      "highlights": [
+        "Student and skilled worker pathway context",
+        "Family migration and travel-rule awareness",
+        "Early clarification before formal applications"
+      ]
+    }
+  },
   "services": [
     {
       "title": "Skilled Migration",
@@ -52,7 +90,7 @@
     },
     {
       "title": "Employer-Sponsored Visas",
-      "href": "/contact",
+      "href": "/employer-sponsored-visas",
       "summary": "Guidance for applicants and workers exploring employer-sponsored visa options when direct PR is not the strongest immediate pathway.",
       "highlights": [
         "Eligibility mapping for employer-backed pathways",
@@ -82,7 +120,7 @@
     },
     {
       "title": "Visitor Visas",
-      "href": "/contact",
+      "href": "/visitor-visas",
       "summary": "Straightforward guidance for visitor visa applications where clean documentation and clear travel purpose are important.",
       "highlights": [
         "Visitor visa eligibility guidance",
@@ -111,6 +149,24 @@
     {
       "title": "Visa Lodgement",
       "description": "Prepare the final application package with a clean, consistent document set."
+    }
+  ],
+  "processSteps": [
+    {
+      "title": "Free assessment",
+      "description": "Tell us about your situation, goals, and preferred direction."
+    },
+    {
+      "title": "Initial view",
+      "description": "We identify possible directions and the key issues to think about early."
+    },
+    {
+      "title": "Human conversation",
+      "description": "Speak with MinRosh about your practical next steps."
+    },
+    {
+      "title": "Move with structure",
+      "description": "Use the right service page, legal information, and contact path to move forward confidently."
     }
   ],
   "successStories": [

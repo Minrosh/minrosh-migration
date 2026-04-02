@@ -4,8 +4,11 @@ import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { calculateQuizResult, quizOptions } from "../lib/quiz";
+import { CountryCoverage } from "./country-coverage";
 import { NewsBoard } from "./news-board";
+import { SiteFooter } from "./site-footer";
 import { SiteTopbar } from "./site-topbar";
+import { SmartNavigator } from "./smart-navigator";
 
 const tabs = [
   { id: "home", label: "Home" },
@@ -74,36 +77,16 @@ const initialForm = {
   message: "",
 };
 
-const navigatorSteps = [
-  {
-    id: "destination",
-    question: "Where do you want to move?",
-    options: ["Australia", "New Zealand", "Canada", "United Kingdom"],
-  },
-  {
-    id: "goal",
-    question: "What is your primary goal?",
-    options: ["Study", "Skilled Work", "Family or Partner", "Visitor or Other"],
-  },
-  {
-    id: "timing",
-    question: "How soon do you want to start?",
-    options: ["Immediately", "Within 6 months", "Next year", "Just exploring"],
-  },
-];
-
 function fieldIsComplete(field, quizForm) {
   if (field === "occupationName") return Boolean(quizForm.occupationName.trim());
   return Boolean(quizForm[field]);
 }
 
-export function PortalPage({ siteData, newsData }) {
+export function PortalPage({ siteData, newsData, footerStats }) {
   const [activeTab, setActiveTab] = useState("home");
   const [menuOpen, setMenuOpen] = useState(false);
   const [headerCompact, setHeaderCompact] = useState(false);
   const [storyIndex, setStoryIndex] = useState(0);
-  const [navigatorStepIndex, setNavigatorStepIndex] = useState(0);
-  const [navigatorAnswers, setNavigatorAnswers] = useState({});
   const [quizForm, setQuizForm] = useState(initialQuiz);
   const [quizStepIndex, setQuizStepIndex] = useState(0);
   const [contactForm, setContactForm] = useState(initialForm);
@@ -121,14 +104,11 @@ export function PortalPage({ siteData, newsData }) {
   const quizResult = useMemo(() => calculateQuizResult(quizForm), [quizForm]);
   const currentQuizStep = quizSteps[quizStepIndex];
   const activeStory = siteData.successStories[storyIndex];
-  const currentNavigatorStep = navigatorSteps[navigatorStepIndex];
   const quizStepProgress = ((quizStepIndex + 1) / quizSteps.length) * 100;
-  const navigatorProgress = ((navigatorStepIndex + 1) / navigatorSteps.length) * 100;
   const canAdvance = currentQuizStep.fields.every((field) => fieldIsComplete(field, quizForm));
   const quizComplete = quizSteps.every((step) =>
     step.fields.every((field) => fieldIsComplete(field, quizForm))
   );
-  const navigatorComplete = navigatorSteps.every((step) => navigatorAnswers[step.id]);
 
   useEffect(() => {
     document.body.dataset.menu = menuOpen ? "open" : "closed";
@@ -179,6 +159,18 @@ export function PortalPage({ siteData, newsData }) {
         message: current.message.trim() ? `${current.message.trim()}\n\n${summary}` : summary,
       };
     });
+
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(
+        new CustomEvent("minrosh:navigator-summary", {
+          detail: {
+            summary,
+            preferredCountry: "Australia",
+            mainNeed: "Skilled Migration",
+          },
+        })
+      );
+    }
   }, [quizComplete, quizResult]);
 
   const currentPathwayStep =
@@ -216,18 +208,6 @@ export function PortalPage({ siteData, newsData }) {
     setContactForm((current) => ({ ...current, [name]: value }));
   }
 
-  function setNavigatorAnswer(value) {
-    setNavigatorAnswers((current) => ({ ...current, [currentNavigatorStep.id]: value }));
-  }
-
-  function nextNavigatorStep() {
-    setNavigatorStepIndex((current) => Math.min(current + 1, navigatorSteps.length - 1));
-  }
-
-  function previousNavigatorStep() {
-    setNavigatorStepIndex((current) => Math.max(current - 1, 0));
-  }
-
   function goToNextStory() {
     setStoryIndex((current) => (current + 1) % siteData.successStories.length);
   }
@@ -237,35 +217,6 @@ export function PortalPage({ siteData, newsData }) {
       current === 0 ? siteData.successStories.length - 1 : current - 1
     );
   }
-
-  const navigatorResult = useMemo(() => {
-    if (!navigatorComplete) return null;
-
-    const destination = navigatorAnswers.destination;
-    const goal = navigatorAnswers.goal;
-    const timing = navigatorAnswers.timing;
-
-    const routeByGoal = {
-      Study: "/education-consultation",
-      "Skilled Work": "/skilled-migration",
-      "Family or Partner": "/partner-visa-australia",
-      "Visitor or Other": "/contact",
-    };
-
-    return {
-      title: `${goal} pathway for ${destination}`,
-      summary:
-        goal === "Study"
-          ? "Start with education planning, student visa preparation, and long-term migration positioning."
-          : goal === "Skilled Work"
-            ? "Focus on competitiveness, pathway fit, and whether nomination or English improvement should come first."
-            : goal === "Family or Partner"
-              ? "Relationship evidence, timing, and consistency of the application story will usually matter most."
-              : "A consultation is the best next step to identify the most suitable route and any immediate risks.",
-      timing,
-      href: routeByGoal[goal] || "/contact",
-    };
-  }, [navigatorAnswers, navigatorComplete]);
 
   async function handleContactSubmit(event) {
     event.preventDefault();
@@ -290,6 +241,9 @@ export function PortalPage({ siteData, newsData }) {
           data.warning ||
           "Your enquiry has been received. We will review it and respond shortly.",
       });
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(new Event("minrosh:enquiry-created"));
+      }
       setContactForm(initialForm);
     } catch (error) {
       setContactState({
@@ -372,6 +326,8 @@ export function PortalPage({ siteData, newsData }) {
         ))}
       </section>
 
+      <CountryCoverage countries={siteData.countries} />
+
       <section className="trust-strip">
         {siteData.services.slice(0, 3).map((service) => (
           <Link key={service.title} href={service.href} className="trust-strip__item bento-hover trust-strip__link">
@@ -402,95 +358,33 @@ export function PortalPage({ siteData, newsData }) {
         </div>
       </section>
 
-      <section className="navigator-section">
-        <div className="section-head">
+      <SmartNavigator
+        title="Answer a few questions and get a more useful pathway recommendation"
+        description="The old quick wizard has been expanded into a fuller assessment that weighs destination, goal, timing, support preference, and how settled your pathway already feels."
+        primaryLabel="Open recommended page"
+        finalHref="/book-consultation"
+      />
+
+      <section className="process-section">
+        <div className="section-head section-head--process">
           <div>
-            <p className="section-label">Smart Navigator</p>
-            <h2>Answer a few questions and get routed to the most relevant next step</h2>
+            <p className="section-label">How It Works</p>
+            <h2>A clearer process from first enquiry to action.</h2>
           </div>
+          <p className="process-section__lead">
+            This makes the site feel more premium and removes unnecessary gaps in the page flow.
+          </p>
         </div>
-        <div className="quiz-shell">
-          <section className="quiz-card bento-hover">
-            <div className="quiz-wizard__meta">
-              <div>
-                <p className="section-label">Step {navigatorStepIndex + 1}</p>
-                <h3>{currentNavigatorStep.question}</h3>
+        <div className="process-grid">
+          {siteData.processSteps.map((step, index) => (
+            <article key={step.title} className="process-card bento-hover">
+              <div className="process-card__top">
+                <span className="process-card__number">{index + 1}</span>
+                <h3>{step.title}</h3>
               </div>
-              <span className="quiz-wizard__count">
-                {navigatorStepIndex + 1} / {navigatorSteps.length}
-              </span>
-            </div>
-            <div className="quiz-progress" aria-hidden="true">
-              <span className="quiz-progress__bar" style={{ width: `${navigatorProgress}%` }} />
-            </div>
-            <div className="quiz-options">
-              {currentNavigatorStep.options.map((option) => (
-                <button
-                  key={option}
-                  type="button"
-                  className={`quiz-option ${
-                    navigatorAnswers[currentNavigatorStep.id] === option ? "is-selected" : ""
-                  }`}
-                  onClick={() => setNavigatorAnswer(option)}
-                >
-                  {option}
-                </button>
-              ))}
-            </div>
-            <div className="quiz-wizard__actions">
-              <button
-                type="button"
-                className="btn btn-secondary"
-                onClick={previousNavigatorStep}
-                disabled={navigatorStepIndex === 0}
-              >
-                Back
-              </button>
-              {navigatorStepIndex < navigatorSteps.length - 1 ? (
-                <button
-                  type="button"
-                  className="btn btn-primary"
-                  onClick={nextNavigatorStep}
-                  disabled={!navigatorAnswers[currentNavigatorStep.id]}
-                >
-                  Next
-                </button>
-              ) : (
-                <button
-                  type="button"
-                  className="btn btn-primary"
-                  onClick={() => handleTabChange("contact")}
-                  disabled={!navigatorComplete}
-                >
-                  Continue
-                </button>
-              )}
-            </div>
-          </section>
-          <aside className="quiz-result bento-hover">
-            <p className="section-label">Suggested Path</p>
-            {navigatorResult ? (
-              <>
-                <h3>{navigatorResult.title}</h3>
-                <p>{navigatorResult.summary}</p>
-                <div className="insight-card">
-                  <span className="insight-card__badge">Timing</span>
-                  <p>{navigatorResult.timing}</p>
-                </div>
-                <Link href={navigatorResult.href} className="btn btn-primary">
-                  Open recommended page
-                </Link>
-              </>
-            ) : (
-              <>
-                <h3>Build your pathway summary</h3>
-                <p>
-                  This quick navigator uses destination, goal, and timing to direct visitors toward
-                  the most relevant MinRosh page before consultation.
-                </p>
-              </>
-            )}
-          </aside>
+              <p>{step.description}</p>
+            </article>
+          ))}
         </div>
       </section>
 
@@ -1060,7 +954,7 @@ export function PortalPage({ siteData, newsData }) {
         </div>
       </header>
 
-      <main className="portal-main">
+      <main id="main-content" className="portal-main">
         {homeTab}
         {quizTab}
         {pathwaysTab}
@@ -1069,42 +963,7 @@ export function PortalPage({ siteData, newsData }) {
         {contactTab}
       </main>
 
-      <footer className="site-footer">
-        <div className="site-footer__inner">
-          <div>
-            <strong>{siteData.brand.name}</strong>
-            <p>{siteData.brand.tagline}</p>
-          </div>
-          <div className="site-footer__links">
-            {tabs.map((tab) => (
-              <button key={tab.id} type="button" onClick={() => handleTabChange(tab.id)}>
-                {tab.label}
-              </button>
-            ))}
-          </div>
-          <div className="site-footer__contact">
-            <a href={`mailto:${siteData.brand.email}`}>{siteData.brand.email}</a>
-            <a href={`tel:${siteData.brand.phone.replace(/\s+/g, "")}`}>{siteData.brand.phone}</a>
-            <a href={`tel:${siteData.brand.phoneSecondary.replace(/\s+/g, "")}`}>
-              {siteData.brand.phoneSecondary}
-            </a>
-          </div>
-        </div>
-        <div className="site-footer__compliance">
-          <p>
-            MinRosh Migration operates under the Migration Agents Regulations 2026 and the OMARA Code of Conduct.
-          </p>
-          <div className="site-footer__legal">
-            <Link href="/updates">Updates</Link>
-            <Link href="/education-consultation">Education Consultation</Link>
-            <Link href="/privacy-policy">Privacy Policy</Link>
-            <Link href="/disclaimer">Disclaimer</Link>
-            <Link href="/complaints">Complaints</Link>
-            <Link href="/terms-of-use">Terms of Use</Link>
-            <Link href="/code-of-conduct">Code of Conduct</Link>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter siteData={siteData} initialStats={footerStats} />
 
       <button type="button" className="mobile-sticky-cta" onClick={() => handleTabChange("quiz")}>
         Check Eligibility

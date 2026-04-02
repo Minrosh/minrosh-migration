@@ -3,6 +3,7 @@ import newsData from "../data/news.json";
 import { PortalPage } from "../components/portal-page";
 import { StructuredData } from "../components/structured-data";
 import { buildMetadata, faqJsonLd } from "../lib/seo";
+import { getFooterStats } from "../lib/site-stats";
 
 export const metadata = buildMetadata({
   title: "Migration Agent Brisbane | Registered Visa Help Australia | MinRosh Migration",
@@ -19,10 +20,12 @@ export const metadata = buildMetadata({
 });
 
 export default function HomePage() {
+  const footerStats = getFooterStats();
+
   return (
     <>
       <StructuredData data={faqJsonLd(siteData.faq)} />
-      <PortalPage siteData={siteData} newsData={newsData} />
+      <PortalPage siteData={siteData} newsData={newsData} footerStats={footerStats} />
     </>
   );
 }

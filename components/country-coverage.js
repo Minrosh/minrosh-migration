@@ -1,0 +1,47 @@
+"use client";
+
+import { useState } from "react";
+
+export function CountryCoverage({ countries }) {
+  const keys = Object.keys(countries);
+  const [activeKey, setActiveKey] = useState(keys[0]);
+  const current = countries[activeKey];
+
+  return (
+    <section className="country-coverage">
+      <div className="section-head">
+        <div>
+          <p className="section-label">Countries We Cover</p>
+          <h2>Advice pathways for four major destination systems</h2>
+        </div>
+        <p className="process-section__lead">
+          This restores the broader MinRosh destination coverage from the earlier site versions,
+          while keeping Australia as the main conversion focus.
+        </p>
+      </div>
+
+      <div className="country-tabs">
+        {keys.map((key) => (
+          <button
+            key={key}
+            type="button"
+            className={`country-tab ${activeKey === key ? "is-active" : ""}`}
+            onClick={() => setActiveKey(key)}
+          >
+            {countries[key].title}
+          </button>
+        ))}
+      </div>
+
+      <article className="country-panel bento-hover">
+        <h3>{current.title}</h3>
+        <p>{current.copy}</p>
+        <ul className="feature-list">
+          {current.highlights.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+      </article>
+    </section>
+  );
+}

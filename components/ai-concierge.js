@@ -1,12 +1,78 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 
 const quickPrompts = [
   "I want to understand skilled migration options.",
   "I need help with student visa planning.",
   "What is the best first step for a partner visa?",
+  "I need urgent help and want the fastest next step.",
 ];
+
+const fallbackReplies = [
+  {
+    match: /study|student|university|college|education/i,
+    content:
+      "For study goals, MinRosh can help with course shortlisting, application planning, education consultation, and student visa preparation. The strongest next step is usually the education consultation page or a direct enquiry if timing is urgent.",
+    actions: [
+      { href: "/education-consultation", label: "Education consultation" },
+      { href: "/student-visa-australia", label: "Student visa guidance" },
+    ],
+  },
+  {
+    match: /skilled|work|job|occupation|eoi|points|sponsor/i,
+    content:
+      "For skilled migration questions, it helps to prepare your occupation title, work history, qualifications, English level, and preferred timing. A strategy session can help identify whether subclass 189, 190, or 491 is the strongest direction.",
+    actions: [
+      { href: "/skilled-migration", label: "Skilled migration page" },
+      { href: "/assessment", label: "Free assessment" },
+    ],
+  },
+  {
+    match: /partner|family|spouse|parent|relationship/i,
+    content:
+      "For partner or family pathways, evidence planning is one of the most important parts of the process. MinRosh can help you think through relationship history, supporting documents, and the clearest next-step strategy before you move forward.",
+    actions: [
+      { href: "/partner-visa-australia", label: "Partner visa page" },
+      { href: "/book-consultation", label: "Book consultation" },
+    ],
+  },
+  {
+    match: /visitor|tourist/i,
+    content:
+      "For visitor visa matters, the strongest applications clearly explain travel purpose, funds, and ties. A focused consultation is usually the best way to position a visitor case properly and avoid weak documentation.",
+    actions: [
+      { href: "/contact", label: "Contact MinRosh" },
+      { href: "/book-consultation", label: "Book consultation" },
+    ],
+  },
+  {
+    match: /australia|new zealand|canada|uk|united kingdom/i,
+    content:
+      "MinRosh tracks migration pathways across Australia, New Zealand, Canada, and the United Kingdom. If you tell me your goal and how soon you want to move, I can point you toward the best starting service.",
+    actions: [
+      { href: "/updates", label: "Official updates hub" },
+      { href: "/assessment", label: "Free assessment" },
+    ],
+  },
+];
+
+function getFallbackReply(message) {
+  const matched = fallbackReplies.find((item) => item.match.test(message));
+  if (matched) {
+    return matched;
+  }
+
+  return {
+    content:
+      "Thanks for your message. The best next step is usually to use the free assessment or submit a consultation enquiry so MinRosh can review your situation properly.",
+    actions: [
+      { href: "/assessment", label: "Free assessment" },
+      { href: "/book-consultation", label: "Book consultation" },
+    ],
+  };
+}
 
 export function AIConcierge({ siteData }) {
   const [open, setOpen] = useState(false);
@@ -14,7 +80,11 @@ export function AIConcierge({ siteData }) {
     {
       role: "assistant",
       content:
-        "Hello, I’m the MinRosh AI Concierge. Tell me whether you need help with skilled migration, student visas, partner pathways, education planning, or a general visa question.",
+        "Hello, I'm the MinRosh AI Concierge. Tell me whether you need help with skilled migration, student visas, partner pathways, education planning, or a general visa question.",
+      actions: [
+        { href: "/assessment", label: "Free assessment" },
+        { href: "/updates", label: "Official updates" },
+      ],
     },
   ]);
   const [input, setInput] = useState("");
@@ -43,8 +113,19 @@ export function AIConcierge({ siteData }) {
         throw new Error(data.error || "AI Concierge is unavailable right now.");
       }
       setMessages((current) => [...current, { role: "assistant", content: reply }]);
-    } catch (err) {
-      setError(err.message || "AI Concierge is unavailable right now.");
+    } catch {
+      const fallback = getFallbackReply(trimmed);
+      setMessages((current) => [
+        ...current,
+        {
+          role: "assistant",
+          content: fallback.content,
+          actions: fallback.actions,
+        },
+      ]);
+      setError(
+        "AI live reply is unavailable right now, so I've switched to MinRosh's quick guidance mode."
+      );
     } finally {
       setLoading(false);
     }
@@ -74,7 +155,18 @@ export function AIConcierge({ siteData }) {
                 key={`${message.role}-${index}`}
                 className={`ai-concierge__message ai-concierge__message--${message.role}`}
               >
-                <p>{message.content}</p>
+                <div className="ai-concierge__bubble">
+                  <p>{message.content}</p>
+                  {message.actions?.length ? (
+                    <div className="ai-concierge__actions">
+                      {message.actions.map((action) => (
+                        <Link key={`${action.href}-${action.label}`} href={action.href}>
+                          {action.label}
+                        </Link>
+                      ))}
+                    </div>
+                  ) : null}
+                </div>
               </div>
             ))}
           </div>
@@ -98,6 +190,8 @@ export function AIConcierge({ siteData }) {
           </form>
           {error ? <p className="form-feedback is-error">{error}</p> : null}
           <div className="ai-concierge__footer">
+            <Link href="/assessment">Open free assessment</Link>
+            <Link href="/book-consultation">Book consultation</Link>
             <a
               href={`https://wa.me/${siteData.brand.whatsapp}?text=Hi%20MinRosh%20Migration,%20I%20need%20help%20with%20visa%20options.`}
               target="_blank"

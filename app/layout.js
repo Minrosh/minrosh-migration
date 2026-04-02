@@ -67,6 +67,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${inter.variable} ${playfair.variable}`}>
+        <a href="#main-content" className="skip-link">
+          Skip to content
+        </a>
         <StructuredData data={businessJsonLd(siteData)} />
         {children}
         <AIConcierge siteData={siteData} />

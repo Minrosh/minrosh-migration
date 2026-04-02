@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { SiteTopbar } from "./site-topbar";
+import { SiteFooter } from "./site-footer";
+import { getFooterStats } from "../lib/site-stats";
 
 const primaryLinks = [
   { href: "/", label: "Home" },
@@ -9,10 +11,14 @@ const primaryLinks = [
   { href: "/student-visa-australia", label: "Student Visa" },
   { href: "/education-consultation", label: "Education" },
   { href: "/updates", label: "Updates" },
+  { href: "/faq", label: "FAQ" },
+  { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
 ];
 
 export function SiteShell({ siteData, currentPath, children }) {
+  const footerStats = getFooterStats();
+
   return (
     <div className="portal-shell">
       <SiteTopbar siteData={siteData} />
@@ -47,50 +53,15 @@ export function SiteShell({ siteData, currentPath, children }) {
             <Link href="/book-consultation" className="btn btn-primary site-nav__cta">
               Book Consultation
             </Link>
-            <Link href="/#quiz" className="btn btn-ghost site-nav__cta-secondary">
+            <Link href="/assessment" className="btn btn-ghost site-nav__cta-secondary">
               Check Eligibility
             </Link>
           </nav>
         </div>
       </header>
 
-      <main className="portal-main">{children}</main>
-
-      <footer className="site-footer">
-        <div className="site-footer__inner">
-          <div>
-            <strong>{siteData.brand.name}</strong>
-            <p>{siteData.brand.tagline}</p>
-          </div>
-          <div className="site-footer__links">
-            {primaryLinks.map((link) => (
-              <Link key={link.href} href={link.href}>
-                {link.label}
-              </Link>
-            ))}
-          </div>
-          <div className="site-footer__contact">
-            <a href={`mailto:${siteData.brand.email}`}>{siteData.brand.email}</a>
-            <a href={`tel:${siteData.brand.phone.replace(/\s+/g, "")}`}>{siteData.brand.phone}</a>
-            <a href={`tel:${siteData.brand.phoneSecondary.replace(/\s+/g, "")}`}>
-              {siteData.brand.phoneSecondary}
-            </a>
-          </div>
-        </div>
-        <div className="site-footer__compliance">
-          <p>
-            MinRosh Migration operates under the Migration Agents Regulations 2026 and the OMARA
-            Code of Conduct.
-          </p>
-          <div className="site-footer__legal">
-            <Link href="/privacy-policy">Privacy Policy</Link>
-            <Link href="/disclaimer">Disclaimer</Link>
-            <Link href="/complaints">Complaints</Link>
-            <Link href="/terms-of-use">Terms of Use</Link>
-            <Link href="/code-of-conduct">Code of Conduct</Link>
-          </div>
-        </div>
-      </footer>
+      <main id="main-content" className="portal-main">{children}</main>
+      <SiteFooter siteData={siteData} initialStats={footerStats} />
     </div>
   );
 }

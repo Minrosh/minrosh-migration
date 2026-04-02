@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const initialForm = {
   firstName: "",
@@ -15,6 +15,28 @@ const initialForm = {
 export function ContactLeadForm({ className = "" }) {
   const [form, setForm] = useState(initialForm);
   const [state, setState] = useState({ status: "idle", message: "" });
+
+  useEffect(() => {
+    function handleNavigatorSummary(event) {
+      const detail = event.detail;
+      if (!detail?.summary) return;
+
+      setForm((current) => {
+        const cleaned = current.message.replace(/\n\nAssessment summary:[\s\S]*$/m, "").trim();
+        const summaryBlock = `Assessment summary: ${detail.summary}`;
+        return {
+          ...current,
+          preferredCountry: detail.preferredCountry || current.preferredCountry,
+          mainNeed: detail.mainNeed || current.mainNeed,
+          message: cleaned ? `${cleaned}\n\n${summaryBlock}` : summaryBlock,
+        };
+      });
+    }
+
+    window.addEventListener("minrosh:navigator-summary", handleNavigatorSummary);
+    return () =>
+      window.removeEventListener("minrosh:navigator-summary", handleNavigatorSummary);
+  }, []);
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -40,6 +62,9 @@ export function ContactLeadForm({ className = "" }) {
           data.warning ||
           "Your enquiry has been received. We will review it and respond shortly.",
       });
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(new Event("minrosh:enquiry-created"));
+      }
       setForm(initialForm);
     } catch (error) {
       setState({
