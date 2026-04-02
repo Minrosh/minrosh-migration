@@ -4,7 +4,9 @@
     "tagline": "Registered migration guidance for Brisbane and clients across Australia.",
     "email": "info@minroshmigration.com.au",
     "phone": "0478 100 542",
+    "phoneSecondary": "0481 706 474",
     "whatsapp": "61478100542",
+    "whatsappSecondary": "61481706474",
     "location": "Brisbane, Queensland"
   },
   "hero": {
@@ -16,16 +18,16 @@
   },
   "stats": [
     {
-      "value": "Brisbane-based",
-      "label": "Local migration support for Queensland and remote clients Australia-wide"
+      "value": "4+",
+      "label": "Countries covered across Australia, New Zealand, Canada, and the United Kingdom"
     },
     {
-      "value": "189 / 190 / 491",
-      "label": "Skilled migration strategy across direct PR and nomination pathways"
+      "value": "Education",
+      "label": "Study pathway and education support aligned with longer-term migration planning"
     },
     {
-      "value": "Clear next steps",
-      "label": "Consultation-first support with practical guidance and document planning"
+      "value": "Smart",
+      "label": "Navigator, quiz, and guided consultation flow built for clearer next steps"
     }
   ],
   "about": {

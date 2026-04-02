@@ -6,6 +6,13 @@ export default function sitemap() {
     "/student-visa-australia",
     "/book-consultation",
     "/contact",
+    "/education-consultation",
+    "/updates",
+    "/privacy-policy",
+    "/disclaimer",
+    "/complaints",
+    "/terms-of-use",
+    "/code-of-conduct",
     "/partner-visa-australia-guide",
     "/student-visa-australia-requirements",
     "/skilled-migration-australia-points-guide",
@@ -18,6 +25,8 @@ export default function sitemap() {
     "/skilled-migration": 0.9,
     "/partner-visa-australia": 0.9,
     "/student-visa-australia": 0.9,
+    "/education-consultation": 0.85,
+    "/updates": 0.85,
   };
 
   return routes.map((route) => ({

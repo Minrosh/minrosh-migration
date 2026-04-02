@@ -1,17 +1,21 @@
 import Image from "next/image";
 import Link from "next/link";
+import { SiteTopbar } from "./site-topbar";
 
 const primaryLinks = [
   { href: "/", label: "Home" },
   { href: "/skilled-migration", label: "Skilled Migration" },
   { href: "/partner-visa-australia", label: "Partner Visa" },
   { href: "/student-visa-australia", label: "Student Visa" },
+  { href: "/education-consultation", label: "Education" },
+  { href: "/updates", label: "Updates" },
   { href: "/contact", label: "Contact" },
 ];
 
 export function SiteShell({ siteData, currentPath, children }) {
   return (
     <div className="portal-shell">
+      <SiteTopbar siteData={siteData} />
       <header className="site-header">
         <div className="site-header__inner">
           <Link href="/" className="brand" aria-label="Go to MinRosh homepage">
@@ -68,6 +72,9 @@ export function SiteShell({ siteData, currentPath, children }) {
           <div className="site-footer__contact">
             <a href={`mailto:${siteData.brand.email}`}>{siteData.brand.email}</a>
             <a href={`tel:${siteData.brand.phone.replace(/\s+/g, "")}`}>{siteData.brand.phone}</a>
+            <a href={`tel:${siteData.brand.phoneSecondary.replace(/\s+/g, "")}`}>
+              {siteData.brand.phoneSecondary}
+            </a>
           </div>
         </div>
         <div className="site-footer__compliance">
@@ -75,14 +82,13 @@ export function SiteShell({ siteData, currentPath, children }) {
             MinRosh Migration operates under the Migration Agents Regulations 2026 and the OMARA
             Code of Conduct.
           </p>
-          <p>MARN placeholder: 0000000</p>
-          <a
-            href="https://www.mara.gov.au/get-help-with-a-visa/help-from-registered-agents-and-lawyers/code-of-conduct/"
-            target="_blank"
-            rel="noreferrer"
-          >
-            View the OMARA Code of Conduct
-          </a>
+          <div className="site-footer__legal">
+            <Link href="/privacy-policy">Privacy Policy</Link>
+            <Link href="/disclaimer">Disclaimer</Link>
+            <Link href="/complaints">Complaints</Link>
+            <Link href="/terms-of-use">Terms of Use</Link>
+            <Link href="/code-of-conduct">Code of Conduct</Link>
+          </div>
         </div>
       </footer>
     </div>

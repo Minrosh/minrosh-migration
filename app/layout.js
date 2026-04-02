@@ -2,6 +2,7 @@ import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import siteData from "../data/site.json";
 import { StructuredData } from "../components/structured-data";
+import { AIConcierge } from "../components/ai-concierge";
 import { businessJsonLd } from "../lib/seo";
 
 const inter = Inter({
@@ -68,6 +69,7 @@ export default function RootLayout({ children }) {
       <body className={`${inter.variable} ${playfair.variable}`}>
         <StructuredData data={businessJsonLd(siteData)} />
         {children}
+        <AIConcierge siteData={siteData} />
       </body>
     </html>
   );

@@ -58,6 +58,32 @@ export default function ContactPage() {
                 <a href={`tel:${siteData.brand.phone.replace(/\s+/g, "")}`}>{siteData.brand.phone}</a>
               </div>
               <div>
+                <span>Alternate phone</span>
+                <a href={`tel:${siteData.brand.phoneSecondary.replace(/\s+/g, "")}`}>
+                  {siteData.brand.phoneSecondary}
+                </a>
+              </div>
+              <div>
+                <span>WhatsApp</span>
+                <a
+                  href={`https://wa.me/${siteData.brand.whatsapp}?text=Hi%20MinRosh%20Migration,%20I%20am%20interested%20in%20Australian%20visa%20options.`}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {siteData.brand.phone}
+                </a>
+              </div>
+              <div>
+                <span>WhatsApp alternate</span>
+                <a
+                  href={`https://wa.me/${siteData.brand.whatsappSecondary}?text=Hi%20MinRosh%20Migration,%20I%20am%20interested%20in%20Australian%20visa%20options.`}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {siteData.brand.phoneSecondary}
+                </a>
+              </div>
+              <div>
                 <span>Location</span>
                 <a href="/">{siteData.brand.location}</a>
               </div>

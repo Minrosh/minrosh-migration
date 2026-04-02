@@ -4,6 +4,8 @@ import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { calculateQuizResult, quizOptions } from "../lib/quiz";
+import { NewsBoard } from "./news-board";
+import { SiteTopbar } from "./site-topbar";
 
 const tabs = [
   { id: "home", label: "Home" },
@@ -72,6 +74,24 @@ const initialForm = {
   message: "",
 };
 
+const navigatorSteps = [
+  {
+    id: "destination",
+    question: "Where do you want to move?",
+    options: ["Australia", "New Zealand", "Canada", "United Kingdom"],
+  },
+  {
+    id: "goal",
+    question: "What is your primary goal?",
+    options: ["Study", "Skilled Work", "Family or Partner", "Visitor or Other"],
+  },
+  {
+    id: "timing",
+    question: "How soon do you want to start?",
+    options: ["Immediately", "Within 6 months", "Next year", "Just exploring"],
+  },
+];
+
 function fieldIsComplete(field, quizForm) {
   if (field === "occupationName") return Boolean(quizForm.occupationName.trim());
   return Boolean(quizForm[field]);
@@ -82,6 +102,8 @@ export function PortalPage({ siteData, newsData }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [headerCompact, setHeaderCompact] = useState(false);
   const [storyIndex, setStoryIndex] = useState(0);
+  const [navigatorStepIndex, setNavigatorStepIndex] = useState(0);
+  const [navigatorAnswers, setNavigatorAnswers] = useState({});
   const [quizForm, setQuizForm] = useState(initialQuiz);
   const [quizStepIndex, setQuizStepIndex] = useState(0);
   const [contactForm, setContactForm] = useState(initialForm);
@@ -99,11 +121,14 @@ export function PortalPage({ siteData, newsData }) {
   const quizResult = useMemo(() => calculateQuizResult(quizForm), [quizForm]);
   const currentQuizStep = quizSteps[quizStepIndex];
   const activeStory = siteData.successStories[storyIndex];
+  const currentNavigatorStep = navigatorSteps[navigatorStepIndex];
   const quizStepProgress = ((quizStepIndex + 1) / quizSteps.length) * 100;
+  const navigatorProgress = ((navigatorStepIndex + 1) / navigatorSteps.length) * 100;
   const canAdvance = currentQuizStep.fields.every((field) => fieldIsComplete(field, quizForm));
   const quizComplete = quizSteps.every((step) =>
     step.fields.every((field) => fieldIsComplete(field, quizForm))
   );
+  const navigatorComplete = navigatorSteps.every((step) => navigatorAnswers[step.id]);
 
   useEffect(() => {
     document.body.dataset.menu = menuOpen ? "open" : "closed";
@@ -191,6 +216,18 @@ export function PortalPage({ siteData, newsData }) {
     setContactForm((current) => ({ ...current, [name]: value }));
   }
 
+  function setNavigatorAnswer(value) {
+    setNavigatorAnswers((current) => ({ ...current, [currentNavigatorStep.id]: value }));
+  }
+
+  function nextNavigatorStep() {
+    setNavigatorStepIndex((current) => Math.min(current + 1, navigatorSteps.length - 1));
+  }
+
+  function previousNavigatorStep() {
+    setNavigatorStepIndex((current) => Math.max(current - 1, 0));
+  }
+
   function goToNextStory() {
     setStoryIndex((current) => (current + 1) % siteData.successStories.length);
   }
@@ -200,6 +237,35 @@ export function PortalPage({ siteData, newsData }) {
       current === 0 ? siteData.successStories.length - 1 : current - 1
     );
   }
+
+  const navigatorResult = useMemo(() => {
+    if (!navigatorComplete) return null;
+
+    const destination = navigatorAnswers.destination;
+    const goal = navigatorAnswers.goal;
+    const timing = navigatorAnswers.timing;
+
+    const routeByGoal = {
+      Study: "/education-consultation",
+      "Skilled Work": "/skilled-migration",
+      "Family or Partner": "/partner-visa-australia",
+      "Visitor or Other": "/contact",
+    };
+
+    return {
+      title: `${goal} pathway for ${destination}`,
+      summary:
+        goal === "Study"
+          ? "Start with education planning, student visa preparation, and long-term migration positioning."
+          : goal === "Skilled Work"
+            ? "Focus on competitiveness, pathway fit, and whether nomination or English improvement should come first."
+            : goal === "Family or Partner"
+              ? "Relationship evidence, timing, and consistency of the application story will usually matter most."
+              : "A consultation is the best next step to identify the most suitable route and any immediate risks.",
+      timing,
+      href: routeByGoal[goal] || "/contact",
+    };
+  }, [navigatorAnswers, navigatorComplete]);
 
   async function handleContactSubmit(event) {
     event.preventDefault();
@@ -272,7 +338,7 @@ export function PortalPage({ siteData, newsData }) {
             </button>
           </div>
           <p className="hero__trust-note">
-            Brisbane-based migration guidance. OMARA Code of Conduct aligned. MARN placeholder: 0000000.
+            Brisbane-based migration guidance across four destination systems, with education support and practical next-step planning.
           </p>
           <div className="hero__stats">
             {siteData.stats.map((stat) => (
@@ -336,32 +402,100 @@ export function PortalPage({ siteData, newsData }) {
         </div>
       </section>
 
-      <section className="news-section">
+      <section className="navigator-section">
         <div className="section-head">
           <div>
-            <p className="section-label">Official Update Board</p>
-            <h2>Migration guides and updates built to answer real client questions</h2>
+            <p className="section-label">Smart Navigator</p>
+            <h2>Answer a few questions and get routed to the most relevant next step</h2>
           </div>
-          <button type="button" className="text-button" onClick={() => handleTabChange("contact")}>
-            Ask a question
-          </button>
         </div>
-        <div className="news-filters" aria-hidden="true">
-          {["All", "Australia", "Skilled", "Student", "Partner"].map((item, index) => (
-            <span key={item} className={`news-filter ${index === 0 ? "is-active" : ""}`}>
-              {item}
-            </span>
-          ))}
+        <div className="quiz-shell">
+          <section className="quiz-card bento-hover">
+            <div className="quiz-wizard__meta">
+              <div>
+                <p className="section-label">Step {navigatorStepIndex + 1}</p>
+                <h3>{currentNavigatorStep.question}</h3>
+              </div>
+              <span className="quiz-wizard__count">
+                {navigatorStepIndex + 1} / {navigatorSteps.length}
+              </span>
+            </div>
+            <div className="quiz-progress" aria-hidden="true">
+              <span className="quiz-progress__bar" style={{ width: `${navigatorProgress}%` }} />
+            </div>
+            <div className="quiz-options">
+              {currentNavigatorStep.options.map((option) => (
+                <button
+                  key={option}
+                  type="button"
+                  className={`quiz-option ${
+                    navigatorAnswers[currentNavigatorStep.id] === option ? "is-selected" : ""
+                  }`}
+                  onClick={() => setNavigatorAnswer(option)}
+                >
+                  {option}
+                </button>
+              ))}
+            </div>
+            <div className="quiz-wizard__actions">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={previousNavigatorStep}
+                disabled={navigatorStepIndex === 0}
+              >
+                Back
+              </button>
+              {navigatorStepIndex < navigatorSteps.length - 1 ? (
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={nextNavigatorStep}
+                  disabled={!navigatorAnswers[currentNavigatorStep.id]}
+                >
+                  Next
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={() => handleTabChange("contact")}
+                  disabled={!navigatorComplete}
+                >
+                  Continue
+                </button>
+              )}
+            </div>
+          </section>
+          <aside className="quiz-result bento-hover">
+            <p className="section-label">Suggested Path</p>
+            {navigatorResult ? (
+              <>
+                <h3>{navigatorResult.title}</h3>
+                <p>{navigatorResult.summary}</p>
+                <div className="insight-card">
+                  <span className="insight-card__badge">Timing</span>
+                  <p>{navigatorResult.timing}</p>
+                </div>
+                <Link href={navigatorResult.href} className="btn btn-primary">
+                  Open recommended page
+                </Link>
+              </>
+            ) : (
+              <>
+                <h3>Build your pathway summary</h3>
+                <p>
+                  This quick navigator uses destination, goal, and timing to direct visitors toward
+                  the most relevant MinRosh page before consultation.
+                </p>
+              </>
+            )}
+          </aside>
         </div>
-        <div className="news-grid">
-          {newsData.map((item) => (
-            <Link key={item.title} href={item.href} className="news-card bento-hover news-card__link">
-              <time dateTime={item.date}>{new Date(item.date).toLocaleDateString("en-AU")}</time>
-              <h3>{item.title}</h3>
-              <p>{item.summary}</p>
-            </Link>
-          ))}
-        </div>
+      </section>
+
+      <section className="news-section">
+        <NewsBoard initialNews={newsData} limit={6} />
       </section>
 
       <section className="faq-section">
@@ -754,13 +888,29 @@ export function PortalPage({ siteData, newsData }) {
               <a href={`tel:${siteData.brand.phone.replace(/\s+/g, "")}`}>{siteData.brand.phone}</a>
             </div>
             <div>
+              <span>Alternate phone</span>
+              <a href={`tel:${siteData.brand.phoneSecondary.replace(/\s+/g, "")}`}>
+                {siteData.brand.phoneSecondary}
+              </a>
+            </div>
+            <div>
               <span>WhatsApp</span>
               <a
                 href={`https://wa.me/${siteData.brand.whatsapp}?text=Hi%20MinRosh%20Migration,%20I%20am%20interested%20in%20Australian%20visa%20options.`}
                 target="_blank"
                 rel="noreferrer"
               >
-                +61 478 100 542
+                {siteData.brand.phone}
+              </a>
+            </div>
+            <div>
+              <span>WhatsApp alternate</span>
+              <a
+                href={`https://wa.me/${siteData.brand.whatsappSecondary}?text=Hi%20MinRosh%20Migration,%20I%20am%20interested%20in%20Australian%20visa%20options.`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                {siteData.brand.phoneSecondary}
               </a>
             </div>
           </div>
@@ -863,6 +1013,7 @@ export function PortalPage({ siteData, newsData }) {
 
   return (
     <div className="portal-shell">
+      <SiteTopbar siteData={siteData} />
       <header className={`site-header ${headerCompact ? "is-compact" : ""}`}>
         <div className="site-header__inner">
           <button type="button" className="brand" onClick={() => handleTabChange("home")} aria-label="Open home tab">
@@ -934,41 +1085,30 @@ export function PortalPage({ siteData, newsData }) {
           <div className="site-footer__contact">
             <a href={`mailto:${siteData.brand.email}`}>{siteData.brand.email}</a>
             <a href={`tel:${siteData.brand.phone.replace(/\s+/g, "")}`}>{siteData.brand.phone}</a>
+            <a href={`tel:${siteData.brand.phoneSecondary.replace(/\s+/g, "")}`}>
+              {siteData.brand.phoneSecondary}
+            </a>
           </div>
         </div>
         <div className="site-footer__compliance">
           <p>
             MinRosh Migration operates under the Migration Agents Regulations 2026 and the OMARA Code of Conduct.
           </p>
-          <p>MARN placeholder: 0000000</p>
-          <a
-            href="https://www.mara.gov.au/get-help-with-a-visa/help-from-registered-agents-and-lawyers/code-of-conduct/"
-            target="_blank"
-            rel="noreferrer"
-          >
-            View the OMARA Code of Conduct
-          </a>
+          <div className="site-footer__legal">
+            <Link href="/updates">Updates</Link>
+            <Link href="/education-consultation">Education Consultation</Link>
+            <Link href="/privacy-policy">Privacy Policy</Link>
+            <Link href="/disclaimer">Disclaimer</Link>
+            <Link href="/complaints">Complaints</Link>
+            <Link href="/terms-of-use">Terms of Use</Link>
+            <Link href="/code-of-conduct">Code of Conduct</Link>
+          </div>
         </div>
       </footer>
 
       <button type="button" className="mobile-sticky-cta" onClick={() => handleTabChange("quiz")}>
         Check Eligibility
       </button>
-
-      <a
-        className="whatsapp-float"
-        href="https://wa.me/61478100542?text=Hi%20MinRosh%20Migration,%20I%20just%20completed%20your%20points%20test%20and%20would%20like%20to%20discuss%20my%20Australian%20visa%20options."
-        target="_blank"
-        rel="noreferrer"
-        aria-label="Chat with MinRosh Migration on WhatsApp"
-      >
-        <svg viewBox="0 0 32 32" aria-hidden="true">
-          <path
-            fill="currentColor"
-            d="M27.3 4.7C24.3 1.7 20.3 0 16 0 7.2 0 0 7.2 0 16c0 2.8.7 5.5 2.1 7.9L0 32l8.3-2.2c2.3 1.2 4.9 1.9 7.7 1.9h.1c8.8 0 15.9-7.2 15.9-16 0-4.3-1.7-8.3-4.7-11zm-11.2 24c-2.4 0-4.7-.6-6.8-1.8l-.5-.3-4.9 1.3 1.3-4.8-.3-.5C3.7 20.6 3 18.3 3 16 3 8.8 8.8 3 16 3c3.5 0 6.8 1.4 9.2 3.8 2.5 2.5 3.8 5.7 3.8 9.2 0 7.2-5.8 13-12.9 13zm7.1-9.7c-.4-.2-2.3-1.1-2.7-1.2-.4-.2-.7-.2-.9.2-.3.4-1 1.2-1.2 1.4-.2.3-.5.3-.9.1-.4-.2-1.6-.6-3-1.9-1.1-1-1.9-2.3-2.1-2.7-.2-.4 0-.6.2-.8.2-.2.4-.5.6-.7.2-.2.3-.4.4-.7.1-.2 0-.5 0-.7 0-.2-.9-2.1-1.3-2.9-.3-.7-.6-.6-.9-.6h-.8c-.3 0-.7.1-1 .4-.3.4-1.4 1.3-1.4 3.2s1.4 3.7 1.6 4c.2.3 2.8 4.3 6.9 6 .9.4 1.6.6 2.2.8.9.3 1.8.3 2.5.2.8-.1 2.3-.9 2.7-1.7.3-.8.3-1.5.2-1.7-.1-.1-.4-.2-.8-.4z"
-          />
-        </svg>
-      </a>
     </div>
   );
 }
