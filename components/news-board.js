@@ -3,7 +3,13 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 
-const filters = ["All", "Australia", "Canada", "United Kingdom", "New Zealand"];
+const filters = [
+  { label: "All", values: ["all"] },
+  { label: "Australia", values: ["australia"] },
+  { label: "Canada", values: ["canada"] },
+  { label: "UK", values: ["uk", "united kingdom"] },
+  { label: "New Zealand", values: ["new zealand"] },
+];
 
 export function NewsBoard({ initialNews = [], limit, compact = false, showHeader = true }) {
   const [items, setItems] = useState(initialNews);
@@ -36,7 +42,11 @@ export function NewsBoard({ initialNews = [], limit, compact = false, showHeader
     const source =
       activeFilter === "All"
         ? items
-        : items.filter((item) => item.country?.toLowerCase() === activeFilter.toLowerCase());
+        : items.filter((item) => {
+            const normalizedCountry = String(item.country || "").trim().toLowerCase();
+            const filter = filters.find((entry) => entry.label === activeFilter);
+            return filter ? filter.values.includes(normalizedCountry) : false;
+          });
 
     return typeof limit === "number" ? source.slice(0, limit) : source;
   }, [activeFilter, items, limit]);
@@ -52,12 +62,12 @@ export function NewsBoard({ initialNews = [], limit, compact = false, showHeader
           <div className="news-filters">
             {filters.map((filter) => (
               <button
-                key={filter}
+                key={filter.label}
                 type="button"
-                className={`news-filter ${activeFilter === filter ? "is-active" : ""}`}
-                onClick={() => setActiveFilter(filter)}
+                className={`news-filter ${activeFilter === filter.label ? "is-active" : ""}`}
+                onClick={() => setActiveFilter(filter.label)}
               >
-                {filter}
+                {filter.label}
               </button>
             ))}
           </div>
@@ -66,12 +76,12 @@ export function NewsBoard({ initialNews = [], limit, compact = false, showHeader
         <div className="news-filters">
           {filters.map((filter) => (
             <button
-              key={filter}
+              key={filter.label}
               type="button"
-              className={`news-filter ${activeFilter === filter ? "is-active" : ""}`}
-              onClick={() => setActiveFilter(filter)}
+              className={`news-filter ${activeFilter === filter.label ? "is-active" : ""}`}
+              onClick={() => setActiveFilter(filter.label)}
             >
-              {filter}
+              {filter.label}
             </button>
           ))}
         </div>

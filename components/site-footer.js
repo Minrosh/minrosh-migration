@@ -35,12 +35,39 @@ export function SiteFooter({ siteData, initialStats }) {
   const [stats, setStats] = useState(initialStats);
 
   useEffect(() => {
+    let cancelled = false;
+
+    async function loadStats() {
+      try {
+        const response = await fetch("/api/stats", {
+          method: "GET",
+          headers: { Accept: "application/json" },
+        });
+        if (!response.ok) return;
+        const data = await response.json();
+        if (!cancelled && data?.ok) {
+          setStats({
+            enquiryCount: Number(data.enquiryCount || 0),
+            newsletterCount: Number(data.newsletterCount || 0),
+            updatesCount: Number(data.updatesCount || 0),
+          });
+        }
+      } catch {
+        // Keep server-rendered stats if live fetch is unavailable.
+      }
+    }
+
+    loadStats();
+
     function handleEnquiryCreated() {
       setStats((current) => ({ ...current, enquiryCount: current.enquiryCount + 1 }));
     }
 
     window.addEventListener("minrosh:enquiry-created", handleEnquiryCreated);
-    return () => window.removeEventListener("minrosh:enquiry-created", handleEnquiryCreated);
+    return () => {
+      cancelled = true;
+      window.removeEventListener("minrosh:enquiry-created", handleEnquiryCreated);
+    };
   }, []);
 
   return (
