@@ -70,6 +70,24 @@ export default function EducationConsultationPage() {
               "A clearer pathway into student visa preparation and consultation",
             ],
           },
+          {
+            title: "Typical education consultation flow",
+            body: "A structured consultation keeps planning grounded in real outcomes and timing. We map your target intake, evidence readiness, and next decisions so your study pathway is not disconnected from your migration goals.",
+            bullets: [
+              "Profile and destination fit review",
+              "Course and institution shortlisting strategy",
+              "Timeline planning for admissions and visa preparation",
+            ],
+          },
+          {
+            title: "Information to prepare before your session",
+            body: "Bringing the right information helps the session move faster and produces clearer recommendations.",
+            bullets: [
+              "Academic history and latest qualification details",
+              "English test status and target intake period",
+              "Budget range and preferred destination options",
+            ],
+          },
         ]}
         faq={faq}
         related={[

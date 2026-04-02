@@ -935,20 +935,24 @@ export function PortalPage({ siteData, newsData, footerStats }) {
             <span />
           </button>
           <nav className={`site-nav ${menuOpen ? "is-open" : ""}`} aria-label="Primary">
-            {tabs.map((tab) => (
-              <button
-                key={tab.id}
-                type="button"
-                className={`site-nav__link ${activeTab === tab.id ? "is-active" : ""}`}
-                onClick={() => handleTabChange(tab.id)}
-                aria-current={activeTab === tab.id ? "page" : undefined}
-              >
-                {tab.label}
+            <div className="site-nav__group site-nav__group--main">
+              {tabs.map((tab) => (
+                <button
+                  key={tab.id}
+                  type="button"
+                  className={`site-nav__link ${activeTab === tab.id ? "is-active" : ""}`}
+                  onClick={() => handleTabChange(tab.id)}
+                  aria-current={activeTab === tab.id ? "page" : undefined}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+            <div className="site-nav__group site-nav__group--actions">
+              <button type="button" className="btn btn-primary site-nav__cta" onClick={() => handleTabChange("quiz")}>
+                Check Eligibility
               </button>
-            ))}
-            <button type="button" className="btn btn-primary site-nav__cta" onClick={() => handleTabChange("quiz")}>
-              Check Eligibility
-            </button>
+            </div>
           </nav>
         </div>
       </header>

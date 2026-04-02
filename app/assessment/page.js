@@ -100,6 +100,32 @@ export default function AssessmentPage() {
               </ul>
             </section>
 
+            <section className="content-section bento-hover">
+              <h2>What to prepare before you start</h2>
+              <p>
+                A little preparation gives you a stronger assessment outcome. Bring key profile
+                facts so your next-step recommendation is more accurate and useful.
+              </p>
+              <ul className="feature-list">
+                <li>Your occupation, qualification level, and recent work history</li>
+                <li>English test status, partner details, and preferred destination</li>
+                <li>Target timeline and whether you need urgent support</li>
+              </ul>
+            </section>
+
+            <section className="content-section bento-hover">
+              <h2>After assessment: the decision pathways</h2>
+              <p>
+                Once complete, most users move into one of three practical actions depending on
+                readiness and urgency.
+              </p>
+              <ul className="feature-list">
+                <li>Continue with points wizard for a more detailed profile signal</li>
+                <li>Book consultation when timeline is tight or case complexity is high</li>
+                <li>Use contact form to receive focused follow-up for your scenario</li>
+              </ul>
+            </section>
+
             <section className="process-section process-section--assessment">
               <div className="section-head section-head--process">
                 <div>

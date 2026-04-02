@@ -42,6 +42,26 @@ const sections = [
       "Official updates tracking through the updates hub",
     ],
   },
+  {
+    title: "What clients can expect in the first engagement",
+    body:
+      "The first engagement focuses on clarity and sequence. We identify your strongest pathway signal, surface risk points early, and define what should happen now versus later so you avoid wasted effort.",
+    bullets: [
+      "Initial risk and readiness review",
+      "Priority document checklist with practical order",
+      "Recommended next appointment based on urgency",
+    ],
+  },
+  {
+    title: "How we keep communication practical",
+    body:
+      "MinRosh keeps communication plain-language and decision-focused. You receive guidance that helps you act, not long policy summaries that are difficult to apply.",
+    bullets: [
+      "Plain explanations with clear action steps",
+      "Progress updates tied to your active pathway",
+      "Consultation notes designed for follow-through",
+    ],
+  },
 ];
 
 export default function AboutPage() {

@@ -19,7 +19,6 @@ const businessLinks = [
   { href: "/assessment", label: "Free Assessment" },
   { href: "/faq", label: "FAQ" },
   { href: "/contact", label: "Contact" },
-  { href: "/updates", label: "Updates Hub" },
 ];
 
 const legalLinks = [
@@ -84,9 +83,12 @@ export function SiteFooter({ siteData, initialStats }) {
             </span>
           </Link>
           <p className="site-footer__summary">
-            Professional, empathetic, and authoritative support for skilled visa, student visa,
-            partner visa, and education pathways.
+            Clear migration and education guidance for Brisbane and Australia-wide clients.
           </p>
+          <div className="site-footer__quick-contact">
+            <a href={`mailto:${siteData.brand.email}`}>{siteData.brand.email}</a>
+            <a href={`tel:${siteData.brand.phone.replace(/\s+/g, "")}`}>{siteData.brand.phone}</a>
+          </div>
           <div className="site-footer__stats">
             <div className="site-footer__stat">
               <strong>{stats.enquiryCount}</strong>
@@ -149,9 +151,7 @@ export function SiteFooter({ siteData, initialStats }) {
 
       <div className="site-footer__notice-wrap">
         <div className="site-footer__notice">
-          Registered migration advice available. Verification details are provided during
-          engagement. Website information is general in nature and does not replace advice tailored
-          to your personal circumstances.
+          General information only. Personal circumstances should be reviewed in consultation.
         </div>
       </div>
 

@@ -39,22 +39,26 @@ export function SiteShell({ siteData, currentPath, children }) {
             </span>
           </Link>
           <nav className="site-nav site-nav--static" aria-label="Primary">
-            {primaryLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`site-nav__link ${currentPath === link.href ? "is-active" : ""}`}
-                aria-current={currentPath === link.href ? "page" : undefined}
-              >
-                {link.label}
+            <div className="site-nav__group site-nav__group--main">
+              {primaryLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`site-nav__link ${currentPath === link.href ? "is-active" : ""}`}
+                  aria-current={currentPath === link.href ? "page" : undefined}
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+            <div className="site-nav__group site-nav__group--actions">
+              <Link href="/book-consultation" className="btn btn-primary site-nav__cta">
+                Book Consultation
               </Link>
-            ))}
-            <Link href="/book-consultation" className="btn btn-primary site-nav__cta">
-              Book Consultation
-            </Link>
-            <Link href="/assessment" className="btn btn-ghost site-nav__cta-secondary">
-              Check Eligibility
-            </Link>
+              <Link href="/assessment" className="btn btn-ghost site-nav__cta-secondary">
+                Check Eligibility
+              </Link>
+            </div>
           </nav>
         </div>
       </header>
