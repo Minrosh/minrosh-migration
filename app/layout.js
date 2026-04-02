@@ -1,4 +1,4 @@
-import { Inter } from "next/font/google";
+import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import siteData from "../data/site.json";
 import { StructuredData } from "../components/structured-data";
@@ -7,6 +7,11 @@ import { businessJsonLd } from "../lib/seo";
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
+});
+
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-display",
 });
 
 export const metadata = {
@@ -60,7 +65,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${inter.variable}`}>
+      <body className={`${inter.variable} ${playfair.variable}`}>
         <StructuredData data={businessJsonLd(siteData)} />
         {children}
       </body>

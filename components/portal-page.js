@@ -81,6 +81,7 @@ export function PortalPage({ siteData, newsData }) {
   const [activeTab, setActiveTab] = useState("home");
   const [menuOpen, setMenuOpen] = useState(false);
   const [headerCompact, setHeaderCompact] = useState(false);
+  const [storyIndex, setStoryIndex] = useState(0);
   const [quizForm, setQuizForm] = useState(initialQuiz);
   const [quizStepIndex, setQuizStepIndex] = useState(0);
   const [contactForm, setContactForm] = useState(initialForm);
@@ -97,6 +98,7 @@ export function PortalPage({ siteData, newsData }) {
 
   const quizResult = useMemo(() => calculateQuizResult(quizForm), [quizForm]);
   const currentQuizStep = quizSteps[quizStepIndex];
+  const activeStory = siteData.successStories[storyIndex];
   const quizStepProgress = ((quizStepIndex + 1) / quizSteps.length) * 100;
   const canAdvance = currentQuizStep.fields.every((field) => fieldIsComplete(field, quizForm));
   const quizComplete = quizSteps.every((step) =>
@@ -187,6 +189,16 @@ export function PortalPage({ siteData, newsData }) {
   function handleContactChange(event) {
     const { name, value } = event.target;
     setContactForm((current) => ({ ...current, [name]: value }));
+  }
+
+  function goToNextStory() {
+    setStoryIndex((current) => (current + 1) % siteData.successStories.length);
+  }
+
+  function goToPreviousStory() {
+    setStoryIndex((current) =>
+      current === 0 ? siteData.successStories.length - 1 : current - 1
+    );
   }
 
   async function handleContactSubmit(event) {
@@ -288,6 +300,12 @@ export function PortalPage({ siteData, newsData }) {
     <section className={`tab-panel ${activeTab === "home" ? "is-active" : ""}`}>
       {hero}
 
+      <section className="country-banner" aria-label="Countries MinRosh supports">
+        {["Australia", "New Zealand", "Canada", "United Kingdom"].map((country) => (
+          <span key={country}>{country}</span>
+        ))}
+      </section>
+
       <section className="trust-strip">
         {siteData.services.slice(0, 3).map((service) => (
           <Link key={service.title} href={service.href} className="trust-strip__item bento-hover trust-strip__link">
@@ -321,12 +339,19 @@ export function PortalPage({ siteData, newsData }) {
       <section className="news-section">
         <div className="section-head">
           <div>
-            <p className="section-label">Guides & Insights</p>
-            <h2>Helpful migration content designed to answer real search questions</h2>
+            <p className="section-label">Official Update Board</p>
+            <h2>Migration guides and updates built to answer real client questions</h2>
           </div>
           <button type="button" className="text-button" onClick={() => handleTabChange("contact")}>
             Ask a question
           </button>
+        </div>
+        <div className="news-filters" aria-hidden="true">
+          {["All", "Australia", "Skilled", "Student", "Partner"].map((item, index) => (
+            <span key={item} className={`news-filter ${index === 0 ? "is-active" : ""}`}>
+              {item}
+            </span>
+          ))}
         </div>
         <div className="news-grid">
           {newsData.map((item) => (
@@ -633,6 +658,7 @@ export function PortalPage({ siteData, newsData }) {
       <div className="services-layout">
         {siteData.services.map((service) => (
           <Link key={service.title} href={service.href} className="service-block bento-hover service-block__link">
+            <span className="service-block__eyebrow">Specialist Pathway</span>
             <h3>{service.title}</h3>
             <p>{service.summary}</p>
             <ul className="feature-list">
@@ -640,6 +666,9 @@ export function PortalPage({ siteData, newsData }) {
                 <li key={item}>{item}</li>
               ))}
             </ul>
+            <span className="service-block__linkline">
+              Learn more <span aria-hidden="true">→</span>
+            </span>
           </Link>
         ))}
       </div>
@@ -651,27 +680,55 @@ export function PortalPage({ siteData, newsData }) {
       <div className="panel-hero">
         <div>
           <p className="section-label">Success Stories</p>
-          <h2>Executive-style testimonials that signal trust before consultation</h2>
+          <h2>Featured migration outcomes that build confidence before consultation</h2>
         </div>
       </div>
-      <div className="stories-grid">
-        {siteData.successStories.map((story) => (
-          <article key={story.name} className="story-card bento-hover">
-            <div className="story-card__top">
-              <p className="story-card__visa">{story.visa}</p>
-              <span className="story-card__badge">Outcome</span>
-            </div>
-            <div className="story-card__quote-mark" aria-hidden="true">
-              &ldquo;
-            </div>
-            <blockquote>{story.quote}</blockquote>
-            <div className="story-card__person">
-              <h3>{story.name}</h3>
-              <p className="story-card__location">{story.location}</p>
-              <p className="story-card__timeline">{story.timeline}</p>
-            </div>
-            <p className="story-card__outcome">{story.outcome}</p>
-          </article>
+      <div className="story-feature bento-hover">
+        <div className="story-feature__copy">
+          <div className="story-card__top">
+            <p className="story-card__visa">{activeStory.visa}</p>
+            <span className="story-card__badge">Outcome</span>
+          </div>
+          <div className="story-card__quote-mark" aria-hidden="true">
+            &ldquo;
+          </div>
+          <blockquote>{activeStory.quote}</blockquote>
+          <div className="story-card__person">
+            <h3>{activeStory.name}</h3>
+            <p className="story-card__location">{activeStory.location}</p>
+            <p className="story-card__timeline">{activeStory.timeline}</p>
+          </div>
+          <p className="story-card__outcome">{activeStory.outcome}</p>
+          <div className="story-feature__actions">
+            <button type="button" className="story-nav" onClick={goToPreviousStory} aria-label="Previous success story">
+              Previous
+            </button>
+            <button type="button" className="story-nav story-nav--primary" onClick={goToNextStory} aria-label="Next success story">
+              Next
+            </button>
+          </div>
+        </div>
+        <div className="story-feature__media">
+          <Image
+            src={storyIndex % 2 === 0 ? "/images/team-office-real.jpg" : "/images/brisbane-skyline.jpg"}
+            alt="MinRosh migration guidance and Brisbane lifestyle"
+            width={1200}
+            height={900}
+          />
+        </div>
+      </div>
+      <div className="stories-grid stories-grid--summary">
+        {siteData.successStories.map((story, index) => (
+          <button
+            key={story.name}
+            type="button"
+            className={`story-summary bento-hover ${storyIndex === index ? "is-active" : ""}`}
+            onClick={() => setStoryIndex(index)}
+          >
+            <strong>{story.name}</strong>
+            <span>{story.visa}</span>
+            <p>{story.timeline}</p>
+          </button>
         ))}
       </div>
     </section>
