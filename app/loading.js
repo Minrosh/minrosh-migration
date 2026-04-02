@@ -1,8 +1,18 @@
+import Image from "next/image";
+
 export default function Loading() {
   return (
     <main className="loading-screen" aria-label="Loading MinRosh Migration">
       <section className="loading-screen__card">
-        <div className="loading-screen__mark">MR</div>
+        <div className="loading-screen__mark">
+          <Image
+            src="/images/minrosh-logo.png"
+            alt="MinRosh Migration logo"
+            width={72}
+            height={72}
+            priority
+          />
+        </div>
         <div className="loading-screen__copy">
           <p className="loading-screen__eyebrow">MinRosh Migration</p>
           <h1>Preparing your migration portal</h1>

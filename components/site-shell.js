@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 const primaryLinks = [
@@ -14,7 +15,15 @@ export function SiteShell({ siteData, currentPath, children }) {
       <header className="site-header">
         <div className="site-header__inner">
           <Link href="/" className="brand" aria-label="Go to MinRosh homepage">
-            <span className="brand__mark">MR</span>
+            <span className="brand__mark" aria-hidden="true">
+              <Image
+                src="/images/minrosh-logo.png"
+                alt=""
+                width={46}
+                height={46}
+                priority
+              />
+            </span>
             <span className="brand__text">
               <strong>{siteData.brand.name}</strong>
               <span>{siteData.brand.tagline}</span>

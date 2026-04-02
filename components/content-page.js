@@ -34,10 +34,10 @@ export function ContentPage({
           </div>
           <div className="content-hero__media" aria-hidden="true">
             <Image
-              src="/images/hero-sydney-real.jpg"
-              alt="Sydney harbour cityscape"
+              src="/images/brisbane-skyline.jpg"
+              alt="Brisbane skyline and riverfront"
               width={1600}
-              height={1067}
+              height={900}
             />
           </div>
         </div>

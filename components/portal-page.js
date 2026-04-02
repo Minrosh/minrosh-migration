@@ -274,10 +274,10 @@ export function PortalPage({ siteData, newsData }) {
       </div>
       <div className="hero__media" aria-hidden="true">
         <Image
-          src="/images/hero-sydney-real.jpg"
-          alt="Sydney harbour cityscape at golden hour"
+          src="/images/brisbane-skyline.jpg"
+          alt="Brisbane skyline and river at golden hour"
           width={1600}
-          height={1067}
+          height={900}
           priority
         />
       </div>
@@ -809,7 +809,15 @@ export function PortalPage({ siteData, newsData }) {
       <header className={`site-header ${headerCompact ? "is-compact" : ""}`}>
         <div className="site-header__inner">
           <button type="button" className="brand" onClick={() => handleTabChange("home")} aria-label="Open home tab">
-            <span className="brand__mark">MR</span>
+            <span className="brand__mark" aria-hidden="true">
+              <Image
+                src="/images/minrosh-logo.png"
+                alt=""
+                width={46}
+                height={46}
+                priority
+              />
+            </span>
             <span className="brand__text">
               <strong>{siteData.brand.name}</strong>
               <span>{siteData.brand.tagline}</span>
