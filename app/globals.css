@@ -149,7 +149,7 @@ a {
   max-width: 100%;
   margin: 0 auto;
   min-height: var(--header-height);
-  padding: 0 5vw;
+  padding: 0 clamp(20px, 5vw, 96px);
   display: flex;
   align-items: center;
   gap: 28px;
@@ -327,7 +327,7 @@ a {
 .portal-main {
   max-width: 100%;
   margin: 0 auto;
-  padding: 28px 5vw 72px;
+  padding: 28px clamp(20px, 5vw, 96px) 72px;
 }
 
 .bento-grid {
@@ -1906,7 +1906,7 @@ a {
 .site-footer__inner {
   max-width: 100%;
   margin: 0 auto;
-  padding: 28px 5vw;
+  padding: 28px clamp(20px, 5vw, 96px);
   display: grid;
   grid-template-columns: 1.1fr 1fr 0.8fr;
   gap: 20px;
