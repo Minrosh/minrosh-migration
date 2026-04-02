@@ -146,10 +146,10 @@ a {
 }
 
 .site-header__inner {
-  max-width: var(--content-max);
+  max-width: 100%;
   margin: 0 auto;
   min-height: var(--header-height);
-  padding: 0 var(--content-pad);
+  padding: 0 5vw;
   display: flex;
   align-items: center;
   gap: 28px;
@@ -325,9 +325,15 @@ a {
 }
 
 .portal-main {
-  max-width: var(--content-max);
+  max-width: 100%;
   margin: 0 auto;
-  padding: 28px var(--content-pad) 72px;
+  padding: 28px 5vw 72px;
+}
+
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 22px;
 }
 
 .tab-panel {
@@ -352,7 +358,7 @@ a {
 
 .hero {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(440px, 0.92fr);
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
   min-height: auto;
   gap: 28px;
   align-items: stretch;
@@ -1898,13 +1904,19 @@ a {
 }
 
 .site-footer__inner {
-  max-width: var(--content-max);
+  max-width: 100%;
   margin: 0 auto;
-  padding: 28px;
+  padding: 28px 5vw;
   display: grid;
   grid-template-columns: 1.1fr 1fr 0.8fr;
   gap: 20px;
   align-items: flex-start;
+}
+
+@media (min-width: 1800px) {
+  .hero {
+    grid-template-columns: repeat(auto-fit, minmax(560px, 1fr));
+  }
 }
 
 .site-footer__inner--rich {
