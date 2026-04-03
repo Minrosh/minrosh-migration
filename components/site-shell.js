@@ -33,10 +33,8 @@ export function SiteShell({
   const navLinks = destinationContext
     ? getDestinationNavLinks(destinationContext.slug)
     : globalPrimaryLinks;
-  const brandHref = destinationContext ? `/destinations/${destinationContext.slug}` : "/";
-  const brandAria = destinationContext
-    ? `Go to ${destinationContext.name} migration hub`
-    : "Go to MinRosh homepage";
+  const brandHref = "/";
+  const brandAria = "Go to MinRosh homepage";
 
   const backdropModifier =
     headerBackdrop === "neutral" ? "site-header--backdrop-neutral" : "site-header--backdrop-au";
