@@ -1,21 +1,21 @@
 :root {
-  --brand-plum: #4a1d42;
-  --brand-rose: #8b3d6a;
-  --brand-gold: #d4af37;
-  --brand-cream: #fdfbf7;
+  --brand-plum: #3d2432;
+  --brand-rose: #9b4a6c;
+  --brand-gold: #caa64d;
+  --brand-cream: #fbf8f4;
   --navy-950: var(--brand-cream);
   --navy-900: var(--brand-cream);
-  --navy-800: #f6f1eb;
+  --navy-800: #f3eee8;
   --gold-500: var(--brand-rose);
   --gold-400: #b86d93;
   --gold-200: #f2e8ee;
   --white: #ffffff;
   --ink: var(--brand-plum);
-  --muted: #6b5b66;
-  --line: #eadfdf;
-  --line-strong: #d7c8cd;
+  --muted: #5f5560;
+  --line: #e6d9d9;
+  --line-strong: #d6c6c7;
   --surface: #ffffff;
-  --surface-strong: #fffaf3;
+  --surface-strong: #fff7ef;
   --shadow-soft: 0 10px 30px rgba(74, 29, 66, 0.08);
   --shadow-strong: 0 18px 40px rgba(74, 29, 66, 0.12);
   --deel-blue: var(--brand-plum);
@@ -149,7 +149,7 @@ a {
   max-width: 100%;
   margin: 0 auto;
   min-height: var(--header-height);
-  padding: 0 clamp(20px, 5vw, 96px);
+  padding: 0 5vw;
   display: flex;
   align-items: center;
   gap: 28px;
@@ -327,7 +327,7 @@ a {
 .portal-main {
   max-width: 100%;
   margin: 0 auto;
-  padding: 28px clamp(20px, 5vw, 96px) 72px;
+  padding: 28px 5vw 72px;
 }
 
 .bento-grid {
@@ -379,6 +379,16 @@ a {
   box-shadow: var(--shadow-soft);
   overflow: hidden;
   align-self: stretch;
+}
+
+.hero__content::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("/images/hero-sydney.svg") center/cover no-repeat;
+  opacity: 0.08;
+  z-index: 0;
+  pointer-events: none;
 }
 
 .hero__glass {
@@ -579,8 +589,8 @@ a {
   border: 1px solid var(--line);
   box-shadow: var(--shadow-soft);
   align-self: stretch;
-  aspect-ratio: auto;
-  min-height: 520px;
+  aspect-ratio: 16 / 9;
+  min-height: 420px;
 }
 
 .hero__media::before {
@@ -1906,7 +1916,7 @@ a {
 .site-footer__inner {
   max-width: 100%;
   margin: 0 auto;
-  padding: 28px clamp(20px, 5vw, 96px);
+  padding: 28px 5vw;
   display: grid;
   grid-template-columns: 1.1fr 1fr 0.8fr;
   gap: 20px;
@@ -1921,7 +1931,7 @@ a {
 
 .site-footer__inner--rich {
   grid-template-columns: 1.5fr 0.9fr 0.9fr 1.1fr;
-  padding: 28px 0 22px;
+  padding: 28px 5vw 22px;
   gap: 28px;
 }
 

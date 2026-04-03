@@ -306,7 +306,7 @@ export function PortalPage({ siteData, newsData, footerStats }) {
       </div>
       <div className="hero__media" aria-hidden="true">
         <Image
-          src="/images/hero-sydney.svg"
+          src="/images/hero-sydney-real.jpg"
           alt="Sydney Harbour with ferries on the water and the Opera House"
           width={1800}
           height={1200}
