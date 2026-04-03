@@ -6,7 +6,13 @@
       "metaTitle": "Skilled Migration Australia | 189, 190 & 491 Guidance | MinRosh",
       "metaDescription": "Explore skilled migration Australia options including subclass 189, 190, and 491 pathways with Brisbane-based guidance on points, EOI strategy, nomination, and supporting evidence.",
       "headline": "Skilled Migration Australia guidance for 189, 190, and 491 pathways",
-      "intro": "Australia offers strong long-term opportunities for skilled workers, but the migration process can feel unclear without a proper strategy. At MinRosh Migration, we help applicants understand skilled migration Australia pathways with a focus on timing, points competitiveness, occupation fit, and the quality of their supporting documents before they make big decisions.",
+      "intro": "Australia offers strong long-term opportunities for skilled workers, but the migration process can feel unclear without a proper strategy. At MinRosh Migration, we help applicants understand skilled migration Australia pathways with a focus on timing, points competitiveness, occupation fit, and the quality of their supporting documents before they make big decisions. Always confirm eligibility, visa charges, and document rules on the Department of Home Affairs website, because immigration law and policy change over time.",
+      "officialResources": [
+        {
+          "label": "Department of Home Affairs — visa listing",
+          "href": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing"
+        }
+      ],
       "sections": [
         {
           "title": "What skilled migration usually involves",
@@ -23,7 +29,34 @@
         },
         {
           "title": "Points system explained",
-          "body": "Points are usually awarded for age, work experience, education, English proficiency, and partner factors. While 65 points remains the legal minimum for an Expression of Interest, real invitation rounds often sit higher depending on occupation ceilings, demand, and nomination opportunities. That is why it is important to look at your total score in context rather than relying on the minimum threshold alone."
+          "body": "Points are usually awarded for age, work experience, education, English proficiency, partner factors, and in some cases Australian skilled employment. While 65 points remains the legal minimum for an Expression of Interest for many skilled visas, real invitation rounds often sit higher depending on occupation ceilings, demand, and nomination opportunities. That is why it is important to look at your total score in context rather than relying on the minimum threshold alone."
+        },
+        {
+          "title": "Expression of Interest, SkillSelect, and invitations",
+          "body": "For many points-tested visas, submitting an Expression of Interest through SkillSelect is an early milestone, but it is not the same as lodging a visa application. You generally need an invitation before you can apply for the visa. Waiting times and competitiveness can shift, so your strategy should include a realistic view of how your points compare with recent trends for your occupation.",
+          "bullets": [
+            "Treat the EOI as a positioning step, not the final application",
+            "Track invitation patterns at a high level without assuming future rounds",
+            "Keep passport, English, and skills assessment validity aligned with invitation timing"
+          ]
+        },
+        {
+          "title": "State nomination and regional pathways",
+          "body": "Subclass 190 and subclass 491 often depend on state or territory nomination programs. Each jurisdiction publishes its own lists, criteria, and application workflows. Regional pathways can add points and open new options, but they also come with residence and compliance obligations that should be understood before you commit.",
+          "bullets": [
+            "Compare multiple states where your occupation may be eligible",
+            "Read each program’s minimum points, work requirements, and commitment rules",
+            "Plan how nomination timing interacts with English tests and skills assessment expiry"
+          ]
+        },
+        {
+          "title": "Evidence, documents, and consistency",
+          "body": "Decision-makers review whether your claims are credible and consistent across forms, employment references, tax materials, and qualifications. Gaps between your ANZSCO positioning, your duties described in references, and your skills assessment occupation can create risk. A structured document plan reduces rework and makes it easier to respond to requests for further information.",
+          "bullets": [
+            "Align duty statements with the nominated occupation and skills authority expectations",
+            "Keep dates and employer names consistent across the entire bundle",
+            "Prepare police certificates, health examinations, and identity documents early where possible"
+          ]
         },
         {
           "title": "Why work with MinRosh Migration",

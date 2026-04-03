@@ -42,6 +42,7 @@
   "countries": {
     "australia": {
       "title": "Australia",
+      "hubHref": "/destinations/australia",
       "copy": "Support across student, skilled, employer-sponsored, partner, and longer-term pathways, with education planning and structured next-step guidance.",
       "highlights": [
         "Student, graduate, skilled, and family pathways",
@@ -51,6 +52,7 @@
     },
     "nz": {
       "title": "New Zealand",
+      "hubHref": "/destinations/new-zealand",
       "copy": "Guidance for study, work, and residence-related pathways, with practical support around documentation and next-step planning.",
       "highlights": [
         "Study and post-study route awareness",
@@ -60,6 +62,7 @@
     },
     "canada": {
       "title": "Canada",
+      "hubHref": "/destinations/canada",
       "copy": "Structured guidance for study permits, skilled-style pathways, family migration, and the practical issues that affect document readiness.",
       "highlights": [
         "Study and institution planning context",
@@ -69,6 +72,7 @@
     },
     "uk": {
       "title": "United Kingdom",
+      "hubHref": "/destinations/united-kingdom",
       "copy": "Migration and education support for student routes, skilled worker planning, and family-based applications where structured next steps matter.",
       "highlights": [
         "Student and skilled worker pathway context",
@@ -132,23 +136,38 @@
   "pathwaySteps": [
     {
       "title": "Initial Assessment",
-      "description": "Check your age, points profile, occupation fit, and likely pathway options."
+      "description": "Check your age, points profile, occupation fit, and likely pathway options.",
+      "detail": "The first stage is not about lodging anything immediately. It is about confirming whether your occupation aligns with skilled lists, whether your points position is realistic for the subclass you prefer, and whether employer-sponsored or family routes might be stronger. Use the Department of Home Affairs visa listing to see which visa subclasses exist and read the official eligibility summaries before you lock in a strategy.",
+      "officialHref": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing",
+      "officialLabel": "Home Affairs visa listing"
     },
     {
       "title": "Skills Assessment",
-      "description": "Verify qualifications and employment evidence with the relevant assessing authority."
+      "description": "Verify qualifications and employment evidence with the relevant assessing authority.",
+      "detail": "Each assessing authority publishes occupation-specific criteria. You will usually need qualification transcripts, employment references that match the authority’s format, and sometimes additional evidence such as payment records or organisational charts. A positive skills assessment is a prerequisite for many skilled visas, so sequencing this step before English tests or EOI submission often saves time and cost.",
+      "officialHref": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing",
+      "officialLabel": "Home Affairs visa listing"
     },
     {
       "title": "English Test & EOI",
-      "description": "Strengthen your points profile and prepare a competitive Expression of Interest."
+      "description": "Strengthen your points profile and prepare a competitive Expression of Interest.",
+      "detail": "English scores can swing your points total significantly. Once you have a valid test and skills assessment (where required), you can submit an Expression of Interest in SkillSelect for relevant subclasses. Remember that submitting an EOI is not a visa application — you must be invited before you can lodge a points-tested skilled visa.",
+      "officialHref": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing",
+      "officialLabel": "Home Affairs visa listing"
     },
     {
       "title": "State Nomination",
-      "description": "Explore nomination pathways that can lift your competitiveness for 190 or regional options."
+      "description": "Explore nomination pathways that can lift your competitiveness for 190 or regional options.",
+      "detail": "States and territories run their own nomination programs with occupation lists, minimum points, and sometimes work or residence requirements. Subclass 190 adds five points; subclass 491 regional nomination adds fifteen points but comes with regional residence obligations. Compare programs across states that match your occupation and personal circumstances rather than assuming one size fits all.",
+      "officialHref": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing",
+      "officialLabel": "Home Affairs visa listing"
     },
     {
       "title": "Visa Lodgement",
-      "description": "Prepare the final application package with a clean, consistent document set."
+      "description": "Prepare the final application package with a clean, consistent document set.",
+      "detail": "After invitation or when your visa stream does not use SkillSelect, lodgement requires form accuracy, consistent dates across documents, health examinations, police certificates, and payment of the visa application charge. Weak or contradictory evidence is a common cause of delays or requests for further information, so a final consistency review matters.",
+      "officialHref": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing",
+      "officialLabel": "Home Affairs visa listing"
     }
   ],
   "processSteps": [

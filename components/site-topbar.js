@@ -1,10 +1,21 @@
+import Link from "next/link";
+
+const destinationLinks = [
+  { label: "Australia", href: "/destinations/australia" },
+  { label: "New Zealand", href: "/destinations/new-zealand" },
+  { label: "Canada", href: "/destinations/canada" },
+  { label: "United Kingdom", href: "/destinations/united-kingdom" },
+];
+
 export function SiteTopbar({ siteData }) {
   return (
     <div className="site-topbar">
       <div className="site-topbar__inner">
         <div className="site-topbar__group">
-          {["Australia", "New Zealand", "Canada", "United Kingdom"].map((country) => (
-            <span key={country}>{country}</span>
+          {destinationLinks.map((item) => (
+            <Link key={item.href} href={item.href} className="country-destination-link">
+              {item.label}
+            </Link>
           ))}
         </div>
         <div className="site-topbar__group site-topbar__group--contact">

@@ -23,23 +23,39 @@ const quizSteps = [
   {
     id: "basics",
     label: "Basics",
-    title: "Profile Basics",
+    title: "Profile basics",
     description: "Start with age and whether your occupation sits on a relevant skilled list.",
     fields: ["occupationName", "age", "occupation"],
   },
   {
     id: "english",
     label: "English",
-    title: "English Proficiency",
+    title: "English proficiency",
     description: "Your English result can materially change invitation competitiveness.",
     fields: ["english"],
   },
   {
     id: "work",
     label: "Work",
-    title: "Work Experience",
-    description: "Count overseas skilled experience carefully and conservatively.",
+    title: "Overseas skilled experience",
+    description: "Count overseas skilled experience in your nominated occupation carefully and conservatively.",
     fields: ["overseasExperience"],
+  },
+  {
+    id: "australiaWork",
+    label: "AU work",
+    title: "Australian skilled employment",
+    description:
+      "Australian employment in your skilled occupation can add points (simplified bands aligned with common skilled points tables — confirm your exact position on Home Affairs).",
+    fields: ["australianSkilled"],
+  },
+  {
+    id: "readiness",
+    label: "Assessment",
+    title: "Skills assessment readiness",
+    description:
+      "This does not change points here, but it drives sequencing — most skilled applicants need a positive skills assessment before moving forward confidently.",
+    fields: ["skillsReadiness"],
   },
   {
     id: "education",
@@ -55,6 +71,14 @@ const quizSteps = [
     description: "Partner status can add valuable points and change your strategy.",
     fields: ["partner"],
   },
+  {
+    id: "planning",
+    label: "Pathway",
+    title: "Nomination focus",
+    description:
+      "Whether you lean toward independent, state-nominated, or regional pathways helps tailor practical next steps.",
+    fields: ["pathwayFocus"],
+  },
 ];
 
 const initialQuiz = {
@@ -63,9 +87,19 @@ const initialQuiz = {
   occupation: "unsure",
   english: "",
   overseasExperience: "",
+  australianSkilled: "",
+  skillsReadiness: "",
   education: "",
   partner: "",
+  pathwayFocus: "",
 };
+
+const countryBannerLinks = [
+  { label: "Australia", href: "/destinations/australia" },
+  { label: "New Zealand", href: "/destinations/new-zealand" },
+  { label: "Canada", href: "/destinations/canada" },
+  { label: "United Kingdom", href: "/destinations/united-kingdom" },
+];
 
 const initialForm = {
   firstName: "",
@@ -89,6 +123,7 @@ export function PortalPage({ siteData, newsData, footerStats }) {
   const [storyIndex, setStoryIndex] = useState(0);
   const [quizForm, setQuizForm] = useState(initialQuiz);
   const [quizStepIndex, setQuizStepIndex] = useState(0);
+  const [selectedPathwayIndex, setSelectedPathwayIndex] = useState(0);
   const [contactForm, setContactForm] = useState(initialForm);
   const [contactState, setContactState] = useState({ status: "idle", message: "" });
   const [chatMessages, setChatMessages] = useState([
@@ -172,15 +207,6 @@ export function PortalPage({ siteData, newsData, footerStats }) {
       );
     }
   }, [quizComplete, quizResult]);
-
-  const currentPathwayStep =
-    activeTab === "contact"
-      ? "Visa Lodgement"
-      : activeTab === "pathways"
-        ? "Skills Assessment"
-        : activeTab === "quiz"
-          ? "Initial Assessment"
-          : "Initial Assessment";
 
   function handleTabChange(tabId) {
     setActiveTab(tabId);
@@ -321,8 +347,10 @@ export function PortalPage({ siteData, newsData, footerStats }) {
       {hero}
 
       <section className="country-banner" aria-label="Countries MinRosh supports">
-        {["Australia", "New Zealand", "Canada", "United Kingdom"].map((country) => (
-          <span key={country}>{country}</span>
+        {countryBannerLinks.map((item) => (
+          <Link key={item.href} href={item.href} className="country-banner__link">
+            {item.label}
+          </Link>
         ))}
       </section>
 
@@ -416,15 +444,20 @@ export function PortalPage({ siteData, newsData, footerStats }) {
       <div className="panel-hero">
         <div>
           <p className="section-label">2026 Points Wizard</p>
-          <h2>Work through your profile in a clean 5-step assessment</h2>
+          <h2>Work through your profile in an eight-step assessment</h2>
           <p>
             This wizard is designed to feel closer to a real intake review while still remaining
-            preliminary guidance.
+            preliminary guidance. Always confirm points and eligibility against current Department of
+            Home Affairs rules.
           </p>
         </div>
         <div className="current-step">
-          <span>Current Step</span>
+          <span>Active quiz step</span>
           <strong>{currentQuizStep.title}</strong>
+          <p className="current-step__hint">
+            This box mirrors the step on the left so you can see where you are in the sequence at a
+            glance. It is not a separate question — it updates as you use Previous and Next.
+          </p>
         </div>
       </div>
 
@@ -556,6 +589,57 @@ export function PortalPage({ siteData, newsData, footerStats }) {
                 ))}
               </div>
             ) : null}
+
+            {currentQuizStep.id === "australiaWork" ? (
+              <div className="quiz-options">
+                {quizOptions.australianSkilled.map((option) => (
+                  <button
+                    key={option.value}
+                    type="button"
+                    className={`quiz-option ${
+                      quizForm.australianSkilled === option.value ? "is-selected" : ""
+                    }`}
+                    onClick={() => setQuizValue("australianSkilled", option.value)}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+            ) : null}
+
+            {currentQuizStep.id === "readiness" ? (
+              <div className="quiz-options">
+                {quizOptions.skillsReadiness.map((option) => (
+                  <button
+                    key={option.value}
+                    type="button"
+                    className={`quiz-option ${
+                      quizForm.skillsReadiness === option.value ? "is-selected" : ""
+                    }`}
+                    onClick={() => setQuizValue("skillsReadiness", option.value)}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+            ) : null}
+
+            {currentQuizStep.id === "planning" ? (
+              <div className="quiz-options">
+                {quizOptions.pathwayFocus.map((option) => (
+                  <button
+                    key={option.value}
+                    type="button"
+                    className={`quiz-option ${
+                      quizForm.pathwayFocus === option.value ? "is-selected" : ""
+                    }`}
+                    onClick={() => setQuizValue("pathwayFocus", option.value)}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+            ) : null}
           </div>
 
           <div className="quiz-wizard__actions">
@@ -654,21 +738,53 @@ export function PortalPage({ siteData, newsData, footerStats }) {
         <div>
           <p className="section-label">5-Step Pathway to PR</p>
           <h2>A clearer journey from first review to visa lodgement</h2>
+          <p className="panel-hero__sub">
+            Select a step below to highlight it. Open “Read more” for longer on-page guidance (helpful
+            for reading and search engines).
+          </p>
         </div>
         <div className="current-step">
-          <span>Current Step</span>
-          <strong>{currentPathwayStep}</strong>
+          <span>Highlighted pathway step</span>
+          <strong>{siteData.pathwaySteps[selectedPathwayIndex]?.title}</strong>
+          <p className="current-step__hint">
+            This summary tracks whichever timeline card you last selected — use the numbered boxes to
+            compare stages.
+          </p>
         </div>
       </div>
       <div className="timeline">
         {siteData.pathwaySteps.map((step, index) => (
           <article
             key={step.title}
-            className={`timeline-step bento-hover ${index === 0 ? "is-current" : ""}`}
+            className={`timeline-step bento-hover ${index === selectedPathwayIndex ? "is-current" : ""}`}
           >
-            <span className="timeline-step__number">{index + 1}</span>
-            <h3>{step.title}</h3>
-            <p>{step.description}</p>
+            <button
+              type="button"
+              className="timeline-step__hit"
+              onClick={() => setSelectedPathwayIndex(index)}
+              aria-current={index === selectedPathwayIndex ? "step" : undefined}
+            >
+              <span className="timeline-step__number">{index + 1}</span>
+              <span className="timeline-step__text">
+                <span className="timeline-step__title">{step.title}</span>
+                <span className="timeline-step__desc">{step.description}</span>
+              </span>
+            </button>
+            {step.detail ? (
+              <details className="timeline-step__details">
+                <summary className="timeline-step__summary">Read more about this stage</summary>
+                <div className="timeline-step__expanded">
+                  <p>{step.detail}</p>
+                  {step.officialHref ? (
+                    <p className="timeline-step__official">
+                      <a href={step.officialHref} target="_blank" rel="noreferrer">
+                        {step.officialLabel || "Official information"}
+                      </a>
+                    </p>
+                  ) : null}
+                </div>
+              </details>
+            ) : null}
           </article>
         ))}
       </div>
@@ -908,7 +1024,7 @@ export function PortalPage({ siteData, newsData, footerStats }) {
   return (
     <div className="portal-shell">
       <SiteTopbar siteData={siteData} />
-      <header className={`site-header ${headerCompact ? "is-compact" : ""}`}>
+      <header className={`site-header site-header--backdrop ${headerCompact ? "is-compact" : ""}`}>
         <div className="site-header__inner">
           <button type="button" className="brand" onClick={() => handleTabChange("home")} aria-label="Open home tab">
             <span className="brand__mark" aria-hidden="true">

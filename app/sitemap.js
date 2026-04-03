@@ -21,6 +21,10 @@ export default function sitemap() {
     "/partner-visa-australia-guide",
     "/student-visa-australia-requirements",
     "/skilled-migration-australia-points-guide",
+    "/destinations/australia",
+    "/destinations/new-zealand",
+    "/destinations/canada",
+    "/destinations/united-kingdom",
   ];
 
   const priorities = {
@@ -28,6 +32,7 @@ export default function sitemap() {
     "/book-consultation": 0.95,
     "/contact": 0.9,
     "/skilled-migration": 0.9,
+    "/destinations/australia": 0.92,
     "/partner-visa-australia": 0.9,
     "/student-visa-australia": 0.9,
     "/education-consultation": 0.85,

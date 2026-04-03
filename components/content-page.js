@@ -7,8 +7,10 @@ export function ContentPage({
   intro,
   breadcrumbs = [],
   sections = [],
+  officialResources = [],
   faq = [],
   related = [],
+  heroImage = { src: "/images/brisbane-skyline.jpg", alt: "Brisbane skyline and riverfront" },
   ctaTitle = "Ready to discuss your options?",
   ctaBody = "Start with a clear enquiry and MinRosh will help you map the most relevant next steps.",
 }) {
@@ -33,33 +35,50 @@ export function ContentPage({
             <p>{intro}</p>
           </div>
           <div className="content-hero__media" aria-hidden="true">
-            <Image
-              src="/images/brisbane-skyline.jpg"
-              alt="Brisbane skyline and riverfront"
-              width={1600}
-              height={900}
-            />
+            <Image src={heroImage.src} alt={heroImage.alt} width={1600} height={900} />
           </div>
         </div>
       </section>
 
       <div className="content-page__grid">
         <div className="content-page__main">
-          {sections.map((section) => (
-            <section key={section.title} className="content-section bento-hover">
-              <h2>{section.title}</h2>
-              <p>{section.body}</p>
-              {section.bullets?.length ? (
-                <ul className="feature-list">
-                  {section.bullets.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              ) : null}
+          {officialResources.length ? (
+            <section className="official-resources" aria-label="Official government sources">
+              <h2>Official sources to verify requirements</h2>
+              <ul>
+                {officialResources.map((item) => (
+                  <li key={item.href}>
+                    <a href={item.href} target="_blank" rel="noreferrer">
+                      {item.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
             </section>
+          ) : null}
+
+          {sections.map((section, index) => (
+            <div key={section.title}>
+              {index > 0 || officialResources.length ? (
+                <hr className="content-divider" aria-hidden="true" />
+              ) : null}
+              <section className="content-section bento-hover">
+                <h2>{section.title}</h2>
+                <p>{section.body}</p>
+                {section.bullets?.length ? (
+                  <ul className="feature-list">
+                    {section.bullets.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                ) : null}
+              </section>
+            </div>
           ))}
 
           {faq.length ? (
+            <>
+              <hr className="content-divider" aria-hidden="true" />
             <section className="faq-section">
               <div className="section-head">
                 <div>
@@ -76,6 +95,7 @@ export function ContentPage({
                 ))}
               </div>
             </section>
+            </>
           ) : null}
         </div>
 

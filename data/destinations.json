@@ -1,0 +1,165 @@
+{
+  "australia": {
+    "slug": "australia",
+    "name": "Australia",
+    "metaTitle": "Australia migration hub | visas & pathways | MinRosh Migration",
+    "metaDescription": "Overview of Australian visa pathways with links to official Department of Home Affairs listings. Brisbane-based guidance for skilled, student, family, and employer-sponsored routes.",
+    "headline": "Australia migration hub",
+    "intro": "Australia’s visa system covers skilled points-tested visas, employer sponsorship, study routes, partner and family visas, and visitor options. Rules change with government policy, so always confirm current criteria on the Department of Home Affairs website before making decisions.",
+    "officialLinks": [
+      {
+        "label": "Department of Home Affairs — visa listing",
+        "href": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing"
+      }
+    ],
+    "sections": [
+      {
+        "title": "Skilled and points-tested pathways",
+        "body": "Skilled migration usually starts with occupation fit, skills assessment, English evidence, and an Expression of Interest where applicable. Subclass 189, 190, and 491 each have different nomination and residence obligations. Competitiveness depends on points, occupation ceilings, and invitation rounds—not only the legal minimum threshold.",
+        "bullets": [
+          "Plan skills assessment and English timing before committing to a lodgement sequence",
+          "Compare independent, state-nominated, and regional options for your occupation",
+          "Use official visa pages to confirm eligibility, charges, and document requirements"
+        ]
+      },
+      {
+        "title": "Study, graduate, and longer-term planning",
+        "body": "Student visas are temporary. Successful long-term planning often links course choice, genuine student requirements, and any post-study work or skilled pathways you may pursue later. Education choices should align with visa conditions and your realistic timeline.",
+        "bullets": [
+          "Clarify enrolment, funds, and health insurance requirements early",
+          "Understand how study fits with any later skilled or sponsored pathway",
+          "Keep evidence consistent across study and migration applications"
+        ]
+      },
+      {
+        "title": "Partner, family, and employer-sponsored routes",
+        "body": "Partner and family visas focus heavily on relationship evidence, sponsorship, and health and character requirements. Employer-sponsored routes depend on occupation lists, employer nomination, and your work history. Each stream has distinct processing and compliance expectations.",
+        "bullets": [
+          "Partner pathways need coherent relationship evidence across categories",
+          "Sponsored work routes require alignment between employer, role, and visa criteria",
+          "Visitor visas need a clear lawful purpose and ties to home country"
+        ]
+      }
+    ],
+    "relatedSiteLinks": [
+      { "href": "/skilled-migration", "title": "Skilled migration Australia" },
+      { "href": "/student-visa-australia", "title": "Student visa Australia" },
+      { "href": "/partner-visa-australia", "title": "Partner visa Australia" },
+      { "href": "/employer-sponsored-visas", "title": "Employer-sponsored visas" }
+    ]
+  },
+  "new-zealand": {
+    "slug": "new-zealand",
+    "name": "New Zealand",
+    "metaTitle": "New Zealand migration hub | visa planning | MinRosh Migration",
+    "metaDescription": "New Zealand visa planning with links to Immigration New Zealand’s find-a-visa tool. General guidance on study, work, and residence pathways—not legal advice.",
+    "headline": "New Zealand migration hub",
+    "intro": "New Zealand’s immigration system is structured around specific visa categories, each with its own criteria and application process. Use Immigration New Zealand’s official tools to identify which visa types might match your situation, then seek tailored advice for your circumstances.",
+    "officialLinks": [
+      {
+        "label": "Immigration New Zealand — find a visa",
+        "href": "https://www.immigration.govt.nz/process-to-apply/find-a-visa-tool/"
+      }
+    ],
+    "sections": [
+      {
+        "title": "How to approach NZ visa selection",
+        "body": "Start by clarifying your immediate goal—short visit, study, skilled work, partnership, or residence—and your timeline. The find-a-visa tool helps narrow categories; from there, read the official instructions for the visa you are considering.",
+        "bullets": [
+          "Confirm passport, health, and character requirements for your category",
+          "Gather employment or study offers where the visa depends on them",
+          "Track policy updates that affect quotas or skill lists"
+        ]
+      },
+      {
+        "title": "Study and work transitions",
+        "body": "Many applicants combine study with later work rights. Planning should account for course approval, funds, and any post-study work conditions that apply to the visa you hold.",
+        "bullets": [
+          "Align institution and course with visa conditions",
+          "Plan evidence for genuine intent and funds",
+          "Understand how work rights differ by visa type"
+        ]
+      }
+    ],
+    "relatedSiteLinks": [
+      { "href": "/contact", "title": "Contact MinRosh" },
+      { "href": "/book-consultation", "title": "Book consultation" }
+    ]
+  },
+  "canada": {
+    "slug": "canada",
+    "name": "Canada",
+    "metaTitle": "Canada migration hub | IRCC entry & visa planning | MinRosh Migration",
+    "metaDescription": "Canada immigration and visit planning with reference to Immigration, Refugees and Citizenship Canada. General guidance on entry requirements and visa categories.",
+    "headline": "Canada migration hub",
+    "intro": "Canada’s immigration services are delivered through IRCC, with distinct programs for visitors, students, workers, and permanent residence. Entry rules can depend on your nationality, purpose of travel, and documents such as an eTA or visa.",
+    "officialLinks": [
+      {
+        "label": "Canada.ca — visit Canada entry requirements",
+        "href": "https://www.canada.ca/en/immigration-refugees-citizenship/services/visit-canada/entry-requirements-country.html"
+      }
+    ],
+    "sections": [
+      {
+        "title": "Visitors, study, and work permits",
+        "body": "Temporary residence categories each have specific eligibility, documents, and processing considerations. Permanent residence programs (such as Express Entry or provincial nominations) sit on separate tracks with their own points or selection rules.",
+        "bullets": [
+          "Check whether you need a visitor visa or eTA for short stays",
+          "Study permits require a designated learning institution acceptance in most cases",
+          "Work permits often need employer involvement or a Labour Market Impact Assessment"
+        ]
+      },
+      {
+        "title": "Using official sources",
+        "body": "IRCC publishes the authoritative eligibility tools and document checklists. Use them to validate assumptions before you invest in language tests or educational credential assessments.",
+        "bullets": [
+          "Use IRCC’s own questionnaires for visit and transit needs",
+          "Track processing time notices and form editions",
+          "Keep biometrics and medical exam requirements in mind"
+        ]
+      }
+    ],
+    "relatedSiteLinks": [
+      { "href": "/contact", "title": "Contact MinRosh" },
+      { "href": "/updates", "title": "Updates hub" }
+    ]
+  },
+  "united-kingdom": {
+    "slug": "united-kingdom",
+    "name": "United Kingdom",
+    "metaTitle": "United Kingdom migration hub | visas & immigration | MinRosh Migration",
+    "metaDescription": "UK visa and immigration planning with links to GOV.UK. General information on work, study, and family routes—not legal advice.",
+    "headline": "United Kingdom migration hub",
+    "intro": "The UK visa system includes visitor, study, work, and family routes, each governed by the Immigration Rules. GOV.UK is the primary place to confirm which visa matches your situation and what evidence you will need.",
+    "officialLinks": [
+      {
+        "label": "GOV.UK — visas and immigration",
+        "href": "https://www.gov.uk/browse/visas-immigration"
+      }
+    ],
+    "sections": [
+      {
+        "title": "Work and study routes",
+        "body": "Skilled Worker and Student visas are common sponsored categories. Eligibility typically involves a licensed sponsor, English language, maintenance funds, and sometimes a Certificate of Sponsorship or Confirmation of Acceptance for Studies.",
+        "bullets": [
+          "Confirm sponsor licence status and role eligibility",
+          "Meet English and financial thresholds for your route",
+          "Understand visa length and conditions before you travel"
+        ]
+      },
+      {
+        "title": "Family and visitors",
+        "body": "Family routes depend on the relationship and sometimes income thresholds. Standard Visitor visas require a credible travel purpose and intention to leave the UK after the visit.",
+        "bullets": [
+          "Gather relationship and financial evidence for family applications",
+          "Visitor applications should explain ties to your home country",
+          "Check tuberculosis testing requirements where they apply"
+        ]
+      }
+    ],
+    "relatedSiteLinks": [
+      { "href": "/contact", "title": "Contact MinRosh" },
+      { "href": "/book-consultation", "title": "Book consultation" }
+    ]
+  }
+}

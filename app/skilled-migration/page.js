@@ -32,8 +32,13 @@ export default function SkilledMigrationPage() {
           { href: "/", label: "Home" },
           { href: pageData.path, label: "Skilled Migration" },
         ]}
+        officialResources={pageData.officialResources ?? []}
         sections={pageData.sections}
         faq={pageData.faq}
+        heroImage={{
+          src: "/images/hero-sydney-real.jpg",
+          alt: "Sydney Harbour — Australian skilled migration context",
+        }}
         related={[
           ...pageData.relatedGuides,
           { href: "/contact", title: "Contact MinRosh Migration" },

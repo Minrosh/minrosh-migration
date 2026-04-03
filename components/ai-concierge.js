@@ -50,10 +50,12 @@ const fallbackReplies = [
   {
     match: /australia|new zealand|canada|uk|united kingdom/i,
     content:
-      "MinRosh tracks migration pathways across Australia, New Zealand, Canada, and the United Kingdom. If you tell me your goal and how soon you want to move, I can point you toward the best starting service.",
+      "MinRosh supports all four destination systems. Open the country hub that matches your goal for on-page summaries and official government links, then book a consultation if you want tailored sequencing.",
     actions: [
-      { href: "/updates", label: "Official updates hub" },
-      { href: "/assessment", label: "Free assessment" },
+      { href: "/destinations/australia", label: "Australia hub" },
+      { href: "/destinations/new-zealand", label: "New Zealand hub" },
+      { href: "/destinations/canada", label: "Canada hub" },
+      { href: "/destinations/united-kingdom", label: "United Kingdom hub" },
     ],
   },
 ];

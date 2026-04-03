@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 
 export function CountryCoverage({ countries }) {
@@ -41,6 +42,11 @@ export function CountryCoverage({ countries }) {
             <li key={item}>{item}</li>
           ))}
         </ul>
+        {current.hubHref ? (
+          <p className="country-panel__hub">
+            <Link href={current.hubHref}>Open {current.title} migration hub</Link>
+          </p>
+        ) : null}
       </article>
     </section>
   );

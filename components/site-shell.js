@@ -22,7 +22,7 @@ export function SiteShell({ siteData, currentPath, children }) {
   return (
     <div className="portal-shell">
       <SiteTopbar siteData={siteData} />
-      <header className="site-header">
+      <header className="site-header site-header--backdrop">
         <div className="site-header__inner">
           <Link href="/" className="brand" aria-label="Go to MinRosh homepage">
             <span className="brand__mark" aria-hidden="true">
