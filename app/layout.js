@@ -57,9 +57,9 @@ export const metadata = {
     canonical: "/",
   },
   icons: {
-    icon: "/images/minrosh-logo.svg",
-    shortcut: "/images/minrosh-logo.svg",
-    apple: "/images/minrosh-logo.svg",
+    icon: "/images/minrosh-logo.png",
+    shortcut: "/images/minrosh-logo.png",
+    apple: "/images/minrosh-logo.png",
   },
 };
 

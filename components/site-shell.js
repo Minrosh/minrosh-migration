@@ -27,7 +27,7 @@ export function SiteShell({ siteData, currentPath, children }) {
           <Link href="/" className="brand" aria-label="Go to MinRosh homepage">
             <span className="brand__mark" aria-hidden="true">
               <Image
-                src="/images/minrosh-logo.svg"
+                src="/images/minrosh-logo.png"
                 alt=""
                 width={46}
                 height={46}

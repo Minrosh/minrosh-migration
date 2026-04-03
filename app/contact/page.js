@@ -49,7 +49,7 @@ export default function ContactPage() {
             </div>
             <div className="content-hero__media" aria-hidden="true">
               <Image
-                src="/images/brisbane-skyline.svg"
+                src="/images/brisbane-skyline.jpg"
                 alt="Brisbane skyline and riverfront"
                 width={1600}
                 height={900}

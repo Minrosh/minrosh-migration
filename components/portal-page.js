@@ -350,7 +350,7 @@ export function PortalPage({ siteData, newsData, footerStats }) {
         </div>
         <div className="image-card bento-hover">
           <Image
-            src="/images/team-office.svg"
+            src="/images/team-office.jpg"
             alt="Professional team meeting in a modern office"
             width={1200}
             height={800}
@@ -738,7 +738,7 @@ export function PortalPage({ siteData, newsData, footerStats }) {
         </div>
         <div className="story-feature__media">
           <Image
-            src={storyIndex % 2 === 0 ? "/images/team-office.svg" : "/images/brisbane-skyline.svg"}
+            src={storyIndex % 2 === 0 ? "/images/team-office.jpg" : "/images/brisbane-skyline.jpg"}
             alt="MinRosh migration guidance and Brisbane lifestyle"
             width={1200}
             height={900}
@@ -913,7 +913,7 @@ export function PortalPage({ siteData, newsData, footerStats }) {
           <button type="button" className="brand" onClick={() => handleTabChange("home")} aria-label="Open home tab">
             <span className="brand__mark" aria-hidden="true">
               <Image
-                src="/images/minrosh-logo.svg"
+                src="/images/minrosh-logo.png"
                 alt=""
                 width={46}
                 height={46}

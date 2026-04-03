@@ -385,7 +385,7 @@ a {
   content: "";
   position: absolute;
   inset: 0;
-  background: url("/images/hero-sydney.svg") center/cover no-repeat;
+  background: url("/images/hero-sydney-real.jpg") center/cover no-repeat;
   opacity: 0.08;
   z-index: 0;
   pointer-events: none;
@@ -649,7 +649,7 @@ a {
   inset: 0;
   background:
     linear-gradient(125deg, rgba(255, 255, 255, 0.92), rgba(255, 250, 245, 0.9)),
-    url("/images/hero-sydney.svg") center/cover no-repeat;
+    url("/images/hero-sydney-real.jpg") center/cover no-repeat;
   opacity: 0.3;
   z-index: 0;
   pointer-events: none;
@@ -1910,7 +1910,7 @@ a {
   padding: 12px var(--content-pad) 40px;
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(255, 250, 245, 0.98)),
-    url("/images/brisbane-skyline.svg") center/cover no-repeat;
+    url("/images/brisbane-skyline.jpg") center/cover no-repeat;
 }
 
 .site-footer__inner {
