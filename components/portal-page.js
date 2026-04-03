@@ -101,6 +101,27 @@ const countryBannerLinks = [
   { label: "United Kingdom", href: "/destinations/united-kingdom" },
 ];
 
+const visualHighlights = [
+  {
+    title: "Brisbane-based guidance",
+    caption: "Local visibility with a calmer, more premium first impression.",
+    src: "/images/brisbane-skyline.jpg",
+    alt: "Brisbane skyline beside the river at sunset",
+  },
+  {
+    title: "Structured migration planning",
+    caption: "A smoother pathway from first review through to practical next steps.",
+    src: "/images/team-office-real.jpg",
+    alt: "Professional consultation meeting in a bright modern office",
+  },
+  {
+    title: "Destination-focused support",
+    caption: "Stronger visual storytelling for Australia and wider migration goals.",
+    src: "/images/hero-sydney-real.jpg",
+    alt: "Sydney Harbour with ferries and the Opera House in view",
+  },
+];
+
 const initialForm = {
   firstName: "",
   lastName: "",
@@ -365,6 +386,20 @@ export function PortalPage({ siteData, newsData, footerStats }) {
         ))}
       </section>
 
+      <section className="visual-strip" aria-label="MinRosh highlights">
+        {visualHighlights.map((item) => (
+          <article key={item.title} className="visual-strip__card bento-hover">
+            <div className="visual-strip__media">
+              <Image src={item.src} alt={item.alt} width={1400} height={1000} />
+            </div>
+            <div className="visual-strip__copy">
+              <p className="section-label">{item.title}</p>
+              <p>{item.caption}</p>
+            </div>
+          </article>
+        ))}
+      </section>
+
       <section className="split-section">
         <div>
           <p className="section-label">Why Choose MinRosh</p>
@@ -378,7 +413,7 @@ export function PortalPage({ siteData, newsData, footerStats }) {
         </div>
         <div className="image-card bento-hover">
           <Image
-            src="/images/team-office.jpg"
+            src="/images/team-office-real.jpg"
             alt="Professional team meeting in a modern office"
             width={1200}
             height={800}
@@ -854,7 +889,7 @@ export function PortalPage({ siteData, newsData, footerStats }) {
         </div>
         <div className="story-feature__media">
           <Image
-            src={storyIndex % 2 === 0 ? "/images/team-office.jpg" : "/images/brisbane-skyline.jpg"}
+            src={storyIndex % 2 === 0 ? "/images/team-office-real.jpg" : "/images/brisbane-skyline.jpg"}
             alt="MinRosh migration guidance and Brisbane lifestyle"
             width={1200}
             height={900}
