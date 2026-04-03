@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 const quickPrompts = [
@@ -77,6 +78,7 @@ function getFallbackReply(message) {
 }
 
 export function AIConcierge({ siteData }) {
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState([
     {
@@ -136,6 +138,10 @@ export function AIConcierge({ siteData }) {
   function handleSubmit(event) {
     event.preventDefault();
     sendMessage(input);
+  }
+
+  if (pathname?.startsWith("/admin") || pathname?.startsWith("/upload")) {
+    return null;
   }
 
   return (

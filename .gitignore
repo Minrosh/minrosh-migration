@@ -2,5 +2,14 @@
 node_modules
 npm-debug.log*
 data-enquiries.json
+data/enquiries.json
+data/customers.json
+data/invoices.json
+data/audit-log.json
+data/success-stories.json
 data-newsletter.json
-.env.local
+.env
+.env.*
+!.env.example
+public/uploads/*
+!public/uploads/.gitkeep

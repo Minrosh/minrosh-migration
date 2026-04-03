@@ -1,9 +1,12 @@
-import siteData from "../data/site.json";
+import siteDataStatic from "../data/site.json";
 import newsData from "../data/news.json";
 import { PortalPage } from "../components/portal-page";
 import { StructuredData } from "../components/structured-data";
 import { buildMetadata, faqJsonLd } from "../lib/seo";
 import { getFooterStats } from "../lib/site-stats";
+import { getHomeSiteData } from "../lib/home-site-data";
+
+export const dynamic = "force-dynamic";
 
 export const metadata = buildMetadata({
   title: "Migration Agent Brisbane | Registered Visa Help Australia | MinRosh Migration",
@@ -20,6 +23,7 @@ export const metadata = buildMetadata({
 });
 
 export default function HomePage() {
+  const siteData = getHomeSiteData(siteDataStatic);
   const footerStats = getFooterStats();
 
   return (

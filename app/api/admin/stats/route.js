@@ -1,0 +1,21 @@
+import { verifyAdminRequest, adminJsonUnauthorized } from "@/lib/admin/auth-route";
+import { readEnquiriesList } from "@/lib/admin/enquiries-read";
+import { readCustomers } from "@/lib/admin/json-store";
+import { listInvoices } from "@/lib/admin/invoices-service";
+import { readAdminSuccessStories, readAudit } from "@/lib/admin/json-store";
+
+export async function GET() {
+  if (!(await verifyAdminRequest())) return adminJsonUnauthorized();
+  const { customers = [] } = readCustomers();
+  const { stories = [] } = readAdminSuccessStories();
+  const { entries = [] } = readAudit();
+  return Response.json({
+    enquiries: readEnquiriesList().length,
+    customers: customers.length,
+    prospective: customers.filter((c) => c.status === "prospective").length,
+    invoices: listInvoices().length,
+    pendingInvoices: listInvoices().filter((i) => i.status === "pending").length,
+    successStories: stories.length,
+    auditEntries: entries.length,
+  });
+}

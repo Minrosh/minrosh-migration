@@ -9,6 +9,8 @@ const staticSrc = path.join(root, ".next", "static");
 const staticDest = path.join(standalone, ".next", "static");
 const publicSrc = path.join(root, "public");
 const publicDest = path.join(standalone, "public");
+const dataSrc = path.join(root, "data");
+const dataDest = path.join(standalone, "data");
 
 if (!fs.existsSync(standalone)) {
   console.error("Missing .next/standalone — run next build first.");
@@ -23,4 +25,14 @@ if (!fs.existsSync(staticSrc)) {
 fs.mkdirSync(path.dirname(staticDest), { recursive: true });
 fs.cpSync(staticSrc, staticDest, { recursive: true, force: true });
 fs.cpSync(publicSrc, publicDest, { recursive: true, force: true });
-console.log("Standalone: copied public and .next/static into .next/standalone.");
+const uploadsDest = path.join(publicDest, "uploads");
+fs.mkdirSync(uploadsDest, { recursive: true });
+
+if (fs.existsSync(dataSrc)) {
+  fs.mkdirSync(dataDest, { recursive: true });
+  fs.cpSync(dataSrc, dataDest, { recursive: true, force: true });
+}
+
+console.log(
+  "Standalone: copied public, data, and .next/static into .next/standalone (uploads dir ensured)."
+);
