@@ -1,3 +1,10 @@
+import destinations from "../data/destinations.json";
+import { DESTINATION_SECTION_IDS } from "../lib/destination-nav";
+
+const destinationSectionRoutes = Object.keys(destinations).flatMap((slug) =>
+  DESTINATION_SECTION_IDS.map((section) => `/destinations/${slug}/${section}`)
+);
+
 export default function sitemap() {
   const routes = [
     "/",
@@ -25,6 +32,7 @@ export default function sitemap() {
     "/destinations/new-zealand",
     "/destinations/canada",
     "/destinations/united-kingdom",
+    ...destinationSectionRoutes,
   ];
 
   const priorities = {

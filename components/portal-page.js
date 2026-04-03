@@ -1024,7 +1024,9 @@ export function PortalPage({ siteData, newsData, footerStats }) {
   return (
     <div className="portal-shell">
       <SiteTopbar siteData={siteData} />
-      <header className={`site-header site-header--backdrop ${headerCompact ? "is-compact" : ""}`}>
+      <header
+        className={`site-header site-header--backdrop site-header--backdrop-au ${headerCompact ? "is-compact" : ""}`}
+      >
         <div className="site-header__inner">
           <button type="button" className="brand" onClick={() => handleTabChange("home")} aria-label="Open home tab">
             <span className="brand__mark" aria-hidden="true">

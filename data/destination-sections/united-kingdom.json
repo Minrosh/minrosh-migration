@@ -1,0 +1,241 @@
+{
+  "skilled": {
+    "metaTitle": "UK Skilled Worker & work routes | GOV.UK alignment | MinRosh",
+    "metaDescription": "Skilled work routes for the United Kingdom: sponsored employment and visa planning context. Confirm on GOV.UK.",
+    "eyebrow": "United Kingdom · Skilled",
+    "headline": "United Kingdom skilled work routes",
+    "intro": "The Skilled Worker route usually requires a licensed sponsor, a job at the appropriate skill and salary level, and English ability. Other work visas exist for specific circumstances. Always read the relevant GOV.UK visa page for your situation; MinRosh helps with sequencing and document thinking before you engage employers or lawyers in the UK.",
+    "officialResources": [
+      {
+        "label": "GOV.UK — visas and immigration",
+        "href": "https://www.gov.uk/browse/visas-immigration"
+      }
+    ],
+    "sections": [
+      {
+        "title": "Sponsorship reality",
+        "body": "Most applicants need a Certificate of Sponsorship from a licensed employer. We help you understand what to clarify with a potential sponsor and what you must prepare on your side.",
+        "bullets": [
+          "Role title versus SOC code fit",
+          "Salary thresholds and going rates",
+          "English and tuberculosis testing where required"
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "Is a UK job offer always required?",
+        "answer": "For Skilled Worker, a qualifying offer and sponsorship are normally required. Other categories have different rules—check GOV.UK."
+      }
+    ],
+    "related": [
+      { "title": "United Kingdom hub", "href": "/destinations/united-kingdom" },
+      { "title": "Contact", "href": "/destinations/united-kingdom/contact" }
+    ],
+    "heroImage": {
+      "src": "/images/team-office-real.jpg",
+      "alt": "UK work planning"
+    }
+  },
+  "partner": {
+    "metaTitle": "UK partner & family visas | MinRosh",
+    "metaDescription": "Partner and family visa context for the UK. Financial requirement and relationship evidence on GOV.UK.",
+    "eyebrow": "United Kingdom · Partner",
+    "headline": "United Kingdom partner and family visas",
+    "intro": "Partner and family categories on GOV.UK set out financial thresholds, relationship evidence, and sometimes English requirements. Rules change with immigration statements; verify the current Immigration Rules and guidance.",
+    "officialResources": [
+      {
+        "label": "GOV.UK — visas and immigration",
+        "href": "https://www.gov.uk/browse/visas-immigration"
+      }
+    ],
+    "sections": [
+      {
+        "title": "Evidence and planning",
+        "body": "We help you map relationship history and finances to the categories you are reading on GOV.UK, so you know what to collect before professional review."
+      }
+    ],
+    "faq": [],
+    "related": [
+      { "title": "UK hub", "href": "/destinations/united-kingdom" },
+      { "title": "Contact", "href": "/destinations/united-kingdom/contact" }
+    ],
+    "heroImage": {
+      "src": "/images/team-office.jpg",
+      "alt": "Family visa"
+    }
+  },
+  "student": {
+    "metaTitle": "UK Student visa planning | study in Britain | MinRosh",
+    "metaDescription": "Student route guidance for the UK: CAS, funds, and genuine student factors. Official detail on GOV.UK.",
+    "eyebrow": "United Kingdom · Student",
+    "headline": "Study in the United Kingdom",
+    "intro": "The Student route requires an offer from a licensed student sponsor and a Confirmation of Acceptance for Studies. You must meet financial and English requirements and show a genuine intention to study. Read GOV.UK for the latest maintenance figures and document list.",
+    "officialResources": [
+      {
+        "label": "GOV.UK — visas and immigration",
+        "href": "https://www.gov.uk/browse/visas-immigration"
+      }
+    ],
+    "sections": [
+      {
+        "title": "Course and provider",
+        "body": "We help you sanity-check how your chosen course and location align with your study story and budget."
+      }
+    ],
+    "faq": [],
+    "related": [
+      { "title": "UK hub", "href": "/destinations/united-kingdom" },
+      { "title": "Education planning", "href": "/destinations/united-kingdom/education" }
+    ],
+    "heroImage": {
+      "src": "/images/brisbane-skyline.jpg",
+      "alt": "Study planning"
+    }
+  },
+  "education": {
+    "metaTitle": "UK education consultation | CAS & visa alignment | MinRosh",
+    "metaDescription": "Institution and course planning for the UK with Student route awareness.",
+    "eyebrow": "United Kingdom · Education",
+    "headline": "Education planning for the United Kingdom",
+    "intro": "Selecting a programme affects your CAS, fees, and living cost story. MinRosh helps align education choices with what UKVI expects to see in a coherent application.",
+    "officialResources": [
+      {
+        "label": "GOV.UK — visas and immigration",
+        "href": "https://www.gov.uk/browse/visas-immigration"
+      }
+    ],
+    "sections": [
+      {
+        "title": "From offer to visa prep",
+        "body": "Once you have a credible CAS pathway, we tie timelines to funds evidence and any dependants."
+      }
+    ],
+    "faq": [],
+    "related": [
+      { "title": "UK student", "href": "/destinations/united-kingdom/student" },
+      { "title": "Global education consultation", "href": "/education-consultation" }
+    ],
+    "heroImage": {
+      "src": "/images/team-office-real.jpg",
+      "alt": "Education"
+    }
+  },
+  "updates": {
+    "metaTitle": "UK immigration updates | Home Office changes | MinRosh",
+    "metaDescription": "Tracking UK visa changes via GOV.UK and statements. MinRosh helps clients interpret impact.",
+    "eyebrow": "United Kingdom · Updates",
+    "headline": "United Kingdom immigration updates",
+    "intro": "UK immigration rules are published in law and guidance and can change with policy statements. Rely on GOV.UK and the Immigration Rules for authoritative text.",
+    "officialResources": [
+      {
+        "label": "GOV.UK — visas and immigration",
+        "href": "https://www.gov.uk/browse/visas-immigration"
+      }
+    ],
+    "sections": [
+      {
+        "title": "What to watch",
+        "body": "Salary lists, financial thresholds, and student maintenance figures are common update points. Note effective dates carefully."
+      }
+    ],
+    "faq": [],
+    "related": [
+      { "title": "Site updates hub", "href": "/updates" },
+      { "title": "UK hub", "href": "/destinations/united-kingdom" }
+    ],
+    "heroImage": {
+      "src": "/images/team-office.jpg",
+      "alt": "Updates"
+    }
+  },
+  "faq": {
+    "metaTitle": "UK visa FAQ | MinRosh Migration",
+    "metaDescription": "Introductory UK visa questions for clients working with MinRosh.",
+    "eyebrow": "United Kingdom · FAQ",
+    "headline": "United Kingdom visa questions",
+    "intro": "General guidance only. Confirm every requirement on GOV.UK before applying.",
+    "officialResources": [
+      {
+        "label": "GOV.UK — visas and immigration",
+        "href": "https://www.gov.uk/browse/visas-immigration"
+      }
+    ],
+    "sections": [],
+    "faq": [
+      {
+        "question": "Do I need ATAS for my course?",
+        "answer": "Some science and technology courses require ATAS clearance. Your institution should confirm if it applies."
+      },
+      {
+        "question": "Where is the immigration health surcharge explained?",
+        "answer": "GOV.UK publishes current IHS rates and who must pay as part of most longer UK visa applications."
+      }
+    ],
+    "related": [
+      { "title": "UK hub", "href": "/destinations/united-kingdom" },
+      { "title": "Global FAQ", "href": "/faq" }
+    ],
+    "heroImage": {
+      "src": "/images/brisbane-skyline.jpg",
+      "alt": "FAQ"
+    }
+  },
+  "about": {
+    "metaTitle": "MinRosh & United Kingdom pathways | migration guidance",
+    "metaDescription": "How MinRosh supports UK visa and education planning.",
+    "eyebrow": "United Kingdom · About",
+    "headline": "MinRosh and United Kingdom visas",
+    "intro": "We help clients who compare Australia with the UK—or who are UK-bound from the region—with structured planning and emphasis on GOV.UK accuracy.",
+    "officialResources": [
+      {
+        "label": "GOV.UK — visas and immigration",
+        "href": "https://www.gov.uk/browse/visas-immigration"
+      }
+    ],
+    "sections": [
+      {
+        "title": "Scope",
+        "body": "We are not a UK law firm; we provide migration-agent-style clarity and triage, and we point to solicitors where UK legal advice is required."
+      }
+    ],
+    "faq": [],
+    "related": [
+      { "title": "Global about", "href": "/about" },
+      { "title": "UK hub", "href": "/destinations/united-kingdom" }
+    ],
+    "heroImage": {
+      "src": "/images/team-office-real.jpg",
+      "alt": "About MinRosh"
+    }
+  },
+  "contact": {
+    "metaTitle": "Contact MinRosh | United Kingdom visa enquiry",
+    "metaDescription": "Contact MinRosh Migration about UK study, work, or family visa planning.",
+    "eyebrow": "United Kingdom · Contact",
+    "headline": "Contact us about the United Kingdom",
+    "intro": "Tell us your goal—Student, Skilled Worker, partner, or visitor—and your timeline. We will suggest reading on GOV.UK and whether a consultation is the right next step.",
+    "officialResources": [
+      {
+        "label": "GOV.UK — visas and immigration",
+        "href": "https://www.gov.uk/browse/visas-immigration"
+      }
+    ],
+    "sections": [
+      {
+        "title": "Connect",
+        "body": "Use the site contact form or book a consultation; note United Kingdom in your message."
+      }
+    ],
+    "faq": [],
+    "related": [
+      { "title": "Main contact", "href": "/contact" },
+      { "title": "Book consultation", "href": "/book-consultation" },
+      { "title": "UK hub", "href": "/destinations/united-kingdom" }
+    ],
+    "heroImage": {
+      "src": "/images/team-office.jpg",
+      "alt": "Contact"
+    }
+  }
+}

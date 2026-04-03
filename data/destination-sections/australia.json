@@ -1,0 +1,288 @@
+{
+  "skilled": {
+    "metaTitle": "Australia skilled migration | 189, 190, 491 planning | MinRosh",
+    "metaDescription": "Skilled migration planning for Australia: points, skills assessment, EOI, and state or regional nomination. Brisbane guidance with links to Department of Home Affairs visa listings.",
+    "eyebrow": "Australia · Skilled",
+    "headline": "Australia skilled migration strategy",
+    "intro": "Australian skilled pathways include points-tested visas such as subclasses 189, 190, and 491. Success usually depends on occupation fit, a positive skills assessment where required, competitive English, and realistic timing around invitations and nomination programs. This page summarises how MinRosh helps you sequence those steps; always confirm current rules on the Department of Home Affairs website.",
+    "officialResources": [
+      {
+        "label": "Department of Home Affairs — visa listing",
+        "href": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing"
+      }
+    ],
+    "sections": [
+      {
+        "title": "What we clarify first",
+        "body": "We look at your nominated occupation, list eligibility, points position, and whether independent, state-nominated, or regional pathways suit your profile. That prevents investing in tests or assessments in the wrong order.",
+        "bullets": [
+          "Occupation and skills assessment authority alignment",
+          "English strategy and invitation competitiveness",
+          "State or regional nomination fit where relevant"
+        ]
+      },
+      {
+        "title": "Evidence and lodgement readiness",
+        "body": "Strong applications tell a consistent story across employment references, qualifications, and forms. We help you identify gaps before lodgement so you are not scrambling under deadline pressure."
+      }
+    ],
+    "faq": [
+      {
+        "question": "Is 65 points enough for Australia skilled migration?",
+        "answer": "Sixty-five points is often the legal minimum to lodge an Expression of Interest for many skilled visas, but invitations frequently require higher totals depending on occupation and demand. Your competitiveness should be assessed in context."
+      },
+      {
+        "question": "Do I need a skills assessment before an EOI?",
+        "answer": "For most skilled streams a positive skills assessment is required before you can move forward properly. Timing depends on your pathway and the assessing authority."
+      }
+    ],
+    "related": [
+      { "title": "Australia migration hub", "href": "/destinations/australia" },
+      { "title": "Extended skilled migration guide", "href": "/skilled-migration" },
+      { "title": "Book consultation", "href": "/book-consultation" }
+    ],
+    "heroImage": {
+      "src": "/images/hero-sydney-real.jpg",
+      "alt": "Sydney Harbour — Australian skilled migration context"
+    }
+  },
+  "partner": {
+    "metaTitle": "Australia partner & family visas | MinRosh Migration Brisbane",
+    "metaDescription": "Partner and family visa guidance for Australia: relationship evidence, onshore and offshore pathways, and document consistency. General information with official Home Affairs references.",
+    "eyebrow": "Australia · Partner",
+    "headline": "Australia partner and family pathways",
+    "intro": "Partner visas centre on proving a genuine and continuing relationship with consistent evidence across finances, household, and social recognition. MinRosh helps you plan documents and sequencing; requirements are set out on the Department of Home Affairs partner visa pages.",
+    "officialResources": [
+      {
+        "label": "Department of Home Affairs — visa listing",
+        "href": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing"
+      }
+    ],
+    "sections": [
+      {
+        "title": "Evidence planning",
+        "body": "We map your relationship timeline to the four pillars many decisions reference: financial, household, social context, and commitment. Weak or contradictory stories across forms and statements are common risk areas."
+      },
+      {
+        "title": "Onshore and offshore considerations",
+        "body": "Whether you apply from inside or outside Australia affects bridging, travel, and sometimes strategy. We help you understand practical implications before you lodge."
+      }
+    ],
+    "faq": [
+      {
+        "question": "How long can an Australian partner visa take?",
+        "answer": "Processing varies by caseload, application quality, and complexity. Some cases move faster than others; incomplete evidence often contributes to delay."
+      }
+    ],
+    "related": [
+      { "title": "Australia migration hub", "href": "/destinations/australia" },
+      { "title": "Partner visa Australia (detail page)", "href": "/partner-visa-australia" },
+      { "title": "Contact", "href": "/destinations/australia/contact" }
+    ],
+    "heroImage": {
+      "src": "/images/team-office.jpg",
+      "alt": "Migration consultation discussion"
+    }
+  },
+  "student": {
+    "metaTitle": "Australia student visa guidance | study pathways | MinRosh",
+    "metaDescription": "Student visa planning for Australia: enrolment, genuine student requirement, funds, and how study may connect to longer-term goals. Official criteria on Home Affairs.",
+    "eyebrow": "Australia · Student",
+    "headline": "Australia student visa and study planning",
+    "intro": "The student visa is temporary and requires a genuine intention to study, sufficient funds, and health insurance among other criteria. MinRosh supports course and visa sequencing when you also have longer-term migration goals—always confirm current student visa rules on immi.homeaffairs.gov.au.",
+    "officialResources": [
+      {
+        "label": "Department of Home Affairs — visa listing",
+        "href": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing"
+      }
+    ],
+    "sections": [
+      {
+        "title": "Course and provider choice",
+        "body": "We help you think through how your course aligns with visa conditions and any later graduate or skilled steps you might consider—not every course is the right fit for every long-term goal."
+      },
+      {
+        "title": "Document readiness",
+        "body": "Financial evidence, identity, and enrolment documents should be consistent and complete before lodgement to reduce requests for further information."
+      }
+    ],
+    "faq": [
+      {
+        "question": "Can a student visa lead to permanent residence?",
+        "answer": "Some graduates explore temporary graduate or skilled pathways after study, but residence is never automatic. Each step has separate eligibility and timing."
+      }
+    ],
+    "related": [
+      { "title": "Australia migration hub", "href": "/destinations/australia" },
+      { "title": "Student visa Australia", "href": "/student-visa-australia" },
+      { "title": "Education consultation", "href": "/destinations/australia/education" }
+    ],
+    "heroImage": {
+      "src": "/images/brisbane-skyline.jpg",
+      "alt": "Brisbane skyline"
+    }
+  },
+  "education": {
+    "metaTitle": "Australia education consultation | courses & visa alignment | MinRosh",
+    "metaDescription": "Education and course planning for Australia with migration awareness: institution choice, genuine student factors, and alignment with study visa requirements.",
+    "eyebrow": "Australia · Education",
+    "headline": "Education planning for Australia",
+    "intro": "Choosing where and what to study affects your student visa story and may influence later options. MinRosh provides structured education consultation alongside migration awareness so you do not pick a course that conflicts with your visa or long-term intent.",
+    "officialResources": [
+      {
+        "label": "Department of Home Affairs — visa listing",
+        "href": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing"
+      }
+    ],
+    "sections": [
+      {
+        "title": "Course shortlisting",
+        "body": "We help compare providers and programs with an eye on credibility, duration, costs, and how the choice reads on a visa application."
+      },
+      {
+        "title": "Link to student visa preparation",
+        "body": "When you are ready, we connect education decisions to student visa documentation and timing."
+      }
+    ],
+    "faq": [],
+    "related": [
+      { "title": "Australia migration hub", "href": "/destinations/australia" },
+      { "title": "Global education consultation", "href": "/education-consultation" },
+      { "title": "Australia student visa", "href": "/destinations/australia/student" }
+    ],
+    "heroImage": {
+      "src": "/images/team-office-real.jpg",
+      "alt": "Education planning meeting"
+    }
+  },
+  "updates": {
+    "metaTitle": "Australia immigration updates | policy tracking | MinRosh",
+    "metaDescription": "How to track Australian immigration changes: official sources, lists, and invitation dynamics. MinRosh updates hub and consultation for your situation.",
+    "eyebrow": "Australia · Updates",
+    "headline": "Keeping up with Australian immigration changes",
+    "intro": "Visa rules, occupation lists, and state nomination settings change. Rely on the Department of Home Affairs and state migration websites for authoritative text; use MinRosh to interpret how changes may affect your personal timeline.",
+    "officialResources": [
+      {
+        "label": "Department of Home Affairs — visa listing",
+        "href": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing"
+      }
+    ],
+    "sections": [
+      {
+        "title": "Primary sources",
+        "body": "Bookmark the official visa listing, news pages, and any state program you follow. Social summaries are not a substitute for the legal instrument or departmental guidance."
+      },
+      {
+        "title": "MinRosh updates hub",
+        "body": "We publish curated notes to help clients know what to watch. Pair that with a consultation when a change affects your occupation or nomination plan."
+      }
+    ],
+    "faq": [],
+    "related": [
+      { "title": "Site updates hub", "href": "/updates" },
+      { "title": "Australia migration hub", "href": "/destinations/australia" }
+    ],
+    "heroImage": {
+      "src": "/images/brisbane-skyline.jpg",
+      "alt": "Brisbane"
+    }
+  },
+  "faq": {
+    "metaTitle": "Australia visa FAQ | common questions | MinRosh Migration",
+    "metaDescription": "Frequently asked questions about Australian visas: processing, agents, costs, and next steps. General information only; verify on Home Affairs.",
+    "eyebrow": "Australia · FAQ",
+    "headline": "Australia migration frequently asked questions",
+    "intro": "These answers are introductory. Visa criteria, charges, and processing change—always check immi.homeaffairs.gov.au or speak with a registered migration agent for advice tailored to you.",
+    "officialResources": [
+      {
+        "label": "Department of Home Affairs — visa listing",
+        "href": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing"
+      }
+    ],
+    "sections": [
+      {
+        "title": "Using this FAQ",
+        "body": "If your situation is unusual or high-stakes, book a consultation rather than relying on generic FAQs alone."
+      }
+    ],
+    "faq": [
+      {
+        "question": "Do I need a migration agent for Australia?",
+        "answer": "You are not required to use an agent for every visa, but professional help can reduce errors and improve strategy, especially for skilled, partner, or employer-sponsored cases."
+      },
+      {
+        "question": "How much does an Australian visa cost?",
+        "answer": "Government charges vary by subclass. You may also pay for English tests, skills assessments, health checks, and police certificates."
+      },
+      {
+        "question": "How long does processing take?",
+        "answer": "Processing times are published as indicative ranges and move with caseload and application quality."
+      }
+    ],
+    "related": [
+      { "title": "Australia migration hub", "href": "/destinations/australia" },
+      { "title": "Global FAQ", "href": "/faq" }
+    ],
+    "heroImage": {
+      "src": "/images/team-office.jpg",
+      "alt": "MinRosh office"
+    }
+  },
+  "about": {
+    "metaTitle": "About MinRosh | Australia migration focus | Brisbane",
+    "metaDescription": "MinRosh Migration supports Australia-focused visa strategy from Brisbane: skilled, student, partner, and employer-sponsored pathways with clear sequencing.",
+    "eyebrow": "Australia · About",
+    "headline": "MinRosh and Australian migration guidance",
+    "intro": "MinRosh is built around structured, plain-language planning for Australian visas. While we track other countries too, Australia remains our core practice focus for many clients.",
+    "officialResources": [
+      {
+        "label": "Department of Home Affairs — visa listing",
+        "href": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing"
+      }
+    ],
+    "sections": [
+      {
+        "title": "Our approach",
+        "body": "We prioritise realistic sequencing, document quality, and honest views on competitiveness rather than generic encouragement."
+      }
+    ],
+    "faq": [],
+    "related": [
+      { "title": "Global about page", "href": "/about" },
+      { "title": "Australia hub", "href": "/destinations/australia" }
+    ],
+    "heroImage": {
+      "src": "/images/team-office-real.jpg",
+      "alt": "MinRosh Migration team"
+    }
+  },
+  "contact": {
+    "metaTitle": "Contact MinRosh | Australia visa enquiry | Brisbane",
+    "metaDescription": "Contact MinRosh Migration for Australia visa questions: email, phone, WhatsApp, and consultation booking.",
+    "eyebrow": "Australia · Contact",
+    "headline": "Contact MinRosh about Australia visas",
+    "intro": "Share your goal, timeline, and any tests or assessments already underway. We respond with the most relevant next step—often a short consultation for complex skilled or partner matters.",
+    "officialResources": [
+      {
+        "label": "Department of Home Affairs — visa listing",
+        "href": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing"
+      }
+    ],
+    "sections": [
+      {
+        "title": "Fastest ways to reach us",
+        "body": "Use the enquiry form on the main contact page, book a consultation online, or message via WhatsApp for quick triage. Include your occupation or relationship context in one line so we can route you efficiently."
+      }
+    ],
+    "faq": [],
+    "related": [
+      { "title": "Main contact & form", "href": "/contact" },
+      { "title": "Book consultation", "href": "/book-consultation" },
+      { "title": "Australia hub", "href": "/destinations/australia" }
+    ],
+    "heroImage": {
+      "src": "/images/team-office-real.jpg",
+      "alt": "Contact MinRosh Migration"
+    }
+  }
+}

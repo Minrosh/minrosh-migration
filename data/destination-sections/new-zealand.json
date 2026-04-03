@@ -1,0 +1,245 @@
+{
+  "skilled": {
+    "metaTitle": "New Zealand skilled work & residence pathways | MinRosh",
+    "metaDescription": "Skilled work and residence planning for New Zealand: accredited employer work visas, skills, and pathway sequencing. Verify requirements on Immigration New Zealand.",
+    "eyebrow": "New Zealand · Skilled",
+    "headline": "New Zealand skilled work and residence planning",
+    "intro": "New Zealand’s work and residence system includes several visa categories with different job offers, skill thresholds, and residence tracks. Employers, accreditation, and labour market tests can all matter depending on the pathway. Use Immigration New Zealand’s find-a-visa tool for authoritative eligibility, and MinRosh for structured planning around your timeline.",
+    "officialResources": [
+      {
+        "label": "Immigration New Zealand — find a visa",
+        "href": "https://www.immigration.govt.nz/process-to-apply/find-a-visa-tool/"
+      }
+    ],
+    "sections": [
+      {
+        "title": "Clarifying your goal",
+        "body": "We start with whether you are aiming for temporary skilled work, a longer residence pathway, or a mix. Your job offer, occupation, and credentials drive which visas are realistic.",
+        "bullets": [
+          "Job offer and employer accreditation context",
+          "Skills, qualifications, and registration requirements",
+          "Health, character, and English expectations for your category"
+        ]
+      },
+      {
+        "title": "Documentation and timing",
+        "body": "NZ applications often need tight alignment between employment agreements, role descriptions, and your background. Early document planning reduces rework when INZ requests clarification."
+      }
+    ],
+    "faq": [
+      {
+        "question": "Do I need a job offer for every NZ work visa?",
+        "answer": "Many skilled categories require an offer or employer involvement, but the exact rule depends on the visa type. Check the official visa page for the category you are considering."
+      }
+    ],
+    "related": [
+      { "title": "New Zealand migration hub", "href": "/destinations/new-zealand" },
+      { "title": "Contact", "href": "/destinations/new-zealand/contact" }
+    ],
+    "heroImage": {
+      "src": "/images/team-office-real.jpg",
+      "alt": "Professional migration planning"
+    }
+  },
+  "partner": {
+    "metaTitle": "New Zealand partner & family visas | MinRosh",
+    "metaDescription": "Partner and dependent pathways for New Zealand: relationship evidence and sponsorship context. Confirm criteria on Immigration New Zealand.",
+    "eyebrow": "New Zealand · Partner",
+    "headline": "New Zealand partner and family visas",
+    "intro": "Partner-based categories require credible evidence of a genuine relationship and may involve health and character requirements for both partners. Requirements differ by visa type; always read the official INZ instructions for the visa you intend to apply for.",
+    "officialResources": [
+      {
+        "label": "Immigration New Zealand — find a visa",
+        "href": "https://www.immigration.govt.nz/process-to-apply/find-a-visa-tool/"
+      }
+    ],
+    "sections": [
+      {
+        "title": "Evidence themes",
+        "body": "Similar to other countries, decision-makers look for consistency across finances, living together, social recognition, and commitment. We help you organise a coherent narrative and document set."
+      }
+    ],
+    "faq": [],
+    "related": [
+      { "title": "New Zealand hub", "href": "/destinations/new-zealand" },
+      { "title": "Contact", "href": "/destinations/new-zealand/contact" }
+    ],
+    "heroImage": {
+      "src": "/images/team-office.jpg",
+      "alt": "Consultation"
+    }
+  },
+  "student": {
+    "metaTitle": "New Zealand student visa planning | study in NZ | MinRosh",
+    "metaDescription": "Student visa guidance for New Zealand: enrolment, funds, and genuine study intent. Official requirements on Immigration New Zealand.",
+    "eyebrow": "New Zealand · Student",
+    "headline": "Study in New Zealand — visa planning",
+    "intro": "A New Zealand student visa ties you to an approved programme and provider. You must meet funds, health, and character rules and show a genuine intention to study. If you later consider work or residence, plan early so course choice does not conflict with longer-term goals.",
+    "officialResources": [
+      {
+        "label": "Immigration New Zealand — find a visa",
+        "href": "https://www.immigration.govt.nz/process-to-apply/find-a-visa-tool/"
+      }
+    ],
+    "sections": [
+      {
+        "title": "Provider and programme fit",
+        "body": "We help you think through how your offer of place, fees, and living costs come together in an application-ready picture."
+      }
+    ],
+    "faq": [],
+    "related": [
+      { "title": "New Zealand hub", "href": "/destinations/new-zealand" },
+      { "title": "Education planning", "href": "/destinations/new-zealand/education" }
+    ],
+    "heroImage": {
+      "src": "/images/brisbane-skyline.jpg",
+      "alt": "City study context"
+    }
+  },
+  "education": {
+    "metaTitle": "New Zealand education consultation | courses & visas | MinRosh",
+    "metaDescription": "Course and institution planning for New Zealand with visa awareness: offers of place, costs, and student visa alignment.",
+    "eyebrow": "New Zealand · Education",
+    "headline": "Education planning for New Zealand",
+    "intro": "Choosing a programme and provider affects both your student visa story and your experience abroad. MinRosh helps you shortlist options with an eye on credibility, costs, and how the plan reads to Immigration New Zealand.",
+    "officialResources": [
+      {
+        "label": "Immigration New Zealand — find a visa",
+        "href": "https://www.immigration.govt.nz/process-to-apply/find-a-visa-tool/"
+      }
+    ],
+    "sections": [
+      {
+        "title": "From course choice to visa prep",
+        "body": "Once you hold a credible offer of place, we align timelines with English tests, funds evidence, and any dependants included in your plan."
+      }
+    ],
+    "faq": [],
+    "related": [
+      { "title": "New Zealand student visa", "href": "/destinations/new-zealand/student" },
+      { "title": "Global education consultation", "href": "/education-consultation" }
+    ],
+    "heroImage": {
+      "src": "/images/team-office-real.jpg",
+      "alt": "Education consultation"
+    }
+  },
+  "updates": {
+    "metaTitle": "New Zealand immigration updates | INZ news | MinRosh",
+    "metaDescription": "Tracking Immigration New Zealand policy and fee changes. Use official INZ sources and MinRosh for tailored interpretation.",
+    "eyebrow": "New Zealand · Updates",
+    "headline": "New Zealand immigration updates",
+    "intro": "INZ adjusts fees, instructions, and sometimes pathways over time. Rely on immigration.govt.nz announcements for authoritative detail. MinRosh helps clients interpret what a change might mean for their specific stage.",
+    "officialResources": [
+      {
+        "label": "Immigration New Zealand — find a visa",
+        "href": "https://www.immigration.govt.nz/process-to-apply/find-a-visa-tool/"
+      }
+    ],
+    "sections": [
+      {
+        "title": "What to monitor",
+        "body": "Watch visa instruction updates, median wage references where applicable, and accreditation rules if you depend on employer-backed categories."
+      }
+    ],
+    "faq": [],
+    "related": [
+      { "title": "Site updates hub", "href": "/updates" },
+      { "title": "New Zealand hub", "href": "/destinations/new-zealand" }
+    ],
+    "heroImage": {
+      "src": "/images/team-office.jpg",
+      "alt": "Updates"
+    }
+  },
+  "faq": {
+    "metaTitle": "New Zealand visa FAQ | MinRosh Migration",
+    "metaDescription": "Common questions about New Zealand visas and how MinRosh supports NZ-bound clients from Australia.",
+    "eyebrow": "New Zealand · FAQ",
+    "headline": "New Zealand visa questions",
+    "intro": "These notes are general. Always confirm eligibility on Immigration New Zealand before making decisions.",
+    "officialResources": [
+      {
+        "label": "Immigration New Zealand — find a visa",
+        "href": "https://www.immigration.govt.nz/process-to-apply/find-a-visa-tool/"
+      }
+    ],
+    "sections": [],
+    "faq": [
+      {
+        "question": "Can MinRosh help if I am not in Australia?",
+        "answer": "Many clients work with us remotely. Contact us with your country of residence and goal so we can suggest the right next step."
+      },
+      {
+        "question": "Where do I find official NZ visa fees?",
+        "answer": "Fees and charges are published by Immigration New Zealand on the relevant visa pages and fee schedules."
+      }
+    ],
+    "related": [
+      { "title": "New Zealand hub", "href": "/destinations/new-zealand" },
+      { "title": "Global FAQ", "href": "/faq" }
+    ],
+    "heroImage": {
+      "src": "/images/brisbane-skyline.jpg",
+      "alt": "City skyline"
+    }
+  },
+  "about": {
+    "metaTitle": "MinRosh & New Zealand pathways | migration guidance",
+    "metaDescription": "How MinRosh Migration supports New Zealand visa planning alongside Australian practice.",
+    "eyebrow": "New Zealand · About",
+    "headline": "MinRosh and New Zealand migration",
+    "intro": "MinRosh is Brisbane-based with strong Australian visa depth, and we also support clients exploring New Zealand study, work, and residence routes with structured planning and official-source discipline.",
+    "officialResources": [
+      {
+        "label": "Immigration New Zealand — find a visa",
+        "href": "https://www.immigration.govt.nz/process-to-apply/find-a-visa-tool/"
+      }
+    ],
+    "sections": [
+      {
+        "title": "How we help",
+        "body": "We focus on sequencing, document clarity, and honest fit checks rather than promising outcomes INZ cannot guarantee."
+      }
+    ],
+    "faq": [],
+    "related": [
+      { "title": "Global about", "href": "/about" },
+      { "title": "New Zealand hub", "href": "/destinations/new-zealand" }
+    ],
+    "heroImage": {
+      "src": "/images/team-office-real.jpg",
+      "alt": "MinRosh"
+    }
+  },
+  "contact": {
+    "metaTitle": "Contact MinRosh | New Zealand visa enquiry",
+    "metaDescription": "Enquire about New Zealand visas with MinRosh Migration: phone, email, WhatsApp, and consultation booking.",
+    "eyebrow": "New Zealand · Contact",
+    "headline": "Contact us about New Zealand",
+    "intro": "Tell us whether you are focused on study, skilled work, partnership, or residence, and your target timeframe. We will suggest the clearest next step and relevant official pages to read in parallel.",
+    "officialResources": [
+      {
+        "label": "Immigration New Zealand — find a visa",
+        "href": "https://www.immigration.govt.nz/process-to-apply/find-a-visa-tool/"
+      }
+    ],
+    "sections": [
+      {
+        "title": "Reach MinRosh",
+        "body": "Use the main contact page for the enquiry form, or book a consultation directly. Mention New Zealand in your message so we route you efficiently."
+      }
+    ],
+    "faq": [],
+    "related": [
+      { "title": "Main contact", "href": "/contact" },
+      { "title": "Book consultation", "href": "/book-consultation" },
+      { "title": "New Zealand hub", "href": "/destinations/new-zealand" }
+    ],
+    "heroImage": {
+      "src": "/images/team-office.jpg",
+      "alt": "Contact"
+    }
+  }
+}

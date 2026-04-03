@@ -3,8 +3,9 @@ import Link from "next/link";
 import { SiteTopbar } from "./site-topbar";
 import { SiteFooter } from "./site-footer";
 import { getFooterStats } from "../lib/site-stats";
+import { getDestinationNavLinks } from "../lib/destination-nav";
 
-const primaryLinks = [
+const globalPrimaryLinks = [
   { href: "/", label: "Home" },
   { href: "/skilled-migration", label: "Skilled" },
   { href: "/partner-visa-australia", label: "Partner" },
@@ -16,15 +17,36 @@ const primaryLinks = [
   { href: "/contact", label: "Contact" },
 ];
 
-export function SiteShell({ siteData, currentPath, children }) {
+/**
+ * @param {object} props
+ * @param {{ slug: string, name: string } | null} [props.destinationContext] — when set, primary nav targets /destinations/[slug]/…
+ * @param {"au" | "neutral"} [props.headerBackdrop] — Australia-style hero vs neutral header image
+ */
+export function SiteShell({
+  siteData,
+  currentPath,
+  children,
+  destinationContext = null,
+  headerBackdrop = "au",
+}) {
   const footerStats = getFooterStats();
+  const navLinks = destinationContext
+    ? getDestinationNavLinks(destinationContext.slug)
+    : globalPrimaryLinks;
+  const brandHref = destinationContext ? `/destinations/${destinationContext.slug}` : "/";
+  const brandAria = destinationContext
+    ? `Go to ${destinationContext.name} migration hub`
+    : "Go to MinRosh homepage";
+
+  const backdropModifier =
+    headerBackdrop === "neutral" ? "site-header--backdrop-neutral" : "site-header--backdrop-au";
 
   return (
     <div className="portal-shell">
       <SiteTopbar siteData={siteData} />
-      <header className="site-header site-header--backdrop">
+      <header className={`site-header site-header--backdrop ${backdropModifier}`}>
         <div className="site-header__inner">
-          <Link href="/" className="brand" aria-label="Go to MinRosh homepage">
+          <Link href={brandHref} className="brand" aria-label={brandAria}>
             <span className="brand__mark" aria-hidden="true">
               <Image
                 src="/images/minrosh-logo.png"
@@ -40,7 +62,7 @@ export function SiteShell({ siteData, currentPath, children }) {
           </Link>
           <nav className="site-nav site-nav--static" aria-label="Primary">
             <div className="site-nav__group site-nav__group--main">
-              {primaryLinks.map((link) => (
+              {navLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}

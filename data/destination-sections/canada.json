@@ -1,0 +1,245 @@
+{
+  "skilled": {
+    "metaTitle": "Canada skilled immigration overview | IRCC planning | MinRosh",
+    "metaDescription": "Skilled pathways for Canada: Express Entry concepts, work permits, and PNPs at a high level. Always verify on Canada.ca / IRCC.",
+    "eyebrow": "Canada · Skilled",
+    "headline": "Canada skilled immigration planning",
+    "intro": "Canada’s economic immigration includes Express Entry-managed programs, provincial nominations, and various work permits. Eligibility depends on age, language, education, work experience, and sometimes a job offer or provincial criteria. Use IRCC’s official tools and program instructions; MinRosh helps you organise questions and sequencing before you invest in language tests or credential assessments.",
+    "officialResources": [
+      {
+        "label": "Canada.ca — visit / entry requirements (IRCC)",
+        "href": "https://www.canada.ca/en/immigration-refugees-citizenship/services/visit-canada/entry-requirements-country.html"
+      },
+      {
+        "label": "Canada.ca — Immigration and citizenship",
+        "href": "https://www.canada.ca/en/services/immigration-citizenship.html"
+      }
+    ],
+    "sections": [
+      {
+        "title": "Where clients often start",
+        "body": "Language scores, educational credential assessment (where applicable), and a clear work history narrative are common foundations. We help you see how those pieces connect to the program you are considering.",
+        "bullets": [
+          "Language testing strategy",
+          "ECA and qualification matching",
+          "Provincial program fit versus federal tracks"
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "Is Express Entry the same as permanent residence?",
+        "answer": "Express Entry is a system used to manage applications for certain economic PR programs. Entering the pool is not the same as receiving an invitation to apply."
+      }
+    ],
+    "related": [
+      { "title": "Canada migration hub", "href": "/destinations/canada" },
+      { "title": "Contact", "href": "/destinations/canada/contact" }
+    ],
+    "heroImage": {
+      "src": "/images/team-office-real.jpg",
+      "alt": "Planning session"
+    }
+  },
+  "partner": {
+    "metaTitle": "Canada partner & family immigration | MinRosh",
+    "metaDescription": "Family sponsorship and partner routes for Canada at a planning level. Confirm eligibility on IRCC.",
+    "eyebrow": "Canada · Partner",
+    "headline": "Canada partner and family routes",
+    "intro": "Sponsorship programs have sponsor eligibility, undertaking obligations, and detailed forms. Requirements vary by inland versus overseas routes and by who is sponsored. Read IRCC’s family sponsorship pages for authoritative steps.",
+    "officialResources": [
+      {
+        "label": "Canada.ca — Immigration and citizenship",
+        "href": "https://www.canada.ca/en/services/immigration-citizenship.html"
+      }
+    ],
+    "sections": [
+      {
+        "title": "Planning sponsorship",
+        "body": "We help sponsors and applicants understand evidence expectations and timelines at a high level before you commit to a complex paper trail."
+      }
+    ],
+    "faq": [],
+    "related": [
+      { "title": "Canada hub", "href": "/destinations/canada" },
+      { "title": "Contact", "href": "/destinations/canada/contact" }
+    ],
+    "heroImage": {
+      "src": "/images/team-office.jpg",
+      "alt": "Family migration discussion"
+    }
+  },
+  "student": {
+    "metaTitle": "Canada study permit planning | MinRosh",
+    "metaDescription": "Study permit guidance for Canada: designated learning institutions, funds, and genuine student factors. Official rules on Canada.ca.",
+    "eyebrow": "Canada · Student",
+    "headline": "Study in Canada — study permits",
+    "intro": "Most international students need a study permit tied to a designated learning institution acceptance. You must show you can pay tuition and living costs and that you will leave Canada when your permit ends unless you obtain another status. Check IRCC for the latest study permit checklist.",
+    "officialResources": [
+      {
+        "label": "Canada.ca — Immigration and citizenship",
+        "href": "https://www.canada.ca/en/services/immigration-citizenship.html"
+      }
+    ],
+    "sections": [
+      {
+        "title": "Institution and province",
+        "body": "DLI choice, province, and post-graduation work permit rules can interact. We help you ask the right questions early."
+      }
+    ],
+    "faq": [],
+    "related": [
+      { "title": "Canada hub", "href": "/destinations/canada" },
+      { "title": "Education planning", "href": "/destinations/canada/education" }
+    ],
+    "heroImage": {
+      "src": "/images/brisbane-skyline.jpg",
+      "alt": "Study abroad planning"
+    }
+  },
+  "education": {
+    "metaTitle": "Canada education consultation | DLI & permit alignment | MinRosh",
+    "metaDescription": "Course and institution planning for Canada with study permit awareness.",
+    "eyebrow": "Canada · Education",
+    "headline": "Education planning for Canada",
+    "intro": "Selecting a programme and DLI affects your study permit narrative and costs. MinRosh helps align education choices with realistic visa documentation.",
+    "officialResources": [
+      {
+        "label": "Canada.ca — Immigration and citizenship",
+        "href": "https://www.canada.ca/en/services/immigration-citizenship.html"
+      }
+    ],
+    "sections": [
+      {
+        "title": "Shortlisting",
+        "body": "We compare options for credibility, duration, total cost, and how they support your stated study goals."
+      }
+    ],
+    "faq": [],
+    "related": [
+      { "title": "Canada student", "href": "/destinations/canada/student" },
+      { "title": "Global education consultation", "href": "/education-consultation" }
+    ],
+    "heroImage": {
+      "src": "/images/team-office-real.jpg",
+      "alt": "Education advice"
+    }
+  },
+  "updates": {
+    "metaTitle": "Canada immigration updates | IRCC changes | MinRosh",
+    "metaDescription": "Tracking Canadian immigration updates via IRCC. MinRosh helps interpret impact on your case.",
+    "eyebrow": "Canada · Updates",
+    "headline": "Canada immigration updates",
+    "intro": "IRCC publishes news releases, intake pauses, and instruction updates. Treat social media summaries as secondary to Canada.ca. We help clients understand whether a change touches their category.",
+    "officialResources": [
+      {
+        "label": "Canada.ca — Immigration and citizenship",
+        "href": "https://www.canada.ca/en/services/immigration-citizenship.html"
+      }
+    ],
+    "sections": [
+      {
+        "title": "Reliable monitoring",
+        "body": "Follow IRCC program pages you depend on, and note effective dates when rules change mid-year."
+      }
+    ],
+    "faq": [],
+    "related": [
+      { "title": "Site updates hub", "href": "/updates" },
+      { "title": "Canada hub", "href": "/destinations/canada" }
+    ],
+    "heroImage": {
+      "src": "/images/team-office.jpg",
+      "alt": "News"
+    }
+  },
+  "faq": {
+    "metaTitle": "Canada visa FAQ | MinRosh Migration",
+    "metaDescription": "Introductory FAQ for Canada-bound clients working with MinRosh from Australia or abroad.",
+    "eyebrow": "Canada · FAQ",
+    "headline": "Canada immigration questions",
+    "intro": "Answers here are high-level. Use IRCC for binding eligibility and document lists.",
+    "officialResources": [
+      {
+        "label": "Canada.ca — Immigration and citizenship",
+        "href": "https://www.canada.ca/en/services/immigration-citizenship.html"
+      }
+    ],
+    "sections": [],
+    "faq": [
+      {
+        "question": "Do I need biometrics for Canada?",
+        "answer": "Many applicants must give biometrics. IRCC explains who needs them and how to book."
+      },
+      {
+        "question": "Can MinRosh help with Express Entry points?",
+        "answer": "We can help you understand factor breakdowns conceptually and what to verify next; precise scoring is determined by IRCC rules in force when you apply."
+      }
+    ],
+    "related": [
+      { "title": "Canada hub", "href": "/destinations/canada" },
+      { "title": "Global FAQ", "href": "/faq" }
+    ],
+    "heroImage": {
+      "src": "/images/brisbane-skyline.jpg",
+      "alt": "FAQ"
+    }
+  },
+  "about": {
+    "metaTitle": "MinRosh & Canada pathways | migration guidance",
+    "metaDescription": "How MinRosh supports Canada visa and education planning alongside Australian services.",
+    "eyebrow": "Canada · About",
+    "headline": "MinRosh and Canadian migration",
+    "intro": "We help clients compare timing and effort across destinations. For Canada, we emphasise official IRCC guidance and realistic preparation for language tests and document-heavy applications.",
+    "officialResources": [
+      {
+        "label": "Canada.ca — Immigration and citizenship",
+        "href": "https://www.canada.ca/en/services/immigration-citizenship.html"
+      }
+    ],
+    "sections": [
+      {
+        "title": "Our role",
+        "body": "Structured triage, sequencing, and clarity—not a substitute for reading IRCC instructions where you self-represent."
+      }
+    ],
+    "faq": [],
+    "related": [
+      { "title": "Global about", "href": "/about" },
+      { "title": "Canada hub", "href": "/destinations/canada" }
+    ],
+    "heroImage": {
+      "src": "/images/team-office-real.jpg",
+      "alt": "About"
+    }
+  },
+  "contact": {
+    "metaTitle": "Contact MinRosh | Canada immigration enquiry",
+    "metaDescription": "Contact MinRosh Migration about Canadian study, work, or permanent residence planning.",
+    "eyebrow": "Canada · Contact",
+    "headline": "Contact us about Canada",
+    "intro": "Share your current country of residence, goal (study, work, PR), and any language test or job offer status. We will suggest next steps and reading on Canada.ca.",
+    "officialResources": [
+      {
+        "label": "Canada.ca — Immigration and citizenship",
+        "href": "https://www.canada.ca/en/services/immigration-citizenship.html"
+      }
+    ],
+    "sections": [
+      {
+        "title": "Ways to connect",
+        "body": "Use /contact for the form or book a consultation. Mention Canada in the subject or first line."
+      }
+    ],
+    "faq": [],
+    "related": [
+      { "title": "Main contact", "href": "/contact" },
+      { "title": "Book consultation", "href": "/book-consultation" },
+      { "title": "Canada hub", "href": "/destinations/canada" }
+    ],
+    "heroImage": {
+      "src": "/images/team-office.jpg",
+      "alt": "Contact"
+    }
+  }
+}

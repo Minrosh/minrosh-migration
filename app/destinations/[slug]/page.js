@@ -5,6 +5,7 @@ import { ContentPage } from "../../../components/content-page";
 import { SiteShell } from "../../../components/site-shell";
 import { StructuredData } from "../../../components/structured-data";
 import { buildMetadata, breadcrumbJsonLd } from "../../../lib/seo";
+import { destinationHeaderBackdrop } from "../../../lib/destination-nav";
 
 export function generateStaticParams() {
   return Object.keys(destinations).map((slug) => ({ slug }));
@@ -35,7 +36,12 @@ export default async function DestinationPage({ params }) {
   const path = `/destinations/${slug}`;
 
   return (
-    <SiteShell siteData={siteData} currentPath={path}>
+    <SiteShell
+      siteData={siteData}
+      currentPath={path}
+      destinationContext={{ slug, name: page.name }}
+      headerBackdrop={destinationHeaderBackdrop(slug)}
+    >
       <StructuredData
         data={breadcrumbJsonLd([
           { name: "Home", path: "/" },
