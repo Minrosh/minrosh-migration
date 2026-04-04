@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   useReactTable,
   getCoreRowModel,
@@ -16,6 +17,9 @@ import { Badge } from "@/components/ui/badge";
 const columnHelper = createColumnHelper();
 
 export function InvoicesPanel() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const statusFilter = searchParams.get("status");
   const [invoices, setInvoices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [customerName, setCustomerName] = useState("");
@@ -36,6 +40,13 @@ export function InvoicesPanel() {
   useEffect(() => {
     load();
   }, [load]);
+
+  const filteredInvoices = useMemo(() => {
+    if (statusFilter === "pending" || statusFilter === "paid") {
+      return invoices.filter((i) => i.status === statusFilter);
+    }
+    return invoices;
+  }, [invoices, statusFilter]);
 
   const columns = useMemo(
     () => [
@@ -95,7 +106,7 @@ export function InvoicesPanel() {
   );
 
   const table = useReactTable({
-    data: invoices,
+    data: filteredInvoices,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
@@ -160,7 +171,26 @@ export function InvoicesPanel() {
 
       <Card>
         <CardHeader>
-          <CardTitle>All invoices</CardTitle>
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <CardTitle>All invoices</CardTitle>
+            {statusFilter === "pending" || statusFilter === "paid" ? (
+              <div className="flex flex-wrap items-center gap-2 text-sm">
+                <span className="text-muted-foreground">
+                  Filter: <strong className="text-foreground">{statusFilter}</strong> (
+                  {filteredInvoices.length} shown)
+                </span>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  className="h-8"
+                  onClick={() => router.replace("/admin/invoices", { scroll: false })}
+                >
+                  Show all
+                </Button>
+              </div>
+            ) : null}
+          </div>
         </CardHeader>
         <CardContent className="overflow-x-auto">
           <table className="w-full text-sm">
@@ -176,15 +206,25 @@ export function InvoicesPanel() {
               ))}
             </thead>
             <tbody>
-              {table.getRowModel().rows.map((row) => (
-                <tr key={row.id} className="border-b border-border/60">
-                  {row.getVisibleCells().map((cell) => (
-                    <td key={cell.id} className="p-2 align-top">
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                    </td>
-                  ))}
+              {table.getRowModel().rows.length === 0 ? (
+                <tr>
+                  <td colSpan={8} className="p-6 text-center text-muted-foreground">
+                    {statusFilter === "pending" || statusFilter === "paid"
+                      ? "No invoices match this filter."
+                      : "No invoices yet. Create one above."}
+                  </td>
                 </tr>
-              ))}
+              ) : (
+                table.getRowModel().rows.map((row) => (
+                  <tr key={row.id} className="border-b border-border/60">
+                    {row.getVisibleCells().map((cell) => (
+                      <td key={cell.id} className="p-2 align-top">
+                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      </td>
+                    ))}
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </CardContent>

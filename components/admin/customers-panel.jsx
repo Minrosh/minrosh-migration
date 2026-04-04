@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   useReactTable,
   getCoreRowModel,
@@ -13,8 +14,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
+import { CustomerDetailDrawer } from "@/components/admin/customer-detail-drawer";
 
 const columnHelper = createColumnHelper();
+
+const TABS = ["current", "past", "prospective"];
+
+function parseTab(value) {
+  return TABS.includes(value) ? value : null;
+}
 
 function statusVariant(s) {
   if (s === "current") return "success";
@@ -23,12 +31,20 @@ function statusVariant(s) {
 }
 
 export function CustomersPanel() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [customers, setCustomers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState("prospective");
-  const [tab, setTab] = useState("current");
+  const [tab, setTab] = useState(() => parseTab(searchParams.get("tab")) || "current");
+  const [detailId, setDetailId] = useState(null);
+
+  useEffect(() => {
+    const t = parseTab(searchParams.get("tab"));
+    if (t) setTab(t);
+  }, [searchParams]);
 
   const load = useCallback(() => {
     fetch("/api/admin/customers")
@@ -44,9 +60,20 @@ export function CustomersPanel() {
     load();
   }, [load]);
 
+  useEffect(() => {
+    if (detailId && !customers.some((c) => c.id === detailId)) {
+      setDetailId(null);
+    }
+  }, [customers, detailId]);
+
   const filtered = useMemo(
     () => customers.filter((c) => c.status === tab),
     [customers, tab]
+  );
+
+  const detailCustomer = useMemo(
+    () => (detailId ? customers.find((c) => c.id === detailId) ?? null : null),
+    [customers, detailId]
   );
 
   const columns = useMemo(
@@ -82,46 +109,23 @@ export function CustomersPanel() {
       columnHelper.display({
         id: "docs",
         header: "Docs",
-        cell: ({ row }) => <span>{row.original.documents?.length || 0}</span>,
-      }),
-      columnHelper.display({
-        id: "actions",
-        header: "",
-        cell: ({ row }) => (
-          <div className="flex flex-col gap-1">
-            <Button
-              type="button"
-              variant="secondary"
-              size="sm"
-              className="h-8"
-              onClick={async () => {
-                await fetch("/api/admin/customers", {
-                  method: "POST",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({ action: "regenerateToken", id: row.original.id }),
-                });
-                load();
-              }}
-            >
-              New token
-            </Button>
-            <Button
-              type="button"
-              variant="destructive"
-              size="sm"
-              className="h-8"
-              onClick={async () => {
-                if (!confirm("Delete this customer?")) return;
-                await fetch(`/api/admin/customers?id=${encodeURIComponent(row.original.id)}`, {
-                  method: "DELETE",
-                });
-                load();
-              }}
-            >
-              Delete
-            </Button>
-          </div>
-        ),
+        cell: ({ row }) => {
+          const docs = row.original.documents || [];
+          return (
+            <div className="flex max-w-[200px] flex-col gap-2">
+              <p className="text-sm font-medium">{docs.length} file(s)</p>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="h-8 w-full"
+                onClick={() => setDetailId(row.original.id)}
+              >
+                Open details
+              </Button>
+            </div>
+          );
+        },
       }),
     ],
     [load]
@@ -150,6 +154,12 @@ export function CustomersPanel() {
 
   return (
     <div className="space-y-8">
+      <CustomerDetailDrawer
+        customer={detailCustomer}
+        open={Boolean(detailId && detailCustomer)}
+        onClose={() => setDetailId(null)}
+        onRefresh={load}
+      />
       <Card>
         <CardHeader>
           <CardTitle>Add customer</CardTitle>
@@ -182,7 +192,13 @@ export function CustomersPanel() {
         </CardContent>
       </Card>
 
-      <Tabs value={tab} onValueChange={setTab}>
+      <Tabs
+        value={tab}
+        onValueChange={(v) => {
+          setTab(v);
+          router.replace(`/admin/customers?tab=${encodeURIComponent(v)}`, { scroll: false });
+        }}
+      >
         <TabsList>
           <TabsTrigger value="current">Current</TabsTrigger>
           <TabsTrigger value="past">Past</TabsTrigger>
@@ -206,7 +222,7 @@ export function CustomersPanel() {
             <tbody>
               {table.getRowModel().rows.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="p-4 text-muted-foreground">
+                  <td colSpan={5} className="p-4 text-muted-foreground">
                     No customers in this tab.
                   </td>
                 </tr>

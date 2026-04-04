@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { CustomersPanel } from "@/components/admin/customers-panel";
 
 export default function CustomersPage() {
@@ -6,9 +7,13 @@ export default function CustomersPage() {
       <h1 className="mb-2 text-3xl font-bold tracking-tight">Customers</h1>
       <p className="mb-8 text-muted-foreground">
         Manage profiles, statuses, and secure document upload links. Files save under{" "}
-        <code className="rounded bg-muted px-1">public/uploads/[customer-id]/</code>.
+        <code className="rounded bg-muted px-1">public/uploads/[customer-name-short-id]/</code> so
+        staff can access them directly from the server outside admin too. Open a row with{" "}
+        <strong>Open details</strong> for documents, ZIP download, and internal notes.
       </p>
-      <CustomersPanel />
+      <Suspense fallback={<p className="text-muted-foreground">Loading…</p>}>
+        <CustomersPanel />
+      </Suspense>
     </div>
   );
 }

@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { InvoicesPanel } from "@/components/admin/invoices-panel";
 
 export default function InvoicesPage() {
@@ -6,8 +7,11 @@ export default function InvoicesPage() {
       <h1 className="mb-2 text-3xl font-bold tracking-tight">Invoices</h1>
       <p className="mb-8 text-muted-foreground">
         Create records in <code className="rounded bg-muted px-1">data/invoices.json</code> and download PDFs.
+        Use the dashboard &quot;Pending invoices&quot; tile to jump here filtered to pending.
       </p>
-      <InvoicesPanel />
+      <Suspense fallback={<p className="text-muted-foreground">Loading…</p>}>
+        <InvoicesPanel />
+      </Suspense>
     </div>
   );
 }

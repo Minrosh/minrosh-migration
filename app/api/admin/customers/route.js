@@ -47,8 +47,21 @@ export async function PATCH(request) {
   } catch {
     return Response.json({ error: "Invalid JSON" }, { status: 400 });
   }
-  const { id, ...patch } = body;
+  const { id, ...rest } = body;
   if (!id) return Response.json({ error: "id required" }, { status: 400 });
+  const allowed = new Set(["name", "email", "status", "notes"]);
+  const patch = {};
+  for (const key of allowed) {
+    if (rest[key] === undefined) continue;
+    if (key === "name" || key === "email" || key === "notes") {
+      patch[key] = String(rest[key]).trim();
+    } else if (key === "status") {
+      patch[key] = rest[key];
+    }
+  }
+  if (Object.keys(patch).length === 0) {
+    return Response.json({ error: "No valid fields to update" }, { status: 400 });
+  }
   const row = updateCustomer(id, patch);
   if (!row) return Response.json({ error: "Not found" }, { status: 404 });
   appendAudit("customer_update", id);

@@ -1,4 +1,5 @@
 import { cookies } from "next/headers";
+import { hasAdminPasswordConfigured, verifyAdminPassword } from "@/lib/admin/admin-auth";
 import { createSessionToken } from "@/lib/admin/session";
 
 export async function POST(request) {
@@ -10,11 +11,10 @@ export async function POST(request) {
   }
 
   const password = String(body?.password || "");
-  const expected = process.env.ADMIN_PASSWORD;
-  if (!expected) {
+  if (!hasAdminPasswordConfigured()) {
     return Response.json({ error: "Admin password not configured" }, { status: 503 });
   }
-  if (password !== expected) {
+  if (!verifyAdminPassword(password)) {
     return Response.json({ error: "Invalid password" }, { status: 401 });
   }
 

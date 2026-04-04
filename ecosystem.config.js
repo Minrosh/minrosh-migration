@@ -15,6 +15,9 @@ module.exports = {
       cwd: path.join(__dirname, ".next", "standalone"),
       script: "server.js",
       interpreter: "node",
+      // Load runtime env vars from the server-side .env file.
+      // This keeps secrets out of the repo while still making PM2 restarts work.
+      env_file: path.join(__dirname, ".env"),
       env: {
         NODE_ENV: "production",
         PORT: 3000,

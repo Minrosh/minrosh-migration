@@ -101,6 +101,28 @@ export function AdminShell({ children }) {
     router.refresh();
   }
 
+  async function changePassword() {
+    const currentPassword = prompt("Enter current admin password:");
+    if (!currentPassword) return;
+    const newPassword = prompt("Enter new admin password (min 8 chars):");
+    if (!newPassword) return;
+    try {
+      const res = await fetch("/api/admin/password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ currentPassword, newPassword }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        alert(data.error || "Could not update password.");
+        return;
+      }
+      alert("Admin password updated successfully.");
+    } catch {
+      alert("Network error while updating password.");
+    }
+  }
+
   return (
     <div className="flex min-h-screen">
       <aside className="fixed left-0 top-0 z-40 flex h-screen w-56 flex-col border-r border-border bg-card shadow-sm">
@@ -131,6 +153,18 @@ export function AdminShell({ children }) {
           })}
         </nav>
         <div className="border-t border-border p-3">
+          <Button
+            variant="secondary"
+            className="mb-2 w-full justify-start gap-2"
+            type="button"
+            onClick={changePassword}
+          >
+            <Icon>
+              <rect x="3" y="11" width="18" height="10" rx="2" />
+              <path d="M7 11V8a5 5 0 0 1 10 0v3" />
+            </Icon>
+            Change password
+          </Button>
           <Button variant="outline" className="w-full justify-start gap-2" type="button" onClick={logout}>
             <Icon>
               <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
