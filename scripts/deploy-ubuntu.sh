@@ -7,12 +7,25 @@ set -euo pipefail
 ROOT="${1:-$HOME/minrosh-migration}"
 cd "$ROOT"
 
+if [[ -f "$HOME/package-lock.json" ]] && [[ "$HOME" != "$ROOT" ]]; then
+  echo "!!! WARNING: $HOME/package-lock.json exists."
+  echo "    Next.js may treat ~ as the app root and break standalone (PM2: Cannot find module .../server.js)."
+  echo "    Fix: remove or rename ~/package-lock.json (and ~/package.json) unless you really keep a Node project in HOME."
+  echo ""
+fi
+
 echo "==> Pull latest (optional — comment out if you deploy without git)"
 git pull origin main
 
 echo "==> Install & build"
 npm ci
 npm run build
+
+if [[ ! -f "$ROOT/.next/standalone/server.js" ]]; then
+  echo "ERROR: $ROOT/.next/standalone/server.js is missing after build."
+  echo "  Often caused by a stray package-lock.json in \$HOME — see warning above."
+  exit 1
+fi
 
 echo "==> Writable private uploads (app + standalone copy)"
 mkdir -p storage/uploads .next/standalone/storage/uploads
