@@ -2,7 +2,7 @@ import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import siteData from "../data/site.json";
 import { StructuredData } from "../components/structured-data";
-import { AIConcierge } from "../components/ai-concierge";
+import { AIConciergeLazy } from "../components/ai-concierge-lazy";
 import { businessJsonLd } from "../lib/seo";
 
 const inter = Inter({
@@ -15,9 +15,18 @@ const playfair = Playfair_Display({
   variable: "--font-display",
 });
 
+export const viewport = {
+  themeColor: "#1e1b4b",
+  width: "device-width",
+  initialScale: 1,
+};
+
 export const metadata = {
   metadataBase: new URL("https://minroshmigration.com.au"),
-  title: "MinRosh Migration",
+  title: {
+    default: "MinRosh Migration",
+    template: "%s | MinRosh Migration",
+  },
   description:
     "Brisbane-based migration guidance for skilled migration, partner visas, student visas, and employer-sponsored pathways.",
   keywords: [
@@ -65,14 +74,14 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en-AU">
       <body className={`${inter.variable} ${playfair.variable}`}>
         <a href="#main-content" className="skip-link">
           Skip to content
         </a>
         <StructuredData data={businessJsonLd(siteData)} />
         {children}
-        <AIConcierge siteData={siteData} />
+        <AIConciergeLazy siteData={siteData} />
       </body>
     </html>
   );

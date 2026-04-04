@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { CustomerDetailDrawer } from "@/components/admin/customer-detail-drawer";
+import { AdminTableSkeleton } from "@/components/admin/admin-table-skeleton";
 
 const columnHelper = createColumnHelper();
 
@@ -150,7 +151,21 @@ export function CustomersPanel() {
     load();
   }
 
-  if (loading) return <p>Loading…</p>;
+  if (loading) {
+    return (
+      <div className="space-y-8">
+        <Card>
+          <CardHeader>
+            <CardTitle>Customers</CardTitle>
+            <CardDescription>Loading directory…</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <AdminTableSkeleton rows={6} cols={5} />
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8">

@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 export function NewsletterForm({ onSubscribed }) {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState({ type: "idle", message: "" });
+  const hpRef = useRef(null);
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -14,7 +15,7 @@ export function NewsletterForm({ onSubscribed }) {
       const response = await fetch("/api/newsletter", {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, company: hpRef.current?.value || "" }),
       });
       const data = await response.json();
       if (!response.ok || !data.ok) {
@@ -41,6 +42,16 @@ export function NewsletterForm({ onSubscribed }) {
           onChange={(event) => setEmail(event.target.value)}
           placeholder="Your email address"
           required
+        />
+        <input
+          ref={hpRef}
+          type="text"
+          name="company"
+          tabIndex={-1}
+          autoComplete="off"
+          aria-hidden="true"
+          className="sr-only"
+          style={{ position: "absolute", left: "-9999px", width: 1, height: 1, overflow: "hidden" }}
         />
         <button type="submit" className="btn btn-primary" disabled={status.type === "loading"}>
           {status.type === "loading" ? "Joining..." : "Subscribe"}

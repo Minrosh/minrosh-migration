@@ -17,6 +17,7 @@ export function CustomerDetailDrawer({ customer, open, onClose, onRefresh }) {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState("prospective");
   const [notes, setNotes] = useState("");
+  const [mobile, setMobile] = useState("");
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
   const [zipLoading, setZipLoading] = useState(false);
@@ -27,6 +28,7 @@ export function CustomerDetailDrawer({ customer, open, onClose, onRefresh }) {
     setEmail(customer.email || "");
     setStatus(customer.status || "prospective");
     setNotes(customer.notes ?? "");
+    setMobile(customer.mobile ?? "");
     setMessage("");
   }, [customer]);
 
@@ -49,6 +51,12 @@ export function CustomerDetailDrawer({ customer, open, onClose, onRefresh }) {
     return list;
   }, [customer]);
 
+  const activitySorted = useMemo(() => {
+    const list = [...(customer?.activityLog || [])];
+    list.sort((a, b) => String(b.at || "").localeCompare(String(a.at || "")));
+    return list.reverse();
+  }, [customer]);
+
   async function saveProfile() {
     if (!customer) return;
     setSaving(true);
@@ -61,6 +69,7 @@ export function CustomerDetailDrawer({ customer, open, onClose, onRefresh }) {
           id: customer.id,
           name: name.trim(),
           email: email.trim(),
+          mobile: mobile.trim(),
           status,
           notes: notes.trim(),
         }),
@@ -162,6 +171,17 @@ export function CustomerDetailDrawer({ customer, open, onClose, onRefresh }) {
             <div className="mt-2">
               <Badge variant={statusVariant(customer.status)}>{customer.status}</Badge>
             </div>
+            {customer.magicLinkExpiresAt ? (
+              <p className="mt-2 text-xs text-muted-foreground">
+                Upload link active until{" "}
+                <time dateTime={customer.magicLinkExpiresAt}>
+                  {new Date(customer.magicLinkExpiresAt).toLocaleString()}
+                </time>{" "}
+                (72h from last issue — regenerate to extend)
+              </p>
+            ) : (
+              <p className="mt-2 text-xs text-muted-foreground">Legacy link without expiry — regenerate to apply 72h window.</p>
+            )}
           </div>
           <Button type="button" variant="ghost" size="sm" className="shrink-0" onClick={onClose}>
             Close
@@ -179,6 +199,20 @@ export function CustomerDetailDrawer({ customer, open, onClose, onRefresh }) {
               <div className="space-y-1.5">
                 <Label htmlFor="cd-email">Email</Label>
                 <Input id="cd-email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="cd-mobile">Mobile (E.164, SMS upload gate)</Label>
+                <Input
+                  id="cd-mobile"
+                  type="tel"
+                  placeholder="+61400000000"
+                  value={mobile}
+                  onChange={(e) => setMobile(e.target.value)}
+                />
+                <p className="text-xs text-muted-foreground">
+                  Required only if <code className="rounded bg-muted px-1">UPLOAD_LINK_SMS_VERIFICATION=true</code> on
+                  the server.
+                </p>
               </div>
               <div className="space-y-1.5">
                 <Label htmlFor="cd-status">Status</Label>
@@ -211,6 +245,37 @@ export function CustomerDetailDrawer({ customer, open, onClose, onRefresh }) {
             </div>
           </section>
 
+          {customer.passportOcrLatest ? (
+            <section className="space-y-2 rounded-md border border-border bg-muted/25 p-3">
+              <h3 className="text-sm font-semibold text-foreground">Identity hints (upload OCR)</h3>
+              <p className="text-xs text-muted-foreground">{customer.passportOcrLatest.note}</p>
+              <dl className="grid gap-2 text-sm">
+                <div>
+                  <dt className="text-xs font-medium text-muted-foreground">Extracted name</dt>
+                  <dd className="font-medium">{customer.passportOcrLatest.fullName || "—"}</dd>
+                </div>
+                <div>
+                  <dt className="text-xs font-medium text-muted-foreground">Date of birth</dt>
+                  <dd>{customer.passportOcrLatest.dateOfBirth || "—"}</dd>
+                </div>
+                {customer.passportOcrLatest.sourceStoredName ? (
+                  <div>
+                    <dt className="text-xs font-medium text-muted-foreground">Source file</dt>
+                    <dd className="break-all font-mono text-xs">{customer.passportOcrLatest.sourceStoredName}</dd>
+                  </div>
+                ) : null}
+                {customer.passportOcrLatest.extractedAt ? (
+                  <p className="text-xs text-muted-foreground">
+                    Extracted{" "}
+                    <time dateTime={customer.passportOcrLatest.extractedAt}>
+                      {new Date(customer.passportOcrLatest.extractedAt).toLocaleString()}
+                    </time>
+                  </p>
+                ) : null}
+              </dl>
+            </section>
+          ) : null}
+
           <section className="space-y-3">
             <h3 className="text-sm font-semibold text-foreground">Upload link</h3>
             <p className="text-xs text-muted-foreground">
@@ -232,24 +297,43 @@ export function CustomerDetailDrawer({ customer, open, onClose, onRefresh }) {
           <section className="space-y-2 rounded-md border border-border bg-muted/30 p-3">
             <h3 className="text-sm font-semibold text-foreground">Files on server</h3>
             <p className="text-xs text-muted-foreground">
-              Browse on the VPS (from app root):{" "}
-              <code className="rounded bg-muted px-1 py-0.5 text-[11px]">public/uploads/{folder}/</code>
+              Private storage (app root):{" "}
+              <code className="rounded bg-muted px-1 py-0.5 text-[11px]">storage/uploads/{folder}/</code>
             </p>
             <p className="text-xs text-muted-foreground">
-              PM2 standalone cwd:{" "}
-              <code className="rounded bg-muted px-1 py-0.5 text-[11px]">.next/standalone/public/uploads/{folder}/</code>
+              PM2 standalone:{" "}
+              <code className="rounded bg-muted px-1 py-0.5 text-[11px]">.next/standalone/storage/uploads/{folder}/</code>
             </p>
             <Button
               type="button"
               variant="outline"
               size="sm"
               className="mt-1"
-              onClick={() =>
-                navigator.clipboard.writeText(`public/uploads/${folder}/`)
-              }
+              onClick={() => navigator.clipboard.writeText(`storage/uploads/${folder}/`)}
             >
               Copy relative path
             </Button>
+          </section>
+
+          <section className="space-y-2">
+            <h3 className="text-sm font-semibold text-foreground">Activity log</h3>
+            <p className="text-xs text-muted-foreground">
+              Stored on the customer record (uploads, link rotation). UUID magic links; files live under private{" "}
+              <code className="rounded bg-muted px-1 text-[11px]">storage/uploads</code>, not public URLs.
+            </p>
+            {activitySorted.length === 0 ? (
+              <p className="text-sm text-muted-foreground">No events yet.</p>
+            ) : (
+              <ul className="max-h-40 overflow-y-auto rounded-md border border-border text-xs divide-y divide-border">
+                {activitySorted.map((e, idx) => (
+                  <li key={`${e.at}-${idx}`} className="px-3 py-2">
+                    <span className="font-medium text-foreground">{e.action}</span>
+                    {e.detail ? <span className="text-muted-foreground"> — {e.detail}</span> : null}
+                    <div className="text-muted-foreground">{e.at ? new Date(e.at).toLocaleString() : "—"}</div>
+                  </li>
+                ))}
+              </ul>
+            )}
           </section>
 
           <section className="space-y-2">
@@ -277,7 +361,12 @@ export function CustomerDetailDrawer({ customer, open, onClose, onRefresh }) {
                 {docsSorted.map((d) => (
                   <li key={`${d.storedName}-${d.uploadedAt}`} className="flex flex-wrap items-center justify-between gap-2 px-3 py-2">
                     <div className="min-w-0">
-                      <a className="font-medium text-primary underline" href={d.url} target="_blank" rel="noreferrer">
+                      <a
+                        className="font-medium text-primary underline"
+                        href={`/api/admin/documents/${customer.id}/${encodeURIComponent(d.storedName)}`}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
                         {d.filename}
                       </a>
                       <p className="text-xs text-muted-foreground">
@@ -285,7 +374,11 @@ export function CustomerDetailDrawer({ customer, open, onClose, onRefresh }) {
                       </p>
                     </div>
                     <Button type="button" variant="ghost" size="sm" asChild>
-                      <a href={d.url} target="_blank" rel="noreferrer">
+                      <a
+                        href={`/api/admin/documents/${customer.id}/${encodeURIComponent(d.storedName)}`}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
                         Open
                       </a>
                     </Button>

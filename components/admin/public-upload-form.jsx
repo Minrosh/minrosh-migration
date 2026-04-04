@@ -1,23 +1,95 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export function PublicUploadForm({ token }) {
   const [status, setStatus] = useState("");
   const [loading, setLoading] = useState(false);
   const [docs, setDocs] = useState([]);
+  const [gate, setGate] = useState("loading");
+  const [phoneLast4, setPhoneLast4] = useState("");
+  const [otpCode, setOtpCode] = useState("");
+  const [otpBusy, setOtpBusy] = useState(false);
 
-  async function refreshDocuments() {
-    const res = await fetch(`/api/upload/${token}`);
+  const refreshDocuments = useCallback(async () => {
+    const res = await fetch(`/api/upload/${token}`, { credentials: "include" });
     const data = await res.json().catch(() => ({}));
-    if (res.ok) {
-      setDocs(Array.isArray(data?.customer?.documents) ? data.customer.documents : []);
+    if (res.status === 410) {
+      setGate("expired");
+      setStatus(data.error || "This link has expired.");
+      setDocs([]);
+      return;
     }
-  }
+    if (res.status === 403 && data.code === "NO_MOBILE") {
+      setGate("no_mobile");
+      setStatus(data.error || "");
+      return;
+    }
+    if (res.status === 401 && data.code === "SMS_OTP_REQUIRED") {
+      setGate("otp");
+      setPhoneLast4(data.phoneLast4 || "****");
+      setDocs([]);
+      return;
+    }
+    if (!res.ok) {
+      setGate("error");
+      setStatus(data.error || "Could not load upload page.");
+      return;
+    }
+    setGate("ok");
+    setStatus("");
+    setDocs(Array.isArray(data?.customer?.documents) ? data.customer.documents : []);
+  }, [token]);
 
   useEffect(() => {
     refreshDocuments();
-  }, [token]);
+  }, [refreshDocuments]);
+
+  async function requestCode() {
+    setOtpBusy(true);
+    setStatus("");
+    try {
+      const res = await fetch(`/api/upload/${token}/request-code`, {
+        method: "POST",
+        credentials: "include",
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setStatus(data.error || "Could not send code.");
+        setOtpBusy(false);
+        return;
+      }
+      setStatus("Check your mobile for a 6-digit code (valid 15 minutes).");
+    } catch {
+      setStatus("Network error.");
+    }
+    setOtpBusy(false);
+  }
+
+  async function confirmCode(e) {
+    e.preventDefault();
+    setOtpBusy(true);
+    setStatus("");
+    try {
+      const res = await fetch(`/api/upload/${token}/confirm-code`, {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code: otpCode.replace(/\D/g, "") }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setStatus(data.error || "Verification failed.");
+        setOtpBusy(false);
+        return;
+      }
+      setOtpCode("");
+      await refreshDocuments();
+    } catch {
+      setStatus("Network error.");
+    }
+    setOtpBusy(false);
+  }
 
   async function onSubmit(e) {
     e.preventDefault();
@@ -32,8 +104,14 @@ export function PublicUploadForm({ token }) {
     try {
       const fd = new FormData();
       Array.from(list).forEach((file) => fd.append("files", file));
-      const res = await fetch(`/api/upload/${token}`, { method: "POST", body: fd });
+      const res = await fetch(`/api/upload/${token}`, { method: "POST", body: fd, credentials: "include" });
       const data = await res.json().catch(() => ({}));
+      if (res.status === 401 || res.status === 403 || res.status === 410) {
+        setStatus(data.error || "Upload blocked.");
+        if (res.status === 410) setGate("expired");
+        setLoading(false);
+        return;
+      }
       if (!res.ok) {
         setStatus(data.error || "Upload failed");
         setLoading(false);
@@ -41,15 +119,9 @@ export function PublicUploadForm({ token }) {
       }
       const n = data.count ?? data.documents?.length ?? 0;
       if (data.errors?.length) {
-        setStatus(
-          `Uploaded ${n} file(s). Some were skipped: ${data.errors.join(" · ")}`
-        );
+        setStatus(`Uploaded ${n} file(s). Some were skipped: ${data.errors.join(" · ")}`);
       } else {
-        setStatus(
-          n === 1
-            ? "Uploaded successfully. Thank you."
-            : `Uploaded ${n} files successfully. Thank you.`
-        );
+        setStatus(n === 1 ? "Uploaded successfully. Thank you." : `Uploaded ${n} files successfully. Thank you.`);
       }
       input.value = "";
       await refreshDocuments();
@@ -72,6 +144,68 @@ export function PublicUploadForm({ token }) {
     setStatus("");
   }
 
+  if (gate === "loading") {
+    return <p className="mt-8 text-sm text-slate-600">Loading secure upload…</p>;
+  }
+
+  if (gate === "expired" || gate === "error") {
+    return (
+      <div className="mt-8 rounded-lg border border-amber-200 bg-amber-50 p-6 text-sm text-slate-800">
+        {status || "This upload link is not available."}
+      </div>
+    );
+  }
+
+  if (gate === "no_mobile") {
+    return (
+      <div className="mt-8 rounded-lg border border-rose-200 bg-rose-50 p-6 text-sm text-slate-800">
+        {status ||
+          "SMS verification is turned on for uploads, but no mobile number is stored for this client. Please contact MinRosh Migration."}
+      </div>
+    );
+  }
+
+  if (gate === "otp") {
+    return (
+      <div className="mt-8 space-y-4 rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+        <h2 className="text-lg font-semibold text-slate-900">Verify your mobile</h2>
+        <p className="text-sm text-slate-600">
+          Enter the one-time code we send to the number on file (ends in <strong>{phoneLast4}</strong>). Links also
+          expire after 72 hours for security.
+        </p>
+        <button
+          type="button"
+          disabled={otpBusy}
+          onClick={requestCode}
+          className="rounded-md bg-violet-900 px-4 py-2 text-sm font-semibold text-white disabled:opacity-50"
+        >
+          {otpBusy ? "Sending…" : "Send SMS code"}
+        </button>
+        <form onSubmit={confirmCode} className="flex flex-wrap items-end gap-3">
+          <label className="text-sm font-medium text-slate-700">
+            6-digit code
+            <input
+              className="mt-1 block w-40 rounded border border-slate-300 px-3 py-2 text-slate-900"
+              inputMode="numeric"
+              maxLength={8}
+              value={otpCode}
+              onChange={(e) => setOtpCode(e.target.value)}
+              autoComplete="one-time-code"
+            />
+          </label>
+          <button
+            type="submit"
+            disabled={otpBusy || otpCode.replace(/\D/g, "").length !== 6}
+            className="rounded-md bg-slate-900 px-4 py-2 text-sm font-semibold text-white disabled:opacity-50"
+          >
+            Confirm
+          </button>
+        </form>
+        {status ? <p className="text-sm text-slate-600">{status}</p> : null}
+      </div>
+    );
+  }
+
   return (
     <form
       onSubmit={onSubmit}
@@ -80,8 +214,8 @@ export function PublicUploadForm({ token }) {
       className="mt-8 space-y-4 rounded-lg border border-slate-200 bg-white p-6 shadow-sm"
     >
       <p className="text-sm text-slate-600">
-        Drag and drop files here, or choose below. PDFs and images only — up to 15&nbsp;MB per file, up to
-        20 files at once.
+        Drag and drop files here, or choose below. PDFs and images only — up to 15&nbsp;MB per file, up to 20 files
+        at once. This link expires 72 hours after it was issued unless your agent sends a new one.
       </p>
       <label className="block text-sm font-medium text-slate-700">
         PDF or images (max 15MB each, max 20 files)
@@ -94,6 +228,11 @@ export function PublicUploadForm({ token }) {
           required
         />
       </label>
+      <p className="text-xs text-slate-500">
+        For passport identity pages, put <strong>passport</strong>, <strong>travel document</strong>, or{" "}
+        <strong>ID</strong> in the file name so the server can try to extract name and date-of-birth hints for your
+        advisor. Results are machine-assisted — your agent will verify against the original.
+      </p>
       <button
         type="submit"
         disabled={loading}

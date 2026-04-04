@@ -1,8 +1,19 @@
 import { cookies } from "next/headers";
 import { hasAdminPasswordConfigured, verifyAdminPassword } from "@/lib/admin/admin-auth";
 import { createSessionToken } from "@/lib/admin/session";
+import { requireAdminLoginOrigin } from "@/lib/admin/auth-route";
+import { rateLimitAllow } from "@/lib/security/rate-limit";
+import { getClientIp } from "@/lib/security/request-ip";
 
 export async function POST(request) {
+  const originDenied = requireAdminLoginOrigin(request);
+  if (originDenied) return originDenied;
+
+  const ip = getClientIp(request);
+  if (!rateLimitAllow(`admin-login:${ip}`, { windowMs: 15 * 60 * 1000, max: 25 })) {
+    return Response.json({ error: "Too many login attempts. Try again later." }, { status: 429 });
+  }
+
   let body;
   try {
     body = await request.json();

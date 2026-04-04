@@ -2,6 +2,7 @@ import Link from "next/link";
 import siteData from "../../data/site.json";
 import seoPages from "../../data/seo-pages.json";
 import { ContactLeadForm } from "../../components/contact-lead-form";
+import { AgentRegistrationStrip } from "../../components/agent-registration-strip";
 import { SiteShell } from "../../components/site-shell";
 import { StructuredData } from "../../components/structured-data";
 import { buildMetadata, breadcrumbJsonLd } from "../../lib/seo";
@@ -86,7 +87,8 @@ export default function BookConsultationPage() {
             </section>
           </div>
 
-          <div className="content-page__aside">
+          <div className="content-page__aside contact-form-column">
+            <AgentRegistrationStrip brand={siteData.brand} />
             <ContactLeadForm />
           </div>
         </div>

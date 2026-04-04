@@ -11,8 +11,17 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
+import { scoreLeadPriority, isHotGreenSkilledLead } from "@/lib/admin/lead-priority";
+import { AdminTableSkeleton } from "@/components/admin/admin-table-skeleton";
 
 const columnHelper = createColumnHelper();
+
+function priorityBadgeVariant(band) {
+  if (band === "hot") return "default";
+  if (band === "warm") return "secondary";
+  return "outline";
+}
 
 export function CrmPanel() {
   const [enquiries, setEnquiries] = useState([]);
@@ -44,6 +53,34 @@ export function CrmPanel() {
       columnHelper.accessor("email", { header: "Email" }),
       columnHelper.accessor("mainNeed", { header: "Need" }),
       columnHelper.accessor("preferredCountry", { header: "Country" }),
+      columnHelper.display({
+        id: "priority",
+        header: "Lead priority (1–100)",
+        cell: ({ row }) => {
+          const { score, band, hint } = scoreLeadPriority(row.original);
+          return (
+            <div className="flex max-w-[150px] flex-col gap-1">
+              <Badge variant={priorityBadgeVariant(band)} title={hint}>
+                {score} · {band}
+              </Badge>
+              <span className="text-xs text-muted-foreground leading-snug">{hint}</span>
+            </div>
+          );
+        },
+      }),
+      columnHelper.display({
+        id: "hot",
+        header: "Signals",
+        cell: ({ row }) => {
+          const hot = isHotGreenSkilledLead(row.original);
+          if (!hot) return <span className="text-muted-foreground">—</span>;
+          return (
+            <Badge variant="default" className="whitespace-nowrap bg-amber-600 hover:bg-amber-600">
+              Hot · Green sector · 90+ pts
+            </Badge>
+          );
+        },
+      }),
     ],
     []
   );
@@ -56,24 +93,59 @@ export function CrmPanel() {
 
   async function sendBroadcast() {
     setSendMsg("");
-    const res = await fetch("/api/admin/broadcast", {
+    const payload = { subject, text };
+    let res = await fetch("/api/admin/broadcast", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ subject, text }),
+      body: JSON.stringify(payload),
     });
-    const d = await res.json();
-    if (!res.ok) setSendMsg(d.error || "Failed");
+    let d = await res.json();
+    if (res.status === 409 && d.needsBroadcastConfirmation) {
+      const ok = window.confirm(
+        `This broadcast goes to ${d.recipientCount} prospective contacts. Send anyway?`
+      );
+      if (!ok) {
+        setSendMsg("Large broadcast cancelled.");
+        return;
+      }
+      res = await fetch("/api/admin/broadcast", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...payload, broadcastConfirmed: true }),
+      });
+      d = await res.json();
+    }
+    if (!res.ok) setSendMsg(d.error || d.hint || "Failed");
     else setSendMsg(`Sent to ${d.sent} prospective contact(s).`);
   }
 
-  if (loading) return <p>Loading enquiries…</p>;
+  if (loading) {
+    return (
+      <div className="space-y-10">
+        <Card>
+          <CardHeader>
+            <CardTitle>Enquiries</CardTitle>
+            <CardDescription>Loading latest submissions…</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <AdminTableSkeleton rows={7} cols={7} />
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-10">
       <Card>
         <CardHeader>
           <CardTitle>Enquiries</CardTitle>
-          <CardDescription>Latest submissions first.</CardDescription>
+          <CardDescription>
+            Latest submissions first. <strong>Lead priority</strong> blends indicative quiz points (when present in the
+            message or summary) with stacked occupation-demand keywords (healthcare, trades, education, digital, etc.),
+            capped so scores stay on a 1–100 scale. Rows with <strong>Hot · Green sector · 90+ pts</strong> are skilled
+            leads at 90+ points with healthcare, teaching, or trades signals only.
+          </CardDescription>
         </CardHeader>
         <CardContent className="overflow-x-auto">
           <table className="w-full text-sm">
@@ -90,7 +162,10 @@ export function CrmPanel() {
             </thead>
             <tbody>
               {table.getRowModel().rows.map((row) => (
-                <tr key={row.id} className="border-b border-border/60">
+                <tr
+                  key={row.id}
+                  className={`border-b border-border/60 ${isHotGreenSkilledLead(row.original) ? "bg-amber-50/80 dark:bg-amber-950/25" : ""}`}
+                >
                   {row.getVisibleCells().map((cell) => (
                     <td key={cell.id} className="p-2 align-top">
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}

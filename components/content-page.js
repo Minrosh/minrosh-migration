@@ -10,9 +10,13 @@ export function ContentPage({
   officialResources = [],
   faq = [],
   related = [],
+  /** Optional regulatory / compliance callout (e.g. TSMIT). */
+  alertBanner = null,
   heroImage = { src: "/images/brisbane-skyline.jpg", alt: "Brisbane skyline and riverfront" },
   ctaTitle = "Ready to discuss your options?",
   ctaBody = "Start with a clear enquiry and MinRosh will help you map the most relevant next steps.",
+  /** Optional tools/widgets in the aside (e.g. TSMIT calculator). */
+  asideTools = null,
 }) {
   return (
     <article className="content-page">
@@ -33,6 +37,19 @@ export function ContentPage({
             <p className="section-label">{eyebrow}</p>
             <h1>{title}</h1>
             <p>{intro}</p>
+            {alertBanner ? (
+              <div className="content-alert-banner" role="note">
+                <strong>{alertBanner.title}</strong>
+                <p>{alertBanner.body}</p>
+                {alertBanner.href ? (
+                  <p className="content-alert-banner__link">
+                    <a href={alertBanner.href} target="_blank" rel="noreferrer">
+                      {alertBanner.linkLabel || "Official source"}
+                    </a>
+                  </p>
+                ) : null}
+              </div>
+            ) : null}
           </div>
           <div className="content-hero__media" aria-hidden="true">
             <Image src={heroImage.src} alt={heroImage.alt} width={1600} height={900} />
@@ -100,6 +117,7 @@ export function ContentPage({
         </div>
 
         <aside className="content-page__aside">
+          {asideTools ? <div className="content-page__aside-tools">{asideTools}</div> : null}
           <div className="content-aside-card bento-hover">
             <p className="section-label">Next Step</p>
             <h3>{ctaTitle}</h3>

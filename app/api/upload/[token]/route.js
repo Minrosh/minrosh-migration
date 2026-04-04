@@ -2,8 +2,18 @@ import fs from "node:fs";
 import path from "node:path";
 import { randomUUID } from "node:crypto";
 import { appendAudit } from "@/lib/admin/audit";
-import { addDocumentToCustomer, findCustomerByMagicToken } from "@/lib/admin/customers-service";
+import {
+  addDocumentToCustomer,
+  findCustomerByMagicToken,
+  mergePassportOcrHints,
+} from "@/lib/admin/customers-service";
 import { ensureUploadsDir } from "@/lib/admin/json-store";
+import { getPrivateCustomerDir } from "@/lib/admin/uploads-storage";
+import { detectBinaryMime, isAllowedStoredMime, isPathInsideRoot } from "@/lib/security/upload-validation";
+import { rateLimitAllow } from "@/lib/security/rate-limit";
+import { getClientIp } from "@/lib/security/request-ip";
+import { storageUploadsDir } from "@/lib/admin/paths";
+import { uploadGateResponse } from "@/lib/upload-gate";
 
 const MAX_FILES = 20;
 const MAX_BYTES_PER_FILE = 15 * 1024 * 1024;
@@ -21,46 +31,83 @@ function collectUploadFiles(formData) {
   return [];
 }
 
-function isAllowedMime(mime) {
-  return Boolean(mime && (mime.includes("pdf") || mime.startsWith("image/")));
-}
-
-async function saveOneFile({ file, customer, folder, dir }) {
-  const mime = file.type || "";
-  if (!isAllowedMime(mime)) {
-    return { error: `Not allowed: ${file.name || "file"} (only PDF or images)` };
-  }
-
+async function saveOneFile({ file, customer, folder }) {
   const buf = Buffer.from(await file.arrayBuffer());
   if (buf.length > MAX_BYTES_PER_FILE) {
     return { error: `Too large: ${file.name || "file"} (max 15MB each)` };
   }
 
+  const detected = detectBinaryMime(buf);
+  if (!detected || !isAllowedStoredMime(detected)) {
+    return { error: `Not allowed: ${file.name || "file"} (PDF, JPEG, PNG, or WebP only)` };
+  }
+
+  const dir = getPrivateCustomerDir(customer);
+  fs.mkdirSync(dir, { recursive: true });
+  if (!isPathInsideRoot(storageUploadsDir, dir)) {
+    return { error: "Invalid storage path" };
+  }
+
   const original = safeFileName(file.name);
   const storedName = `${Date.now()}-${randomUUID().slice(0, 8)}-${original}`;
   const diskPath = path.join(dir, storedName);
+  if (!isPathInsideRoot(storageUploadsDir, diskPath)) {
+    return { error: "Invalid file path" };
+  }
+
   fs.writeFileSync(diskPath, buf);
 
-  const publicUrl = `/uploads/${folder}/${storedName}`;
   const doc = {
     filename: original,
     storedName,
-    url: publicUrl,
-    folder,
-    mime,
+    mime: detected,
     uploadedAt: new Date().toISOString(),
+    folder,
   };
   addDocumentToCustomer(customer.id, doc);
   appendAudit("client_document_upload", `${customer.id} → ${doc.filename}`);
+  await tryPassportOcrFromUpload(customer.id, buf, detected, original, storedName);
   return { document: doc };
 }
 
+async function tryPassportOcrFromUpload(customerId, buf, mime, originalName, storedName) {
+  if (process.env.PASSPORT_OCR_DISABLED === "true") return;
+  if (!/^image\/(jpeg|png|webp)$/i.test(String(mime || ""))) return;
+  const stem = String(originalName || "").toLowerCase();
+  if (!/passport|travel|identity|id.?card|licen[cs]e|photo.?id/i.test(stem)) return;
+  try {
+    const { extractPassportIdentityFromBuffer } = await import("@/lib/passport-ocr");
+    const hints = await extractPassportIdentityFromBuffer(buf);
+    if (hints?.fullName || hints?.dateOfBirth) {
+      mergePassportOcrHints(customerId, {
+        fullName: hints.fullName,
+        dateOfBirth: hints.dateOfBirth,
+        sourceStoredName: storedName,
+      });
+    }
+  } catch {
+    /* OCR is best-effort; uploads must always succeed */
+  }
+}
+
+function withClientUrls(token, customer) {
+  const docs = customer.documents || [];
+  return docs.map((d) => ({
+    ...d,
+    url: `/api/files/client/${token}/${encodeURIComponent(d.storedName)}`,
+  }));
+}
+
 export async function POST(request, { params }) {
+  const ip = getClientIp(request);
+  if (!rateLimitAllow(`upload-post:${ip}`, { windowMs: 15 * 60 * 1000, max: 40 })) {
+    return Response.json({ error: "Too many uploads. Try again later." }, { status: 429 });
+  }
+
   const { token } = await params;
   const customer = findCustomerByMagicToken(token);
-  if (!customer) {
-    return Response.json({ error: "Invalid or expired link" }, { status: 404 });
-  }
+  const gated = await uploadGateResponse(token, customer);
+  if (gated) return gated;
 
   const formData = await request.formData();
   const files = collectUploadFiles(formData);
@@ -74,18 +121,19 @@ export async function POST(request, { params }) {
 
   ensureUploadsDir();
   const folder = customer.uploadFolder || customer.id;
-  const dir = path.join(process.cwd(), "public", "uploads", folder);
-  fs.mkdirSync(dir, { recursive: true });
 
   const documents = [];
   const errors = [];
 
   for (const file of files) {
-    const result = await saveOneFile({ file, customer, folder, dir });
+    const result = await saveOneFile({ file, customer, folder });
     if (result.error) {
       errors.push(result.error);
     } else {
-      documents.push(result.document);
+      documents.push({
+        ...result.document,
+        url: `/api/files/client/${token}/${encodeURIComponent(result.document.storedName)}`,
+      });
     }
   }
 
@@ -101,18 +149,23 @@ export async function POST(request, { params }) {
   });
 }
 
-export async function GET(_request, { params }) {
+export async function GET(request, { params }) {
+  const ip = getClientIp(request);
+  if (!rateLimitAllow(`upload-get:${ip}`, { windowMs: 15 * 60 * 1000, max: 120 })) {
+    return Response.json({ error: "Too many requests. Try again later." }, { status: 429 });
+  }
+
   const { token } = await params;
   const customer = findCustomerByMagicToken(token);
-  if (!customer) {
-    return Response.json({ error: "Invalid or expired link" }, { status: 404 });
-  }
+  const gated = await uploadGateResponse(token, customer);
+  if (gated) return gated;
+
   return Response.json({
     customer: {
       id: customer.id,
       name: customer.name,
       uploadFolder: customer.uploadFolder || customer.id,
-      documents: customer.documents || [],
+      documents: withClientUrls(token, customer),
     },
   });
 }

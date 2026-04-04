@@ -2,7 +2,7 @@ const path = require("path");
 
 /**
  * PM2 runs with cwd = .next/standalone so:
- * - public/uploads and data/*.json resolve next to server.js (matches copy-standalone-assets.mjs).
+ * - storage/uploads and data/*.json resolve next to server.js (matches copy-standalone-assets.mjs).
  * Set ADMIN_PASSWORD (and SMTP_*, OPENAI_API_KEY, etc.) before start, e.g.:
  *   export ADMIN_PASSWORD='...'
  *   pm2 restart ecosystem.config.js --update-env

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const initialForm = {
   firstName: "",
@@ -15,6 +15,7 @@ const initialForm = {
 export function ContactLeadForm({ className = "" }) {
   const [form, setForm] = useState(initialForm);
   const [state, setState] = useState({ status: "idle", message: "" });
+  const hpRef = useRef(null);
 
   useEffect(() => {
     function handleNavigatorSummary(event) {
@@ -50,7 +51,7 @@ export function ContactLeadForm({ className = "" }) {
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, company: hpRef.current?.value || "" }),
       });
       const data = await response.json();
       if (!response.ok || !data.ok) {
@@ -79,19 +80,43 @@ export function ContactLeadForm({ className = "" }) {
       <div className="contact-grid">
         <label>
           <span>First name</span>
-          <input name="firstName" value={form.firstName} onChange={handleChange} required />
+          <input
+            name="firstName"
+            autoComplete="given-name"
+            value={form.firstName}
+            onChange={handleChange}
+            required
+          />
         </label>
         <label>
           <span>Last name</span>
-          <input name="lastName" value={form.lastName} onChange={handleChange} />
+          <input
+            name="lastName"
+            autoComplete="family-name"
+            value={form.lastName}
+            onChange={handleChange}
+          />
         </label>
         <label>
           <span>Email</span>
-          <input type="email" name="email" value={form.email} onChange={handleChange} required />
+          <input
+            type="email"
+            name="email"
+            autoComplete="email"
+            value={form.email}
+            onChange={handleChange}
+            required
+          />
         </label>
         <label>
           <span>Phone</span>
-          <input name="phone" value={form.phone} onChange={handleChange} />
+          <input
+            name="phone"
+            type="tel"
+            autoComplete="tel"
+            value={form.phone}
+            onChange={handleChange}
+          />
         </label>
         <label>
           <span>Preferred country</span>
@@ -107,7 +132,7 @@ export function ContactLeadForm({ className = "" }) {
           <select name="mainNeed" value={form.mainNeed} onChange={handleChange}>
             <option>Skilled Migration</option>
             <option>Partner Visa</option>
-            <option>Student Visa</option>
+            <option>Student Pathway</option>
             <option>Employer-Sponsored</option>
             <option>Family / Complex Case</option>
           </select>
@@ -117,6 +142,7 @@ export function ContactLeadForm({ className = "" }) {
           <textarea
             name="message"
             rows="6"
+            autoComplete="off"
             value={form.message}
             onChange={handleChange}
             placeholder="Tell us about your situation, timeline, and the visa pathway you want to explore."
@@ -124,10 +150,24 @@ export function ContactLeadForm({ className = "" }) {
           />
         </label>
       </div>
+      <input
+        ref={hpRef}
+        type="text"
+        name="company"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        className="sr-only"
+        style={{ position: "absolute", left: "-9999px", width: 1, height: 1, overflow: "hidden" }}
+      />
       <button type="submit" className="btn btn-primary" disabled={state.status === "loading"}>
         {state.status === "loading" ? "Sending..." : "Submit enquiry"}
       </button>
-      {state.message ? <p className={`form-feedback is-${state.status}`}>{state.message}</p> : null}
+      {state.message ? (
+        <p className={`form-feedback is-${state.status}`} role="status" aria-live="polite">
+          {state.message}
+        </p>
+      ) : null}
     </form>
   );
 }

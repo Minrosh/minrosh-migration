@@ -1,4 +1,4 @@
-import { adminJsonUnauthorized, verifyAdminRequest } from "@/lib/admin/auth-route";
+import { requireAdminWrite } from "@/lib/admin/auth-route";
 import { appendAudit } from "@/lib/admin/audit";
 import {
   hasAdminPasswordConfigured,
@@ -7,7 +7,8 @@ import {
 } from "@/lib/admin/admin-auth";
 
 export async function POST(request) {
-  if (!(await verifyAdminRequest())) return adminJsonUnauthorized();
+  const denied = await requireAdminWrite(request);
+  if (denied) return denied;
   let body;
   try {
     body = await request.json();

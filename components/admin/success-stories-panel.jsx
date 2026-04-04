@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { AdminTableSkeleton } from "@/components/admin/admin-table-skeleton";
 
 export function SuccessStoriesPanel() {
   const [stories, setStories] = useState([]);
@@ -53,7 +54,21 @@ export function SuccessStoriesPanel() {
     load();
   }
 
-  if (loading) return <p>Loading…</p>;
+  if (loading) {
+    return (
+      <div className="space-y-8">
+        <Card>
+          <CardHeader>
+            <CardTitle>Success stories</CardTitle>
+            <CardDescription>Loading published stories…</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <AdminTableSkeleton rows={4} cols={4} />
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8">

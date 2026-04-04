@@ -14,10 +14,10 @@ echo "==> Install & build"
 npm ci
 npm run build
 
-echo "==> Writable uploads (app + standalone copy)"
-mkdir -p public/uploads .next/standalone/public/uploads
-chmod -R u+rwX public/uploads
-chmod -R u+rwX .next/standalone/public/uploads || true
+echo "==> Writable private uploads (app + standalone copy)"
+mkdir -p storage/uploads .next/standalone/storage/uploads
+chmod -R u+rwX storage/uploads
+chmod -R u+rwX .next/standalone/storage/uploads || true
 
 echo "==> Writable runtime data under standalone (enquiries, customers, invoices, …)"
 mkdir -p .next/standalone/data

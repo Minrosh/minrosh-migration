@@ -1,4 +1,4 @@
-import { verifyAdminRequest, adminJsonUnauthorized } from "@/lib/admin/auth-route";
+import { verifyAdminRequest, adminJsonUnauthorized, requireAdminWrite } from "@/lib/admin/auth-route";
 import { appendAudit } from "@/lib/admin/audit";
 import { readCustomers } from "@/lib/admin/json-store";
 import {
@@ -14,7 +14,8 @@ export async function GET() {
 }
 
 export async function POST(request) {
-  if (!(await verifyAdminRequest())) return adminJsonUnauthorized();
+  const denied = await requireAdminWrite(request);
+  if (denied) return denied;
   let body;
   try {
     body = await request.json();
@@ -40,7 +41,8 @@ export async function POST(request) {
 }
 
 export async function PATCH(request) {
-  if (!(await verifyAdminRequest())) return adminJsonUnauthorized();
+  const denied = await requireAdminWrite(request);
+  if (denied) return denied;
   let body;
   try {
     body = await request.json();
@@ -49,12 +51,16 @@ export async function PATCH(request) {
   }
   const { id, ...rest } = body;
   if (!id) return Response.json({ error: "id required" }, { status: 400 });
-  const allowed = new Set(["name", "email", "status", "notes"]);
+  const allowed = new Set(["name", "email", "status", "notes", "mobile"]);
   const patch = {};
   for (const key of allowed) {
     if (rest[key] === undefined) continue;
     if (key === "name" || key === "email" || key === "notes") {
       patch[key] = String(rest[key]).trim();
+    } else if (key === "mobile") {
+      patch[key] = String(rest[key] || "")
+        .trim()
+        .slice(0, 32);
     } else if (key === "status") {
       patch[key] = rest[key];
     }
@@ -69,7 +75,8 @@ export async function PATCH(request) {
 }
 
 export async function DELETE(request) {
-  if (!(await verifyAdminRequest())) return adminJsonUnauthorized();
+  const denied = await requireAdminWrite(request);
+  if (denied) return denied;
   const { searchParams } = new URL(request.url);
   const id = searchParams.get("id");
   if (!id) return Response.json({ error: "id required" }, { status: 400 });

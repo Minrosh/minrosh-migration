@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { isValidSessionToken } from "./lib/admin/session";
+import { verifyAdminSessionCookie } from "./lib/admin/session-signed-cookie";
 
 export async function middleware(request) {
   const { pathname } = request.nextUrl;
@@ -23,8 +23,10 @@ export async function middleware(request) {
     });
   }
 
-  const token = request.cookies.get("admin_session")?.value;
-  const ok = await isValidSessionToken(token);
+  const cookieVal = request.cookies.get("admin_session")?.value;
+  const secret = process.env.ADMIN_SESSION_SECRET || process.env.ADMIN_PASSWORD || "";
+  const signed = cookieVal && secret ? await verifyAdminSessionCookie(cookieVal, secret) : { ok: false };
+  const ok = signed.ok;
   if (!ok) {
     if (pathname.startsWith("/api/admin/")) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

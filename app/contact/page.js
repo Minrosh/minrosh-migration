@@ -1,6 +1,7 @@
 import siteData from "../../data/site.json";
 import seoPages from "../../data/seo-pages.json";
 import { ContactLeadForm } from "../../components/contact-lead-form";
+import { AgentRegistrationStrip } from "../../components/agent-registration-strip";
 import { SiteShell } from "../../components/site-shell";
 import { StructuredData } from "../../components/structured-data";
 import { buildMetadata, breadcrumbJsonLd } from "../../lib/seo";
@@ -108,7 +109,10 @@ export default function ContactPage() {
               </div>
             </div>
           </div>
-          <ContactLeadForm />
+          <div className="contact-form-column">
+            <AgentRegistrationStrip brand={siteData.brand} />
+            <ContactLeadForm />
+          </div>
         </div>
       </section>
     </SiteShell>

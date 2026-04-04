@@ -25,8 +25,8 @@ if (!fs.existsSync(staticSrc)) {
 fs.mkdirSync(path.dirname(staticDest), { recursive: true });
 fs.cpSync(staticSrc, staticDest, { recursive: true, force: true });
 fs.cpSync(publicSrc, publicDest, { recursive: true, force: true });
-const uploadsDest = path.join(publicDest, "uploads");
-fs.mkdirSync(uploadsDest, { recursive: true });
+const storageUploadsDest = path.join(standalone, "storage", "uploads");
+fs.mkdirSync(storageUploadsDest, { recursive: true });
 
 if (fs.existsSync(dataSrc)) {
   fs.mkdirSync(dataDest, { recursive: true });
@@ -34,5 +34,5 @@ if (fs.existsSync(dataSrc)) {
 }
 
 console.log(
-  "Standalone: copied public, data, and .next/static into .next/standalone (uploads dir ensured)."
+  "Standalone: copied public, data, .next/static; ensured storage/uploads."
 );

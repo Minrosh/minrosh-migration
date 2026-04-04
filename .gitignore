@@ -8,6 +8,9 @@ data/invoices.json
 data/audit-log.json
 data/success-stories.json
 data/admin-auth.json
+data/admin-sessions.json
+storage/uploads/*
+!storage/uploads/.gitkeep
 data-newsletter.json
 .env
 .env.*

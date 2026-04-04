@@ -1,4 +1,4 @@
-import { verifyAdminRequest, adminJsonUnauthorized } from "@/lib/admin/auth-route";
+import { verifyAdminRequest, adminJsonUnauthorized, requireAdminWrite } from "@/lib/admin/auth-route";
 import { appendAudit } from "@/lib/admin/audit";
 import { createInvoice, listInvoices, updateInvoiceStatus } from "@/lib/admin/invoices-service";
 
@@ -8,7 +8,8 @@ export async function GET() {
 }
 
 export async function POST(request) {
-  if (!(await verifyAdminRequest())) return adminJsonUnauthorized();
+  const denied = await requireAdminWrite(request);
+  if (denied) return denied;
   let body;
   try {
     body = await request.json();

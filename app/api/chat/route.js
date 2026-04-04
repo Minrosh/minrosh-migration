@@ -1,3 +1,13 @@
+import { rateLimitAllow } from "@/lib/security/rate-limit";
+import { getClientIp } from "@/lib/security/request-ip";
+import {
+  CHAT_MAX_BODY_BYTES,
+  CHAT_MAX_MESSAGE_CHARS,
+  CHAT_MAX_MESSAGES,
+  CHAT_MAX_TOTAL_CONTENT_CHARS,
+  chatDailyQuotaAllow,
+} from "@/lib/security/chat-limits";
+
 const systemPrompt = `You are the MinRosh Migration Assistant for minroshmigration.com.au.
 
 Your job:
@@ -20,37 +30,92 @@ Internal site pages you may mention when relevant: /skilled-migration, /student-
 const defaultModel = process.env.OPENAI_MODEL || "gpt-4o-mini";
 const requestTimeoutMs = 20000;
 
+const ALLOWED_MODELS = new Set([
+  "gpt-4o-mini",
+  "gpt-4o",
+  "gpt-4-turbo",
+  "gpt-3.5-turbo",
+]);
+
+function pickModel(requested) {
+  if (typeof requested === "string" && ALLOWED_MODELS.has(requested)) {
+    return requested;
+  }
+  return defaultModel;
+}
+
+function normalizeMessages(raw) {
+  if (!Array.isArray(raw)) return { ok: false, error: "Invalid messages." };
+  const messages = raw
+    .filter(
+      (item) =>
+        item &&
+        (item.role === "user" || item.role === "assistant") &&
+        typeof item.content === "string" &&
+        item.content.trim()
+    )
+    .slice(-CHAT_MAX_MESSAGES);
+
+  let totalChars = 0;
+  for (const m of messages) {
+    if (m.content.length > CHAT_MAX_MESSAGE_CHARS) {
+      return { ok: false, error: "One or more messages are too long." };
+    }
+    totalChars += m.content.length;
+  }
+  if (totalChars > CHAT_MAX_TOTAL_CONTENT_CHARS) {
+    return { ok: false, error: "Conversation payload is too large." };
+  }
+
+  return { ok: true, messages };
+}
+
 export async function POST(request) {
   if (!process.env.OPENAI_API_KEY) {
-    return Response.json(
-      {
-        error:
-          "OPENAI_API_KEY is not set. Start the server with that environment variable to enable chat.",
-      },
-      { status: 500 }
-    );
+    return Response.json({ error: "Assistant is temporarily unavailable." }, { status: 503 });
+  }
+
+  const ip = getClientIp(request);
+  if (!rateLimitAllow(`chat:${ip}`, { windowMs: 15 * 60 * 1000, max: 40 })) {
+    return Response.json({ error: "Too many requests. Try again later." }, { status: 429 });
+  }
+
+  const cl = request.headers.get("content-length");
+  if (cl) {
+    const n = Number(cl);
+    if (Number.isFinite(n) && n > CHAT_MAX_BODY_BYTES) {
+      return Response.json({ error: "Request too large." }, { status: 413 });
+    }
+  }
+
+  let rawText;
+  try {
+    rawText = await request.text();
+  } catch {
+    return Response.json({ error: "Invalid request." }, { status: 400 });
+  }
+  if (rawText.length > CHAT_MAX_BODY_BYTES) {
+    return Response.json({ error: "Request too large." }, { status: 413 });
   }
 
   let body;
-
   try {
-    body = await request.json();
+    body = JSON.parse(rawText);
   } catch {
     return Response.json({ error: "Invalid JSON body." }, { status: 400 });
   }
 
-  const messages = Array.isArray(body?.messages)
-    ? body.messages.filter(
-        (item) =>
-          item &&
-          (item.role === "user" || item.role === "assistant") &&
-          typeof item.content === "string" &&
-          item.content.trim()
-      )
-    : [];
+  const normalized = normalizeMessages(body?.messages);
+  if (!normalized.ok) {
+    return Response.json({ error: normalized.error }, { status: 400 });
+  }
 
-  const model = typeof body?.model === "string" ? body.model : defaultModel;
-  const boundedMessages = messages.slice(-20);
+  if (!chatDailyQuotaAllow(ip)) {
+    return Response.json({ error: "Daily assistant limit reached. Try again tomorrow." }, { status: 429 });
+  }
+
+  const model = pickModel(body?.model);
+  const boundedMessages = normalized.messages;
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), requestTimeoutMs);
 
@@ -73,15 +138,9 @@ export async function POST(request) {
     return Response.json(data, { status: response.status });
   } catch (error) {
     if (error?.name === "AbortError") {
-      return Response.json(
-        { error: "AI request timed out. Please try again." },
-        { status: 504 }
-      );
+      return Response.json({ error: "AI request timed out. Please try again." }, { status: 504 });
     }
-    return Response.json(
-      { error: "AI assistant is currently unavailable." },
-      { status: 502 }
-    );
+    return Response.json({ error: "AI assistant is currently unavailable." }, { status: 502 });
   } finally {
     clearTimeout(timeout);
   }

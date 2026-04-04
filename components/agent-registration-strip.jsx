@@ -1,0 +1,45 @@
+"use client";
+
+/**
+ * MARN + statutory links for contact and booking surfaces (consumer transparency).
+ */
+export function AgentRegistrationStrip({ brand, variant = "default" }) {
+  if (!brand) return null;
+  const marn = String(brand.marn || "").trim();
+  const regsUrl =
+    brand.migrationAgentsRegulations2026Url || "https://www.legislation.gov.au/F2026L00118/latest";
+  const conductUrl = brand.omaraCodeOfConductUrl || "https://www.mara.gov.au/tools-for-agents/legislation/code-of-conduct";
+  const omaraUrl = brand.omaraRegisterUrl || "https://www.mara.gov.au/";
+
+  return (
+    <aside
+      className={`agent-registration-strip ${variant === "compact" ? "agent-registration-strip--compact" : ""}`.trim()}
+      aria-label="Registered migration agent details"
+    >
+      <p className="agent-registration-strip__lead">
+        <strong>{brand.name}</strong>
+        {marn ? (
+          <>
+            {" "}
+            · <span className="agent-registration-strip__marn">MARN {marn}</span>
+          </>
+        ) : (
+          <span className="agent-registration-strip__pending"> · Add MARN in data/site.json (brand.marn)</span>
+        )}
+      </p>
+      <p className="agent-registration-strip__links">
+        <a href={regsUrl} target="_blank" rel="noreferrer">
+          Migration Agents Regulations 2026
+        </a>
+        {" · "}
+        <a href={conductUrl} target="_blank" rel="noreferrer">
+          OMARA Code of Conduct
+        </a>
+        {" · "}
+        <a href={omaraUrl} target="_blank" rel="noreferrer">
+          OMARA register
+        </a>
+      </p>
+    </aside>
+  );
+}

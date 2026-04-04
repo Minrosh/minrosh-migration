@@ -2,6 +2,13 @@
   "brand": {
     "name": "MinRosh Migration",
     "tagline": "Registered migration guidance for Brisbane and clients across Australia.",
+    "marn": "",
+    "migrationAgentsRegulations2026Url": "https://www.legislation.gov.au/F2026L00118/latest",
+    "omaraLegislativeUpdatesUrl": "https://www.mara.gov.au/notices-and-reports/news-and-notices/legislative-updates",
+    "omaraCodeOfConductUrl": "https://www.mara.gov.au/tools-for-agents/legislation/code-of-conduct",
+    "omaraRegisterUrl": "https://www.mara.gov.au/",
+    "migrationAgentsRegisterSearchUrl": "https://www.mara.gov.au/search-the-register-of-migration-agents/",
+    "specialistAccreditationNote": "",
     "email": "info@minroshmigration.com.au",
     "phone": "0478 100 542",
     "phoneSecondary": "0481 706 474",
@@ -226,6 +233,26 @@
     {
       "question": "How much does an Australian visa cost?",
       "answer": "Visa application charges vary by visa type, and there can also be costs for English tests, skills assessments, health checks, and supporting documents. Contact MinRosh Migration for a clearer estimate based on your situation."
+    },
+    {
+      "question": "How do I get PR in Australia in 2026?",
+      "answer": "Permanent residence depends on your visa pathway. Common routes include skilled points-tested visas (such as subclasses 189, 190, or 491), employer-sponsored pathways that may lead to permanent options where eligible, partner visas, and some graduate or specialist routes. You usually need to meet health, character, and specific visa criteria, and skilled routes often require a positive skills assessment and competitive English. Check the Department of Home Affairs visa listing for the subclass that matches your situation, then map nomination, residence, and evidence requirements before you lodge."
+    },
+    {
+      "question": "What are the 190 visa requirements for Queensland in 2026?",
+      "answer": "Subclass 190 is a state-nominated skilled visa. Queensland runs its own nomination program with occupation lists, minimum points, and work or residence conditions that change over time. You must also meet Home Affairs eligibility for subclass 190, including skills assessment and English where required. Always read the current Queensland migration program pages and the official 190 visa page before planning, because lists and rules are updated regularly."
+    },
+    {
+      "question": "What is the Skills in Demand visa in Australia?",
+      "answer": "Skills in Demand refers to Australia’s employer-sponsored skilled framework that groups roles into streams such as Specialist Skills, Core Skills, and Essential Skills, with different settings for occupations and income thresholds. It replaces the older single-number branding many people still call the 482. The exact name, lists, and rules on the Department of Home Affairs website are authoritative — use those when deciding whether your job fits a sponsored pathway."
+    },
+    {
+      "question": "What is the minimum salary for employer sponsored visa Australia 2026?",
+      "answer": "Employer-sponsored skilled nominations must meet the Temporary Skilled Migration Income Threshold (TSMIT) that applies when the nomination is decided, together with any other income rules for your visa stream. TSMIT is updated over time, including typical annual indexation from 1 July. Do not rely on old blog figures: confirm the current threshold and exemptions on the Department of Home Affairs employer-sponsored visa pages before you accept a job offer or lodge."
+    },
+    {
+      "question": "How do I get a PR visa in Queensland as a nurse in 2026?",
+      "answer": "As a nurse you would usually start by confirming your occupation and skills assessment pathway (often through ANMAC or the relevant nursing authority), meeting English requirements, and checking whether you will pursue employer-sponsored options (Skills in Demand / permanent routes where eligible) or points-tested skilled visas (189, 190, or 491). Queensland runs its own state and regional nomination programs with lists and rules that change over time. Read the current Queensland migration program material and the Department of Home Affairs visa pages for subclasses 190 and 491, then map health and character requirements before you lodge."
     }
   ]
 }

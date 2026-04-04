@@ -7,7 +7,8 @@ import {
   flexRender,
   createColumnHelper,
 } from "@tanstack/react-table";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { AdminTableSkeleton } from "@/components/admin/admin-table-skeleton";
 
 const columnHelper = createColumnHelper();
 
@@ -43,7 +44,19 @@ export function AuditPanel() {
     getCoreRowModel: getCoreRowModel(),
   });
 
-  if (loading) return <p>Loading…</p>;
+  if (loading) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>Audit log</CardTitle>
+          <CardDescription>Loading events…</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <AdminTableSkeleton rows={8} cols={3} />
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card>

@@ -1,5 +1,6 @@
 import siteData from "../../data/site.json";
 import { ContentPage } from "../../components/content-page";
+import { TsmitSalaryCheck } from "../../components/tsmit-salary-check";
 import { SiteShell } from "../../components/site-shell";
 import { StructuredData } from "../../components/structured-data";
 import { buildMetadata, breadcrumbJsonLd } from "../../lib/seo";
@@ -11,6 +12,8 @@ export const metadata = buildMetadata({
   path: "/employer-sponsored-visas",
   keywords: [
     "employer sponsored visa Australia",
+    "Skills in Demand visa Australia",
+    "TSMIT Australia",
     "482 visa guidance",
     "186 visa consultation Brisbane",
   ],
@@ -57,6 +60,13 @@ export default function EmployerSponsoredPage() {
         eyebrow="Employer-Sponsored Visas"
         title="Employer-sponsored visa guidance with clearer worker-side strategy"
         intro="Employer sponsorship can be a practical pathway for some applicants, especially where direct PR is not the strongest immediate route. MinRosh helps workers understand whether sponsorship is realistic, what to prepare first, and how it fits into the bigger migration strategy."
+        alertBanner={{
+          title: "TSMIT and Skills in Demand (SID)",
+          body:
+            "The Temporary Skilled Migration Income Threshold (TSMIT) is updated over time (including typical indexation from 1 July each financial year). Sponsored roles must meet the threshold and Skills in Demand settings that apply when the nomination is assessed — figures in blog posts or forums go out of date quickly. Always confirm the current TSMIT, occupation list, and stream (Specialist / Core / Essential) on the Department of Home Affairs website before you rely on any number.",
+          href: "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing",
+          linkLabel: "Department of Home Affairs visa listing",
+        }}
         breadcrumbs={[
           { href: "/", label: "Home" },
           { href: "/employer-sponsored-visas", label: "Employer-Sponsored Visas" },
@@ -67,6 +77,7 @@ export default function EmployerSponsoredPage() {
           { href: "/assessment", title: "Free Assessment" },
           { href: "/contact", title: "Contact MinRosh" },
         ]}
+        asideTools={<TsmitSalaryCheck />}
       />
     </SiteShell>
   );

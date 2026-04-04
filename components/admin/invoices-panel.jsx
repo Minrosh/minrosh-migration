@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
+import { AdminTableSkeleton } from "@/components/admin/admin-table-skeleton";
 
 const columnHelper = createColumnHelper();
 
@@ -130,7 +131,21 @@ export function InvoicesPanel() {
     load();
   }
 
-  if (loading) return <p>Loading…</p>;
+  if (loading) {
+    return (
+      <div className="space-y-8">
+        <Card>
+          <CardHeader>
+            <CardTitle>Invoices</CardTitle>
+            <CardDescription>Loading ledger…</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <AdminTableSkeleton rows={5} cols={7} />
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8">

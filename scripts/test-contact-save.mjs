@@ -1,3 +1,8 @@
+/**
+ * Spawns `next dev` and POSTs to /api/contact. Requires a working @next/swc native binary for
+ * your OS/arch; if `next dev` fails to start (e.g. invalid SWC .node), reinstall node_modules or
+ * run this test on Linux CI where SWC loads correctly.
+ */
 import { mkdtemp, readFile, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
@@ -56,6 +61,7 @@ async function main() {
       mainNeed: "Skilled Migration",
       message: "Please confirm this enquiry is written to disk.",
       quizSummary: "Estimated points: 70",
+      company: "",
     };
 
     const response = await fetch(`http://127.0.0.1:${port}/api/contact`, {
