@@ -34,6 +34,14 @@ export function AuditPanel() {
       }),
       columnHelper.accessor("action", { header: "Action" }),
       columnHelper.accessor("detail", { header: "Detail" }),
+      columnHelper.accessor("ip", {
+        header: "IP",
+        cell: (i) => i.getValue() || "—",
+      }),
+      columnHelper.accessor("route", {
+        header: "Route",
+        cell: (i) => <span className="max-w-[140px] truncate block">{i.getValue() || "—"}</span>,
+      }),
     ],
     []
   );
@@ -52,7 +60,7 @@ export function AuditPanel() {
           <CardDescription>Loading events…</CardDescription>
         </CardHeader>
         <CardContent>
-          <AdminTableSkeleton rows={8} cols={3} />
+          <AdminTableSkeleton rows={8} cols={5} />
         </CardContent>
       </Card>
     );

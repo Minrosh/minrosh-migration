@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { verifyAdminSessionCookie } from "./lib/admin/session-signed-cookie";
+import { getAdminSessionValueFromRequestCookies } from "./lib/admin/session-cookie";
 
 export async function middleware(request) {
   const { pathname } = request.nextUrl;
@@ -23,7 +24,7 @@ export async function middleware(request) {
     });
   }
 
-  const cookieVal = request.cookies.get("admin_session")?.value;
+  const cookieVal = getAdminSessionValueFromRequestCookies(request.cookies);
   const secret = process.env.ADMIN_SESSION_SECRET || process.env.ADMIN_PASSWORD || "";
   const signed = cookieVal && secret ? await verifyAdminSessionCookie(cookieVal, secret) : { ok: false };
   const ok = signed.ok;

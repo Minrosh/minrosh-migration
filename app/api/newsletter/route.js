@@ -40,7 +40,7 @@ export async function POST(request) {
     return Response.json({ error: parsed.error }, { status: 400 });
   }
 
-  const result = saveNewsletterEntry(parsed.email);
+  const result = saveNewsletterEntry(parsed.email, { marketingConsent: parsed.marketingConsent });
   if (result.error) {
     return Response.json({ error: result.error }, { status: 400 });
   }
@@ -48,8 +48,10 @@ export async function POST(request) {
   return Response.json({
     ok: true,
     exists: result.exists || false,
-    message: result.exists
-      ? "This email is already subscribed."
-      : "Thanks for subscribing. You will receive migration and visa updates by email.",
+    message: result.resubscribed
+      ? "Your subscription is active again. You can unsubscribe from any marketing email."
+      : result.exists
+        ? "This email is already subscribed."
+        : "Thanks for subscribing. You will receive migration and visa updates by email.",
   });
 }

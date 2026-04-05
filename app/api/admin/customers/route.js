@@ -1,16 +1,27 @@
 import { verifyAdminRequest, adminJsonUnauthorized, requireAdminWrite } from "@/lib/admin/auth-route";
 import { appendAudit } from "@/lib/admin/audit";
+import { toCustomerListRow } from "@/lib/admin/customer-dto";
 import { readCustomers } from "@/lib/admin/json-store";
+import { deleteCustomerUploadFolder } from "@/lib/admin/uploads-storage";
 import {
   addCustomer,
   deleteCustomer,
+  findCustomerById,
   regenerateMagicLink,
   updateCustomer,
 } from "@/lib/admin/customers-service";
+import { getClientIp } from "@/lib/security/request-ip";
 
-export async function GET() {
+export async function GET(request) {
   if (!(await verifyAdminRequest())) return adminJsonUnauthorized();
-  return Response.json(readCustomers());
+  const { searchParams } = new URL(request.url);
+  const limit = Math.min(500, Math.max(1, Number(searchParams.get("limit")) || 200));
+  const offset = Math.max(0, Number(searchParams.get("offset")) || 0);
+  const { customers } = readCustomers();
+  const list = Array.isArray(customers) ? customers : [];
+  const total = list.length;
+  const slice = list.slice(offset, offset + limit).map((c) => toCustomerListRow(c)).filter(Boolean);
+  return Response.json({ customers: slice, total, limit, offset });
 }
 
 export async function POST(request) {
@@ -23,11 +34,12 @@ export async function POST(request) {
     return Response.json({ error: "Invalid JSON" }, { status: 400 });
   }
   const action = body?.action;
+  const ip = getClientIp(request);
 
   if (action === "regenerateToken") {
     const row = regenerateMagicLink(body.id);
     if (!row) return Response.json({ error: "Not found" }, { status: 404 });
-    appendAudit("customer_magic_regenerate", row.id);
+    appendAudit("customer_magic_regenerate", row.id, { ip, route: "POST /api/admin/customers regenerateToken" });
     return Response.json({ customer: row });
   }
 
@@ -36,8 +48,8 @@ export async function POST(request) {
     email: body.email,
     status: body.status,
   });
-  appendAudit("customer_create", row.id);
-  return Response.json({ customer: row });
+  appendAudit("customer_create", row.id, { ip, route: "POST /api/admin/customers" });
+  return Response.json({ customer: toCustomerListRow(row) });
 }
 
 export async function PATCH(request) {
@@ -70,8 +82,9 @@ export async function PATCH(request) {
   }
   const row = updateCustomer(id, patch);
   if (!row) return Response.json({ error: "Not found" }, { status: 404 });
-  appendAudit("customer_update", id);
-  return Response.json({ customer: row });
+  const ip = getClientIp(request);
+  appendAudit("customer_update", id, { ip, route: "PATCH /api/admin/customers" });
+  return Response.json({ customer: toCustomerListRow(row) });
 }
 
 export async function DELETE(request) {
@@ -80,7 +93,12 @@ export async function DELETE(request) {
   const { searchParams } = new URL(request.url);
   const id = searchParams.get("id");
   if (!id) return Response.json({ error: "id required" }, { status: 400 });
+  const ip = getClientIp(request);
+  const existing = findCustomerById(id);
+  if (existing) {
+    deleteCustomerUploadFolder(existing);
+  }
   deleteCustomer(id);
-  appendAudit("customer_delete", id);
+  appendAudit("customer_delete", id, { ip, route: "DELETE /api/admin/customers" });
   return Response.json({ ok: true });
 }

@@ -160,12 +160,13 @@ export async function GET(request, { params }) {
   const gated = await uploadGateResponse(token, customer);
   if (gated) return gated;
 
+  const listDocs = process.env.UPLOAD_GET_LISTS_DOCS !== "false";
   return Response.json({
     customer: {
       id: customer.id,
       name: customer.name,
       uploadFolder: customer.uploadFolder || customer.id,
-      documents: withClientUrls(token, customer),
+      documents: listDocs ? withClientUrls(token, customer) : [],
     },
   });
 }

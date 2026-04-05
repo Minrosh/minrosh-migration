@@ -1,9 +1,12 @@
 import { cookies } from "next/headers";
 import { hasAdminPasswordConfigured, verifyAdminPassword } from "@/lib/admin/admin-auth";
+import { appendAudit } from "@/lib/admin/audit";
 import { createSessionToken } from "@/lib/admin/session";
+import { adminSessionCookieName, clearAdminSessionCookies } from "@/lib/admin/session-cookie";
 import { requireAdminLoginOrigin } from "@/lib/admin/auth-route";
 import { rateLimitAllow } from "@/lib/security/rate-limit";
 import { getClientIp } from "@/lib/security/request-ip";
+import { logSecurityEvent } from "@/lib/security/monitoring-log";
 
 export async function POST(request) {
   const originDenied = requireAdminLoginOrigin(request);
@@ -26,6 +29,11 @@ export async function POST(request) {
     return Response.json({ error: "Admin password not configured" }, { status: 503 });
   }
   if (!verifyAdminPassword(password)) {
+    appendAudit("admin_login_failed", "invalid password", {
+      ip,
+      route: "POST /api/admin/login",
+    });
+    logSecurityEvent("admin_login_failed", { ip });
     return Response.json({ error: "Invalid password" }, { status: 401 });
   }
 
@@ -39,9 +47,11 @@ export async function POST(request) {
     process.env.ADMIN_COOKIE_SECURE === "true" ||
     (process.env.NODE_ENV === "production" && process.env.ADMIN_COOKIE_SECURE !== "false");
 
-  jar.set("admin_session", token, {
+  clearAdminSessionCookies(jar);
+  const cookieName = adminSessionCookieName(secure);
+  jar.set(cookieName, token, {
     httpOnly: true,
-    sameSite: "lax",
+    sameSite: "strict",
     secure,
     path: "/",
     maxAge: 60 * 60 * 24 * 7,

@@ -72,11 +72,6 @@ export function CustomersPanel() {
     [customers, tab]
   );
 
-  const detailCustomer = useMemo(
-    () => (detailId ? customers.find((c) => c.id === detailId) ?? null : null),
-    [customers, detailId]
-  );
-
   const columns = useMemo(
     () => [
       columnHelper.accessor("name", { header: "Name" }),
@@ -86,35 +81,22 @@ export function CustomersPanel() {
         cell: (i) => <Badge variant={statusVariant(i.getValue())}>{i.getValue()}</Badge>,
       }),
       columnHelper.display({
-        id: "magic",
-        header: "Magic link",
-        cell: ({ row }) => {
-          const origin = typeof window !== "undefined" ? window.location.origin : "";
-          const url = `${origin}/upload/${row.original.magicToken}`;
-          return (
-            <div className="flex max-w-[220px] flex-col gap-1">
-              <code className="truncate text-xs">{url}</code>
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                className="h-8"
-                onClick={() => navigator.clipboard.writeText(url)}
-              >
-                Copy link
-              </Button>
-            </div>
-          );
-        },
+        id: "upload",
+        header: "Upload link",
+        cell: ({ row }) => (
+          <span className="text-xs text-muted-foreground">
+            {row.original.hasMagicLink ? "Open details to copy" : "—"}
+          </span>
+        ),
       }),
       columnHelper.display({
         id: "docs",
         header: "Docs",
         cell: ({ row }) => {
-          const docs = row.original.documents || [];
+          const n = row.original.documentCount ?? 0;
           return (
             <div className="flex max-w-[200px] flex-col gap-2">
-              <p className="text-sm font-medium">{docs.length} file(s)</p>
+              <p className="text-sm font-medium">{n} file(s)</p>
               <Button
                 type="button"
                 variant="outline"
@@ -129,7 +111,7 @@ export function CustomersPanel() {
         },
       }),
     ],
-    [load]
+    []
   );
 
   const table = useReactTable({
@@ -170,15 +152,17 @@ export function CustomersPanel() {
   return (
     <div className="space-y-8">
       <CustomerDetailDrawer
-        customer={detailCustomer}
-        open={Boolean(detailId && detailCustomer)}
+        customerId={detailId}
+        open={Boolean(detailId)}
         onClose={() => setDetailId(null)}
         onRefresh={load}
       />
       <Card>
         <CardHeader>
           <CardTitle>Add customer</CardTitle>
-          <CardDescription>A UUID magic link is generated automatically.</CardDescription>
+          <CardDescription>
+          A UUID magic link is generated automatically. The full link is only shown when you open customer details.
+        </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={createCustomer} className="flex flex-wrap items-end gap-4">

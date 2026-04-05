@@ -2,8 +2,10 @@ import nodemailer from "nodemailer";
 import { requireAdminWrite } from "@/lib/admin/auth-route";
 import { appendAudit } from "@/lib/admin/audit";
 import { readCustomers } from "@/lib/admin/json-store";
+import { isMarketingSuppressedEmail } from "@/lib/newsletter";
 import { rateLimitAllow } from "@/lib/security/rate-limit";
 import { getClientIp } from "@/lib/security/request-ip";
+import { logSecurityEvent } from "@/lib/security/monitoring-log";
 
 function getMailTransport() {
   const smtpHost = process.env.SMTP_HOST;
@@ -62,7 +64,8 @@ export async function POST(request) {
   const emails = (customers || [])
     .filter((c) => c.status === "prospective" && c.email)
     .map((c) => c.email.trim().toLowerCase())
-    .filter(Boolean);
+    .filter(Boolean)
+    .filter((e) => !isMarketingSuppressedEmail(e));
 
   const unique = [...new Set(emails)];
   if (!unique.length) {
@@ -88,15 +91,27 @@ export async function POST(request) {
 
   const smtpFrom = process.env.SMTP_FROM || process.env.SMTP_USER;
   const bcc = unique.join(", ");
+  const siteBase = (process.env.PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_SITE_URL || "").replace(/\/$/, "");
+  const complianceFooter = siteBase
+    ? `\n\n---\nMinRosh Migration — prospective client update. Newsletter preferences: ${siteBase}/newsletter/unsubscribe`
+    : "\n\n---\nMinRosh Migration — prospective client update. Reply to this email if you no longer wish to receive similar messages.";
+  const textWithFooter = `${text}${complianceFooter}`;
 
   await transporter.sendMail({
     from: smtpFrom,
     to: smtpFrom,
     bcc,
     subject,
-    text,
+    text: textWithFooter,
+    headers: process.env.SMTP_LIST_UNSUBSCRIBE
+      ? { "List-Unsubscribe": `<${process.env.SMTP_LIST_UNSUBSCRIBE}>` }
+      : undefined,
   });
 
-  appendAudit("broadcast_prospective", `${unique.length} recipients`);
+  appendAudit("broadcast_prospective", `${unique.length} recipients`, {
+    ip,
+    route: "POST /api/admin/broadcast",
+  });
+  logSecurityEvent("broadcast_sent", { recipientCount: unique.length, ip });
   return Response.json({ ok: true, sent: unique.length });
 }
