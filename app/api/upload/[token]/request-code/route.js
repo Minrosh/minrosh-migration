@@ -5,6 +5,7 @@ import { computeOtpExpiresIso, generateSixDigitCode, hashUploadOtp, isOtpExpired
 import { sendTwilioSms } from "@/lib/twilio-sms";
 import { rateLimitAllow } from "@/lib/security/rate-limit";
 import { getClientIp } from "@/lib/security/request-ip";
+import { normalizeUploadTokenParam } from "@/lib/upload-token";
 
 export async function POST(request, { params }) {
   const ip = getClientIp(request);
@@ -12,7 +13,11 @@ export async function POST(request, { params }) {
     return Response.json({ error: "Too many code requests. Try again later." }, { status: 429 });
   }
 
-  const { token } = await params;
+  const { token: rawParam } = await params;
+  const token = normalizeUploadTokenParam(rawParam);
+  if (!token) {
+    return Response.json({ error: "Invalid link" }, { status: 404 });
+  }
   if (!rateLimitAllow(`upload-sms-req-token:${token}`, { windowMs: 60 * 1000, max: 2 })) {
     return Response.json({ error: "Wait a minute before requesting another code." }, { status: 429 });
   }

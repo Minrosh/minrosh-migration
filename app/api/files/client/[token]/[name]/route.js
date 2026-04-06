@@ -1,14 +1,24 @@
 import fs from "node:fs";
+import { Readable } from "node:stream";
 import { findCustomerByMagicToken } from "@/lib/admin/customers-service";
 import { resolveCustomerFileAbsolute } from "@/lib/admin/uploads-storage";
+import { uploadGateResponse } from "@/lib/upload-gate";
+import { normalizeUploadTokenParam } from "@/lib/upload-token";
 
-export async function GET(_request, { params }) {
-  const { token, name } = await params;
+export async function GET(request, { params }) {
+  const { token: rawParam, name } = await params;
+  const token = normalizeUploadTokenParam(rawParam);
+  if (!token) {
+    return Response.json({ error: "Not found" }, { status: 404 });
+  }
   const storedName = decodeURIComponent(String(name || ""));
   const customer = findCustomerByMagicToken(token);
   if (!customer) {
     return Response.json({ error: "Not found" }, { status: 404 });
   }
+
+  const gated = await uploadGateResponse(token, customer);
+  if (gated) return gated;
 
   const docs = customer.documents || [];
   const meta = docs.find((d) => d.storedName === storedName);
@@ -21,9 +31,10 @@ export async function GET(_request, { params }) {
     return Response.json({ error: "Not found" }, { status: 404 });
   }
 
-  const buf = fs.readFileSync(abs);
   const mime = meta.mime || "application/octet-stream";
-  return new Response(buf, {
+  const stream = fs.createReadStream(abs);
+  const web = Readable.toWeb(stream);
+  return new Response(web, {
     status: 200,
     headers: {
       "Content-Type": mime,

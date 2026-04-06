@@ -38,7 +38,8 @@ export function PublicUploadForm({ token }) {
     }
     setGate("ok");
     setStatus("");
-    setDocs(Array.isArray(data?.customer?.documents) ? data.customer.documents : []);
+    const serverDocs = Array.isArray(data?.customer?.documents) ? data.customer.documents : [];
+    setDocs((prev) => (serverDocs.length ? serverDocs : prev));
   }, [token]);
 
   useEffect(() => {
@@ -124,6 +125,13 @@ export function PublicUploadForm({ token }) {
         setStatus(n === 1 ? "Uploaded successfully. Thank you." : `Uploaded ${n} files successfully. Thank you.`);
       }
       input.value = "";
+      if (Array.isArray(data.documents) && data.documents.length) {
+        setDocs((prev) => {
+          const seen = new Set(prev.map((p) => p.storedName));
+          const add = data.documents.filter((d) => d.storedName && !seen.has(d.storedName));
+          return [...add, ...prev];
+        });
+      }
       await refreshDocuments();
     } catch {
       setStatus("Network error");

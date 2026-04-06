@@ -94,7 +94,7 @@ export async function POST(request) {
   } catch {
     return Response.json({ error: "Invalid request." }, { status: 400 });
   }
-  if (rawText.length > CHAT_MAX_BODY_BYTES) {
+  if (Buffer.byteLength(rawText, "utf8") > CHAT_MAX_BODY_BYTES) {
     return Response.json({ error: "Request too large." }, { status: 413 });
   }
 

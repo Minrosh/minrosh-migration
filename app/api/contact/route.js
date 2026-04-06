@@ -24,7 +24,7 @@ export async function POST(request) {
   } catch {
     return Response.json({ error: "Invalid request." }, { status: 400 });
   }
-  if (rawText.length > maxBytes) {
+  if (Buffer.byteLength(rawText, "utf8") > maxBytes) {
     return Response.json({ error: "Request too large." }, { status: 413 });
   }
 

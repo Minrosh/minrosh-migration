@@ -1,6 +1,6 @@
 import { verifyAdminRequest, adminJsonUnauthorized, requireAdminWrite } from "@/lib/admin/auth-route";
 import { appendAudit } from "@/lib/admin/audit";
-import { toCustomerListRow } from "@/lib/admin/customer-dto";
+import { sanitizeCustomerForAdminDetail, toCustomerListRow } from "@/lib/admin/customer-dto";
 import { readCustomers } from "@/lib/admin/json-store";
 import { deleteCustomerUploadFolder } from "@/lib/admin/uploads-storage";
 import {
@@ -37,19 +37,29 @@ export async function POST(request) {
   const ip = getClientIp(request);
 
   if (action === "regenerateToken") {
-    const row = regenerateMagicLink(body.id);
-    if (!row) return Response.json({ error: "Not found" }, { status: 404 });
-    appendAudit("customer_magic_regenerate", row.id, { ip, route: "POST /api/admin/customers regenerateToken" });
-    return Response.json({ customer: row });
+    const regen = regenerateMagicLink(body.id);
+    if (!regen) return Response.json({ error: "Not found" }, { status: 404 });
+    appendAudit("customer_magic_regenerate", regen.customer.id, {
+      ip,
+      route: "POST /api/admin/customers regenerateToken",
+    });
+    return Response.json({
+      customer: sanitizeCustomerForAdminDetail(regen.customer),
+      magicUploadToken: regen.plainToken,
+    });
   }
 
-  const row = addCustomer({
+  const { customer: row, plainToken } = addCustomer({
     name: body.name,
     email: body.email,
     status: body.status,
+    marketingConsent: body.marketingConsent,
   });
   appendAudit("customer_create", row.id, { ip, route: "POST /api/admin/customers" });
-  return Response.json({ customer: toCustomerListRow(row) });
+  return Response.json({
+    customer: toCustomerListRow(row),
+    magicUploadToken: plainToken,
+  });
 }
 
 export async function PATCH(request) {
@@ -63,7 +73,7 @@ export async function PATCH(request) {
   }
   const { id, ...rest } = body;
   if (!id) return Response.json({ error: "id required" }, { status: 400 });
-  const allowed = new Set(["name", "email", "status", "notes", "mobile"]);
+  const allowed = new Set(["name", "email", "status", "notes", "mobile", "marketingConsent"]);
   const patch = {};
   for (const key of allowed) {
     if (rest[key] === undefined) continue;
@@ -75,6 +85,8 @@ export async function PATCH(request) {
         .slice(0, 32);
     } else if (key === "status") {
       patch[key] = rest[key];
+    } else if (key === "marketingConsent") {
+      patch[key] = Boolean(rest[key]);
     }
   }
   if (Object.keys(patch).length === 0) {

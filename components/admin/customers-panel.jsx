@@ -41,6 +41,8 @@ export function CustomersPanel() {
   const [status, setStatus] = useState("prospective");
   const [tab, setTab] = useState(() => parseTab(searchParams.get("tab")) || "current");
   const [detailId, setDetailId] = useState(null);
+  const [plainBootstrap, setPlainBootstrap] = useState(null);
+  const [marketingConsentCreate, setMarketingConsentCreate] = useState(true);
 
   useEffect(() => {
     const t = parseTab(searchParams.get("tab"));
@@ -122,14 +124,20 @@ export function CustomersPanel() {
 
   async function createCustomer(e) {
     e.preventDefault();
-    await fetch("/api/admin/customers", {
+    const res = await fetch("/api/admin/customers", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, status }),
+      body: JSON.stringify({ name, email, status, marketingConsent: marketingConsentCreate }),
     });
+    const d = await res.json().catch(() => ({}));
     setName("");
     setEmail("");
     setStatus("prospective");
+    setMarketingConsentCreate(true);
+    if (d.customer?.id && d.magicUploadToken) {
+      setPlainBootstrap({ id: d.customer.id, token: d.magicUploadToken });
+      setDetailId(d.customer.id);
+    }
     load();
   }
 
@@ -154,14 +162,19 @@ export function CustomersPanel() {
       <CustomerDetailDrawer
         customerId={detailId}
         open={Boolean(detailId)}
-        onClose={() => setDetailId(null)}
+        onClose={() => {
+          setDetailId(null);
+          setPlainBootstrap(null);
+        }}
         onRefresh={load}
+        bootstrapPlainToken={plainBootstrap?.id === detailId ? plainBootstrap.token : undefined}
       />
       <Card>
         <CardHeader>
           <CardTitle>Add customer</CardTitle>
           <CardDescription>
-          A UUID magic link is generated automatically. The full link is only shown when you open customer details.
+          Magic links are stored hashed server-side. The plain URL is shown once here after create, in the details
+          panel, or after &quot;New token&quot;.
         </CardDescription>
         </CardHeader>
         <CardContent>
@@ -186,6 +199,15 @@ export function CustomersPanel() {
                 <option value="prospective">Prospective</option>
               </select>
             </div>
+            <label className="flex max-w-md cursor-pointer items-start gap-2 text-sm leading-snug text-muted-foreground">
+              <input
+                type="checkbox"
+                className="mt-1 h-4 w-4 rounded border border-input"
+                checked={marketingConsentCreate}
+                onChange={(e) => setMarketingConsentCreate(e.target.checked)}
+              />
+              <span>Include in marketing / prospective broadcasts (recommended for new enquiries).</span>
+            </label>
             <Button type="submit">Create</Button>
           </form>
         </CardContent>

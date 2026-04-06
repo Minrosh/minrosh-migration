@@ -62,7 +62,12 @@ export async function POST(request) {
 
   const { customers } = readCustomers();
   const emails = (customers || [])
-    .filter((c) => c.status === "prospective" && c.email)
+    .filter(
+      (c) =>
+        c.status === "prospective" &&
+        c.email &&
+        c.marketingConsent !== false
+    )
     .map((c) => c.email.trim().toLowerCase())
     .filter(Boolean)
     .filter((e) => !isMarketingSuppressedEmail(e));

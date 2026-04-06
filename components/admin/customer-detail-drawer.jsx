@@ -12,15 +12,17 @@ function statusVariant(s) {
   return "warning";
 }
 
-export function CustomerDetailDrawer({ customerId, open, onClose, onRefresh }) {
+export function CustomerDetailDrawer({ customerId, open, onClose, onRefresh, bootstrapPlainToken }) {
   const [customer, setCustomer] = useState(null);
   const [loadError, setLoadError] = useState("");
   const [detailLoading, setDetailLoading] = useState(false);
+  const [plainLinkToken, setPlainLinkToken] = useState(null);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState("prospective");
   const [notes, setNotes] = useState("");
   const [mobile, setMobile] = useState("");
+  const [marketingConsent, setMarketingConsent] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
   const [zipLoading, setZipLoading] = useState(false);
@@ -50,10 +52,24 @@ export function CustomerDetailDrawer({ customerId, open, onClose, onRefresh }) {
     if (!open || !customerId) {
       setCustomer(null);
       setLoadError("");
+      setPlainLinkToken(null);
       return;
     }
     loadDetail();
   }, [open, customerId, loadDetail]);
+
+  useEffect(() => {
+    if (bootstrapPlainToken && customerId && open) {
+      setPlainLinkToken(bootstrapPlainToken);
+    }
+  }, [bootstrapPlainToken, customerId, open]);
+
+  useEffect(() => {
+    if (!open || !customerId) return;
+    if (!bootstrapPlainToken) {
+      setPlainLinkToken(null);
+    }
+  }, [customerId, open, bootstrapPlainToken]);
 
   useEffect(() => {
     if (!customer) return;
@@ -62,6 +78,7 @@ export function CustomerDetailDrawer({ customerId, open, onClose, onRefresh }) {
     setStatus(customer.status || "prospective");
     setNotes(customer.notes ?? "");
     setMobile(customer.mobile ?? "");
+    setMarketingConsent(customer.marketingConsent !== false);
     setMessage("");
   }, [customer]);
 
@@ -75,8 +92,7 @@ export function CustomerDetailDrawer({ customerId, open, onClose, onRefresh }) {
   }, [open, onClose]);
 
   const origin = typeof window !== "undefined" ? window.location.origin : "";
-  const magicUrl =
-    customer?.magicToken ? `${origin}/upload/${customer.magicToken}` : "";
+  const magicUrl = plainLinkToken ? `${origin}/upload/${plainLinkToken}` : "";
   const folder = customer?.uploadFolder || customer?.id || "";
 
   const docsSorted = useMemo(() => {
@@ -106,6 +122,7 @@ export function CustomerDetailDrawer({ customerId, open, onClose, onRefresh }) {
           mobile: mobile.trim(),
           status,
           notes: notes.trim(),
+          marketingConsent,
         }),
       });
       const data = await res.json().catch(() => ({}));
@@ -142,6 +159,9 @@ export function CustomerDetailDrawer({ customerId, open, onClose, onRefresh }) {
       }
       if (data.customer) {
         setCustomer(data.customer);
+      }
+      if (data.magicUploadToken) {
+        setPlainLinkToken(data.magicUploadToken);
       }
       setMessage("New link generated — copy it below.");
       await onRefresh();
@@ -268,21 +288,33 @@ export function CustomerDetailDrawer({ customerId, open, onClose, onRefresh }) {
                       <code className="rounded bg-muted px-1">UPLOAD_LINK_SMS_VERIFICATION=true</code> on the server.
                     </p>
                   </div>
-                  <div className="space-y-1.5">
-                    <Label htmlFor="cd-status">Status</Label>
-                    <select
-                      id="cd-status"
-                      className="flex h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
-                      value={status}
-                      onChange={(e) => setStatus(e.target.value)}
-                    >
-                      <option value="current">Current</option>
-                      <option value="past">Past</option>
-                      <option value="prospective">Prospective</option>
-                    </select>
-                  </div>
-                  <div className="space-y-1.5">
-                    <Label htmlFor="cd-notes">Internal notes</Label>
+              <div className="space-y-1.5">
+                <Label htmlFor="cd-status">Status</Label>
+                <select
+                  id="cd-status"
+                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
+                  value={status}
+                  onChange={(e) => setStatus(e.target.value)}
+                >
+                  <option value="current">Current</option>
+                  <option value="past">Past</option>
+                  <option value="prospective">Prospective</option>
+                </select>
+              </div>
+              <label className="flex cursor-pointer items-start gap-2 text-sm leading-snug">
+                <input
+                  type="checkbox"
+                  className="mt-1 h-4 w-4 rounded border border-input"
+                  checked={marketingConsent}
+                  onChange={(e) => setMarketingConsent(e.target.checked)}
+                />
+                <span>
+                  Marketing / broadcast opt-in (prospective clients only). Uncheck to exclude from BCC broadcasts.
+                  Legacy records default to opted in until you save.
+                </span>
+              </label>
+              <div className="space-y-1.5">
+                <Label htmlFor="cd-notes">Internal notes</Label>
                     <textarea
                       id="cd-notes"
                       rows={4}

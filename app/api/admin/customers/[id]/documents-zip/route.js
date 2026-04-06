@@ -30,6 +30,24 @@ export async function GET(_request, { params }) {
     return Response.json({ error: "No files in customer folder" }, { status: 404 });
   }
 
+  const MAX_ZIP_INPUT_BYTES = 100 * 1024 * 1024;
+  let totalBytes = 0;
+  for (const name of names) {
+    const abs = resolveCustomerFileAbsolute(customer, name);
+    if (!abs) continue;
+    try {
+      totalBytes += fs.statSync(abs).size;
+    } catch {
+      continue;
+    }
+    if (totalBytes > MAX_ZIP_INPUT_BYTES) {
+      return Response.json(
+        { error: "Combined files exceed the maximum size for a single ZIP download (100MB)." },
+        { status: 413 }
+      );
+    }
+  }
+
   /** @type {Record<string, Uint8Array>} */
   const zipObj = {};
   for (const name of names) {

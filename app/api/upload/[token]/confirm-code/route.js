@@ -5,6 +5,7 @@ import { isMagicLinkExpired, uploadSmsVerificationEnabled } from "@/lib/upload-m
 import { isOtpExpired, signUploadSessionToken, verifyUploadOtpHash } from "@/lib/upload-otp";
 import { rateLimitAllow } from "@/lib/security/rate-limit";
 import { getClientIp } from "@/lib/security/request-ip";
+import { normalizeUploadTokenParam } from "@/lib/upload-token";
 
 export async function POST(request, { params }) {
   const ip = getClientIp(request);
@@ -12,7 +13,11 @@ export async function POST(request, { params }) {
     return Response.json({ error: "Too many attempts. Try again later." }, { status: 429 });
   }
 
-  const { token } = await params;
+  const { token: rawParam } = await params;
+  const token = normalizeUploadTokenParam(rawParam);
+  if (!token) {
+    return Response.json({ error: "Invalid link" }, { status: 404 });
+  }
   const customer = findCustomerByMagicToken(token);
   if (!customer) {
     return Response.json({ error: "Invalid link" }, { status: 404 });

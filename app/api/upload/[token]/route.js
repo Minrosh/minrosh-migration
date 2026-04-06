@@ -9,14 +9,18 @@ import {
 } from "@/lib/admin/customers-service";
 import { ensureUploadsDir } from "@/lib/admin/json-store";
 import { getPrivateCustomerDir } from "@/lib/admin/uploads-storage";
-import { detectBinaryMime, isAllowedStoredMime, isPathInsideRoot } from "@/lib/security/upload-validation";
+import { isPathInsideRoot } from "@/lib/security/upload-validation";
+import { streamWebFileToDisk } from "@/lib/security/stream-upload";
 import { rateLimitAllow } from "@/lib/security/rate-limit";
 import { getClientIp } from "@/lib/security/request-ip";
 import { storageUploadsDir } from "@/lib/admin/paths";
 import { uploadGateResponse } from "@/lib/upload-gate";
+import { normalizeUploadTokenParam } from "@/lib/upload-token";
 
 const MAX_FILES = 20;
 const MAX_BYTES_PER_FILE = 15 * 1024 * 1024;
+/** Guard multipart body size (20 × 15MB plus overhead). */
+const MAX_MULTIPART_BYTES = 320 * 1024 * 1024;
 
 function safeFileName(name) {
   const base = path.basename(String(name || "file")).replace(/[^a-zA-Z0-9._-]/g, "_");
@@ -32,16 +36,6 @@ function collectUploadFiles(formData) {
 }
 
 async function saveOneFile({ file, customer, folder }) {
-  const buf = Buffer.from(await file.arrayBuffer());
-  if (buf.length > MAX_BYTES_PER_FILE) {
-    return { error: `Too large: ${file.name || "file"} (max 15MB each)` };
-  }
-
-  const detected = detectBinaryMime(buf);
-  if (!detected || !isAllowedStoredMime(detected)) {
-    return { error: `Not allowed: ${file.name || "file"} (PDF, JPEG, PNG, or WebP only)` };
-  }
-
   const dir = getPrivateCustomerDir(customer);
   fs.mkdirSync(dir, { recursive: true });
   if (!isPathInsideRoot(storageUploadsDir, dir)) {
@@ -55,7 +49,11 @@ async function saveOneFile({ file, customer, folder }) {
     return { error: "Invalid file path" };
   }
 
-  fs.writeFileSync(diskPath, buf);
+  const streamed = await streamWebFileToDisk(file, diskPath, MAX_BYTES_PER_FILE);
+  if (streamed.error) {
+    return { error: streamed.error };
+  }
+  const detected = streamed.detected;
 
   const doc = {
     filename: original,
@@ -66,15 +64,22 @@ async function saveOneFile({ file, customer, folder }) {
   };
   addDocumentToCustomer(customer.id, doc);
   appendAudit("client_document_upload", `${customer.id} → ${doc.filename}`);
-  await tryPassportOcrFromUpload(customer.id, buf, detected, original, storedName);
+  await tryPassportOcrFromUpload(customer.id, diskPath, detected, original, storedName);
   return { document: doc };
 }
 
-async function tryPassportOcrFromUpload(customerId, buf, mime, originalName, storedName) {
+async function tryPassportOcrFromUpload(customerId, diskPath, mime, originalName, storedName) {
   if (process.env.PASSPORT_OCR_DISABLED === "true") return;
   if (!/^image\/(jpeg|png|webp)$/i.test(String(mime || ""))) return;
   const stem = String(originalName || "").toLowerCase();
   if (!/passport|travel|identity|id.?card|licen[cs]e|photo.?id/i.test(stem)) return;
+  let buf;
+  try {
+    buf = fs.readFileSync(diskPath);
+  } catch {
+    return;
+  }
+  if (buf.length > MAX_BYTES_PER_FILE) return;
   try {
     const { extractPassportIdentityFromBuffer } = await import("@/lib/passport-ocr");
     const hints = await extractPassportIdentityFromBuffer(buf);
@@ -104,10 +109,25 @@ export async function POST(request, { params }) {
     return Response.json({ error: "Too many uploads. Try again later." }, { status: 429 });
   }
 
-  const { token } = await params;
+  const { token: rawParam } = await params;
+  const token = normalizeUploadTokenParam(rawParam);
+  if (!token) {
+    return Response.json({ error: "Invalid or expired link" }, { status: 404 });
+  }
+  if (!rateLimitAllow(`upload-post-token:${token}`, { windowMs: 15 * 60 * 1000, max: 80 })) {
+    return Response.json({ error: "Too many uploads for this link. Try again later." }, { status: 429 });
+  }
   const customer = findCustomerByMagicToken(token);
   const gated = await uploadGateResponse(token, customer);
   if (gated) return gated;
+
+  const clPost = request.headers.get("content-length");
+  if (clPost) {
+    const n = Number(clPost);
+    if (Number.isFinite(n) && n > MAX_MULTIPART_BYTES) {
+      return Response.json({ error: "Upload request too large." }, { status: 413 });
+    }
+  }
 
   const formData = await request.formData();
   const files = collectUploadFiles(formData);
@@ -155,17 +175,20 @@ export async function GET(request, { params }) {
     return Response.json({ error: "Too many requests. Try again later." }, { status: 429 });
   }
 
-  const { token } = await params;
+  const { token: rawParam } = await params;
+  const token = normalizeUploadTokenParam(rawParam);
+  if (!token) {
+    return Response.json({ error: "Invalid or expired link" }, { status: 404 });
+  }
   const customer = findCustomerByMagicToken(token);
   const gated = await uploadGateResponse(token, customer);
   if (gated) return gated;
 
-  const listDocs = process.env.UPLOAD_GET_LISTS_DOCS !== "false";
+  const listDocs = process.env.UPLOAD_GET_LISTS_DOCS === "true";
   return Response.json({
     customer: {
       id: customer.id,
       name: customer.name,
-      uploadFolder: customer.uploadFolder || customer.id,
       documents: listDocs ? withClientUrls(token, customer) : [],
     },
   });
