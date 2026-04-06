@@ -4,9 +4,12 @@ import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(__dirname, "..");
-const standalone = path.join(root, ".next", "standalone");
-const staticSrc = path.join(root, ".next", "static");
+const mainNext = path.join(root, ".next");
+const standalone = path.join(mainNext, "standalone");
+const staticSrc = path.join(mainNext, "static");
 const staticDest = path.join(standalone, ".next", "static");
+const serverSrc = path.join(mainNext, "server");
+const serverDest = path.join(standalone, ".next", "server");
 const publicSrc = path.join(root, "public");
 const publicDest = path.join(standalone, "public");
 const dataSrc = path.join(root, "data");
@@ -22,6 +25,38 @@ if (!fs.existsSync(staticSrc)) {
   process.exit(1);
 }
 
+/**
+ * Next standalone tracing sometimes omits server manifests PM2 needs at runtime.
+ * Sync full .next/server + key root manifests from the main build output.
+ */
+if (fs.existsSync(serverSrc)) {
+  fs.mkdirSync(path.dirname(serverDest), { recursive: true });
+  fs.cpSync(serverSrc, serverDest, { recursive: true, force: true });
+}
+
+const rootNextFiles = [
+  "required-server-files.json",
+  "BUILD_ID",
+  "routes-manifest.json",
+  "prerender-manifest.json",
+  "images-manifest.json",
+  "export-marker.json",
+  "package.json",
+  "app-path-routes-manifest.json",
+  "app-build-manifest.json",
+  "build-manifest.json",
+  "react-loadable-manifest.json",
+];
+
+for (const name of rootNextFiles) {
+  const src = path.join(mainNext, name);
+  const dest = path.join(standalone, ".next", name);
+  if (fs.existsSync(src) && fs.statSync(src).isFile()) {
+    fs.mkdirSync(path.dirname(dest), { recursive: true });
+    fs.copyFileSync(src, dest);
+  }
+}
+
 fs.mkdirSync(path.dirname(staticDest), { recursive: true });
 fs.cpSync(staticSrc, staticDest, { recursive: true, force: true });
 fs.cpSync(publicSrc, publicDest, { recursive: true, force: true });
@@ -34,5 +69,5 @@ if (fs.existsSync(dataSrc)) {
 }
 
 console.log(
-  "Standalone: copied public, data, .next/static; ensured storage/uploads."
+  "Standalone: synced .next/server + manifests, public, data, .next/static; ensured storage/uploads."
 );
