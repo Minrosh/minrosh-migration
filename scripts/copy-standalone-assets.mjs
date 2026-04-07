@@ -84,6 +84,21 @@ for (const p of mustExist) {
   }
 }
 
+const publicImagesCheck = [
+  path.join(standalone, "public", "images", "minrosh-logo.svg"),
+  path.join(standalone, "public", "images", "hero-sydney.svg"),
+];
+for (const p of publicImagesCheck) {
+  if (!fs.existsSync(p)) {
+    console.error(
+      "Standalone public assets missing — expected:",
+      p,
+      "\nEnsure ./public/images exists in the repo and the copy step ran. Without this, logos and hero images 404 in production.",
+    );
+    process.exit(1);
+  }
+}
+
 console.log(
   "Standalone: synced .next/server + manifests, public, data, .next/static; ensured storage/uploads.",
 );

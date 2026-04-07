@@ -15,7 +15,9 @@ const nextConfig = {
     unoptimized: true,
     // Local SVGs are used for hero/illustrations; next/image blocks them unless this is set.
     dangerouslyAllowSVG: true,
-    contentDispositionType: "attachment",
+    // "attachment" makes some browsers refuse to paint SVGs inside <img> when routed via the image optimizer.
+    // Static /public SVGs are first-party only; CSP still applies at the page level.
+    contentDispositionType: "inline",
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
   async redirects() {
