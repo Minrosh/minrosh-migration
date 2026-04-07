@@ -530,6 +530,17 @@ a.brand:focus-visible {
   color: var(--brand-plum);
 }
 
+.agent-registration-strip__register-link {
+  color: var(--brand-rose);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.agent-registration-strip__register-link:hover {
+  color: var(--brand-plum);
+}
+
 .insight-card--ict .insight-card__badge {
   background: rgba(11, 37, 69, 0.08);
   color: var(--brand-plum);

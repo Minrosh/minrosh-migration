@@ -28,6 +28,13 @@ const legalLinks = [
 ];
 
 export function SiteFooter({ siteData, initialStats }) {
+  const marn = String(
+    siteData.brand?.marn || (typeof process !== "undefined" ? process.env.NEXT_PUBLIC_MARN : "") || ""
+  ).trim();
+  const registerSearchUrl =
+    siteData.brand?.migrationAgentsRegisterSearchUrl ||
+    "https://www.mara.gov.au/search-the-register-of-migration-agents/";
+
   return (
     <footer className="site-footer site-footer--rich">
       <div className="site-footer__inner site-footer__inner--rich">
@@ -81,15 +88,18 @@ export function SiteFooter({ siteData, initialStats }) {
 
       <div className="site-footer__compliance" role="region" aria-label="Migration agent registration">
         <p className="site-footer__compliance-lead">
-          {siteData.brand.marn ? (
+          {marn ? (
             <>
-              <strong>Migration Agents Registration Number (MARN):</strong> {siteData.brand.marn}.{" "}
+              <strong>Migration Agents Registration Number (MARN):</strong> {marn}.{" "}
             </>
           ) : (
             <>
-              <strong>Registered migration agent:</strong> Add your MARN in{" "}
-              <code className="site-footer__code">data/site.json</code> under{" "}
-              <code className="site-footer__code">brand.marn</code>.{" "}
+              <strong>Registered migration agent:</strong> MinRosh Migration is registered with OMARA. You can verify
+              any agent on the{" "}
+              <a href={registerSearchUrl} target="_blank" rel="noreferrer">
+                Register of Migration Agents
+              </a>
+              .{" "}
             </>
           )}
           <a

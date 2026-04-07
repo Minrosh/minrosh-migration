@@ -12,6 +12,8 @@ export function AgentRegistrationStrip({ brand, variant = "default" }) {
     brand.migrationAgentsRegulations2026Url || "https://www.legislation.gov.au/F2026L00118/latest";
   const conductUrl = brand.omaraCodeOfConductUrl || "https://www.mara.gov.au/tools-for-agents/legislation/code-of-conduct";
   const omaraUrl = brand.omaraRegisterUrl || "https://www.mara.gov.au/";
+  const registerSearchUrl =
+    brand.migrationAgentsRegisterSearchUrl || "https://www.mara.gov.au/search-the-register-of-migration-agents/";
 
   return (
     <aside
@@ -28,8 +30,11 @@ export function AgentRegistrationStrip({ brand, variant = "default" }) {
         ) : (
           <span className="agent-registration-strip__pending">
             {" "}
-            · Add MARN in <code className="agent-registration-strip__code">data/site.json</code> or{" "}
-            <code className="agent-registration-strip__code">NEXT_PUBLIC_MARN</code>
+            · Registered with OMARA —{" "}
+            <a className="agent-registration-strip__register-link" href={registerSearchUrl} target="_blank" rel="noreferrer">
+              search the register
+            </a>{" "}
+            to confirm details
           </span>
         )}
       </p>
