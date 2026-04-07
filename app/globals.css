@@ -3261,6 +3261,63 @@ a.brand:focus-visible {
   gap: 10px;
 }
 
+.ai-concierge__bubble--assistant {
+  max-width: 92%;
+  padding: 11px 13px 12px;
+  border-radius: 16px;
+  background: #fff;
+  border: 1px solid var(--line);
+  align-self: flex-start;
+}
+
+.ai-concierge__bubble--assistant > p {
+  margin: 0;
+  line-height: 1.55;
+  font-size: 0.9rem;
+}
+
+.ai-concierge__assistant-body {
+  display: grid;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.ai-concierge__para {
+  margin: 0;
+  line-height: 1.55;
+  font-size: 0.9rem;
+  white-space: pre-line;
+  word-break: break-word;
+}
+
+.ai-concierge__assistant-body strong {
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.ai-concierge__list {
+  margin: 0;
+  padding-left: 1.2rem;
+  display: grid;
+  gap: 0.45rem;
+  font-size: 0.88rem;
+  line-height: 1.48;
+  word-break: break-word;
+}
+
+.ai-concierge__list--ordered {
+  list-style-type: decimal;
+}
+
+.ai-concierge__list li {
+  padding-left: 0.2rem;
+}
+
+.ai-concierge__list li::marker {
+  color: var(--brand-plum);
+  font-weight: 700;
+}
+
 .ai-concierge__message p {
   max-width: 92%;
   margin: 0;
@@ -3268,11 +3325,6 @@ a.brand:focus-visible {
   border-radius: 16px;
   line-height: 1.55;
   font-size: 0.9rem;
-}
-
-.ai-concierge__message--assistant p {
-  background: #fff;
-  border: 1px solid var(--line);
 }
 
 .ai-concierge__message--user {

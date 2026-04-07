@@ -2,8 +2,111 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import { buildWhatsAppUrl, WHATSAPP_LEAD_MESSAGE } from "@/lib/whatsapp-prefill";
+
+/** Inline **bold** segments (Gemini/OpenAI often emit this). */
+function formatBoldSegments(text) {
+  if (text == null || text === "") return null;
+  const parts = text.split(/(\*\*[^*]+\*\*)/g);
+  return parts.map((part, i) => {
+    if (part.length >= 4 && part.startsWith("**") && part.endsWith("**")) {
+      return <strong key={i}>{part.slice(2, -2)}</strong>;
+    }
+    return <Fragment key={i}>{part}</Fragment>;
+  });
+}
+
+/**
+ * Turn model plain text into paragraphs, ordered lists, and bullet lists so replies are not one wall of text.
+ */
+function parseAssistantChunks(text) {
+  const lines = String(text).replace(/\r\n/g, "\n").split("\n");
+  /** @type {{ type: "p" | "ol" | "ul"; text?: string; items?: string[] }[]} */
+  const chunks = [];
+  let i = 0;
+  while (i < lines.length) {
+    const raw = lines[i];
+    if (/^\s*$/.test(raw)) {
+      i += 1;
+      continue;
+    }
+    if (/^\s*\d+\./.test(raw)) {
+      const items = [];
+      while (i < lines.length && /^\s*\d+\./.test(lines[i])) {
+        items.push(lines[i].replace(/^\s*\d+\.\s*/, "").trim());
+        i += 1;
+      }
+      chunks.push({ type: "ol", items });
+      continue;
+    }
+    if (/^\s*[*•\-]\s/.test(raw)) {
+      const items = [];
+      while (i < lines.length && /^\s*[*•\-]\s/.test(lines[i])) {
+        items.push(lines[i].replace(/^\s*[*•\-]\s+/, "").trim());
+        i += 1;
+      }
+      chunks.push({ type: "ul", items });
+      continue;
+    }
+    const buf = [];
+    while (i < lines.length) {
+      const L = lines[i];
+      if (/^\s*$/.test(L)) {
+        i += 1;
+        break;
+      }
+      if (/^\s*\d+\./.test(L) || /^\s*[*•\-]\s/.test(L)) break;
+      buf.push(L);
+      i += 1;
+    }
+    const t = buf.join("\n").trim();
+    if (t) chunks.push({ type: "p", text: t });
+  }
+  return chunks;
+}
+
+function AssistantMessageBody({ text }) {
+  const chunks = parseAssistantChunks(text);
+  if (chunks.length === 0) {
+    const t = String(text).trim();
+    if (!t) return null;
+    return (
+      <div className="ai-concierge__assistant-body">
+        <p className="ai-concierge__para">{formatBoldSegments(t)}</p>
+      </div>
+    );
+  }
+  return (
+    <div className="ai-concierge__assistant-body">
+      {chunks.map((chunk, idx) => {
+        if (chunk.type === "ol") {
+          return (
+            <ol key={idx} className="ai-concierge__list ai-concierge__list--ordered">
+              {chunk.items.map((item, j) => (
+                <li key={j}>{formatBoldSegments(item)}</li>
+              ))}
+            </ol>
+          );
+        }
+        if (chunk.type === "ul") {
+          return (
+            <ul key={idx} className="ai-concierge__list">
+              {chunk.items.map((item, j) => (
+                <li key={j}>{formatBoldSegments(item)}</li>
+              ))}
+            </ul>
+          );
+        }
+        return (
+          <p key={idx} className="ai-concierge__para">
+            {formatBoldSegments(chunk.text)}
+          </p>
+        );
+      })}
+    </div>
+  );
+}
 
 function nextMessageId() {
   return `m-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
@@ -315,8 +418,14 @@ export function AIConcierge({ siteData }) {
                 key={message.id}
                 className={`ai-concierge__message ai-concierge__message--${message.role}`}
               >
-                <div className="ai-concierge__bubble">
-                  <p>{message.content}</p>
+                <div
+                  className={`ai-concierge__bubble${message.role === "assistant" ? " ai-concierge__bubble--assistant" : ""}`}
+                >
+                  {message.role === "assistant" ? (
+                    <AssistantMessageBody text={message.content} />
+                  ) : (
+                    <p>{message.content}</p>
+                  )}
                   {message.actions?.length ? (
                     <div className="ai-concierge__actions">
                       {message.actions.map((action) => (
@@ -331,7 +440,7 @@ export function AIConcierge({ siteData }) {
             ))}
             {loading ? (
               <div className="ai-concierge__message ai-concierge__message--assistant" aria-busy="true">
-                <div className="ai-concierge__bubble ai-concierge__bubble--typing">
+                <div className="ai-concierge__bubble ai-concierge__bubble--assistant ai-concierge__bubble--typing">
                   <p>Thinking…</p>
                 </div>
               </div>
