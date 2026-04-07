@@ -29,7 +29,8 @@ Official reference URLs (for suggestions only; do not quote long text from them)
 Internal site pages you may mention when relevant: /skilled-migration, /migration-sri-lanka-to-australia, /student-visa-australia, /partner-visa-australia, /book-consultation, /assessment, /destinations/australia, /destinations/new-zealand, /destinations/canada, /destinations/united-kingdom`;
 
 const defaultModel = process.env.OPENAI_MODEL || "gpt-4o-mini";
-const defaultGeminiModel = process.env.GEMINI_MODEL || "gemini-1.5-flash";
+/** Stable ID for Google AI Studio generateContent — see https://ai.google.dev/gemini-api/docs/models/gemini */
+const defaultGeminiModel = process.env.GEMINI_MODEL || "gemini-2.5-flash";
 const requestTimeoutMs = 20000;
 
 const ALLOWED_MODELS = new Set([

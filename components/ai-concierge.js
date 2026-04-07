@@ -6,64 +6,64 @@ import { useState } from "react";
 import { buildWhatsAppUrl, WHATSAPP_LEAD_MESSAGE } from "@/lib/whatsapp-prefill";
 
 const quickPrompts = [
-  "I want to understand skilled migration options.",
-  "I need help with student visa planning.",
-  "What is the best first step for a partner visa?",
-  "I need urgent help and want the fastest next step.",
+  "Skilled migration options",
+  "Student visa planning",
+  "Partner visa first steps",
+  "Fastest next step (urgent)",
 ];
 
 const fallbackReplies = [
   {
     match: /study|student|university|college|education/i,
     content:
-      "For study goals, MinRosh can help with course shortlisting, application planning, education consultation, and student visa preparation. The strongest next step is usually the education consultation page or a direct enquiry if timing is urgent.",
+      "For study goals, MinRosh can help with course planning, education consultation, and student visa preparation. Next step: education consultation or a direct enquiry if timing is tight.",
     actions: [
       { href: "/education-consultation", label: "Education consultation" },
-      { href: "/student-visa-australia", label: "Student visa guidance" },
+      { href: "/student-visa-australia", label: "Student visas" },
     ],
   },
   {
     match: /skilled|work|job|occupation|eoi|points|sponsor/i,
     content:
-      "For skilled migration questions, it helps to prepare your occupation title, work history, qualifications, English level, and preferred timing. A strategy session can help identify whether subclass 189, 190, or 491 is the strongest direction.",
+      "For skilled migration, gather occupation, work history, qualifications, English level, and timing. We can help compare pathways such as 189, 190, or 491 in a strategy session.",
     actions: [
-      { href: "/skilled-migration", label: "Skilled migration page" },
+      { href: "/skilled-migration", label: "Skilled migration" },
       { href: "/assessment", label: "Free assessment" },
     ],
   },
   {
     match: /partner|family|spouse|parent|relationship/i,
     content:
-      "For partner or family pathways, evidence planning is one of the most important parts of the process. MinRosh can help you think through relationship history, supporting documents, and the clearest next-step strategy before you move forward.",
+      "Partner and family pathways depend heavily on evidence and relationship history. We can help you plan documents and next steps before you lodge.",
     actions: [
-      { href: "/partner-visa-australia", label: "Partner visa page" },
+      { href: "/partner-visa-australia", label: "Partner visa" },
       { href: "/book-consultation", label: "Book consultation" },
     ],
   },
   {
     match: /visitor|tourist/i,
     content:
-      "For visitor visa matters, the strongest applications clearly explain travel purpose, funds, and ties. A focused consultation is usually the best way to position a visitor case properly and avoid weak documentation.",
+      "Visitor visas need a clear purpose, funds, and ties home. A short consultation usually helps avoid weak applications.",
     actions: [
-      { href: "/contact", label: "Contact MinRosh" },
+      { href: "/contact", label: "Contact" },
       { href: "/book-consultation", label: "Book consultation" },
     ],
   },
   {
     match: /australia|new zealand|canada|uk|united kingdom/i,
     content:
-      "MinRosh supports all four destination systems. Open the country hub that matches your goal for on-page summaries and official government links, then book a consultation if you want tailored sequencing.",
+      "MinRosh supports four destination systems. Open the hub that matches your goal, then book a consultation for tailored sequencing.",
     actions: [
-      { href: "/destinations/australia", label: "Australia hub" },
-      { href: "/destinations/new-zealand", label: "New Zealand hub" },
-      { href: "/destinations/canada", label: "Canada hub" },
-      { href: "/destinations/united-kingdom", label: "United Kingdom hub" },
+      { href: "/destinations/australia", label: "Australia" },
+      { href: "/destinations/new-zealand", label: "New Zealand" },
+      { href: "/destinations/canada", label: "Canada" },
+      { href: "/destinations/united-kingdom", label: "UK" },
     ],
   },
   {
     match: /sri lanka|colombo|lankan/i,
     content:
-      "Many skilled professionals start with occupation fit, skills assessment sequencing, and a realistic points view before investing in English tests. MinRosh has a dedicated Sri Lanka hub for pathway context and next steps.",
+      "Many skilled clients start with occupation fit, skills assessment sequencing, and a realistic points view. See the Sri Lanka hub for context.",
     actions: [
       { href: "/migration-sri-lanka-to-australia", label: "Sri Lanka → Australia" },
       { href: "/skilled-migration", label: "Skilled migration" },
@@ -73,18 +73,37 @@ const fallbackReplies = [
 
 function getFallbackReply(message) {
   const matched = fallbackReplies.find((item) => item.match.test(message));
-  if (matched) {
-    return matched;
-  }
-
+  if (matched) return matched;
   return {
     content:
-      "Thanks for your message. The best next step is usually to use the free assessment or submit a consultation enquiry so MinRosh can review your situation properly.",
+      "The next step is usually a free assessment or a consultation enquiry so we can review your situation properly.",
     actions: [
       { href: "/assessment", label: "Free assessment" },
       { href: "/book-consultation", label: "Book consultation" },
     ],
   };
+}
+
+function parseChatResponse(rawText, response) {
+  let data = null;
+  try {
+    data = rawText ? JSON.parse(rawText) : null;
+  } catch {
+    return {
+      ok: false,
+      kind: "parse",
+      message:
+        "The assistant returned an unreadable response. Check that GEMINI_API_KEY is set in .env, run npm run build, and pm2 restart — or try again shortly.",
+    };
+  }
+
+  const reply = data?.choices?.[0]?.message?.content?.trim();
+  if (reply) return { ok: true, reply };
+
+  const err = data?.error;
+  const serverMsg =
+    typeof err === "string" ? err : err?.message || data?.message || `Request failed (${response.status})`;
+  return { ok: false, kind: "api", code: data?.code, message: serverMsg };
 }
 
 export function AIConcierge({ siteData }) {
@@ -100,16 +119,16 @@ export function AIConcierge({ siteData }) {
     {
       role: "assistant",
       content:
-        "Hello, I'm the MinRosh AI Concierge. Tell me whether you need help with skilled migration, student visas, partner pathways, education planning, or a general visa question.",
-      actions: [
-        { href: "/assessment", label: "Free assessment" },
-        { href: "/updates", label: "Official updates" },
-      ],
+        "Ask about skilled migration, student or partner visas, or education planning. I give practical next steps—not legal advice.",
     },
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [notice, setNotice] = useState({ text: "", tone: "info" });
+
+  function setSoftNotice(text, tone = "info") {
+    setNotice(text ? { text, tone } : { text: "", tone: "info" });
+  }
 
   async function sendMessage(text) {
     const trimmed = text.trim();
@@ -119,7 +138,7 @@ export function AIConcierge({ siteData }) {
     setMessages(nextMessages);
     setInput("");
     setLoading(true);
-    setError("");
+    setSoftNotice("");
 
     try {
       const response = await fetch("/api/chat", {
@@ -128,38 +147,45 @@ export function AIConcierge({ siteData }) {
         body: JSON.stringify({ messages: nextMessages }),
       });
       const rawText = await response.text();
-      let data = {};
-      try {
-        data = rawText ? JSON.parse(rawText) : {};
-      } catch {
-        throw new Error("Assistant returned an unexpected response.");
+      const parsed = parseChatResponse(rawText, response);
+
+      if (parsed.ok) {
+        setMessages((current) => [...current, { role: "assistant", content: parsed.reply }]);
+        return;
       }
-      const reply = data?.choices?.[0]?.message?.content;
-      if (!response.ok || !reply) {
-        const errMsg =
-          response.status === 503 &&
-            (data?.code === "OPENAI_NOT_CONFIGURED" ||
-              data?.code === "AI_PROVIDER_NOT_CONFIGURED")
-            ? data.error ||
-              "Live assistant is not configured on this server yet. Use WhatsApp or the enquiry form for a human reply."
-            : data.error || "AI Concierge is unavailable right now.";
-        throw new Error(errMsg);
+
+      if (parsed.kind === "api" && parsed.code === "AI_PROVIDER_NOT_CONFIGURED") {
+        setMessages((current) => [
+          ...current,
+          {
+            role: "assistant",
+            content:
+              parsed.message ||
+              "Live AI is not configured on this server. Add GEMINI_API_KEY from Google AI Studio to .env, then rebuild and restart the app.",
+          },
+        ]);
+        setSoftNotice("Tip: get a key at aistudio.google.com/apikey", "info");
+        return;
       }
-      setMessages((current) => [...current, { role: "assistant", content: reply }]);
+
+      const fallback = getFallbackReply(trimmed);
+      setMessages((current) => [
+        ...current,
+        { role: "assistant", content: fallback.content, actions: fallback.actions },
+      ]);
+      setSoftNotice(
+        parsed.kind === "parse"
+          ? parsed.message
+          : "Live AI was unavailable, so this is fixed guidance on our site—not a model reply.",
+        "soft"
+      );
     } catch (err) {
       const fallback = getFallbackReply(trimmed);
       setMessages((current) => [
         ...current,
-        {
-          role: "assistant",
-          content: fallback.content,
-          actions: fallback.actions,
-        },
+        { role: "assistant", content: fallback.content, actions: fallback.actions },
       ]);
-      setError(
-        err?.message ||
-          "AI live reply is unavailable right now, so I've switched to MinRosh's quick guidance mode."
-      );
+      setSoftNotice(err?.message || "Something went wrong. Try again or use WhatsApp below.", "soft");
     } finally {
       setLoading(false);
     }
@@ -181,7 +207,7 @@ export function AIConcierge({ siteData }) {
           <div className="ai-concierge__head">
             <div>
               <strong>AI Concierge</strong>
-              <span>Preliminary guidance before consultation</span>
+              <span>Guidance only — not legal or migration advice</span>
             </div>
             <button type="button" onClick={() => setOpen(false)} aria-label="Close AI Concierge">
               ×
@@ -208,33 +234,56 @@ export function AIConcierge({ siteData }) {
               </div>
             ))}
           </div>
-          <div className="ai-concierge__prompts">
-            {quickPrompts.map((prompt) => (
-              <button key={prompt} type="button" onClick={() => sendMessage(prompt)}>
-                {prompt}
-              </button>
-            ))}
-          </div>
+
+          <details className="ai-concierge__suggestions">
+            <summary>Suggested questions</summary>
+            <div className="ai-concierge__suggestions-inner">
+              {quickPrompts.map((prompt) => (
+                <button key={prompt} type="button" onClick={() => sendMessage(prompt)} disabled={loading}>
+                  {prompt}
+                </button>
+              ))}
+            </div>
+          </details>
+
           <form className="ai-concierge__form" onSubmit={handleSubmit}>
             <textarea
-              rows="3"
+              rows={2}
               value={input}
               onChange={(event) => setInput(event.target.value)}
-              placeholder="Ask about visa pathways, study planning, or next steps."
+              placeholder="Type your question…"
             />
             <button type="submit" className="btn btn-primary" disabled={loading}>
-              {loading ? "Thinking..." : "Send"}
+              {loading ? "Thinking…" : "Send"}
             </button>
           </form>
-          {error ? <p className="form-feedback is-error">{error}</p> : null}
-          <div className="ai-concierge__footer">
-            <Link href="/assessment">Open free assessment</Link>
-            <Link href="/book-consultation">Book consultation</Link>
+
+          {notice.text ? (
+            <p
+              className={`ai-concierge__notice${notice.tone === "soft" ? " ai-concierge__notice--soft" : ""}`}
+              role="status"
+            >
+              {notice.text}
+            </p>
+          ) : null}
+
+          <div className="ai-concierge__footer" aria-label="Other ways to reach MinRosh">
+            <Link href="/assessment">Assessment</Link>
+            <span className="ai-concierge__footer-sep" aria-hidden="true">
+              ·
+            </span>
+            <Link href="/book-consultation">Book</Link>
+            <span className="ai-concierge__footer-sep" aria-hidden="true">
+              ·
+            </span>
             <a href={waPrimary} target="_blank" rel="noreferrer">
               WhatsApp {siteData.brand.phone}
             </a>
+            <span className="ai-concierge__footer-sep" aria-hidden="true">
+              ·
+            </span>
             <a href={waSecondary} target="_blank" rel="noreferrer">
-              WhatsApp {siteData.brand.phoneSecondary}
+              Alt {siteData.brand.phoneSecondary}
             </a>
           </div>
         </div>
