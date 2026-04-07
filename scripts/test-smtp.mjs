@@ -13,9 +13,27 @@ const user = process.env.SMTP_USER;
 const pass = String(process.env.SMTP_PASS || "").replace(/\s+/g, "");
 
 if (!host || !user || !pass) {
-  console.error(
-    "FAIL: Set SMTP_HOST, SMTP_USER, and SMTP_PASS (and usually SMTP_PORT / SMTP_SECURE). App passwords may include spaces — they are stripped automatically."
-  );
+  console.error(`FAIL: Missing SMTP_HOST, SMTP_USER, or SMTP_PASS.
+
+Why this happens:
+  • "npm run test:smtp" only reads the project .env file (via Node --env-file).
+    Typing SMTP_PASS=... at the shell does NOT write .env — edit the file:
+
+      cd ~/minrosh-migration
+      nano .env
+
+    Add one line per variable. If the app password has spaces, use quotes in .env:
+      SMTP_PASS='ilfv xbnk fqlk prwe'
+    (Google app passwords are 16 letters — no underscores; do not replace spaces with _.)
+
+  • Or export in the shell and use the script that inherits your session:
+      export SMTP_HOST=smtp.gmail.com SMTP_PORT=587 SMTP_SECURE=false
+      export SMTP_USER=info@minroshmigration.com.au
+      export SMTP_PASS='ilfv xbnk fqlk prwe'
+      export SMTP_FROM=info@minroshmigration.com.au
+      npm run test:smtp:shell
+
+PM2 / production mail uses .env next to ecosystem.config.js — put SMTP_* there too.`);
   process.exit(1);
 }
 
