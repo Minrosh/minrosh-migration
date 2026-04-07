@@ -9,7 +9,7 @@ import { SiteShell } from "../../components/site-shell";
 import { StructuredData } from "../../components/structured-data";
 import { buildMetadata, breadcrumbJsonLd } from "../../lib/seo";
 import Link from "next/link";
-import Image from "next/image";
+import { PublicFileImg } from "../../components/public-file-img";
 
 const pageData = seoPages.servicePages.contact;
 
@@ -56,7 +56,7 @@ export default function ContactPage() {
               </ul>
             </div>
             <div className="content-hero__media" aria-hidden="true">
-              <Image
+              <PublicFileImg
                 src="/images/brisbane-skyline.svg"
                 alt="Brisbane skyline and riverfront"
                 width={1600}

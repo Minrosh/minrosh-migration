@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Image from "next/image";
+import { PublicFileImg } from "./public-file-img";
 
 export function ContentPage({
   eyebrow,
@@ -52,7 +52,7 @@ export function ContentPage({
             ) : null}
           </div>
           <div className="content-hero__media" aria-hidden="true">
-            <Image src={heroImage.src} alt={heroImage.alt} width={1600} height={900} />
+            <PublicFileImg src={heroImage.src} alt={heroImage.alt} width={1600} height={900} />
           </div>
         </div>
       </section>

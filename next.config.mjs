@@ -11,14 +11,9 @@ const nextConfig = {
   output: "standalone",
   poweredByHeader: false,
   compress: true,
+  // Local UI assets use <img> via PublicFileImg (see components/public-file-img.js), not next/image.
   images: {
     unoptimized: true,
-    // Local SVGs are used for hero/illustrations; next/image blocks them unless this is set.
-    dangerouslyAllowSVG: true,
-    // "attachment" makes some browsers refuse to paint SVGs inside <img> when routed via the image optimizer.
-    // Static /public SVGs are first-party only; CSP still applies at the page level.
-    contentDispositionType: "inline",
-    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
   async redirects() {
     return [

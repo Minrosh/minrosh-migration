@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
+import { PublicFileImg } from "../public-file-img";
 
 export function StoriesCarouselPanel({ siteData, isActive }) {
   const [storyIndex, setStoryIndex] = useState(0);
@@ -61,7 +61,7 @@ export function StoriesCarouselPanel({ siteData, isActive }) {
           </div>
         </div>
         <div className="story-feature__media">
-          <Image
+          <PublicFileImg
             src={storyIndex % 2 === 0 ? "/images/team-office.svg" : "/images/brisbane-skyline.svg"}
             alt="MinRosh migration guidance and Brisbane lifestyle"
             width={1200}

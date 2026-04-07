@@ -1,5 +1,5 @@
-import Image from "next/image";
 import siteData from "../../data/site.json";
+import { PublicFileImg } from "../../components/public-file-img";
 import newsData from "../../data/news.json";
 import { NewsBoard } from "../../components/news-board";
 import { SiteShell } from "../../components/site-shell";
@@ -34,7 +34,7 @@ export default function UpdatesPage() {
               </p>
             </div>
             <div className="content-hero__media" aria-hidden="true">
-              <Image
+              <PublicFileImg
                 src="/images/brisbane-skyline.svg"
                 alt="Brisbane skyline and riverfront"
                 width={1600}

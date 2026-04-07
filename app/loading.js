@@ -1,11 +1,11 @@
-import Image from "next/image";
+import { PublicFileImg } from "../components/public-file-img";
 
 export default function Loading() {
   return (
     <main className="loading-screen" aria-label="Loading MinRosh Migration">
       <section className="loading-screen__card">
         <div className="loading-screen__mark">
-          <Image
+          <PublicFileImg
             src="/images/minrosh-logo.svg"
             alt="MinRosh Migration logo"
             width={72}

@@ -1,5 +1,5 @@
-import Image from "next/image";
 import Link from "next/link";
+import { PublicFileImg } from "../public-file-img";
 import { CountryCoverage } from "../country-coverage";
 import { NewsBoard } from "../news-board";
 import { SmartNavigator } from "../smart-navigator";
@@ -137,7 +137,7 @@ export function HomeTabServer({ siteData, newsData }) {
           </div>
         </div>
         <div className="hero__media" aria-hidden="true">
-          <Image
+          <PublicFileImg
             src="/images/hero-sydney.svg"
             alt="Stylized illustration of Sydney Harbour with the Opera House and water"
             width={1800}
@@ -181,7 +181,7 @@ export function HomeTabServer({ siteData, newsData }) {
         {visualHighlights.map((item) => (
           <article key={item.title} className="visual-strip__card bento-hover">
             <div className="visual-strip__media">
-              <Image src={item.src} alt={item.alt} width={1400} height={1000} />
+              <PublicFileImg src={item.src} alt={item.alt} width={1400} height={1000} />
             </div>
             <div className="visual-strip__copy">
               <p className="section-label">{item.title}</p>
@@ -203,7 +203,7 @@ export function HomeTabServer({ siteData, newsData }) {
           </ul>
         </div>
         <div className="image-card bento-hover">
-          <Image
+          <PublicFileImg
             src="/images/team-office.svg"
             alt="Stylized illustration of a professional team meeting in a modern office"
             width={1200}

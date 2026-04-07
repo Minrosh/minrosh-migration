@@ -1,5 +1,5 @@
-import Image from "next/image";
 import Link from "next/link";
+import { PublicFileImg } from "./public-file-img";
 import { SiteTopbar } from "./site-topbar";
 import { SiteFooter } from "./site-footer";
 import { getFooterStats } from "../lib/site-stats";
@@ -46,7 +46,7 @@ export function SiteShell({
         <div className="site-header__inner">
           <Link href={brandHref} className="brand" aria-label={brandAria}>
             <span className="brand__mark" aria-hidden="true">
-              <Image
+              <PublicFileImg
                 src="/images/minrosh-logo.svg"
                 alt=""
                 width={46}

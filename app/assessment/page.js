@@ -1,5 +1,5 @@
-import Image from "next/image";
 import Link from "next/link";
+import { PublicFileImg } from "../../components/public-file-img";
 import siteData from "../../data/site.json";
 import { ContactLeadForm } from "../../components/contact-lead-form";
 import { SiteShell } from "../../components/site-shell";
@@ -78,7 +78,7 @@ export default function AssessmentPage() {
               </div>
             </div>
             <div className="content-hero__media" aria-hidden="true">
-              <Image
+              <PublicFileImg
                 src="/images/brisbane-skyline.svg"
                 alt="Brisbane skyline and riverfront"
                 width={1600}
