@@ -135,7 +135,8 @@ export function ContactChatPanel({ siteData, isActive }) {
       const reply = data?.choices?.[0]?.message?.content;
       if (!response.ok || !reply) {
         const errMsg =
-          response.status === 503 && data?.code === "OPENAI_NOT_CONFIGURED"
+          response.status === 503 &&
+            (data?.code === "OPENAI_NOT_CONFIGURED" || data?.code === "AI_PROVIDER_NOT_CONFIGURED")
             ? data.error ||
               "Live assistant is not configured on this server yet. Use WhatsApp or the enquiry form for a human reply."
             : data.error || "Chat is not available right now.";

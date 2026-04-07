@@ -1,3 +1,4 @@
+import { geminiChatCompletion } from "@/lib/chat/gemini";
 import { rateLimitAllow } from "@/lib/security/rate-limit";
 import { getClientIp } from "@/lib/security/request-ip";
 import {
@@ -28,6 +29,7 @@ Official reference URLs (for suggestions only; do not quote long text from them)
 Internal site pages you may mention when relevant: /skilled-migration, /migration-sri-lanka-to-australia, /student-visa-australia, /partner-visa-australia, /book-consultation, /assessment, /destinations/australia, /destinations/new-zealand, /destinations/canada, /destinations/united-kingdom`;
 
 const defaultModel = process.env.OPENAI_MODEL || "gpt-4o-mini";
+const defaultGeminiModel = process.env.GEMINI_MODEL || "gemini-1.5-flash";
 const requestTimeoutMs = 20000;
 
 const ALLOWED_MODELS = new Set([
@@ -70,12 +72,25 @@ function normalizeMessages(raw) {
   return { ok: true, messages };
 }
 
+function chatProvider() {
+  const pref = String(process.env.CHAT_PROVIDER || "").toLowerCase().trim();
+  const gemini = process.env.GEMINI_API_KEY?.trim();
+  const openai = process.env.OPENAI_API_KEY?.trim();
+  if (pref === "openai" && openai) return { type: "openai", key: openai };
+  if (pref === "gemini" && gemini) return { type: "gemini", key: gemini };
+  if (gemini) return { type: "gemini", key: gemini };
+  if (openai) return { type: "openai", key: openai };
+  return null;
+}
+
 export async function POST(request) {
-  if (!process.env.OPENAI_API_KEY) {
+  const provider = chatProvider();
+  if (!provider) {
     return Response.json(
       {
-        error: "Live assistant is not configured. Set OPENAI_API_KEY on the server to enable AI replies.",
-        code: "OPENAI_NOT_CONFIGURED",
+        error:
+          "Live assistant is not configured. Set GEMINI_API_KEY (Google AI Studio) or OPENAI_API_KEY on the server.",
+        code: "AI_PROVIDER_NOT_CONFIGURED",
       },
       { status: 503 }
     );
@@ -126,11 +141,28 @@ export async function POST(request) {
   const timeout = setTimeout(() => controller.abort(), requestTimeoutMs);
 
   try {
+    if (provider.type === "gemini") {
+      const geminiModel =
+        typeof body?.model === "string" && body.model.startsWith("gemini") ? body.model : defaultGeminiModel;
+      const result = await geminiChatCompletion(systemPrompt, boundedMessages, {
+        apiKey: provider.key,
+        model: geminiModel,
+        signal: controller.signal,
+      });
+      if (!result.ok) {
+        return Response.json(
+          { error: result.error || "Gemini error.", code: "GEMINI_ERROR" },
+          { status: result.status >= 400 && result.status < 600 ? result.status : 502 }
+        );
+      }
+      return Response.json(result.body, { status: 200 });
+    }
+
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+        Authorization: `Bearer ${provider.key}`,
       },
       body: JSON.stringify({
         model,

@@ -137,7 +137,9 @@ export function AIConcierge({ siteData }) {
       const reply = data?.choices?.[0]?.message?.content;
       if (!response.ok || !reply) {
         const errMsg =
-          response.status === 503 && data?.code === "OPENAI_NOT_CONFIGURED"
+          response.status === 503 &&
+            (data?.code === "OPENAI_NOT_CONFIGURED" ||
+              data?.code === "AI_PROVIDER_NOT_CONFIGURED")
             ? data.error ||
               "Live assistant is not configured on this server yet. Use WhatsApp or the enquiry form for a human reply."
             : data.error || "AI Concierge is unavailable right now.";
@@ -238,29 +240,30 @@ export function AIConcierge({ siteData }) {
         </div>
       ) : null}
 
-      <button
-        type="button"
-        className="floating-tools__ai"
-        onClick={() => setOpen((current) => !current)}
-        aria-expanded={open ? "true" : "false"}
-      >
-        AI Concierge
-      </button>
-
-      <a
-        className="whatsapp-float"
-        href={waFloat}
-        target="_blank"
-        rel="noreferrer"
-        aria-label="Chat with MinRosh Migration on WhatsApp"
-      >
-        <svg viewBox="0 0 32 32" aria-hidden="true">
-          <path
-            fill="currentColor"
-            d="M27.3 4.7C24.3 1.7 20.3 0 16 0 7.2 0 0 7.2 0 16c0 2.8.7 5.5 2.1 7.9L0 32l8.3-2.2c2.3 1.2 4.9 1.9 7.7 1.9h.1c8.8 0 15.9-7.2 15.9-16 0-4.3-1.7-8.3-4.7-11zm-11.2 24c-2.4 0-4.7-.6-6.8-1.8l-.5-.3-4.9 1.3 1.3-4.8-.3-.5C3.7 20.6 3 18.3 3 16 3 8.8 8.8 3 16 3c3.5 0 6.8 1.4 9.2 3.8 2.5 2.5 3.8 5.7 3.8 9.2 0 7.2-5.8 13-12.9 13zm7.1-9.7c-.4-.2-2.3-1.1-2.7-1.2-.4-.2-.7-.2-.9.2-.3.4-1 1.2-1.2 1.4-.2.3-.5.3-.9.1-.4-.2-1.6-.6-3-1.9-1.1-1-1.9-2.3-2.1-2.7-.2-.4 0-.6.2-.8.2-.2.4-.5.6-.7.2-.2.3-.4.4-.7.1-.2 0-.5 0-.7 0-.2-.9-2.1-1.3-2.9-.3-.7-.6-.6-.9-.6h-.8c-.3 0-.7.1-1 .4-.3.4-1.4 1.3-1.4 3.2s1.4 3.7 1.6 4c.2.3 2.8 4.3 6.9 6 .9.4 1.6.6 2.2.8.9.3 1.8.3 2.5.2.8-.1 2.3-.9 2.7-1.7.3-.8.3-1.5.2-1.7-.1-.1-.4-.2-.8-.4z"
-          />
-        </svg>
-      </a>
+      <div className="floating-tools__dock">
+        <a
+          className="whatsapp-float"
+          href={waFloat}
+          target="_blank"
+          rel="noreferrer"
+          aria-label="Chat with MinRosh Migration on WhatsApp"
+        >
+          <svg viewBox="0 0 32 32" aria-hidden="true">
+            <path
+              fill="currentColor"
+              d="M27.3 4.7C24.3 1.7 20.3 0 16 0 7.2 0 0 7.2 0 16c0 2.8.7 5.5 2.1 7.9L0 32l8.3-2.2c2.3 1.2 4.9 1.9 7.7 1.9h.1c8.8 0 15.9-7.2 15.9-16 0-4.3-1.7-8.3-4.7-11zm-11.2 24c-2.4 0-4.7-.6-6.8-1.8l-.5-.3-4.9 1.3 1.3-4.8-.3-.5C3.7 20.6 3 18.3 3 16 3 8.8 8.8 3 16 3c3.5 0 6.8 1.4 9.2 3.8 2.5 2.5 3.8 5.7 3.8 9.2 0 7.2-5.8 13-12.9 13zm7.1-9.7c-.4-.2-2.3-1.1-2.7-1.2-.4-.2-.7-.2-.9.2-.3.4-1 1.2-1.2 1.4-.2.3-.5.3-.9.1-.4-.2-1.6-.6-3-1.9-1.1-1-1.9-2.3-2.1-2.7-.2-.4 0-.6.2-.8.2-.2.4-.5.6-.7.2-.2.3-.4.4-.7.1-.2 0-.5 0-.7 0-.2-.9-2.1-1.3-2.9-.3-.7-.6-.6-.9-.6h-.8c-.3 0-.7.1-1 .4-.3.4-1.4 1.3-1.4 3.2s1.4 3.7 1.6 4c.2.3 2.8 4.3 6.9 6 .9.4 1.6.6 2.2.8.9.3 1.8.3 2.5.2.8-.1 2.3-.9 2.7-1.7.3-.8.3-1.5.2-1.7-.1-.1-.4-.2-.8-.4z"
+            />
+          </svg>
+        </a>
+        <button
+          type="button"
+          className="floating-tools__ai"
+          onClick={() => setOpen((current) => !current)}
+          aria-expanded={open ? "true" : "false"}
+        >
+          AI Concierge
+        </button>
+      </div>
     </div>
   );
 }

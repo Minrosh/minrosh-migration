@@ -42,13 +42,45 @@ export function NewsletterForm({ onSubscribed }) {
   return (
     <>
       <form className="site-footer__newsletter-form" onSubmit={handleSubmit}>
-        <input
-          type="email"
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
-          placeholder="Your email address"
-          required
-        />
+        <div className="site-footer__newsletter-form__email">
+          <label htmlFor="footer-newsletter-email" className="sr-only">
+            Email address
+          </label>
+          <input
+            id="footer-newsletter-email"
+            type="email"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+            placeholder="Your email address"
+            required
+            autoComplete="email"
+          />
+        </div>
+
+        <label className="site-footer__newsletter-consent" htmlFor="footer-newsletter-consent">
+          <input
+            id="footer-newsletter-consent"
+            type="checkbox"
+            checked={marketingConsent}
+            onChange={(e) => setMarketingConsent(e.target.checked)}
+            required
+          />
+          <span>
+            I agree to receive marketing emails about visas and migration updates. I can unsubscribe at any time (see
+            our privacy policy).
+          </span>
+        </label>
+
+        <div className="site-footer__newsletter-form__actions">
+          <button
+            type="submit"
+            className="btn btn-primary"
+            disabled={status.type === "loading" || !marketingConsent}
+          >
+            {status.type === "loading" ? "Joining..." : "Subscribe"}
+          </button>
+        </div>
+
         <input
           ref={hpRef}
           type="text"
@@ -59,26 +91,6 @@ export function NewsletterForm({ onSubscribed }) {
           className="sr-only"
           style={{ position: "absolute", left: "-9999px", width: 1, height: 1, overflow: "hidden" }}
         />
-        <label className="flex cursor-pointer items-start gap-2 text-sm leading-snug text-[var(--muted)]">
-          <input
-            type="checkbox"
-            checked={marketingConsent}
-            onChange={(e) => setMarketingConsent(e.target.checked)}
-            className="mt-1 h-4 w-4 shrink-0 rounded border border-[var(--line)]"
-            required
-          />
-          <span>
-            I agree to receive marketing emails about visas and migration updates. I can unsubscribe at any time (see
-            our privacy policy).
-          </span>
-        </label>
-        <button
-          type="submit"
-          className="btn btn-primary"
-          disabled={status.type === "loading" || !marketingConsent}
-        >
-          {status.type === "loading" ? "Joining..." : "Subscribe"}
-        </button>
       </form>
       {status.message ? (
         <p className={`form-feedback is-${status.type === "success" ? "success" : "error"}`}>
