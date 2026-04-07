@@ -3,6 +3,7 @@ import { SiteFooterInteractive } from "./site-footer-interactive";
 
 const serviceLinks = [
   { href: "/skilled-migration", label: "Skilled Migration" },
+  { href: "/migration-sri-lanka-to-australia", label: "Sri Lanka → Australia" },
   { href: "/student-visa-australia", label: "Student Visas" },
   { href: "/partner-visa-australia", label: "Partner Visa" },
   { href: "/employer-sponsored-visas", label: "Employer-Sponsored" },

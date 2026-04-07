@@ -1,47 +1,25 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
-const initialForm = {
+const initial = {
   firstName: "",
   lastName: "",
   email: "",
   phone: "",
   preferredCountry: "Australia",
-  mainNeed: "Skilled Migration",
+  mainNeed: "General Enquiry",
   message: "",
 };
 
-export function ContactLeadForm({ className = "" }) {
-  const [form, setForm] = useState(initialForm);
+export function QuickEnquiryForm({ className = "" }) {
+  const [form, setForm] = useState(initial);
   const [state, setState] = useState({ status: "idle", message: "" });
   const hpRef = useRef(null);
 
-  useEffect(() => {
-    function handleNavigatorSummary(event) {
-      const detail = event.detail;
-      if (!detail?.summary) return;
-
-      setForm((current) => {
-        const cleaned = current.message.replace(/\n\nAssessment summary:[\s\S]*$/m, "").trim();
-        const summaryBlock = `Assessment summary: ${detail.summary}`;
-        return {
-          ...current,
-          preferredCountry: detail.preferredCountry || current.preferredCountry,
-          mainNeed: detail.mainNeed || current.mainNeed,
-          message: cleaned ? `${cleaned}\n\n${summaryBlock}` : summaryBlock,
-        };
-      });
-    }
-
-    window.addEventListener("minrosh:navigator-summary", handleNavigatorSummary);
-    return () =>
-      window.removeEventListener("minrosh:navigator-summary", handleNavigatorSummary);
-  }, []);
-
   function handleChange(event) {
     const { name, value } = event.target;
-    setForm((current) => ({ ...current, [name]: value }));
+    setForm((c) => ({ ...c, [name]: value }));
   }
 
   async function handleSubmit(event) {
@@ -51,7 +29,11 @@ export function ContactLeadForm({ className = "" }) {
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({ ...form, company: hpRef.current?.value || "" }),
+        body: JSON.stringify({
+          ...form,
+          quickEnquiry: true,
+          company: hpRef.current?.value || "",
+        }),
       });
       const data = await response.json();
       if (!response.ok || !data.ok) {
@@ -61,12 +43,12 @@ export function ContactLeadForm({ className = "" }) {
         status: "success",
         message:
           data.warning ||
-          "Your enquiry has been received. We will review it and respond shortly.",
+          "Thanks — we have your message and will follow up by phone or WhatsApp shortly.",
       });
       if (typeof window !== "undefined") {
         window.dispatchEvent(new Event("minrosh:enquiry-created"));
       }
-      setForm(initialForm);
+      setForm(initial);
     } catch (error) {
       setState({
         status: "error",
@@ -76,7 +58,11 @@ export function ContactLeadForm({ className = "" }) {
   }
 
   return (
-    <form className={`contact-form bento-hover ${className}`.trim()} onSubmit={handleSubmit}>
+    <form className={`contact-form bento-hover quick-enquiry-form ${className}`.trim()} onSubmit={handleSubmit}>
+      <p className="section-label">Quick enquiry</p>
+      <p className="quick-enquiry-form__hint">
+        No email required — share your phone and a short message. Add email if you want a brochure copy.
+      </p>
       <div className="contact-grid">
         <label>
           <span>First name</span>
@@ -98,25 +84,12 @@ export function ContactLeadForm({ className = "" }) {
           />
         </label>
         <label>
-          <span>Email</span>
-          <input
-            type="email"
-            name="email"
-            autoComplete="email"
-            value={form.email}
-            onChange={handleChange}
-            required
-          />
+          <span>Phone (required)</span>
+          <input name="phone" type="tel" autoComplete="tel" value={form.phone} onChange={handleChange} required />
         </label>
         <label>
-          <span>Phone</span>
-          <input
-            name="phone"
-            type="tel"
-            autoComplete="tel"
-            value={form.phone}
-            onChange={handleChange}
-          />
+          <span>Email (optional)</span>
+          <input type="email" name="email" autoComplete="email" value={form.email} onChange={handleChange} />
         </label>
         <label>
           <span>Preferred country</span>
@@ -130,24 +103,24 @@ export function ContactLeadForm({ className = "" }) {
         <label>
           <span>Main need</span>
           <select name="mainNeed" value={form.mainNeed} onChange={handleChange}>
-            <option>Skilled Migration</option>
-            <option>Partner Visa</option>
-            <option>Student Visa</option>
-            <option>Student Pathway</option>
-            <option>Employer-Sponsored</option>
-            <option>Family / Complex Case</option>
             <option>General Enquiry</option>
+            <option>Skilled Migration</option>
+            <option>Student Visa</option>
+            <option>Partner Visa</option>
+            <option>Employer-Sponsored</option>
+            <option>Student Pathway</option>
+            <option>Family / Complex Case</option>
           </select>
         </label>
         <label className="contact-grid__full">
-          <span>Your enquiry</span>
+          <span>Your message</span>
           <textarea
             name="message"
-            rows="6"
+            rows="4"
             autoComplete="off"
             value={form.message}
             onChange={handleChange}
-            placeholder="Tell us about your situation, timeline, and the visa pathway you want to explore."
+            placeholder="e.g. occupation, years of experience, and whether you are in Sri Lanka or already offshore."
             required
           />
         </label>
@@ -163,7 +136,7 @@ export function ContactLeadForm({ className = "" }) {
         style={{ position: "absolute", left: "-9999px", width: 1, height: 1, overflow: "hidden" }}
       />
       <button type="submit" className="btn btn-primary" disabled={state.status === "loading"}>
-        {state.status === "loading" ? "Sending..." : "Submit enquiry"}
+        {state.status === "loading" ? "Sending..." : "Send quick enquiry"}
       </button>
       {state.message ? (
         <p className={`form-feedback is-${state.status}`} role="status" aria-live="polite">

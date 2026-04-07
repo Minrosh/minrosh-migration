@@ -1,5 +1,6 @@
 import Link from "next/link";
-import siteData from "../../data/site.json";
+import siteDataStatic from "../../data/site.json";
+import { getHomeSiteData } from "../../lib/home-site-data";
 import seoPages from "../../data/seo-pages.json";
 import { ContactLeadForm } from "../../components/contact-lead-form";
 import { AgentRegistrationStrip } from "../../components/agent-registration-strip";
@@ -21,6 +22,8 @@ export const metadata = buildMetadata({
 });
 
 export default function BookConsultationPage() {
+  const siteData = getHomeSiteData(siteDataStatic);
+
   return (
     <SiteShell siteData={siteData} currentPath="">
       <StructuredData
@@ -44,6 +47,9 @@ export default function BookConsultationPage() {
           <p className="section-label">Book Consultation</p>
           <h1>{pageData.headline}</h1>
           <p>{pageData.intro}</p>
+          {siteData.consultationHoursNote ? (
+            <p className="content-hero__note">{siteData.consultationHoursNote}</p>
+          ) : null}
         </section>
 
         <div className="content-page__grid">

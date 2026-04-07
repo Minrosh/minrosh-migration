@@ -1,6 +1,9 @@
-import siteData from "../../data/site.json";
+import siteDataStatic from "../../data/site.json";
 import seoPages from "../../data/seo-pages.json";
+import { buildWhatsAppUrl, WHATSAPP_LEAD_MESSAGE } from "../../lib/whatsapp-prefill";
+import { getHomeSiteData } from "../../lib/home-site-data";
 import { ContactLeadForm } from "../../components/contact-lead-form";
+import { QuickEnquiryForm } from "../../components/quick-enquiry-form";
 import { AgentRegistrationStrip } from "../../components/agent-registration-strip";
 import { SiteShell } from "../../components/site-shell";
 import { StructuredData } from "../../components/structured-data";
@@ -18,6 +21,10 @@ export const metadata = buildMetadata({
 });
 
 export default function ContactPage() {
+  const siteData = getHomeSiteData(siteDataStatic);
+  const waPrimary = buildWhatsAppUrl(siteData.brand.whatsapp, WHATSAPP_LEAD_MESSAGE);
+  const waSecondary = buildWhatsAppUrl(siteData.brand.whatsappSecondary, WHATSAPP_LEAD_MESSAGE);
+
   return (
     <SiteShell siteData={siteData} currentPath={pageData.path}>
       <StructuredData
@@ -85,21 +92,13 @@ export default function ContactPage() {
               </div>
               <div>
                 <span>WhatsApp</span>
-                <a
-                  href={`https://wa.me/${siteData.brand.whatsapp}?text=Hi%20MinRosh%20Migration,%20I%20am%20interested%20in%20Australian%20visa%20options.`}
-                  target="_blank"
-                  rel="noreferrer"
-                >
+                <a href={waPrimary} target="_blank" rel="noreferrer">
                   {siteData.brand.phone}
                 </a>
               </div>
               <div>
                 <span>WhatsApp alternate</span>
-                <a
-                  href={`https://wa.me/${siteData.brand.whatsappSecondary}?text=Hi%20MinRosh%20Migration,%20I%20am%20interested%20in%20Australian%20visa%20options.`}
-                  target="_blank"
-                  rel="noreferrer"
-                >
+                <a href={waSecondary} target="_blank" rel="noreferrer">
                   {siteData.brand.phoneSecondary}
                 </a>
               </div>
@@ -111,6 +110,7 @@ export default function ContactPage() {
           </div>
           <div className="contact-form-column">
             <AgentRegistrationStrip brand={siteData.brand} />
+            <QuickEnquiryForm />
             <ContactLeadForm />
           </div>
         </div>

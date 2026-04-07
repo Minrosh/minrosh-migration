@@ -25,7 +25,7 @@ Official reference URLs (for suggestions only; do not quote long text from them)
 - UK visas: https://www.gov.uk/browse/visas-immigration
 - New Zealand find a visa: https://www.immigration.govt.nz/process-to-apply/find-a-visa-tool/
 
-Internal site pages you may mention when relevant: /skilled-migration, /student-visa-australia, /partner-visa-australia, /book-consultation, /assessment, /destinations/australia, /destinations/new-zealand, /destinations/canada, /destinations/united-kingdom`;
+Internal site pages you may mention when relevant: /skilled-migration, /migration-sri-lanka-to-australia, /student-visa-australia, /partner-visa-australia, /book-consultation, /assessment, /destinations/australia, /destinations/new-zealand, /destinations/canada, /destinations/united-kingdom`;
 
 const defaultModel = process.env.OPENAI_MODEL || "gpt-4o-mini";
 const requestTimeoutMs = 20000;
@@ -72,7 +72,13 @@ function normalizeMessages(raw) {
 
 export async function POST(request) {
   if (!process.env.OPENAI_API_KEY) {
-    return Response.json({ error: "Assistant is temporarily unavailable." }, { status: 503 });
+    return Response.json(
+      {
+        error: "Live assistant is not configured. Set OPENAI_API_KEY on the server to enable AI replies.",
+        code: "OPENAI_NOT_CONFIGURED",
+      },
+      { status: 503 }
+    );
   }
 
   const ip = getClientIp(request);

@@ -16,25 +16,26 @@
     "whatsappSecondary": "61481706474",
     "location": "Brisbane, Queensland"
   },
+  "consultationHoursNote": "Consultations are usually scheduled during business hours (AEST). We confirm your appointment by email or phone after you enquire.",
   "hero": {
     "eyebrow": "Registered migration agent Brisbane",
     "title": "Registered Migration Agent in Brisbane for Skilled, Student, and Family Visa Help.",
-    "description": "Looking for a reliable migration agent in Brisbane? MinRosh Migration provides clear, structured guidance for skilled migration, student visas, partner visas, employer-sponsored pathways, and other Australian visa options.",
+    "description": "Looking for a reliable migration agent in Brisbane? MinRosh Migration provides clear, structured guidance for skilled migration, student visas, partner visas, employer-sponsored pathways, and other Australian visa options — including many skilled clients planning a move from Sri Lanka.",
     "primaryCta": "Start Eligibility Quiz",
     "secondaryCta": "Book Consultation"
   },
   "stats": [
     {
-      "value": "4+",
-      "label": "Countries covered across Australia, New Zealand, Canada, and the United Kingdom"
+      "value": "MinRosh",
+      "label": "Registered migration guidance with structured next steps — not generic offshore call-centre advice"
     },
     {
-      "value": "Education",
-      "label": "Study pathway and education support aligned with longer-term migration planning"
+      "value": "4 hubs",
+      "label": "Australia, New Zealand, Canada, and the United Kingdom destination support"
     },
     {
-      "value": "Smart",
-      "label": "Navigator, quiz, and guided consultation flow built for clearer next steps"
+      "value": "Navigator + quiz",
+      "label": "Smart tools that turn your situation into a clearer pathway recommendation"
     }
   ],
   "about": {
@@ -144,7 +145,7 @@
     {
       "title": "Initial Assessment",
       "description": "Check your age, points profile, occupation fit, and likely pathway options.",
-      "detail": "The first stage is not about lodging anything immediately. It is about confirming whether your occupation aligns with skilled lists, whether your points position is realistic for the subclass you prefer, and whether employer-sponsored or family routes might be stronger. Use the Department of Home Affairs visa listing to see which visa subclasses exist and read the official eligibility summaries before you lock in a strategy.",
+      "detail": "The first stage is not about lodging anything immediately. It is about confirming whether your occupation aligns with skilled lists, whether your points position is realistic for the subclass you prefer, and whether employer-sponsored or family routes might be stronger. Many skilled professionals from Sri Lanka start here before committing to English tests or skills assessment fees. Use the Department of Home Affairs visa listing to see which visa subclasses exist and read the official eligibility summaries before you lock in a strategy.",
       "officialHref": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing",
       "officialLabel": "Home Affairs visa listing"
     },
@@ -207,10 +208,10 @@
     {
       "name": "R. Perera",
       "location": "Melbourne",
-      "visa": "Skilled Independent visa (subclass 189)",
-      "quote": "What helped most was the clarity. Instead of generic advice, we got a sequence that made sense for our profile and timing.",
-      "outcome": "Improved English planning and evidence readiness before EOI.",
-      "timeline": "Result achieved in 8 months"
+      "visa": "Partner visa (subclass 820/801 pathway)",
+      "quote": "From Colombo to partner PR in Melbourne — MinRosh helped us organise relationship evidence and timelines without the stress we expected.",
+      "outcome": "Clear evidence plan and confident lodgement preparation.",
+      "timeline": "Result achieved in 14 months"
     },
     {
       "name": "S. Wickramasinghe",
@@ -252,7 +253,7 @@
     },
     {
       "question": "How do I get a PR visa in Queensland as a nurse in 2026?",
-      "answer": "As a nurse you would usually start by confirming your occupation and skills assessment pathway (often through ANMAC or the relevant nursing authority), meeting English requirements, and checking whether you will pursue employer-sponsored options (Skills in Demand / permanent routes where eligible) or points-tested skilled visas (189, 190, or 491). Queensland runs its own state and regional nomination programs with lists and rules that change over time. Read the current Queensland migration program material and the Department of Home Affairs visa pages for subclasses 190 and 491, then map health and character requirements before you lodge."
+      "answer": "As a nurse you would usually start by confirming your occupation and skills assessment pathway (often through ANMAC or the relevant nursing authority), meeting English requirements, and checking whether you will pursue employer-sponsored options (Skills in Demand / permanent routes where eligible) or points-tested skilled visas (189, 190, or 491). Many Sri Lankan-trained nurses map to Australian nursing occupations when registration and assessment align — but you must verify your own pathway against current lists and AHPRA requirements. Queensland runs its own state and regional nomination programs with lists and rules that change over time. Read the current Queensland migration program material and the Department of Home Affairs visa pages for subclasses 190 and 491, then map health and character requirements before you lodge."
     }
   ]
 }

@@ -1,6 +1,9 @@
 import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
-import siteData from "../data/site.json";
+import siteDataStatic from "../data/site.json";
+import { getHomeSiteData } from "../lib/home-site-data";
+
+const siteData = getHomeSiteData(siteDataStatic);
 import { StructuredData } from "../components/structured-data";
 import { AIConciergeLazy } from "../components/ai-concierge-lazy";
 import { businessJsonLd } from "../lib/seo";

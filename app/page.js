@@ -21,6 +21,8 @@ export const metadata = buildMetadata({
     "Visa consultant Brisbane",
     "Australian migration services",
     "Immigration agent Australia",
+    "Migration Sri Lanka to Australia",
+    "Australian PR from Sri Lanka",
   ],
 });
 

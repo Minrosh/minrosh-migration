@@ -9,6 +9,7 @@ export default function sitemap() {
   const routes = [
     "/",
     "/skilled-migration",
+    "/migration-sri-lanka-to-australia",
     "/partner-visa-australia",
     "/student-visa-australia",
     "/employer-sponsored-visas",

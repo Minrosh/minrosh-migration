@@ -32,6 +32,15 @@
           "body": "Points are usually awarded for age, work experience, education, English proficiency, partner factors, and in some cases Australian skilled employment. While 65 points remains the legal minimum for an Expression of Interest for many skilled visas, real invitation rounds often sit higher depending on occupation ceilings, demand, and nomination opportunities. That is why it is important to look at your total score in context rather than relying on the minimum threshold alone."
         },
         {
+          "title": "ANZSCO, duties, and skills assessment alignment",
+          "body": "Your nominated occupation is expressed using ANZSCO codes for skilled migration purposes. Skills assessing authorities expect employment references and evidence to reflect the duties of that occupation, not a generic job title. Gaps between your day-to-day duties, your ANZSCO positioning, and your assessment outcome are a common source of delays or refusals.",
+          "bullets": [
+            "Match reference letter duties to the ANZSCO tasks described for your code",
+            "Keep employment dates and job titles consistent across CV, references, and forms",
+            "Plan assessment validity and English test expiry around EOI and invitation timing"
+          ]
+        },
+        {
           "title": "Expression of Interest, SkillSelect, and invitations",
           "body": "For many points-tested visas, submitting an Expression of Interest through SkillSelect is an early milestone, but it is not the same as lodging a visa application. You generally need an invitation before you can apply for the visa. Waiting times and competitiveness can shift, so your strategy should include a realistic view of how your points compare with recent trends for your occupation.",
           "bullets": [
@@ -90,6 +99,10 @@
         {
           "title": "Skilled migration Australia points guide",
           "href": "/skilled-migration-australia-points-guide"
+        },
+        {
+          "title": "Migration from Sri Lanka to Australia",
+          "href": "/migration-sri-lanka-to-australia"
         }
       ]
     },
@@ -215,7 +228,7 @@
       "metaTitle": "Book a Consultation with a Registered Migration Agent | MinRosh",
       "metaDescription": "Book a consultation with MinRosh Migration to discuss skilled migration, partner visas, student visas, and your next best Australian visa options.",
       "headline": "Book a Consultation with a Registered Migration Agent",
-      "intro": "If you want advice tailored to your own background, a consultation is the best place to start. MinRosh Migration helps you understand your options, avoid costly mistakes, and move forward with a clearer action plan."
+      "intro": "If you want advice tailored to your own background, a consultation is the best place to start. MinRosh Migration helps you understand your options, avoid costly mistakes, and move forward with a clearer action plan. Consultations are usually scheduled during business hours (AEST); we confirm details by email or phone after you enquire."
     },
     "contact": {
       "path": "/contact",
@@ -223,7 +236,87 @@
       "metaTitle": "Contact MinRosh Migration | Brisbane Visa Consultation",
       "metaDescription": "Contact MinRosh Migration for Brisbane-based guidance on skilled migration, student visas, partner visas, and employer-sponsored pathways.",
       "headline": "Contact MinRosh Migration for Brisbane-based visa guidance",
-      "intro": "If you need a clearer view of your visa options, start with a focused enquiry. MinRosh Migration supports clients in Brisbane and across Australia with structured migration guidance and practical next steps."
+      "intro": "If you need a clearer view of your visa options, start with a focused enquiry. MinRosh Migration supports clients in Brisbane and across Australia — including many skilled professionals from Sri Lanka — with structured migration guidance and practical next steps."
+    },
+    "sriLankaMigration": {
+      "path": "/migration-sri-lanka-to-australia",
+      "title": "Migration from Sri Lanka to Australia",
+      "metaTitle": "Migration from Sri Lanka to Australia | Skilled PR Pathways | MinRosh",
+      "metaDescription": "Plan Australian skilled migration, PR, and study pathways from Sri Lanka with Brisbane-based MARA-registered guidance. Points, skills assessment, and realistic next steps explained in plain English.",
+      "headline": "Migration from Sri Lanka to Australia — skilled, study, and family pathways",
+      "intro": "Many Sri Lankan professionals explore Australian permanent residence through skilled points-tested visas (subclasses 189, 190, and 491), employer-sponsored routes where eligible, or study pathways that align with longer-term goals. Rules, lists, and thresholds change — always verify eligibility on the Department of Home Affairs website. MinRosh Migration helps you sequence skills assessment, English testing, Expression of Interest strategy, and nomination planning so you avoid costly mistakes.",
+      "officialResources": [
+        {
+          "label": "Department of Home Affairs — visa listing",
+          "href": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing"
+        },
+        {
+          "label": "SkillSelect / EOI information",
+          "href": "https://immi.homeaffairs.gov.au/visas/working-in-australia/skillselect"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Why Sri Lankan applicants focus on skilled migration",
+          "body": "Strong English-educated professionals, ICT, engineering, healthcare, and trades skills often map well to Australian skilled lists when aligned with ANZSCO and a positive skills assessment. The challenge is rarely “whether a pathway exists” — it is whether your profile is competitive for invitation rounds, state nomination, or employer-sponsored streams that fit your timing.",
+          "bullets": [
+            "Clarify the right ANZSCO code and assessing authority before you invest in tests",
+            "Treat 65 points as a legal minimum, not a guarantee of invitation",
+            "Plan passport validity, English, and assessment expiry around invitation timing"
+          ]
+        },
+        {
+          "title": "Typical sequence from Sri Lanka or offshore",
+          "body": "Most skilled routes start with occupation choice, skills assessment evidence, English scores, then EOI submission where applicable. If you are already in Australia on another visa, sequencing can differ — but consistency across employment references, tax documents, and forms always matters.",
+          "bullets": [
+            "Gather qualification and employment evidence that matches nominated duties",
+            "Compare 189 independent, 190 state, and 491 regional nomination realistically",
+            "Use the free assessment and a consultation when your case has tight timing"
+          ]
+        },
+        {
+          "title": "Study pathways and graduate routes",
+          "body": "Some clients strengthen their profile through Australian study, but course choice should align with visa conditions, genuine student requirements, and any longer-term migration goals. This is not a shortcut — it is a structured plan with compliance obligations.",
+          "bullets": [
+            "Separate “popular courses” from pathways that match your occupation story",
+            "Understand work limits and course attendance conditions before you commit",
+            "Book an education consultation if study is part of your strategy"
+          ]
+        },
+        {
+          "title": "How MinRosh Migration can help",
+          "body": "MinRosh provides registered migration guidance from Brisbane for clients across Australia and offshore. We focus on plain-language strategy, document consistency, and next-step sequencing rather than generic promises.",
+          "bullets": [
+            "Skilled points and nomination positioning",
+            "Employer-sponsored and Skills in Demand context where relevant",
+            "Partner, student, and complex case triage"
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "question": "Can I apply for Australian PR directly from Sri Lanka?",
+          "answer": "Many skilled visas can be lodged offshore if you meet eligibility, skills assessment, English, and points requirements. Whether offshore lodgement suits you depends on the visa subclass and your current circumstances."
+        },
+        {
+          "question": "Is 65 points enough for skilled migration?",
+          "answer": "Sixty-five points is often the minimum to submit an Expression of Interest for some subclasses, but invitation competitiveness varies by occupation and round. You should interpret your score in context rather than assuming immediate invitation."
+        },
+        {
+          "question": "Do I need a migration agent?",
+          "answer": "You are not required to use an agent, but professional guidance can reduce errors in occupation choice, evidence, and sequencing. Always choose a registered migration agent listed on OMARA if you seek regulated advice."
+        }
+      ],
+      "relatedGuides": [
+        {
+          "title": "Skilled migration Australia points guide",
+          "href": "/skilled-migration-australia-points-guide"
+        },
+        {
+          "title": "Student visa Australia requirements",
+          "href": "/student-visa-australia-requirements"
+        }
+      ]
     }
   },
   "guidePages": {

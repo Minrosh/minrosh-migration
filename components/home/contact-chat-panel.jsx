@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { AgentRegistrationStrip } from "@/components/agent-registration-strip";
+import { buildWhatsAppUrl, WHATSAPP_LEAD_MESSAGE } from "@/lib/whatsapp-prefill";
 
 const initialForm = {
   firstName: "",
@@ -14,6 +15,9 @@ const initialForm = {
 };
 
 export function ContactChatPanel({ siteData, isActive }) {
+  const waPrimary = buildWhatsAppUrl(siteData?.brand?.whatsapp, WHATSAPP_LEAD_MESSAGE);
+  const waSecondary = buildWhatsAppUrl(siteData?.brand?.whatsappSecondary, WHATSAPP_LEAD_MESSAGE);
+
   const [contactForm, setContactForm] = useState(initialForm);
   const [contactState, setContactState] = useState({ status: "idle", message: "" });
   const [quizSummaryLine, setQuizSummaryLine] = useState("");
@@ -106,12 +110,33 @@ export function ContactChatPanel({ siteData, isActive }) {
         headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify({ messages: nextMessages }),
       });
-      const data = await response.json();
+      const rawText = await response.text();
+      let data = {};
+      try {
+        data = rawText ? JSON.parse(rawText) : {};
+      } catch {
+        throw new Error("Assistant returned an unexpected response.");
+      }
       const reply = data?.choices?.[0]?.message?.content;
-      if (!response.ok || !reply) throw new Error(data.error || "Chat is not available right now.");
+      if (!response.ok || !reply) {
+        const errMsg =
+          response.status === 503 && data?.code === "OPENAI_NOT_CONFIGURED"
+            ? data.error ||
+              "Live assistant is not configured on this server yet. Use WhatsApp or the enquiry form for a human reply."
+            : data.error || "Chat is not available right now.";
+        throw new Error(errMsg);
+      }
       setChatMessages((current) => [...current, { role: "assistant", content: reply }]);
       setChatState({ loading: false, error: "" });
     } catch (error) {
+      setChatMessages((current) => [
+        ...current,
+        {
+          role: "assistant",
+          content:
+            "I can't reach the live assistant from here. For a tailored reply, message MinRosh on WhatsApp or submit the contact form with your occupation, English level, and timeline.",
+        },
+      ]);
       setChatState({ loading: false, error: error.message || "Chat is unavailable right now." });
     }
   }
@@ -143,21 +168,13 @@ export function ContactChatPanel({ siteData, isActive }) {
             </div>
             <div>
               <span>WhatsApp</span>
-              <a
-                href={`https://wa.me/${siteData.brand.whatsapp}?text=Hi%20MinRosh%20Migration,%20I%20am%20interested%20in%20Australian%20visa%20options.`}
-                target="_blank"
-                rel="noreferrer"
-              >
+              <a href={waPrimary} target="_blank" rel="noreferrer">
                 {siteData.brand.phone}
               </a>
             </div>
             <div>
               <span>WhatsApp alternate</span>
-              <a
-                href={`https://wa.me/${siteData.brand.whatsappSecondary}?text=Hi%20MinRosh%20Migration,%20I%20am%20interested%20in%20Australian%20visa%20options.`}
-                target="_blank"
-                rel="noreferrer"
-              >
+              <a href={waSecondary} target="_blank" rel="noreferrer">
                 {siteData.brand.phoneSecondary}
               </a>
             </div>
@@ -223,7 +240,10 @@ export function ContactChatPanel({ siteData, isActive }) {
                 <option>Skilled Migration</option>
                 <option>Employer-Sponsored</option>
                 <option>Student Pathway</option>
+                <option>Student Visa</option>
+                <option>Partner Visa</option>
                 <option>Family / Complex Case</option>
+                <option>General Enquiry</option>
               </select>
             </label>
             <label className="contact-grid__full">

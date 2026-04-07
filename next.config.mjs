@@ -14,6 +14,15 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  async redirects() {
+    return [
+      {
+        source: "/migration-from-sri-lanka",
+        destination: "/migration-sri-lanka-to-australia",
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       {

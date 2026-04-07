@@ -36,6 +36,11 @@ const visualHighlights = [
  * Server-rendered home tab: static sections + small client children (navigator, coverage, news).
  */
 export function HomeTabServer({ siteData, newsData }) {
+  const marn = String(siteData.brand?.marn || "").trim();
+  const trustNote = marn
+    ? `Registered migration agent (MARN ${marn}). Brisbane-based guidance across four destination systems, with education support and practical next-step planning.`
+    : "Brisbane-based migration guidance across four destination systems, with education support and practical next-step planning.";
+
   return (
     <section className="tab-panel is-active editorial-home">
       <section className="hero editorial-section editorial-section--hero">
@@ -52,10 +57,7 @@ export function HomeTabServer({ siteData, newsData }) {
                 {siteData.hero.secondaryCta}
               </Link>
             </div>
-            <p className="hero__trust-note">
-              Brisbane-based migration guidance across four destination systems, with education support
-              and practical next-step planning.
-            </p>
+            <p className="hero__trust-note">{trustNote}</p>
             <div className="hero__stats">
               {siteData.stats.map((stat) => (
                 <div key={stat.label} className="hero__stat">
@@ -76,6 +78,13 @@ export function HomeTabServer({ siteData, newsData }) {
           />
         </div>
       </section>
+
+      <SmartNavigator
+        title="Answer a few questions and get a more useful pathway recommendation"
+        description="The old quick wizard has been expanded into a fuller assessment that weighs destination, goal, timing, support preference, and how settled your pathway already feels."
+        primaryLabel="Open recommended page"
+        finalHref="/book-consultation"
+      />
 
       <section className="country-banner editorial-section editorial-section--compact" aria-label="Countries MinRosh supports">
         {countryBannerLinks.map((item) => (
@@ -134,13 +143,6 @@ export function HomeTabServer({ siteData, newsData }) {
           />
         </div>
       </section>
-
-      <SmartNavigator
-        title="Answer a few questions and get a more useful pathway recommendation"
-        description="The old quick wizard has been expanded into a fuller assessment that weighs destination, goal, timing, support preference, and how settled your pathway already feels."
-        primaryLabel="Open recommended page"
-        finalHref="/book-consultation"
-      />
 
       <section className="process-section">
         <div className="section-head section-head--process">

@@ -5,7 +5,9 @@
  */
 export function AgentRegistrationStrip({ brand, variant = "default" }) {
   if (!brand) return null;
-  const marn = String(brand.marn || "").trim();
+  const marn = String(
+    brand.marn || (typeof process !== "undefined" ? process.env.NEXT_PUBLIC_MARN : "") || ""
+  ).trim();
   const regsUrl =
     brand.migrationAgentsRegulations2026Url || "https://www.legislation.gov.au/F2026L00118/latest";
   const conductUrl = brand.omaraCodeOfConductUrl || "https://www.mara.gov.au/tools-for-agents/legislation/code-of-conduct";
@@ -24,7 +26,11 @@ export function AgentRegistrationStrip({ brand, variant = "default" }) {
             · <span className="agent-registration-strip__marn">MARN {marn}</span>
           </>
         ) : (
-          <span className="agent-registration-strip__pending"> · Add MARN in data/site.json (brand.marn)</span>
+          <span className="agent-registration-strip__pending">
+            {" "}
+            · Add MARN in <code className="agent-registration-strip__code">data/site.json</code> or{" "}
+            <code className="agent-registration-strip__code">NEXT_PUBLIC_MARN</code>
+          </span>
         )}
       </p>
       <p className="agent-registration-strip__links">

@@ -4,12 +4,14 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { NewsletterForm } from "./newsletter-form";
+import { buildWhatsAppUrl, WHATSAPP_LEAD_MESSAGE } from "@/lib/whatsapp-prefill";
 
 /**
  * Client island: live enquiry counter, newsletter subscribe bump, brand column top + stats + newsletter column.
  */
 export function SiteFooterInteractive({ siteData, initialStats }) {
   const [stats, setStats] = useState(initialStats);
+  const waFooter = buildWhatsAppUrl(siteData?.brand?.whatsapp, WHATSAPP_LEAD_MESSAGE);
 
   useEffect(() => {
     function handleEnquiryCreated() {
@@ -66,11 +68,7 @@ export function SiteFooterInteractive({ siteData, initialStats }) {
           }
         />
         <div className="site-footer__newsletter-links">
-          <a
-            href={`https://wa.me/${siteData.brand.whatsapp}?text=Hi%20MinRosh%20Migration,%20I%20need%20help%20with%20visa%20options.`}
-            target="_blank"
-            rel="noreferrer"
-          >
+          <a href={waFooter} target="_blank" rel="noreferrer">
             WhatsApp: Chat with MinRosh
           </a>
           <a href={`tel:${siteData.brand.phoneSecondary.replace(/\s+/g, "")}`}>

@@ -3,7 +3,7 @@
  * your OS/arch; if `next dev` fails to start (e.g. invalid SWC .node), reinstall node_modules or
  * run this test on Linux CI where SWC loads correctly.
  */
-import { mkdtemp, readFile, rm } from "node:fs/promises";
+import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { spawn } from "node:child_process";
@@ -26,6 +26,8 @@ async function main() {
   const tempDir = await mkdtemp(path.join(tmpdir(), "minrosh-contact-test-"));
   const enquiriesFile = path.join(tempDir, "data-enquiries.json");
   const port = 3210;
+
+  await writeFile(enquiriesFile, "[]\n", "utf8");
 
   const child = spawn(
     process.execPath,

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import { buildWhatsAppUrl, WHATSAPP_LEAD_MESSAGE } from "@/lib/whatsapp-prefill";
 
 const quickPrompts = [
   "I want to understand skilled migration options.",
@@ -59,6 +60,15 @@ const fallbackReplies = [
       { href: "/destinations/united-kingdom", label: "United Kingdom hub" },
     ],
   },
+  {
+    match: /sri lanka|colombo|lankan/i,
+    content:
+      "Many skilled professionals start with occupation fit, skills assessment sequencing, and a realistic points view before investing in English tests. MinRosh has a dedicated Sri Lanka hub for pathway context and next steps.",
+    actions: [
+      { href: "/migration-sri-lanka-to-australia", label: "Sri Lanka → Australia" },
+      { href: "/skilled-migration", label: "Skilled migration" },
+    ],
+  },
 ];
 
 function getFallbackReply(message) {
@@ -78,6 +88,12 @@ function getFallbackReply(message) {
 }
 
 export function AIConcierge({ siteData }) {
+  const waPrimary = buildWhatsAppUrl(siteData?.brand?.whatsapp, WHATSAPP_LEAD_MESSAGE);
+  const waSecondary = buildWhatsAppUrl(siteData?.brand?.whatsappSecondary, WHATSAPP_LEAD_MESSAGE);
+  const waFloat = buildWhatsAppUrl(
+    siteData?.brand?.whatsapp,
+    "Hi MinRosh Migration, I just completed your points test and would like to discuss my Australian visa options."
+  );
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState([
@@ -111,13 +127,24 @@ export function AIConcierge({ siteData }) {
         headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify({ messages: nextMessages }),
       });
-      const data = await response.json();
+      const rawText = await response.text();
+      let data = {};
+      try {
+        data = rawText ? JSON.parse(rawText) : {};
+      } catch {
+        throw new Error("Assistant returned an unexpected response.");
+      }
       const reply = data?.choices?.[0]?.message?.content;
       if (!response.ok || !reply) {
-        throw new Error(data.error || "AI Concierge is unavailable right now.");
+        const errMsg =
+          response.status === 503 && data?.code === "OPENAI_NOT_CONFIGURED"
+            ? data.error ||
+              "Live assistant is not configured on this server yet. Use WhatsApp or the enquiry form for a human reply."
+            : data.error || "AI Concierge is unavailable right now.";
+        throw new Error(errMsg);
       }
       setMessages((current) => [...current, { role: "assistant", content: reply }]);
-    } catch {
+    } catch (err) {
       const fallback = getFallbackReply(trimmed);
       setMessages((current) => [
         ...current,
@@ -128,7 +155,8 @@ export function AIConcierge({ siteData }) {
         },
       ]);
       setError(
-        "AI live reply is unavailable right now, so I've switched to MinRosh's quick guidance mode."
+        err?.message ||
+          "AI live reply is unavailable right now, so I've switched to MinRosh's quick guidance mode."
       );
     } finally {
       setLoading(false);
@@ -200,18 +228,10 @@ export function AIConcierge({ siteData }) {
           <div className="ai-concierge__footer">
             <Link href="/assessment">Open free assessment</Link>
             <Link href="/book-consultation">Book consultation</Link>
-            <a
-              href={`https://wa.me/${siteData.brand.whatsapp}?text=Hi%20MinRosh%20Migration,%20I%20need%20help%20with%20visa%20options.`}
-              target="_blank"
-              rel="noreferrer"
-            >
+            <a href={waPrimary} target="_blank" rel="noreferrer">
               WhatsApp {siteData.brand.phone}
             </a>
-            <a
-              href={`https://wa.me/${siteData.brand.whatsappSecondary}?text=Hi%20MinRosh%20Migration,%20I%20need%20help%20with%20visa%20options.`}
-              target="_blank"
-              rel="noreferrer"
-            >
+            <a href={waSecondary} target="_blank" rel="noreferrer">
               WhatsApp {siteData.brand.phoneSecondary}
             </a>
           </div>
@@ -229,7 +249,7 @@ export function AIConcierge({ siteData }) {
 
       <a
         className="whatsapp-float"
-        href={`https://wa.me/${siteData.brand.whatsapp}?text=Hi%20MinRosh%20Migration,%20I%20just%20completed%20your%20points%20test%20and%20would%20like%20to%20discuss%20my%20Australian%20visa%20options.`}
+        href={waFloat}
         target="_blank"
         rel="noreferrer"
         aria-label="Chat with MinRosh Migration on WhatsApp"
