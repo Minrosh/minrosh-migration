@@ -11,6 +11,70 @@ const countryBannerLinks = [
   { label: "United Kingdom", href: "/destinations/united-kingdom" },
 ];
 
+const heroStatIconVariants = ["guidance", "hubs", "tools"];
+
+function HeroStatIcon({ variant }) {
+  const svgProps = {
+    width: 22,
+    height: 22,
+    viewBox: "0 0 24 24",
+    fill: "none",
+    xmlns: "http://www.w3.org/2000/svg",
+    "aria-hidden": true,
+  };
+  if (variant === "guidance") {
+    return (
+      <svg {...svgProps}>
+        <path
+          d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"
+          stroke="currentColor"
+          strokeWidth="1.65"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d="m9 12 2 2 4-4"
+          stroke="currentColor"
+          strokeWidth="1.65"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    );
+  }
+  if (variant === "hubs") {
+    return (
+      <svg {...svgProps}>
+        <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.65" />
+        <path
+          d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
+          stroke="currentColor"
+          strokeWidth="1.65"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    );
+  }
+  return (
+    <svg {...svgProps}>
+      <path
+        d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3L12 3Z"
+        stroke="currentColor"
+        strokeWidth="1.65"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M12 8v4M12 16h.01"
+        stroke="currentColor"
+        strokeWidth="1.65"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
 const visualHighlights = [
   {
     title: "Brisbane-based guidance",
@@ -53,16 +117,21 @@ export function HomeTabServer({ siteData, newsData }) {
               <Link href="/#quiz" className="btn btn-primary">
                 {siteData.hero.primaryCta}
               </Link>
-              <Link href="/#contact" className="btn btn-ghost">
+              <Link href="/book-consultation" className="btn btn-ghost">
                 {siteData.hero.secondaryCta}
               </Link>
             </div>
             <p className="hero__trust-note">{trustNote}</p>
             <div className="hero__stats">
-              {siteData.stats.map((stat) => (
+              {siteData.stats.map((stat, index) => (
                 <div key={stat.label} className="hero__stat">
-                  <strong>{stat.value}</strong>
-                  <span>{stat.label}</span>
+                  <span className="hero__stat-icon" aria-hidden="true">
+                    <HeroStatIcon variant={heroStatIconVariants[index] ?? "tools"} />
+                  </span>
+                  <div className="hero__stat-body">
+                    <strong>{stat.value}</strong>
+                    <span>{stat.label}</span>
+                  </div>
                 </div>
               ))}
             </div>
