@@ -75,24 +75,25 @@ function HeroStatIcon({ variant }) {
   );
 }
 
+/** Home visual strip: three distinct assets (Brisbane SVG + two photographs). */
 const visualHighlights = [
   {
     title: "Brisbane-based guidance",
     caption: "Local visibility with a calmer, more premium first impression.",
-    src: "/images/brisbane-skyline.jpg",
-    alt: "Brisbane skyline beside the river at sunset",
+    src: "/images/brisbane-skyline.svg",
+    alt: "Stylized illustration of the Brisbane skyline and riverfront",
   },
   {
     title: "Structured migration planning",
     caption: "A smoother pathway from first review through to practical next steps.",
-    src: "/images/team-office-real.jpg",
-    alt: "Professional consultation meeting in a bright modern office",
+    src: "/images/visual-strip-planning.jpg",
+    alt: "Colleagues collaborating together at a table with laptops",
   },
   {
     title: "Destination-focused support",
     caption: "Stronger visual storytelling for Australia and wider migration goals.",
-    src: "/images/hero-sydney-real.jpg",
-    alt: "Sydney Harbour with ferries and the Opera House in view",
+    src: "/images/visual-strip-destinations.jpg",
+    alt: "Aerial view above clouds from an aircraft, suggesting international travel",
   },
 ];
 
