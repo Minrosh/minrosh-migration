@@ -27,6 +27,12 @@ if [[ ! -f "$ROOT/.next/standalone/server.js" ]]; then
   exit 1
 fi
 
+if [[ ! -d "$ROOT/.next/standalone/.next/static" ]]; then
+  echo "ERROR: $ROOT/.next/standalone/.next/static is missing (page will load with no CSS)."
+  echo "  Use full npm run build (not next build alone) so copy-standalone-assets runs."
+  exit 1
+fi
+
 echo "==> Writable private uploads (app + standalone copy)"
 mkdir -p storage/uploads .next/standalone/storage/uploads
 chmod -R u+rwX storage/uploads
@@ -36,7 +42,7 @@ echo "==> Writable runtime data under standalone (enquiries, customers, invoices
 mkdir -p .next/standalone/data
 chmod -R u+rwX .next/standalone/data
 
-echo "==> Restart PM2 (loads env from your shell if you exported vars first)"
-pm2 restart ecosystem.config.js --update-env
+echo "==> Reload PM2 (ecosystem.config.js merges project .env into process env)"
+pm2 startOrReload ecosystem.config.js --update-env
 
-echo "==> Done. Tip: set secrets with export ADMIN_PASSWORD=... before pm2, or use pm2 ecosystem env_file."
+echo "==> Done. Put SMTP_*, ADMIN_PASSWORD, etc. in $ROOT/.env — PM2 loads them from ecosystem.config.js."

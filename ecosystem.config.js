@@ -1,30 +1,55 @@
+const fs = require("fs");
 const path = require("path");
+
+/**
+ * PM2's `env_file` key is only supported in newer PM2 versions; many servers ignore it,
+ * which leaves SMTP_* unset and shows "SMTP is not configured" on the contact form.
+ * We merge project-root .env here so mail and admin secrets always load.
+ */
+function loadDotEnv(absPath) {
+  const out = {};
+  if (!fs.existsSync(absPath)) return out;
+  const raw = fs.readFileSync(absPath, "utf8").replace(/^\uFEFF/, "");
+  for (const line of raw.split(/\r?\n/)) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith("#")) continue;
+    const noExport = trimmed.startsWith("export ") ? trimmed.slice(7).trim() : trimmed;
+    const eq = noExport.indexOf("=");
+    if (eq === -1) continue;
+    const key = noExport.slice(0, eq).trim();
+    let val = noExport.slice(eq + 1).trim();
+    if (!key) continue;
+    if (
+      (val.startsWith('"') && val.endsWith('"')) ||
+      (val.startsWith("'") && val.endsWith("'"))
+    ) {
+      val = val.slice(1, -1);
+    }
+    out[key] = val;
+  }
+  return out;
+}
+
+const rootDir = __dirname;
+const fileEnv = loadDotEnv(path.join(rootDir, ".env"));
 
 /**
  * PM2 runs with cwd = .next/standalone so:
  * - storage/uploads and data/*.json resolve next to server.js (matches copy-standalone-assets.mjs).
- * Set ADMIN_PASSWORD (and SMTP_*, OPENAI_API_KEY, etc.) before start, e.g.:
- *   export ADMIN_PASSWORD='...'
- *   pm2 restart ecosystem.config.js --update-env
- * Or inject via hosting panel / systemd Environment=.
+ * Runtime secrets: add them to .env in this directory (project root), not only in the shell.
  */
 module.exports = {
   apps: [
     {
       name: "minrosh-next",
-      cwd: path.join(__dirname, ".next", "standalone"),
+      cwd: path.join(rootDir, ".next", "standalone"),
       script: "server.js",
       interpreter: "node",
-      // Load runtime env vars from the server-side .env file.
-      // This keeps secrets out of the repo while still making PM2 restarts work.
-      env_file: path.join(__dirname, ".env"),
       env: {
+        ...fileEnv,
         NODE_ENV: "production",
         PORT: 3000,
         HOSTNAME: "0.0.0.0",
-        // ADMIN_PASSWORD: "set-in-shell-or-hosting-panel",
-        // ADMIN_SESSION_SECRET: "optional",
-        // ADMIN_COOKIE_SECURE: "true",
       },
     },
   ],
