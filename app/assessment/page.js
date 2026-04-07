@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import siteData from "../../data/site.json";
 import { ContactLeadForm } from "../../components/contact-lead-form";
@@ -77,7 +78,12 @@ export default function AssessmentPage() {
               </div>
             </div>
             <div className="content-hero__media" aria-hidden="true">
-              <img src="/images/brisbane-skyline.jpg" alt="Brisbane skyline and riverfront" />
+              <Image
+                src="/images/brisbane-skyline.svg"
+                alt="Brisbane skyline and riverfront"
+                width={1600}
+                height={900}
+              />
             </div>
           </div>
         </section>

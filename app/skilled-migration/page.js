@@ -36,7 +36,7 @@ export default function SkilledMigrationPage() {
         sections={pageData.sections}
         faq={pageData.faq}
         heroImage={{
-          src: "/images/hero-sydney-real.jpg",
+          src: "/images/hero-sydney.svg",
           alt: "Sydney Harbour — Australian skilled migration context",
         }}
         related={[

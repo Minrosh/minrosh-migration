@@ -16,8 +16,8 @@ export const metadata = buildMetadata({
   path: pageData.path,
   keywords: [
     "Book migration consultation",
-    "Registered migration agent consultation",
-    "Visa consultation Brisbane",
+    "Australian visa consultation Brisbane",
+    "Migration advice consultation",
   ],
 });
 

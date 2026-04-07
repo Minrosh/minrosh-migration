@@ -1,3 +1,4 @@
+import Image from "next/image";
 import siteData from "../../data/site.json";
 import newsData from "../../data/news.json";
 import { NewsBoard } from "../../components/news-board";
@@ -33,7 +34,12 @@ export default function UpdatesPage() {
               </p>
             </div>
             <div className="content-hero__media" aria-hidden="true">
-              <img src="/images/brisbane-skyline.jpg" alt="Brisbane skyline and riverfront" />
+              <Image
+                src="/images/brisbane-skyline.svg"
+                alt="Brisbane skyline and riverfront"
+                width={1600}
+                height={900}
+              />
             </div>
           </div>
         </section>

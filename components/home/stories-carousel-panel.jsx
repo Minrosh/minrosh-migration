@@ -62,7 +62,7 @@ export function StoriesCarouselPanel({ siteData, isActive }) {
         </div>
         <div className="story-feature__media">
           <Image
-            src={storyIndex % 2 === 0 ? "/images/team-office-real.jpg" : "/images/brisbane-skyline.jpg"}
+            src={storyIndex % 2 === 0 ? "/images/team-office.svg" : "/images/brisbane-skyline.svg"}
             alt="MinRosh migration guidance and Brisbane lifestyle"
             width={1200}
             height={900}

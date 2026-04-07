@@ -75,7 +75,7 @@ function HeroStatIcon({ variant }) {
   );
 }
 
-/** Home visual strip: three distinct assets (Brisbane SVG + two photographs). */
+/** Home visual strip: three distinct on-repo assets (SVG illustrations). */
 const visualHighlights = [
   {
     title: "Brisbane-based guidance",
@@ -86,14 +86,14 @@ const visualHighlights = [
   {
     title: "Structured migration planning",
     caption: "A smoother pathway from first review through to practical next steps.",
-    src: "/images/visual-strip-planning.jpg",
-    alt: "Colleagues collaborating together at a table with laptops",
+    src: "/images/team-office.svg",
+    alt: "Stylized illustration of colleagues collaborating at a table with laptops",
   },
   {
     title: "Destination-focused support",
     caption: "Stronger visual storytelling for Australia and wider migration goals.",
-    src: "/images/visual-strip-destinations.jpg",
-    alt: "Aerial view above clouds from an aircraft, suggesting international travel",
+    src: "/images/hero-sydney.svg",
+    alt: "Stylized illustration of Sydney Harbour suggesting Australian destinations",
   },
 ];
 
@@ -138,8 +138,8 @@ export function HomeTabServer({ siteData, newsData }) {
         </div>
         <div className="hero__media" aria-hidden="true">
           <Image
-            src="/images/hero-sydney-real.jpg"
-            alt="Sydney Harbour with ferries on the water and the Opera House"
+            src="/images/hero-sydney.svg"
+            alt="Stylized illustration of Sydney Harbour with the Opera House and water"
             width={1800}
             height={1200}
             priority
@@ -149,7 +149,7 @@ export function HomeTabServer({ siteData, newsData }) {
 
       <SmartNavigator
         title="Answer a few questions and get a more useful pathway recommendation"
-        description="The old quick wizard has been expanded into a fuller assessment that weighs destination, goal, timing, support preference, and how settled your pathway already feels."
+        description="Our assessment weighs your destination, goal, timing, how much support you want, and how far along your pathway already is — then suggests the most relevant next page to read or action to take."
         primaryLabel="Open recommended page"
         finalHref="/book-consultation"
       />
@@ -204,8 +204,8 @@ export function HomeTabServer({ siteData, newsData }) {
         </div>
         <div className="image-card bento-hover">
           <Image
-            src="/images/team-office-real.jpg"
-            alt="Professional team meeting in a modern office"
+            src="/images/team-office.svg"
+            alt="Stylized illustration of a professional team meeting in a modern office"
             width={1200}
             height={800}
           />
@@ -218,9 +218,7 @@ export function HomeTabServer({ siteData, newsData }) {
             <p className="section-label">How It Works</p>
             <h2>A clearer process from first enquiry to action.</h2>
           </div>
-          <p className="process-section__lead">
-            This makes the site feel more premium and removes unnecessary gaps in the page flow.
-          </p>
+          <p className="process-section__lead">{siteData.processSectionLead}</p>
         </div>
         <div className="process-grid">
           {siteData.processSteps.map((step, index) => (

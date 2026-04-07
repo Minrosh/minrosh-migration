@@ -47,7 +47,7 @@ export function SiteShell({
           <Link href={brandHref} className="brand" aria-label={brandAria}>
             <span className="brand__mark" aria-hidden="true">
               <Image
-                src="/images/minrosh-logo.png"
+                src="/images/minrosh-logo.svg"
                 alt=""
                 width={46}
                 height={46}

@@ -57,7 +57,7 @@ export default function ContactPage() {
             </div>
             <div className="content-hero__media" aria-hidden="true">
               <Image
-                src="/images/brisbane-skyline.jpg"
+                src="/images/brisbane-skyline.svg"
                 alt="Brisbane skyline and riverfront"
                 width={1600}
                 height={900}
@@ -104,7 +104,7 @@ export default function ContactPage() {
               </div>
               <div>
                 <span>Location</span>
-                <a href="/">{siteData.brand.location}</a>
+                <Link href="/">{siteData.brand.location}</Link>
               </div>
             </div>
           </div>

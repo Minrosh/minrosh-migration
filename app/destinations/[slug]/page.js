@@ -60,7 +60,7 @@ export default async function DestinationPage({ params }) {
         sections={page.sections}
         related={page.relatedSiteLinks}
         heroImage={{
-          src: "/images/team-office-real.jpg",
+          src: "/images/team-office.svg",
           alt: "Professional office environment for migration planning discussions",
         }}
       />

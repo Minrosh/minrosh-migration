@@ -37,7 +37,7 @@
       { "title": "Contact", "href": "/destinations/new-zealand/contact" }
     ],
     "heroImage": {
-      "src": "/images/team-office-real.jpg",
+      "src": "/images/team-office.svg",
       "alt": "Professional migration planning"
     }
   },
@@ -65,7 +65,7 @@
       { "title": "Contact", "href": "/destinations/new-zealand/contact" }
     ],
     "heroImage": {
-      "src": "/images/team-office.jpg",
+      "src": "/images/team-office.svg",
       "alt": "Consultation"
     }
   },
@@ -93,7 +93,7 @@
       { "title": "Education planning", "href": "/destinations/new-zealand/education" }
     ],
     "heroImage": {
-      "src": "/images/brisbane-skyline.jpg",
+      "src": "/images/brisbane-skyline.svg",
       "alt": "City study context"
     }
   },
@@ -121,7 +121,7 @@
       { "title": "Global education consultation", "href": "/education-consultation" }
     ],
     "heroImage": {
-      "src": "/images/team-office-real.jpg",
+      "src": "/images/team-office.svg",
       "alt": "Education consultation"
     }
   },
@@ -149,7 +149,7 @@
       { "title": "New Zealand hub", "href": "/destinations/new-zealand" }
     ],
     "heroImage": {
-      "src": "/images/team-office.jpg",
+      "src": "/images/team-office.svg",
       "alt": "Updates"
     }
   },
@@ -181,7 +181,7 @@
       { "title": "Global FAQ", "href": "/faq" }
     ],
     "heroImage": {
-      "src": "/images/brisbane-skyline.jpg",
+      "src": "/images/brisbane-skyline.svg",
       "alt": "City skyline"
     }
   },
@@ -209,7 +209,7 @@
       { "title": "New Zealand hub", "href": "/destinations/new-zealand" }
     ],
     "heroImage": {
-      "src": "/images/team-office-real.jpg",
+      "src": "/images/team-office.svg",
       "alt": "MinRosh"
     }
   },
@@ -238,7 +238,7 @@
       { "title": "New Zealand hub", "href": "/destinations/new-zealand" }
     ],
     "heroImage": {
-      "src": "/images/team-office.jpg",
+      "src": "/images/team-office.svg",
       "alt": "Contact"
     }
   }

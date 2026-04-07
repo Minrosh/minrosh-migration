@@ -37,7 +37,7 @@
       { "title": "Contact", "href": "/destinations/canada/contact" }
     ],
     "heroImage": {
-      "src": "/images/team-office-real.jpg",
+      "src": "/images/team-office.svg",
       "alt": "Planning session"
     }
   },
@@ -65,7 +65,7 @@
       { "title": "Contact", "href": "/destinations/canada/contact" }
     ],
     "heroImage": {
-      "src": "/images/team-office.jpg",
+      "src": "/images/team-office.svg",
       "alt": "Family migration discussion"
     }
   },
@@ -93,7 +93,7 @@
       { "title": "Education planning", "href": "/destinations/canada/education" }
     ],
     "heroImage": {
-      "src": "/images/brisbane-skyline.jpg",
+      "src": "/images/brisbane-skyline.svg",
       "alt": "Study abroad planning"
     }
   },
@@ -121,7 +121,7 @@
       { "title": "Global education consultation", "href": "/education-consultation" }
     ],
     "heroImage": {
-      "src": "/images/team-office-real.jpg",
+      "src": "/images/team-office.svg",
       "alt": "Education advice"
     }
   },
@@ -149,7 +149,7 @@
       { "title": "Canada hub", "href": "/destinations/canada" }
     ],
     "heroImage": {
-      "src": "/images/team-office.jpg",
+      "src": "/images/team-office.svg",
       "alt": "News"
     }
   },
@@ -181,7 +181,7 @@
       { "title": "Global FAQ", "href": "/faq" }
     ],
     "heroImage": {
-      "src": "/images/brisbane-skyline.jpg",
+      "src": "/images/brisbane-skyline.svg",
       "alt": "FAQ"
     }
   },
@@ -209,7 +209,7 @@
       { "title": "Canada hub", "href": "/destinations/canada" }
     ],
     "heroImage": {
-      "src": "/images/team-office-real.jpg",
+      "src": "/images/team-office.svg",
       "alt": "About"
     }
   },
@@ -238,7 +238,7 @@
       { "title": "Canada hub", "href": "/destinations/canada" }
     ],
     "heroImage": {
-      "src": "/images/team-office.jpg",
+      "src": "/images/team-office.svg",
       "alt": "Contact"
     }
   }

@@ -68,6 +68,22 @@ if (fs.existsSync(dataSrc)) {
   fs.cpSync(dataSrc, dataDest, { recursive: true, force: true });
 }
 
+const mustExist = [
+  path.join(standalone, ".next", "server", "middleware-manifest.json"),
+  path.join(standalone, ".next", "required-server-files.json"),
+  path.join(standalone, "server.js"),
+];
+for (const p of mustExist) {
+  if (!fs.existsSync(p)) {
+    console.error(
+      "Standalone bundle incomplete — missing:",
+      p,
+      "\nRun a full `npm run build` (not only `next build` without the copy step). PM2 will 502 without these files.",
+    );
+    process.exit(1);
+  }
+}
+
 console.log(
-  "Standalone: synced .next/server + manifests, public, data, .next/static; ensured storage/uploads."
+  "Standalone: synced .next/server + manifests, public, data, .next/static; ensured storage/uploads.",
 );

@@ -13,6 +13,10 @@ const nextConfig = {
   compress: true,
   images: {
     unoptimized: true,
+    // Local SVGs are used for hero/illustrations; next/image blocks them unless this is set.
+    dangerouslyAllowSVG: true,
+    contentDispositionType: "attachment",
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
   async redirects() {
     return [

@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && node scripts/copy-standalone-assets.mjs",
+    "generate:brochure": "node scripts/generate-brochure.mjs",
+    "build": "next build && node scripts/generate-brochure.mjs && node scripts/copy-standalone-assets.mjs",
     "start": "next start",
     "lint": "next lint",
     "test:contact": "node scripts/test-contact-save.mjs",
@@ -35,6 +36,8 @@
   },
   "devDependencies": {
     "autoprefixer": "^10.4.27",
+    "eslint": "^8.57.0",
+    "eslint-config-next": "^15.5.14",
     "postcss": "^8.5.8",
     "tailwindcss": "^3.4.19"
   }
