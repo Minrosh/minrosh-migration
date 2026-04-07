@@ -101,10 +101,8 @@ const visualHighlights = [
  * Server-rendered home tab: static sections + small client children (navigator, coverage, news).
  */
 export function HomeTabServer({ siteData, newsData }) {
-  const marn = String(siteData.brand?.marn || "").trim();
-  const trustNote = marn
-    ? `Registered migration agent (MARN ${marn}). Brisbane-based guidance across four destination systems, with education support and practical next-step planning.`
-    : "Brisbane-based migration guidance across four destination systems, with education support and practical next-step planning.";
+  const trustNote =
+    "Brisbane-based migration guidance across four destination systems, with education support and practical next-step planning.";
 
   return (
     <section className="tab-panel is-active editorial-home">
