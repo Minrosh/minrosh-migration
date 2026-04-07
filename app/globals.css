@@ -206,7 +206,7 @@ a {
       rgba(253, 251, 247, 0.72) 58%,
       rgba(245, 228, 236, 0.55) 100%
     ),
-    url("/images/hero-sydney.svg") center 42% / cover no-repeat;
+    url("/images/hero-sydney-real.jpg") center 42% / cover no-repeat;
 }
 
 .site-header--backdrop-neutral::before {
@@ -222,7 +222,7 @@ a {
       rgba(244, 236, 248, 0.93) 40%,
       rgba(232, 224, 238, 0.9) 100%
     ),
-    url("/images/team-office.svg") center 22% / cover no-repeat;
+    url("/images/team-office-real.jpg") center 22% / cover no-repeat;
 }
 
 .site-header--backdrop .site-header__inner {
@@ -601,7 +601,7 @@ a.brand:focus-visible {
   content: "";
   position: absolute;
   inset: 0;
-  background: url("/images/hero-sydney.svg") center/cover no-repeat;
+  background: url("/images/hero-sydney-real.jpg") center/cover no-repeat;
   opacity: 0.08;
   z-index: 0;
   pointer-events: none;
@@ -913,7 +913,7 @@ a.brand:focus-visible {
   inset: 0;
   background:
     linear-gradient(125deg, rgba(255, 255, 255, 0.92), rgba(255, 250, 245, 0.9)),
-    url("/images/hero-sydney.svg") center/cover no-repeat;
+    url("/images/hero-sydney-real.jpg") center/cover no-repeat;
   opacity: 0.3;
   z-index: 0;
   pointer-events: none;
@@ -2705,7 +2705,7 @@ a.brand:focus-visible {
   padding: 12px var(--content-pad) 40px;
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(255, 250, 245, 0.98)),
-    url("/images/brisbane-skyline.svg") center/cover no-repeat;
+    url("/images/brisbane-skyline.jpg") center/cover no-repeat;
 }
 
 .site-footer__inner {

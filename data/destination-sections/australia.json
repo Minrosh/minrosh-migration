@@ -42,7 +42,7 @@
       { "title": "Book consultation", "href": "/book-consultation" }
     ],
     "heroImage": {
-      "src": "/images/hero-sydney.svg",
+      "src": "/images/hero-sydney-real.jpg",
       "alt": "Sydney Harbour — Australian skilled migration context"
     }
   },
@@ -80,7 +80,7 @@
       { "title": "Contact", "href": "/destinations/australia/contact" }
     ],
     "heroImage": {
-      "src": "/images/team-office.svg",
+      "src": "/images/team-office-real.jpg",
       "alt": "Migration consultation discussion"
     }
   },
@@ -118,7 +118,7 @@
       { "title": "Education consultation", "href": "/destinations/australia/education" }
     ],
     "heroImage": {
-      "src": "/images/brisbane-skyline.svg",
+      "src": "/images/brisbane-skyline.jpg",
       "alt": "Brisbane skyline"
     }
   },
@@ -151,7 +151,7 @@
       { "title": "Australia student visa", "href": "/destinations/australia/student" }
     ],
     "heroImage": {
-      "src": "/images/team-office.svg",
+      "src": "/images/team-office-real.jpg",
       "alt": "Education planning meeting"
     }
   },
@@ -183,7 +183,7 @@
       { "title": "Australia migration hub", "href": "/destinations/australia" }
     ],
     "heroImage": {
-      "src": "/images/brisbane-skyline.svg",
+      "src": "/images/brisbane-skyline.jpg",
       "alt": "Brisbane"
     }
   },
@@ -224,7 +224,7 @@
       { "title": "Global FAQ", "href": "/faq" }
     ],
     "heroImage": {
-      "src": "/images/team-office.svg",
+      "src": "/images/team-office-real.jpg",
       "alt": "MinRosh office"
     }
   },
@@ -252,7 +252,7 @@
       { "title": "Australia hub", "href": "/destinations/australia" }
     ],
     "heroImage": {
-      "src": "/images/team-office.svg",
+      "src": "/images/team-office-real.jpg",
       "alt": "MinRosh Migration team"
     }
   },
@@ -281,7 +281,7 @@
       { "title": "Australia hub", "href": "/destinations/australia" }
     ],
     "heroImage": {
-      "src": "/images/team-office.svg",
+      "src": "/images/team-office-real.jpg",
       "alt": "Contact MinRosh Migration"
     }
   }

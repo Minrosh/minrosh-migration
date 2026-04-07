@@ -12,7 +12,7 @@ export function ContentPage({
   related = [],
   /** Optional regulatory / compliance callout (e.g. TSMIT). */
   alertBanner = null,
-  heroImage = { src: "/images/brisbane-skyline.svg", alt: "Brisbane skyline and riverfront" },
+  heroImage = { src: "/images/brisbane-skyline.jpg", alt: "Brisbane skyline and riverfront" },
   ctaTitle = "Ready to discuss your options?",
   ctaBody = "Start with a clear enquiry and MinRosh will help you map the most relevant next steps.",
   /** Optional tools/widgets in the aside (e.g. TSMIT calculator). */

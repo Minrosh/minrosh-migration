@@ -33,7 +33,7 @@
       { "title": "Contact", "href": "/destinations/united-kingdom/contact" }
     ],
     "heroImage": {
-      "src": "/images/team-office.svg",
+      "src": "/images/team-office-real.jpg",
       "alt": "UK work planning"
     }
   },
@@ -61,7 +61,7 @@
       { "title": "Contact", "href": "/destinations/united-kingdom/contact" }
     ],
     "heroImage": {
-      "src": "/images/team-office.svg",
+      "src": "/images/team-office-real.jpg",
       "alt": "Family visa"
     }
   },
@@ -89,7 +89,7 @@
       { "title": "Education planning", "href": "/destinations/united-kingdom/education" }
     ],
     "heroImage": {
-      "src": "/images/brisbane-skyline.svg",
+      "src": "/images/brisbane-skyline.jpg",
       "alt": "Study planning"
     }
   },
@@ -117,7 +117,7 @@
       { "title": "Global education consultation", "href": "/education-consultation" }
     ],
     "heroImage": {
-      "src": "/images/team-office.svg",
+      "src": "/images/team-office-real.jpg",
       "alt": "Education"
     }
   },
@@ -145,7 +145,7 @@
       { "title": "UK hub", "href": "/destinations/united-kingdom" }
     ],
     "heroImage": {
-      "src": "/images/team-office.svg",
+      "src": "/images/team-office-real.jpg",
       "alt": "Updates"
     }
   },
@@ -177,7 +177,7 @@
       { "title": "Global FAQ", "href": "/faq" }
     ],
     "heroImage": {
-      "src": "/images/brisbane-skyline.svg",
+      "src": "/images/brisbane-skyline.jpg",
       "alt": "FAQ"
     }
   },
@@ -205,7 +205,7 @@
       { "title": "UK hub", "href": "/destinations/united-kingdom" }
     ],
     "heroImage": {
-      "src": "/images/team-office.svg",
+      "src": "/images/team-office-real.jpg",
       "alt": "About MinRosh"
     }
   },
@@ -234,7 +234,7 @@
       { "title": "UK hub", "href": "/destinations/united-kingdom" }
     ],
     "heroImage": {
-      "src": "/images/team-office.svg",
+      "src": "/images/team-office-real.jpg",
       "alt": "Contact"
     }
   }

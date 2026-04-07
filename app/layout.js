@@ -49,7 +49,7 @@ export const metadata = {
     type: "website",
     images: [
       {
-        url: "/images/hero-sydney.svg",
+        url: "/images/hero-sydney-real.jpg",
         width: 1800,
         height: 1200,
         alt: "Sydney Harbour with ferries on the water and the Opera House",
@@ -61,7 +61,7 @@ export const metadata = {
     title: "Migration Agent Brisbane | MinRosh Migration",
     description:
       "Expert visa help in Brisbane for skilled migration, partner visas, student visas, and employer-sponsored pathways.",
-    images: ["/images/hero-sydney.svg"],
+    images: ["/images/hero-sydney-real.jpg"],
   },
   robots: {
     index: true,
@@ -71,9 +71,9 @@ export const metadata = {
     canonical: "/",
   },
   icons: {
-    icon: "/images/minrosh-logo.svg",
-    shortcut: "/images/minrosh-logo.svg",
-    apple: "/images/minrosh-logo.svg",
+    icon: "/images/minrosh-logo.jpg",
+    shortcut: "/images/minrosh-logo.jpg",
+    apple: "/images/minrosh-logo.jpg",
   },
 };
 

@@ -80,19 +80,19 @@ const visualHighlights = [
   {
     title: "Brisbane-based guidance",
     caption: "Local visibility with a calmer, more premium first impression.",
-    src: "/images/brisbane-skyline.svg",
+    src: "/images/brisbane-skyline.jpg",
     alt: "Stylized illustration of the Brisbane skyline and riverfront",
   },
   {
     title: "Structured migration planning",
     caption: "A smoother pathway from first review through to practical next steps.",
-    src: "/images/team-office.svg",
+    src: "/images/team-office-real.jpg",
     alt: "Stylized illustration of colleagues collaborating at a table with laptops",
   },
   {
     title: "Destination-focused support",
     caption: "Stronger visual storytelling for Australia and wider migration goals.",
-    src: "/images/hero-sydney.svg",
+    src: "/images/hero-sydney-real.jpg",
     alt: "Stylized illustration of Sydney Harbour suggesting Australian destinations",
   },
 ];
@@ -138,7 +138,7 @@ export function HomeTabServer({ siteData, newsData }) {
         </div>
         <div className="hero__media" aria-hidden="true">
           <PublicFileImg
-            src="/images/hero-sydney.svg"
+            src="/images/hero-sydney-real.jpg"
             alt="Stylized illustration of Sydney Harbour with the Opera House and water"
             width={1800}
             height={1200}
@@ -204,7 +204,7 @@ export function HomeTabServer({ siteData, newsData }) {
         </div>
         <div className="image-card bento-hover">
           <PublicFileImg
-            src="/images/team-office.svg"
+            src="/images/team-office-real.jpg"
             alt="Stylized illustration of a professional team meeting in a modern office"
             width={1200}
             height={800}

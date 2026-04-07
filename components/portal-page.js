@@ -160,7 +160,7 @@ export function PortalPage({ siteData, homeTab, footer }) {
         <div className="site-header__inner">
           <button type="button" className="brand" onClick={() => handleTabChange("home")} aria-label="Open home tab">
             <span className="brand__mark" aria-hidden="true">
-              <PublicFileImg src="/images/minrosh-logo.svg" alt="" width={46} height={46} priority />
+              <PublicFileImg src="/images/minrosh-logo.jpg" alt="" width={46} height={46} priority />
             </span>
             <span className="brand__text">
               <strong>{siteData.brand.name}</strong>

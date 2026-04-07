@@ -44,7 +44,7 @@ export default function SriLankaMigrationPage() {
         sections={pageData.sections}
         faq={pageData.faq}
         heroImage={{
-          src: "/images/hero-sydney.svg",
+          src: "/images/hero-sydney-real.jpg",
           alt: "Australian skyline — migration from Sri Lanka context",
         }}
         related={[
