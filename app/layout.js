@@ -2,11 +2,12 @@ import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import siteDataStatic from "../data/site.json";
 import { getHomeSiteData } from "../lib/home-site-data";
-
-const siteData = getHomeSiteData(siteDataStatic);
 import { StructuredData } from "../components/structured-data";
 import { AIConciergeLazy } from "../components/ai-concierge-lazy";
+import { GoogleAnalytics } from "../components/google-analytics";
 import { businessJsonLd } from "../lib/seo";
+
+const siteData = getHomeSiteData(siteDataStatic);
 
 const inter = Inter({
   subsets: ["latin"],
@@ -80,6 +81,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en-AU">
       <body className={`${inter.variable} ${playfair.variable}`}>
+        <GoogleAnalytics />
         <a href="#main-content" className="skip-link">
           Skip to content
         </a>

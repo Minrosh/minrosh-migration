@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "test:contact": "node scripts/test-contact-save.mjs",
+    "test:smtp": "node --env-file=.env scripts/test-smtp.mjs",
     "audit:production": "npm audit --production",
     "check": "npm run build && npm run test:contact && npm run audit:production"
   },
