@@ -3572,7 +3572,7 @@ a.brand:focus-visible {
   }
 
   .site-footer__inner--rich {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
   }
 
   .news-board__head {
