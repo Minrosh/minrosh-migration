@@ -2,15 +2,63 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { buildWhatsAppUrl, WHATSAPP_LEAD_MESSAGE } from "@/lib/whatsapp-prefill";
 
-const quickPrompts = [
+function nextMessageId() {
+  return `m-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
+}
+
+/** Shown before any user message; after chat starts, prompts update from last user text. */
+const initialSuggestedPrompts = [
   "Skilled migration options",
   "Student visa planning",
   "Partner visa first steps",
   "Fastest next step (urgent)",
 ];
+
+const contextualPrompts = {
+  partner: [
+    "What evidence should we gather first?",
+    "Partner visa page",
+    "Book a consultation",
+    "Compare partner vs prospective marriage",
+  ],
+  student: [
+    "Student visa requirements",
+    "Education consultation",
+    "Course selection and visa timing",
+    "Post-study pathways",
+  ],
+  skilled: [
+    "Skilled migration overview",
+    "Points and skills assessment",
+    "State nomination vs independent",
+    "Book strategy discussion",
+  ],
+  visitor: ["Visitor visa purpose and ties", "Contact MinRosh", "Book consultation", "Australia hub"],
+  destinations: ["Australia hub", "New Zealand hub", "Canada hub", "United Kingdom hub"],
+  sriLanka: ["Sri Lanka → Australia hub", "Skilled migration", "Free assessment", "Book consultation"],
+  default: [
+    "Skilled migration options",
+    "Student visa planning",
+    "Partner visa first steps",
+    "Book consultation",
+  ],
+};
+
+function suggestedPromptsFromMessages(messages) {
+  const lastUser = [...messages].reverse().find((m) => m.role === "user");
+  if (!lastUser?.content) return initialSuggestedPrompts;
+  const t = lastUser.content;
+  if (/partner|spouse|relationship|family/i.test(t)) return contextualPrompts.partner;
+  if (/student|study|university|college|education|course/i.test(t)) return contextualPrompts.student;
+  if (/skilled|points|eoi|occupation|189|190|491|nomination/i.test(t)) return contextualPrompts.skilled;
+  if (/visitor|tourist|holiday/i.test(t)) return contextualPrompts.visitor;
+  if (/australia|new zealand|canada|uk|united kingdom|destination/i.test(t)) return contextualPrompts.destinations;
+  if (/sri lanka|colombo|lankan/i.test(t)) return contextualPrompts.sriLanka;
+  return contextualPrompts.default;
+}
 
 const fallbackReplies = [
   {
@@ -107,8 +155,6 @@ function parseChatResponse(rawText, response) {
 }
 
 export function AIConcierge({ siteData }) {
-  const waPrimary = buildWhatsAppUrl(siteData?.brand?.whatsapp, WHATSAPP_LEAD_MESSAGE);
-  const waSecondary = buildWhatsAppUrl(siteData?.brand?.whatsappSecondary, WHATSAPP_LEAD_MESSAGE);
   const waFloat = buildWhatsAppUrl(
     siteData?.brand?.whatsapp,
     "Hi MinRosh Migration, I just completed your points test and would like to discuss my Australian visa options."
@@ -117,6 +163,7 @@ export function AIConcierge({ siteData }) {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState([
     {
+      id: "welcome",
       role: "assistant",
       content:
         "Ask about skilled migration, student or partner visas, or education planning. I give practical next steps—not legal advice.",
@@ -125,6 +172,21 @@ export function AIConcierge({ siteData }) {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [notice, setNotice] = useState({ text: "", tone: "info" });
+  const logRef = useRef(null);
+  const suggestionsRef = useRef(null);
+
+  const scrollLogToEnd = useCallback(() => {
+    const el = logRef.current;
+    if (!el) return;
+    requestAnimationFrame(() => {
+      el.scrollTop = el.scrollHeight;
+    });
+  }, []);
+
+  useEffect(() => {
+    if (!open) return;
+    scrollLogToEnd();
+  }, [messages, loading, open, scrollLogToEnd]);
 
   function setSoftNotice(text, tone = "info") {
     setNotice(text ? { text, tone } : { text: "", tone: "info" });
@@ -134,23 +196,32 @@ export function AIConcierge({ siteData }) {
     const trimmed = text.trim();
     if (!trimmed) return;
 
-    const nextMessages = [...messages, { role: "user", content: trimmed }];
+    if (suggestionsRef.current) {
+      suggestionsRef.current.open = false;
+    }
+
+    const userMsg = { id: nextMessageId(), role: "user", content: trimmed };
+    const nextMessages = [...messages, userMsg];
     setMessages(nextMessages);
     setInput("");
     setLoading(true);
     setSoftNotice("");
 
     try {
+      const apiMessages = nextMessages.map(({ role, content }) => ({ role, content }));
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({ messages: nextMessages }),
+        body: JSON.stringify({ messages: apiMessages }),
       });
       const rawText = await response.text();
       const parsed = parseChatResponse(rawText, response);
 
       if (parsed.ok) {
-        setMessages((current) => [...current, { role: "assistant", content: parsed.reply }]);
+        setMessages((current) => [
+          ...current,
+          { id: nextMessageId(), role: "assistant", content: parsed.reply },
+        ]);
         return;
       }
 
@@ -158,6 +229,7 @@ export function AIConcierge({ siteData }) {
         setMessages((current) => [
           ...current,
           {
+            id: nextMessageId(),
             role: "assistant",
             content:
               parsed.message ||
@@ -171,7 +243,12 @@ export function AIConcierge({ siteData }) {
       const fallback = getFallbackReply(trimmed);
       setMessages((current) => [
         ...current,
-        { role: "assistant", content: fallback.content, actions: fallback.actions },
+        {
+          id: nextMessageId(),
+          role: "assistant",
+          content: fallback.content,
+          actions: fallback.actions,
+        },
       ]);
       setSoftNotice(
         parsed.kind === "parse"
@@ -183,9 +260,14 @@ export function AIConcierge({ siteData }) {
       const fallback = getFallbackReply(trimmed);
       setMessages((current) => [
         ...current,
-        { role: "assistant", content: fallback.content, actions: fallback.actions },
+        {
+          id: nextMessageId(),
+          role: "assistant",
+          content: fallback.content,
+          actions: fallback.actions,
+        },
       ]);
-      setSoftNotice(err?.message || "Something went wrong. Try again or use WhatsApp below.", "soft");
+      setSoftNotice(err?.message || "Something went wrong. Try again or use the WhatsApp button.", "soft");
     } finally {
       setLoading(false);
     }
@@ -195,6 +277,8 @@ export function AIConcierge({ siteData }) {
     event.preventDefault();
     sendMessage(input);
   }
+
+  const dynamicPrompts = suggestedPromptsFromMessages(messages);
 
   if (pathname?.startsWith("/admin") || pathname?.startsWith("/upload")) {
     return null;
@@ -213,10 +297,22 @@ export function AIConcierge({ siteData }) {
               ×
             </button>
           </div>
-          <div className="ai-concierge__messages">
-            {messages.map((message, index) => (
+
+          <details ref={suggestionsRef} className="ai-concierge__suggestions">
+            <summary>Suggested questions</summary>
+            <div className="ai-concierge__suggestions-inner">
+              {dynamicPrompts.map((prompt, idx) => (
+                <button key={`${idx}-${prompt}`} type="button" onClick={() => sendMessage(prompt)} disabled={loading}>
+                  {prompt}
+                </button>
+              ))}
+            </div>
+          </details>
+
+          <div ref={logRef} className="ai-concierge__messages" role="log" aria-live="polite" aria-relevant="additions">
+            {messages.map((message) => (
               <div
-                key={`${message.role}-${index}`}
+                key={message.id}
                 className={`ai-concierge__message ai-concierge__message--${message.role}`}
               >
                 <div className="ai-concierge__bubble">
@@ -233,18 +329,14 @@ export function AIConcierge({ siteData }) {
                 </div>
               </div>
             ))}
+            {loading ? (
+              <div className="ai-concierge__message ai-concierge__message--assistant" aria-busy="true">
+                <div className="ai-concierge__bubble ai-concierge__bubble--typing">
+                  <p>Thinking…</p>
+                </div>
+              </div>
+            ) : null}
           </div>
-
-          <details className="ai-concierge__suggestions">
-            <summary>Suggested questions</summary>
-            <div className="ai-concierge__suggestions-inner">
-              {quickPrompts.map((prompt) => (
-                <button key={prompt} type="button" onClick={() => sendMessage(prompt)} disabled={loading}>
-                  {prompt}
-                </button>
-              ))}
-            </div>
-          </details>
 
           <form className="ai-concierge__form" onSubmit={handleSubmit}>
             <textarea
@@ -254,7 +346,7 @@ export function AIConcierge({ siteData }) {
               placeholder="Type your question…"
             />
             <button type="submit" className="btn btn-primary" disabled={loading}>
-              {loading ? "Thinking…" : "Send"}
+              {loading ? "Sending…" : "Send"}
             </button>
           </form>
 
@@ -267,24 +359,13 @@ export function AIConcierge({ siteData }) {
             </p>
           ) : null}
 
-          <div className="ai-concierge__footer" aria-label="Other ways to reach MinRosh">
-            <Link href="/assessment">Assessment</Link>
-            <span className="ai-concierge__footer-sep" aria-hidden="true">
-              ·
-            </span>
-            <Link href="/book-consultation">Book</Link>
-            <span className="ai-concierge__footer-sep" aria-hidden="true">
-              ·
-            </span>
-            <a href={waPrimary} target="_blank" rel="noreferrer">
-              WhatsApp {siteData.brand.phone}
-            </a>
-            <span className="ai-concierge__footer-sep" aria-hidden="true">
-              ·
-            </span>
-            <a href={waSecondary} target="_blank" rel="noreferrer">
-              Alt {siteData.brand.phoneSecondary}
-            </a>
+          <div className="ai-concierge__footer" aria-label="Quick links">
+            <Link href="/assessment" className="ai-concierge__footer-btn">
+              Assessment
+            </Link>
+            <Link href="/book-consultation" className="ai-concierge__footer-btn">
+              Book
+            </Link>
           </div>
         </div>
       ) : null}
