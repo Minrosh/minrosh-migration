@@ -3,6 +3,12 @@
 import { useEffect, useRef, useState } from "react";
 import { AgentRegistrationStrip } from "@/components/agent-registration-strip";
 import { buildWhatsAppUrl, WHATSAPP_LEAD_MESSAGE } from "@/lib/whatsapp-prefill";
+import {
+  clearNavigatorSummarySession,
+  persistNavigatorSummary,
+  quizSummaryFromNavigatorDetail,
+  readNavigatorQuizSummaryLine,
+} from "@/lib/navigator-session";
 
 const initialForm = {
   firstName: "",
@@ -33,24 +39,32 @@ export function ContactChatPanel({ siteData, isActive }) {
   const contactHpRef = useRef(null);
 
   useEffect(() => {
+    setQuizSummaryLine(readNavigatorQuizSummaryLine());
+  }, []);
+
+  useEffect(() => {
     function handleNavigatorSummary(event) {
       const detail = event.detail;
-      if (!detail?.summary) return;
+      if (!detail?.summary && !detail?.quizSummaryShort) return;
 
-      if (detail.quizSummaryShort) {
-        setQuizSummaryLine(detail.quizSummaryShort);
+      persistNavigatorSummary(detail);
+      const line = quizSummaryFromNavigatorDetail(detail);
+      if (line) {
+        setQuizSummaryLine(line);
       }
 
-      setContactForm((current) => {
-        const cleaned = current.message.replace(/\n\nAssessment summary:[\s\S]*$/m, "").trim();
-        const summaryBlock = `Assessment summary: ${detail.summary}`;
-        return {
-          ...current,
-          preferredCountry: detail.preferredCountry || current.preferredCountry,
-          mainNeed: detail.mainNeed || current.mainNeed,
-          message: cleaned ? `${cleaned}\n\n${summaryBlock}` : summaryBlock,
-        };
-      });
+      if (detail.summary) {
+        setContactForm((current) => {
+          const cleaned = current.message.replace(/\n\nAssessment summary:[\s\S]*$/m, "").trim();
+          const summaryBlock = `Assessment summary: ${detail.summary}`;
+          return {
+            ...current,
+            preferredCountry: detail.preferredCountry || current.preferredCountry,
+            mainNeed: detail.mainNeed || current.mainNeed,
+            message: cleaned ? `${cleaned}\n\n${summaryBlock}` : summaryBlock,
+          };
+        });
+      }
     }
 
     window.addEventListener("minrosh:navigator-summary", handleNavigatorSummary);
@@ -89,6 +103,7 @@ export function ContactChatPanel({ siteData, isActive }) {
       }
       setContactForm(initialForm);
       setQuizSummaryLine("");
+      clearNavigatorSummarySession();
     } catch (error) {
       setContactState({
         status: "error",

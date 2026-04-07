@@ -1,6 +1,11 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import {
+  clearNavigatorSummarySession,
+  quizSummaryFromNavigatorDetail,
+  readNavigatorQuizSummaryLine,
+} from "@/lib/navigator-session";
 
 const initial = {
   firstName: "",
@@ -14,8 +19,24 @@ const initial = {
 
 export function QuickEnquiryForm({ className = "" }) {
   const [form, setForm] = useState(initial);
+  const [quizSummaryLine, setQuizSummaryLine] = useState("");
   const [state, setState] = useState({ status: "idle", message: "" });
   const hpRef = useRef(null);
+
+  useEffect(() => {
+    setQuizSummaryLine(readNavigatorQuizSummaryLine());
+  }, []);
+
+  useEffect(() => {
+    function handleNavigatorSummary(event) {
+      const detail = event.detail;
+      if (!detail?.summary && !detail?.quizSummaryShort) return;
+      const line = quizSummaryFromNavigatorDetail(detail);
+      if (line) setQuizSummaryLine(line);
+    }
+    window.addEventListener("minrosh:navigator-summary", handleNavigatorSummary);
+    return () => window.removeEventListener("minrosh:navigator-summary", handleNavigatorSummary);
+  }, []);
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -33,6 +54,7 @@ export function QuickEnquiryForm({ className = "" }) {
           ...form,
           quickEnquiry: true,
           company: hpRef.current?.value || "",
+          quizSummary: quizSummaryLine,
         }),
       });
       const data = await response.json();
@@ -49,6 +71,8 @@ export function QuickEnquiryForm({ className = "" }) {
         window.dispatchEvent(new Event("minrosh:enquiry-created"));
       }
       setForm(initial);
+      setQuizSummaryLine("");
+      clearNavigatorSummarySession();
     } catch (error) {
       setState({
         status: "error",

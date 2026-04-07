@@ -7,6 +7,7 @@ import {
   navigatorSteps,
   navigatorSummaryText,
 } from "../lib/navigator";
+import { persistNavigatorSummary } from "@/lib/navigator-session";
 
 export function SmartNavigator({
   title = "Answer a few questions and get routed to the most relevant next step",
@@ -30,15 +31,16 @@ export function SmartNavigator({
       return;
     }
 
-    window.dispatchEvent(
-      new CustomEvent("minrosh:navigator-summary", {
-        detail: {
-          summary: navigatorSummaryText(answers, recommendation),
-          preferredCountry: answers.country,
-          mainNeed: recommendation.mainNeed,
-        },
-      })
-    );
+    const summary = navigatorSummaryText(answers, recommendation);
+    const quizSummaryShort = `Smart Navigator: ${answers.country} · ${answers.goal} · ${answers.timeline} · ${recommendation.mainNeed}.`;
+    const detail = {
+      summary,
+      quizSummaryShort,
+      preferredCountry: answers.country,
+      mainNeed: recommendation.mainNeed,
+    };
+    persistNavigatorSummary(detail);
+    window.dispatchEvent(new CustomEvent("minrosh:navigator-summary", { detail }));
   }, [answers, recommendation]);
 
   function selectAnswer(value) {

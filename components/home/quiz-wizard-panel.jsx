@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { calculateQuizResult, quizOptions } from "@/lib/quiz";
+import { persistNavigatorSummary } from "@/lib/navigator-session";
 import { QuizResultSkeleton as DefaultQuizResultSkeleton } from "./quiz-result-skeleton";
 
 const quizSteps = [
@@ -145,16 +146,14 @@ export function QuizWizardPanel({ isActive, onGoToContact, resultSkeleton }) {
       .join(" ");
 
     if (typeof window !== "undefined") {
-      window.dispatchEvent(
-        new CustomEvent("minrosh:navigator-summary", {
-          detail: {
-            summary,
-            preferredCountry: "Australia",
-            mainNeed: "Skilled Migration",
-            quizSummaryShort: `Estimated points: ${quizResult.score}. ${quizResult.pointBreakdownText}. SID: ${quizResult.sidStreamLabel}.`,
-          },
-        })
-      );
+      const detail = {
+        summary,
+        preferredCountry: "Australia",
+        mainNeed: "Skilled Migration",
+        quizSummaryShort: `Estimated points: ${quizResult.score}. ${quizResult.pointBreakdownText}. SID: ${quizResult.sidStreamLabel}.`,
+      };
+      persistNavigatorSummary(detail);
+      window.dispatchEvent(new CustomEvent("minrosh:navigator-summary", { detail }));
     }
   }, [quizComplete, quizResult, resultSkeletonActive]);
 

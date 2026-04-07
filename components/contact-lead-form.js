@@ -1,6 +1,11 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import {
+  clearNavigatorSummarySession,
+  quizSummaryFromNavigatorDetail,
+  readNavigatorQuizSummaryLine,
+} from "@/lib/navigator-session";
 
 const initialForm = {
   firstName: "",
@@ -14,24 +19,36 @@ const initialForm = {
 
 export function ContactLeadForm({ className = "" }) {
   const [form, setForm] = useState(initialForm);
+  const [quizSummaryLine, setQuizSummaryLine] = useState("");
   const [state, setState] = useState({ status: "idle", message: "" });
   const hpRef = useRef(null);
 
   useEffect(() => {
+    setQuizSummaryLine(readNavigatorQuizSummaryLine());
+  }, []);
+
+  useEffect(() => {
     function handleNavigatorSummary(event) {
       const detail = event.detail;
-      if (!detail?.summary) return;
+      if (!detail?.summary && !detail?.quizSummaryShort) return;
 
-      setForm((current) => {
-        const cleaned = current.message.replace(/\n\nAssessment summary:[\s\S]*$/m, "").trim();
-        const summaryBlock = `Assessment summary: ${detail.summary}`;
-        return {
-          ...current,
-          preferredCountry: detail.preferredCountry || current.preferredCountry,
-          mainNeed: detail.mainNeed || current.mainNeed,
-          message: cleaned ? `${cleaned}\n\n${summaryBlock}` : summaryBlock,
-        };
-      });
+      const line = quizSummaryFromNavigatorDetail(detail);
+      if (line) {
+        setQuizSummaryLine(line);
+      }
+
+      if (detail.summary) {
+        setForm((current) => {
+          const cleaned = current.message.replace(/\n\nAssessment summary:[\s\S]*$/m, "").trim();
+          const summaryBlock = `Assessment summary: ${detail.summary}`;
+          return {
+            ...current,
+            preferredCountry: detail.preferredCountry || current.preferredCountry,
+            mainNeed: detail.mainNeed || current.mainNeed,
+            message: cleaned ? `${cleaned}\n\n${summaryBlock}` : summaryBlock,
+          };
+        });
+      }
     }
 
     window.addEventListener("minrosh:navigator-summary", handleNavigatorSummary);
@@ -51,7 +68,11 @@ export function ContactLeadForm({ className = "" }) {
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({ ...form, company: hpRef.current?.value || "" }),
+        body: JSON.stringify({
+          ...form,
+          company: hpRef.current?.value || "",
+          quizSummary: quizSummaryLine,
+        }),
       });
       const data = await response.json();
       if (!response.ok || !data.ok) {
@@ -67,6 +88,8 @@ export function ContactLeadForm({ className = "" }) {
         window.dispatchEvent(new Event("minrosh:enquiry-created"));
       }
       setForm(initialForm);
+      setQuizSummaryLine("");
+      clearNavigatorSummarySession();
     } catch (error) {
       setState({
         status: "error",
