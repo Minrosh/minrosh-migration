@@ -28,35 +28,30 @@ const legalLinks = [
 ];
 
 export function SiteFooter({ siteData, initialStats }) {
-  const marn = String(
-    siteData.brand?.marn || (typeof process !== "undefined" ? process.env.NEXT_PUBLIC_MARN : "") || ""
-  ).trim();
-  const registerSearchUrl =
-    siteData.brand?.migrationAgentsRegisterSearchUrl ||
-    "https://www.mara.gov.au/search-the-register-of-migration-agents/";
-
   return (
     <footer className="site-footer site-footer--rich">
       <div className="site-footer__inner site-footer__inner--rich">
-        <SiteFooterInteractive siteData={siteData} initialStats={initialStats} />
+        <SiteFooterInteractive siteData={siteData} initialStats={initialStats}>
+          <>
+            <div className="site-footer__nav-col">
+              <strong>Services</strong>
+              {serviceLinks.map((link) => (
+                <Link key={link.href} href={link.href}>
+                  {link.label}
+                </Link>
+              ))}
+            </div>
 
-        <div className="site-footer__nav-col">
-          <strong>Services</strong>
-          {serviceLinks.map((link) => (
-            <Link key={link.href} href={link.href}>
-              {link.label}
-            </Link>
-          ))}
-        </div>
-
-        <div className="site-footer__nav-col">
-          <strong>Business</strong>
-          {businessLinks.map((link) => (
-            <Link key={link.href} href={link.href}>
-              {link.label}
-            </Link>
-          ))}
-        </div>
+            <div className="site-footer__nav-col">
+              <strong>Business</strong>
+              {businessLinks.map((link) => (
+                <Link key={link.href} href={link.href}>
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+          </>
+        </SiteFooterInteractive>
       </div>
 
       <div className="site-footer__notice-wrap">
@@ -76,69 +71,6 @@ export function SiteFooter({ siteData, initialStats }) {
         >
           Search the Register of Migration Agents
         </a>
-      </div>
-
-      <div className="site-footer__trust-mandatory" role="region" aria-label="Registration and regulatory alignment">
-        <p>
-          <strong>Registered with OMARA. Code of Conduct compliant. TSMIT 2026 indexed.</strong> Confirm the current
-          Temporary Skilled Migration Income Threshold on the Department of Home Affairs website before relying on any
-          number for employer-sponsored planning.
-        </p>
-      </div>
-
-      <div className="site-footer__compliance" role="region" aria-label="Migration agent registration">
-        <p className="site-footer__compliance-lead">
-          {marn ? (
-            <>
-              <strong>Migration Agents Registration Number (MARN):</strong> {marn}.{" "}
-            </>
-          ) : (
-            <>
-              <strong>Registered migration agent:</strong> MinRosh Migration is registered with OMARA. You can verify
-              any agent on the{" "}
-              <a href={registerSearchUrl} target="_blank" rel="noreferrer">
-                Register of Migration Agents
-              </a>
-              .{" "}
-            </>
-          )}
-          <a
-            href={
-              siteData.brand.migrationAgentsRegulations2026Url ||
-              "https://www.legislation.gov.au/F2026L00118/latest"
-            }
-            target="_blank"
-            rel="noreferrer"
-          >
-            Migration Agents Regulations 2026
-          </a>
-          {" · "}
-          <a
-            href={
-              siteData.brand.omaraCodeOfConductUrl ||
-              "https://www.mara.gov.au/tools-for-agents/legislation/code-of-conduct"
-            }
-            target="_blank"
-            rel="noreferrer"
-          >
-            OMARA Code of Conduct
-          </a>
-          {" · "}
-          <a
-            href={siteData.brand.omaraLegislativeUpdatesUrl || "https://www.mara.gov.au/notices-and-reports/news-and-notices/legislative-updates"}
-            target="_blank"
-            rel="noreferrer"
-          >
-            OMARA legislative updates
-          </a>
-          {" · "}
-          <a href={siteData.brand.omaraRegisterUrl || "https://www.mara.gov.au/"} target="_blank" rel="noreferrer">
-            OMARA register
-          </a>
-        </p>
-        {siteData.brand.specialistAccreditationNote ? (
-          <p className="site-footer__compliance-sub">{siteData.brand.specialistAccreditationNote}</p>
-        ) : null}
       </div>
 
       <div className="site-footer__legalbar">

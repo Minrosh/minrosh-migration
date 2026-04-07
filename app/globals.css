@@ -704,7 +704,6 @@ a.brand:focus-visible {
 .site-footer__links button:focus-visible,
 .contact-details a:focus-visible,
 .site-footer__contact a:focus-visible,
-.site-footer__compliance a:focus-visible,
 .whatsapp-float:focus-visible,
 .mobile-sticky-cta:focus-visible {
   outline: none;
@@ -2838,22 +2837,6 @@ a.brand:focus-visible {
   }
 }
 
-.site-footer__newsletter-links {
-  display: grid;
-  gap: 8px;
-  margin-top: 14px;
-}
-
-.site-footer__newsletter-links a {
-  color: var(--brand-rose);
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.site-footer__newsletter-links a:hover {
-  text-decoration: underline;
-}
-
 .site-footer__notice-wrap {
   max-width: var(--content-max);
   margin: 0 auto;
@@ -3055,66 +3038,6 @@ a.brand:focus-visible {
   background: linear-gradient(90deg, #c62828, #e57373);
 }
 
-.site-footer__trust-mandatory {
-  max-width: var(--content-max);
-  margin: 0 auto;
-  padding: 16px 20px 0;
-}
-
-.site-footer__trust-mandatory p {
-  margin: 0;
-  padding: 14px 18px;
-  border-radius: 20px;
-  border: 1px solid rgba(11, 37, 69, 0.12);
-  background: rgba(255, 255, 255, 0.88);
-  color: var(--ink);
-  font-size: 0.86rem;
-  line-height: 1.55;
-}
-
-.site-footer__trust-mandatory strong {
-  display: inline;
-  margin: 0;
-  font-size: inherit;
-  color: var(--ink);
-}
-
-.site-footer__compliance {
-  max-width: var(--content-max);
-  margin: 0 auto;
-  padding: 20px 20px 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.site-footer__compliance-lead,
-.site-footer__compliance-sub {
-  margin: 0;
-  font-size: 0.82rem;
-  line-height: 1.55;
-  color: var(--muted);
-}
-
-.site-footer__compliance-sub {
-  margin-top: 10px;
-}
-
-.site-footer__compliance a {
-  color: var(--brand-rose);
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-
-.site-footer__compliance a:hover {
-  color: #fda4af;
-}
-
-.site-footer__code {
-  font-size: 0.78em;
-  padding: 0.1em 0.35em;
-  border-radius: 4px;
-  background: rgba(255, 255, 255, 0.06);
-}
-
 .site-footer__legalbar {
   max-width: var(--content-max);
   margin: 0 auto;
@@ -3176,35 +3099,14 @@ a.brand:focus-visible {
   font-weight: 600;
 }
 
-.site-footer__compliance {
-  max-width: var(--content-max);
-  margin: 0 auto;
-  padding: 0 var(--content-pad) 24px;
-  display: grid;
-  gap: 8px;
-  color: var(--muted);
-  font-size: 0.92rem;
-}
-
-.site-footer__compliance p {
-  margin: 0;
-}
-
 .site-footer__legal {
   display: flex;
   flex-wrap: wrap;
   gap: 10px 16px;
 }
 
-.site-footer__compliance a {
-  color: var(--brand-rose);
-  font-weight: 700;
-  text-decoration: none;
-}
-
 .contact-details a:hover,
-.site-footer__contact a:hover,
-.site-footer__compliance a:hover {
+.site-footer__contact a:hover {
   text-decoration: underline;
 }
 
@@ -3214,12 +3116,12 @@ a.brand:focus-visible {
 
 .floating-tools {
   position: fixed;
-  right: max(12px, env(safe-area-inset-right, 0px));
+  left: max(12px, env(safe-area-inset-left, 0px));
   bottom: calc(20px + env(safe-area-inset-bottom, 0px));
   z-index: 10050;
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: flex-start;
   gap: 14px;
   max-width: calc(100% - 24px);
   box-sizing: border-box;
@@ -3229,7 +3131,7 @@ a.brand:focus-visible {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: flex-start;
   gap: 12px;
   flex-wrap: wrap;
 }
@@ -3739,12 +3641,6 @@ a.brand:focus-visible {
     padding-right: 16px;
   }
 
-  .site-footer__compliance {
-    padding-left: 16px;
-    padding-right: 16px;
-    padding-bottom: 96px;
-  }
-
   .site-footer__inner--rich {
     grid-template-columns: 1fr;
     padding-top: 22px;
@@ -3758,6 +3654,10 @@ a.brand:focus-visible {
   .site-footer__legalbar {
     margin-left: 0;
     margin-right: 0;
+  }
+
+  .site-footer__legalbar {
+    padding-bottom: 96px;
   }
 
   .loading-screen__card {
@@ -3815,7 +3715,7 @@ a.brand:focus-visible {
   }
 
   .floating-tools {
-    right: max(12px, env(safe-area-inset-right, 0px));
+    left: max(12px, env(safe-area-inset-left, 0px));
     bottom: calc(86px + env(safe-area-inset-bottom, 0px));
   }
 
