@@ -1,4 +1,4 @@
-import { saveNewsletterEntry } from "../../../lib/newsletter";
+import { saveNewsletterEntry, sendNewsletterWelcomeEmail } from "../../../lib/newsletter";
 import { parseNewsletterSubmission, getMaxNewsletterBodyBytes } from "../../../lib/validation/newsletter-schema";
 import { rateLimitAllow } from "../../../lib/security/rate-limit";
 import { getClientIp } from "../../../lib/security/request-ip";
@@ -45,9 +45,25 @@ export async function POST(request) {
     return Response.json({ error: result.error }, { status: 400 });
   }
 
+  let emailSent = false;
+  let emailReason = "";
+  // Send a thank-you email only for new subscriptions or re-subscriptions.
+  if (!result.exists || result.resubscribed) {
+    try {
+      const mail = await sendNewsletterWelcomeEmail(parsed.email);
+      emailSent = Boolean(mail?.sent);
+      emailReason = mail?.reason || "";
+    } catch {
+      emailSent = false;
+      emailReason = "mail_send_failed";
+    }
+  }
+
   return Response.json({
     ok: true,
     exists: result.exists || false,
+    emailSent,
+    emailReason,
     message: result.resubscribed
       ? "Your subscription is active again. You can unsubscribe from any marketing email."
       : result.exists
