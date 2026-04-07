@@ -85,8 +85,8 @@ for (const p of mustExist) {
 }
 
 const publicImagesCheck = [
-  path.join(standalone, "public", "images", "minrosh-logo.svg"),
-  path.join(standalone, "public", "images", "hero-sydney.svg"),
+  path.join(standalone, "public", "images", "minrosh-logo.jpg"),
+  path.join(standalone, "public", "images", "hero-sydney-real.jpg"),
 ];
 for (const p of publicImagesCheck) {
   if (!fs.existsSync(p)) {
