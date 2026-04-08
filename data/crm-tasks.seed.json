@@ -1,1 +1,35 @@
-{ "tasks": [] }
+{
+  "tasks": [
+    {
+      "id": "task-demo-001",
+      "createdAt": "2026-04-08T02:20:00.000Z",
+      "title": "Send proposal breakdown to Nimal",
+      "customerId": "cust-demo-001",
+      "opportunityId": "opp-demo-001",
+      "dueAt": "2026-04-09T04:00:00.000Z",
+      "status": "open",
+      "source": "manual"
+    },
+    {
+      "id": "task-demo-002",
+      "createdAt": "2026-04-08T01:30:00.000Z",
+      "title": "Follow up partner visa checklist",
+      "customerId": "cust-demo-002",
+      "opportunityId": "opp-demo-002",
+      "dueAt": "2026-04-10T03:00:00.000Z",
+      "status": "open",
+      "source": "automation"
+    },
+    {
+      "id": "task-demo-003",
+      "createdAt": "2026-04-06T06:40:00.000Z",
+      "title": "Schedule student visa discovery call",
+      "customerId": "cust-demo-003",
+      "opportunityId": "opp-demo-003",
+      "dueAt": "2026-04-08T07:00:00.000Z",
+      "status": "done",
+      "source": "manual",
+      "completedAt": "2026-04-07T09:00:00.000Z"
+    }
+  ]
+}

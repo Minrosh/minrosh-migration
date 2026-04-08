@@ -1,3 +1,98 @@
 {
-  "customers": []
+  "customers": [
+    {
+      "schemaVersion": 1,
+      "id": "cust-demo-001",
+      "name": "Nimal Perera",
+      "email": "nimal.perera@example.com",
+      "mobile": "+61400111222",
+      "status": "prospective",
+      "company": "Perera Engineering",
+      "tags": ["skilled", "priority"],
+      "preferredChannel": "email",
+      "socialProfiles": {
+        "linkedin": "https://linkedin.com/in/nimal-perera"
+      },
+      "city": "Melbourne",
+      "state": "VIC",
+      "country": "Australia",
+      "createdAt": "2026-03-18T02:15:00.000Z",
+      "lastContactAt": "2026-04-07T09:10:00.000Z",
+      "notes": "Interested in subclass 189 pathway.",
+      "documents": [],
+      "activityLog": [
+        { "at": "2026-03-18T02:15:00.000Z", "action": "customer_created", "detail": "Imported demo customer" }
+      ],
+      "marketingConsent": true
+    },
+    {
+      "schemaVersion": 1,
+      "id": "cust-demo-002",
+      "name": "Ishara Fernando",
+      "email": "ishara.fernando@example.com",
+      "mobile": "+61400333444",
+      "status": "current",
+      "company": "Blue Lotus Care",
+      "tags": ["partner-visa"],
+      "preferredChannel": "whatsapp",
+      "socialProfiles": {},
+      "city": "Sydney",
+      "state": "NSW",
+      "country": "Australia",
+      "createdAt": "2026-03-10T05:00:00.000Z",
+      "lastContactAt": "2026-04-08T01:45:00.000Z",
+      "notes": "Preparing relationship evidence checklist.",
+      "documents": [],
+      "activityLog": [
+        { "at": "2026-03-10T05:00:00.000Z", "action": "customer_created", "detail": "Imported demo customer" }
+      ],
+      "marketingConsent": true
+    },
+    {
+      "schemaVersion": 1,
+      "id": "cust-demo-003",
+      "name": "Ravindu Silva",
+      "email": "ravindu.silva@example.com",
+      "mobile": "+61400777888",
+      "status": "prospective",
+      "company": "",
+      "tags": ["student-visa"],
+      "preferredChannel": "webchat",
+      "socialProfiles": {},
+      "city": "Brisbane",
+      "state": "QLD",
+      "country": "Australia",
+      "createdAt": "2026-03-28T11:20:00.000Z",
+      "lastContactAt": "2026-04-06T06:30:00.000Z",
+      "notes": "Needs GTE guidance and financial evidence support.",
+      "documents": [],
+      "activityLog": [
+        { "at": "2026-03-28T11:20:00.000Z", "action": "customer_created", "detail": "Imported demo customer" }
+      ],
+      "marketingConsent": false
+    },
+    {
+      "schemaVersion": 1,
+      "id": "cust-demo-004",
+      "name": "Sanjaya Wickramasinghe",
+      "email": "sanjaya.w@example.com",
+      "mobile": "+61400999111",
+      "status": "past",
+      "company": "Wickram Logistics",
+      "tags": ["visitor-visa"],
+      "preferredChannel": "call",
+      "socialProfiles": {},
+      "city": "Perth",
+      "state": "WA",
+      "country": "Australia",
+      "createdAt": "2026-02-02T09:00:00.000Z",
+      "lastContactAt": "2026-03-15T03:00:00.000Z",
+      "notes": "Previous visitor visa consultation completed.",
+      "documents": [],
+      "activityLog": [
+        { "at": "2026-02-02T09:00:00.000Z", "action": "customer_created", "detail": "Imported demo customer" }
+      ],
+      "marketingConsent": true
+    }
+  ]
 }

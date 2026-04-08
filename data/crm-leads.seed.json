@@ -1,1 +1,62 @@
-{ "leads": [] }
+{
+  "leads": [
+    {
+      "id": "lead-demo-001",
+      "schemaVersion": 1,
+      "createdAt": "2026-04-07T08:55:00.000Z",
+      "updatedAt": "2026-04-07T09:15:00.000Z",
+      "customerId": "cust-demo-001",
+      "source": "website_contact_form",
+      "firstName": "Nimal",
+      "lastName": "Perera",
+      "email": "nimal.perera@example.com",
+      "phone": "+61400111222",
+      "mainNeed": "Skilled Migration",
+      "message": "Need a points-based visa strategy and timeline.",
+      "status": "converted",
+      "fitScore": 82,
+      "intentScore": 78,
+      "engagementScore": 65,
+      "totalScore": 77,
+      "opportunityId": "opp-demo-001"
+    },
+    {
+      "id": "lead-demo-002",
+      "schemaVersion": 1,
+      "createdAt": "2026-04-08T01:20:00.000Z",
+      "updatedAt": "2026-04-08T01:20:00.000Z",
+      "customerId": "cust-demo-002",
+      "source": "manual",
+      "firstName": "Ishara",
+      "lastName": "Fernando",
+      "email": "ishara.fernando@example.com",
+      "phone": "+61400333444",
+      "mainNeed": "Partner Visa",
+      "message": "Looking for document checklist before lodgement.",
+      "status": "open",
+      "fitScore": 76,
+      "intentScore": 72,
+      "engagementScore": 61,
+      "totalScore": 72
+    },
+    {
+      "id": "lead-demo-003",
+      "schemaVersion": 1,
+      "createdAt": "2026-04-06T06:10:00.000Z",
+      "updatedAt": "2026-04-06T06:10:00.000Z",
+      "customerId": "cust-demo-003",
+      "source": "webchat",
+      "firstName": "Ravindu",
+      "lastName": "Silva",
+      "email": "ravindu.silva@example.com",
+      "phone": "+61400777888",
+      "mainNeed": "Student Visa",
+      "message": "Need help selecting a suitable course and applying.",
+      "status": "open",
+      "fitScore": 68,
+      "intentScore": 60,
+      "engagementScore": 59,
+      "totalScore": 63
+    }
+  ]
+}

@@ -1,1 +1,62 @@
-{ "conversations": [], "messages": [] }
+{
+  "conversations": [
+    {
+      "id": "conv-demo-001",
+      "customerId": "cust-demo-001",
+      "channel": "email",
+      "subject": "Skilled migration consultation",
+      "createdAt": "2026-04-07T09:00:00.000Z",
+      "updatedAt": "2026-04-08T02:25:00.000Z"
+    },
+    {
+      "id": "conv-demo-002",
+      "customerId": "cust-demo-002",
+      "channel": "whatsapp",
+      "subject": "Partner visa supporting documents",
+      "createdAt": "2026-04-08T01:35:00.000Z",
+      "updatedAt": "2026-04-08T01:50:00.000Z"
+    }
+  ],
+  "messages": [
+    {
+      "id": "msg-demo-001",
+      "conversationId": "conv-demo-001",
+      "customerId": "cust-demo-001",
+      "channel": "email",
+      "direction": "in",
+      "text": "Hi team, can you share the process for a skilled migration application?",
+      "at": "2026-04-07T09:00:00.000Z",
+      "source": "seed"
+    },
+    {
+      "id": "msg-demo-002",
+      "conversationId": "conv-demo-001",
+      "customerId": "cust-demo-001",
+      "channel": "email",
+      "direction": "out",
+      "text": "Absolutely. We recommend a points review first. We can send a custom strategy by tomorrow.",
+      "at": "2026-04-07T09:10:00.000Z",
+      "source": "seed"
+    },
+    {
+      "id": "msg-demo-003",
+      "conversationId": "conv-demo-002",
+      "customerId": "cust-demo-002",
+      "channel": "whatsapp",
+      "direction": "in",
+      "text": "Can I submit the relationship evidence this week?",
+      "at": "2026-04-08T01:40:00.000Z",
+      "source": "seed"
+    },
+    {
+      "id": "msg-demo-004",
+      "conversationId": "conv-demo-002",
+      "customerId": "cust-demo-002",
+      "channel": "whatsapp",
+      "direction": "out",
+      "text": "Yes, please send passport, relationship timeline, and key financial docs. We will review in 1 business day.",
+      "at": "2026-04-08T01:50:00.000Z",
+      "source": "seed"
+    }
+  ]
+}

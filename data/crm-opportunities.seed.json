@@ -1,1 +1,43 @@
-{ "opportunities": [] }
+{
+  "opportunities": [
+    {
+      "id": "opp-demo-001",
+      "schemaVersion": 1,
+      "createdAt": "2026-04-07T09:15:00.000Z",
+      "updatedAt": "2026-04-08T02:10:00.000Z",
+      "customerId": "cust-demo-001",
+      "leadId": "lead-demo-001",
+      "title": "Nimal Perera - Skilled Migration",
+      "value": 4800,
+      "stage": "proposal",
+      "enteredStageAt": "2026-04-08T02:10:00.000Z",
+      "version": 3
+    },
+    {
+      "id": "opp-demo-002",
+      "schemaVersion": 1,
+      "createdAt": "2026-03-22T04:30:00.000Z",
+      "updatedAt": "2026-04-05T07:00:00.000Z",
+      "customerId": "cust-demo-002",
+      "leadId": "lead-demo-002",
+      "title": "Ishara Fernando - Partner Visa Pack",
+      "value": 3500,
+      "stage": "won",
+      "enteredStageAt": "2026-04-05T07:00:00.000Z",
+      "version": 4
+    },
+    {
+      "id": "opp-demo-003",
+      "schemaVersion": 1,
+      "createdAt": "2026-04-01T03:30:00.000Z",
+      "updatedAt": "2026-04-03T10:40:00.000Z",
+      "customerId": "cust-demo-003",
+      "leadId": "lead-demo-003",
+      "title": "Ravindu Silva - Student Visa Strategy",
+      "value": 2200,
+      "stage": "qualified",
+      "enteredStageAt": "2026-04-03T10:40:00.000Z",
+      "version": 2
+    }
+  ]
+}

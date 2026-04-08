@@ -1,1 +1,33 @@
-{ "quotes": [] }
+{
+  "quotes": [
+    {
+      "id": "quote-demo-001",
+      "schemaVersion": 1,
+      "createdAt": "2026-04-08T02:30:00.000Z",
+      "quoteNumber": "Q-20260408-DEMO01",
+      "customerId": "cust-demo-001",
+      "customerName": "Nimal Perera",
+      "lines": [
+        { "description": "Points assessment and migration strategy", "amount": 900 },
+        { "description": "EOI and documentation support", "amount": 2300 },
+        { "description": "Case management until lodgement", "amount": 1600 }
+      ],
+      "validUntil": "2026-04-22",
+      "notes": "Quoted fee excludes third-party government charges."
+    },
+    {
+      "id": "quote-demo-002",
+      "schemaVersion": 1,
+      "createdAt": "2026-04-05T06:40:00.000Z",
+      "quoteNumber": "Q-20260405-DEMO02",
+      "customerId": "cust-demo-002",
+      "customerName": "Ishara Fernando",
+      "lines": [
+        { "description": "Partner visa eligibility and evidence review", "amount": 1400 },
+        { "description": "Application preparation and submission", "amount": 2100 }
+      ],
+      "validUntil": "2026-04-19",
+      "notes": "Urgent lane included; response within one business day."
+    }
+  ]
+}

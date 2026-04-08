@@ -1,1 +1,63 @@
-{ "interactions": [] }
+{
+  "interactions": [
+    {
+      "id": "int-demo-001",
+      "at": "2026-04-07T09:00:00.000Z",
+      "customerId": "cust-demo-001",
+      "leadId": "lead-demo-001",
+      "type": "email",
+      "channel": "email",
+      "subject": "Initial enquiry",
+      "body": "Client requested guidance for skilled migration.",
+      "actor": "system"
+    },
+    {
+      "id": "int-demo-002",
+      "at": "2026-04-07T09:15:00.000Z",
+      "customerId": "cust-demo-001",
+      "leadId": "lead-demo-001",
+      "type": "system",
+      "body": "Lead converted to opportunity opp-demo-001 (new)",
+      "meta": { "opportunityId": "opp-demo-001" },
+      "actor": "system"
+    },
+    {
+      "id": "int-demo-003",
+      "at": "2026-04-08T02:10:00.000Z",
+      "customerId": "cust-demo-001",
+      "type": "system",
+      "body": "Opportunity stage: qualified to proposal",
+      "meta": { "opportunityId": "opp-demo-001", "from": "qualified", "to": "proposal" },
+      "actor": "owner"
+    },
+    {
+      "id": "int-demo-004",
+      "at": "2026-04-08T01:40:00.000Z",
+      "customerId": "cust-demo-002",
+      "leadId": "lead-demo-002",
+      "type": "whatsapp",
+      "channel": "whatsapp",
+      "body": "Client asked about relationship evidence upload timeline.",
+      "actor": "staff"
+    },
+    {
+      "id": "int-demo-005",
+      "at": "2026-04-06T06:30:00.000Z",
+      "customerId": "cust-demo-003",
+      "leadId": "lead-demo-003",
+      "type": "webchat",
+      "channel": "webchat",
+      "body": "Discussed course options and eligibility for student visa.",
+      "actor": "staff"
+    },
+    {
+      "id": "int-demo-006",
+      "at": "2026-04-05T07:00:00.000Z",
+      "customerId": "cust-demo-002",
+      "type": "system",
+      "body": "Opportunity stage: proposal to won",
+      "meta": { "opportunityId": "opp-demo-002", "from": "proposal", "to": "won" },
+      "actor": "owner"
+    }
+  ]
+}
