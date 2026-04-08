@@ -110,6 +110,17 @@ const nav = [
     ),
   },
   {
+    href: "/admin/intelligence",
+    label: "Intelligence",
+    icon: (
+      <Icon>
+        <path d="M12 2a7 7 0 0 0-7 7c0 2.1.92 3.99 2.38 5.27.4.35.62.85.62 1.38V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-1.35c0-.53.23-1.03.63-1.39A7 7 0 0 0 19 9a7 7 0 0 0-7-7Z" />
+        <path d="M9 22h6" />
+        <path d="M10 18h4" />
+      </Icon>
+    ),
+  },
+  {
     href: "/admin/reports",
     label: "Reports",
     icon: (
