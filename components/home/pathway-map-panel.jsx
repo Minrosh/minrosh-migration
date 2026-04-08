@@ -176,6 +176,10 @@ function normalizeGoalQuery(raw) {
 export function PathwayMapPanel() {
   const [fromQuery, setFromQuery] = useState("Kandy, Sri Lanka");
   const [goalQuery, setGoalQuery] = useState("University of Queensland (Brisbane)");
+  const [fromOpen, setFromOpen] = useState(false);
+  const [goalOpen, setGoalOpen] = useState(false);
+  const [fromActiveIndex, setFromActiveIndex] = useState(-1);
+  const [goalActiveIndex, setGoalActiveIndex] = useState(-1);
   const [ready, setReady] = useState(false);
   const [error, setError] = useState("");
   const mapRef = useRef(null);
@@ -193,6 +197,23 @@ export function PathwayMapPanel() {
     WORLD_DESTINATIONS.find((item) => item.label.toLowerCase().includes(goalSearch)) ||
     WORLD_DESTINATIONS[0];
   const goalHint = `${goal.type} · ${goal.country}`;
+  const fromFiltered = useMemo(() => {
+    const q = fromQuery.trim().toLowerCase();
+    if (!q) return WORLD_ORIGINS.slice(0, 8);
+    return WORLD_ORIGINS.filter(
+      (item) => item.label.toLowerCase().includes(q) || item.country.toLowerCase().includes(q)
+    ).slice(0, 8);
+  }, [fromQuery]);
+  const goalFiltered = useMemo(() => {
+    const q = normalizeGoalQuery(goalQuery);
+    if (!q) return WORLD_DESTINATIONS.slice(0, 8);
+    return WORLD_DESTINATIONS.filter(
+      (item) =>
+        item.label.toLowerCase().includes(q) ||
+        item.country.toLowerCase().includes(q) ||
+        item.type.toLowerCase().includes(q)
+    ).slice(0, 8);
+  }, [goalQuery]);
 
   const distanceKm = useMemo(() => haversineKm(city, goal), [city, goal]);
   const estFlightHours = useMemo(() => Math.max(9, Math.round(distanceKm / 850)), [distanceKm]);
@@ -270,6 +291,72 @@ export function PathwayMapPanel() {
     map.fitBounds(bounds, 120);
   }, [ready, city, goal]);
 
+  useEffect(() => {
+    setFromActiveIndex(fromFiltered.length ? 0 : -1);
+  }, [fromFiltered.length, fromOpen]);
+
+  useEffect(() => {
+    setGoalActiveIndex(goalFiltered.length ? 0 : -1);
+  }, [goalFiltered.length, goalOpen]);
+
+  function chooseFrom(item) {
+    setFromQuery(item.label);
+    setFromOpen(false);
+  }
+
+  function chooseGoal(item) {
+    setGoalQuery(item.label);
+    setGoalOpen(false);
+  }
+
+  function handleFromKeyDown(event) {
+    if (!fromOpen && (event.key === "ArrowDown" || event.key === "ArrowUp")) {
+      setFromOpen(true);
+      return;
+    }
+    if (!fromOpen) return;
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+      setFromActiveIndex((current) => (fromFiltered.length ? (current + 1) % fromFiltered.length : -1));
+    } else if (event.key === "ArrowUp") {
+      event.preventDefault();
+      setFromActiveIndex((current) =>
+        fromFiltered.length ? (current - 1 + fromFiltered.length) % fromFiltered.length : -1
+      );
+    } else if (event.key === "Enter") {
+      if (fromActiveIndex >= 0 && fromFiltered[fromActiveIndex]) {
+        event.preventDefault();
+        chooseFrom(fromFiltered[fromActiveIndex]);
+      }
+    } else if (event.key === "Escape") {
+      setFromOpen(false);
+    }
+  }
+
+  function handleGoalKeyDown(event) {
+    if (!goalOpen && (event.key === "ArrowDown" || event.key === "ArrowUp")) {
+      setGoalOpen(true);
+      return;
+    }
+    if (!goalOpen) return;
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+      setGoalActiveIndex((current) => (goalFiltered.length ? (current + 1) % goalFiltered.length : -1));
+    } else if (event.key === "ArrowUp") {
+      event.preventDefault();
+      setGoalActiveIndex((current) =>
+        goalFiltered.length ? (current - 1 + goalFiltered.length) % goalFiltered.length : -1
+      );
+    } else if (event.key === "Enter") {
+      if (goalActiveIndex >= 0 && goalFiltered[goalActiveIndex]) {
+        event.preventDefault();
+        chooseGoal(goalFiltered[goalActiveIndex]);
+      }
+    } else if (event.key === "Escape") {
+      setGoalOpen(false);
+    }
+  }
+
   return (
     <section className="pathway-map editorial-section editorial-section--compact">
       <div className="section-head">
@@ -284,31 +371,75 @@ export function PathwayMapPanel() {
             Start city (worldwide)
             <input
               type="search"
-              list="pathway-from-cities"
               value={fromQuery}
-              onChange={(e) => setFromQuery(e.target.value)}
+              onChange={(e) => {
+                setFromQuery(e.target.value);
+                setFromOpen(true);
+              }}
+              onFocus={() => setFromOpen(true)}
+              onBlur={() => setTimeout(() => setFromOpen(false), 120)}
+              onKeyDown={handleFromKeyDown}
               placeholder="Search city (e.g. Colombo, Dubai, London)"
+              aria-label="Search worldwide start city"
+              aria-expanded={fromOpen ? "true" : "false"}
             />
-            <datalist id="pathway-from-cities">
-              {WORLD_ORIGINS.map((item) => (
-                <option key={item.label} value={item.label}>{item.country}</option>
-              ))}
-            </datalist>
+            {fromOpen && fromFiltered.length ? (
+              <div className="pathway-map__suggestions" role="listbox" aria-label="Start city suggestions">
+                {fromFiltered.map((item, index) => (
+                  <button
+                    key={item.label}
+                    type="button"
+                    className={`pathway-map__suggestion ${index === fromActiveIndex ? "is-active" : ""}`}
+                    onMouseDown={() => chooseFrom(item)}
+                  >
+                    <strong>{item.label}</strong>
+                    <span>{item.country}</span>
+                  </button>
+                ))}
+              </div>
+            ) : null}
+            {fromOpen && fromQuery.trim() && !fromFiltered.length ? (
+              <p className="pathway-map__no-match" role="status">
+                No match found for start city. Try city or country name.
+              </p>
+            ) : null}
           </label>
           <label>
             Destination (universities, colleges, and skilled pathways)
             <input
               type="search"
-              list="pathway-goals"
               value={goalQuery}
-              onChange={(e) => setGoalQuery(e.target.value)}
+              onChange={(e) => {
+                setGoalQuery(e.target.value);
+                setGoalOpen(true);
+              }}
+              onFocus={() => setGoalOpen(true)}
+              onBlur={() => setTimeout(() => setGoalOpen(false), 120)}
+              onKeyDown={handleGoalKeyDown}
               placeholder="Search destination or institution"
+              aria-label="Search destination, university, college, or pathway"
+              aria-expanded={goalOpen ? "true" : "false"}
             />
-            <datalist id="pathway-goals">
-              {WORLD_DESTINATIONS.map((item) => (
-                <option key={item.label} value={`${item.label} — ${item.type} (${item.country})`} />
-              ))}
-            </datalist>
+            {goalOpen && goalFiltered.length ? (
+              <div className="pathway-map__suggestions" role="listbox" aria-label="Destination suggestions">
+                {goalFiltered.map((item, index) => (
+                  <button
+                    key={item.label}
+                    type="button"
+                    className={`pathway-map__suggestion ${index === goalActiveIndex ? "is-active" : ""}`}
+                    onMouseDown={() => chooseGoal(item)}
+                  >
+                    <strong>{item.label}</strong>
+                    <span>{item.type} · {item.country}</span>
+                  </button>
+                ))}
+              </div>
+            ) : null}
+            {goalOpen && goalQuery.trim() && !goalFiltered.length ? (
+              <p className="pathway-map__no-match" role="status">
+                No match found. Try university, college, pathway type, city, or country.
+              </p>
+            ) : null}
           </label>
           <p>
             Selected destination type: <strong>{goalHint}</strong>
