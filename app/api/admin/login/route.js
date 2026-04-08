@@ -7,6 +7,7 @@ import { requireAdminLoginOrigin } from "@/lib/admin/auth-route";
 import { rateLimitAllow } from "@/lib/security/rate-limit";
 import { getClientIp } from "@/lib/security/request-ip";
 import { logSecurityEvent } from "@/lib/security/monitoring-log";
+import { verifySync } from "otplib";
 
 export async function POST(request) {
   const originDenied = requireAdminLoginOrigin(request);
@@ -35,6 +36,20 @@ export async function POST(request) {
     });
     logSecurityEvent("admin_login_failed", { ip });
     return Response.json({ error: "Invalid password" }, { status: 401 });
+  }
+
+  const totpSecret = String(process.env.ADMIN_TOTP_SECRET || "").trim();
+  if (totpSecret) {
+    const totp = String(body?.totp || body?.totpCode || "")
+      .replace(/\s/g, "")
+      .trim();
+    if (!totp || !verifySync({ token: totp, secret: totpSecret })) {
+      appendAudit("admin_login_failed", "invalid totp", {
+        ip,
+        route: "POST /api/admin/login",
+      });
+      return Response.json({ error: "Invalid authenticator code" }, { status: 401 });
+    }
   }
 
   const token = await createSessionToken();

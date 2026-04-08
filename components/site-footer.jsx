@@ -1,15 +1,8 @@
 import Link from "next/link";
+import { FOOTER_SERVICE_LINKS } from "../lib/public-indexable-routes";
 import { SiteFooterInteractive } from "./site-footer-interactive";
 
-const serviceLinks = [
-  { href: "/skilled-migration", label: "Skilled Migration" },
-  { href: "/migration-sri-lanka-to-australia", label: "Sri Lanka → Australia" },
-  { href: "/student-visa-australia", label: "Student Visas" },
-  { href: "/partner-visa-australia", label: "Partner Visa" },
-  { href: "/employer-sponsored-visas", label: "Employer-Sponsored" },
-  { href: "/education-consultation", label: "Education Consultation" },
-  { href: "/updates", label: "Visa Updates" },
-];
+const serviceLinks = FOOTER_SERVICE_LINKS;
 
 const businessLinks = [
   { href: "/about", label: "About" },

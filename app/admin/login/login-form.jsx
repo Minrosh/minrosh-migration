@@ -11,6 +11,7 @@ export function AdminLoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [password, setPassword] = useState("");
+  const [totp, setTotp] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -22,7 +23,7 @@ export function AdminLoginForm() {
       const res = await fetch("/api/admin/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password }),
+        body: JSON.stringify({ password, totp: totp.trim() || undefined }),
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
@@ -43,7 +44,9 @@ export function AdminLoginForm() {
     <Card className="w-full max-w-md">
       <CardHeader>
         <CardTitle>Admin sign in</CardTitle>
-        <CardDescription>Enter the password configured in ADMIN_PASSWORD.</CardDescription>
+        <CardDescription>
+          Use ADMIN_PASSWORD. If ADMIN_TOTP_SECRET is set on the server, enter your 6-digit authenticator code too.
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={onSubmit} className="space-y-4">
@@ -56,6 +59,17 @@ export function AdminLoginForm() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="totp">Authenticator code (if enabled)</Label>
+            <Input
+              id="totp"
+              inputMode="numeric"
+              autoComplete="one-time-code"
+              placeholder="6-digit code"
+              value={totp}
+              onChange={(e) => setTotp(e.target.value)}
             />
           </div>
           {error ? <p className="text-sm text-destructive">{error}</p> : null}

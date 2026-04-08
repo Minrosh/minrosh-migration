@@ -1,0 +1,17 @@
+{
+  "rules": [
+    {
+      "id": "rule-welcome-lead",
+      "enabled": true,
+      "trigger": "lead_created",
+      "actions": [{ "type": "create_task", "title": "Welcome follow-up", "dueInDays": 1 }]
+    },
+    {
+      "id": "rule-stage-stale",
+      "enabled": true,
+      "trigger": "stage_unchanged_days",
+      "days": 7,
+      "actions": [{ "type": "create_task", "title": "Review stalled opportunity", "dueInDays": 0 }]
+    }
+  ]
+}

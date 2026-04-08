@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import {
   clearNavigatorSummarySession,
   quizSummaryFromNavigatorDetail,
@@ -14,10 +15,15 @@ const initialForm = {
   phone: "",
   preferredCountry: "Australia",
   mainNeed: "Skilled Migration",
+  preferredDate: "",
+  preferredTime: "",
+  consultationDurationMins: "45",
+  timeZone: "Australia/Brisbane",
   message: "",
 };
 
-export function ContactLeadForm({ className = "" }) {
+export function ContactLeadForm({ className = "", mode = "general" }) {
+  const searchParams = useSearchParams();
   const [form, setForm] = useState(initialForm);
   const [quizSummaryLine, setQuizSummaryLine] = useState("");
   const [state, setState] = useState({ status: "idle", message: "" });
@@ -26,6 +32,18 @@ export function ContactLeadForm({ className = "" }) {
   useEffect(() => {
     setQuizSummaryLine(readNavigatorQuizSummaryLine());
   }, []);
+
+  useEffect(() => {
+    const fromCity = String(searchParams.get("fromCity") || "").trim();
+    const pathwayGoal = String(searchParams.get("pathwayGoal") || "").trim();
+    if (!fromCity && !pathwayGoal) return;
+    setForm((current) => ({
+      ...current,
+      preferredCountry: "Australia",
+      mainNeed: mode === "consultation" ? "Student Pathway" : current.mainNeed,
+      message: `Pathway map prefill:\nFrom city: ${fromCity || "Sri Lanka"}\nGoal: ${pathwayGoal || "Australia pathway"}\n\n${current.message}`.trim(),
+    }));
+  }, [searchParams, mode]);
 
   useEffect(() => {
     function handleNavigatorSummary(event) {
@@ -80,9 +98,9 @@ export function ContactLeadForm({ className = "" }) {
       }
       setState({
         status: "success",
-        message:
-          data.warning ||
-          "Your enquiry has been received. We will review it and respond shortly.",
+        message: data.consultationBooked
+          ? `Consultation booked successfully.${data.meetUrl ? ` Meet link: ${data.meetUrl}` : ""}`
+          : data.warning || "Your enquiry has been received. We will review it and respond shortly.",
       });
       if (typeof window !== "undefined") {
         window.dispatchEvent(new Event("minrosh:enquiry-created"));
@@ -162,6 +180,50 @@ export function ContactLeadForm({ className = "" }) {
             <option>General Enquiry</option>
           </select>
         </label>
+        {mode === "consultation" ? (
+          <>
+            <label>
+              <span>Preferred date</span>
+              <input
+                type="date"
+                name="preferredDate"
+                value={form.preferredDate}
+                onChange={handleChange}
+                required
+              />
+            </label>
+            <label>
+              <span>Preferred time</span>
+              <input
+                type="time"
+                name="preferredTime"
+                value={form.preferredTime}
+                onChange={handleChange}
+                required
+              />
+            </label>
+            <label>
+              <span>Consultation length</span>
+              <select
+                name="consultationDurationMins"
+                value={form.consultationDurationMins}
+                onChange={handleChange}
+              >
+                <option value="30">30 minutes</option>
+                <option value="45">45 minutes</option>
+                <option value="60">60 minutes</option>
+              </select>
+            </label>
+            <label>
+              <span>Time zone</span>
+              <select name="timeZone" value={form.timeZone} onChange={handleChange}>
+                <option value="Australia/Brisbane">Australia/Brisbane (AEST)</option>
+                <option value="Asia/Colombo">Asia/Colombo (Sri Lanka)</option>
+                <option value="Australia/Sydney">Australia/Sydney</option>
+              </select>
+            </label>
+          </>
+        ) : null}
         <label className="contact-grid__full">
           <span>Your enquiry</span>
           <textarea

@@ -1,37 +1,47 @@
-import siteData from "../../data/site.json";
+import Link from "next/link";
+import siteDataStatic from "../../data/site.json";
+import seoPages from "../../data/seo-pages.json";
 import { PublicFileImg } from "../../components/public-file-img";
 import newsData from "../../data/news.json";
 import { NewsBoard } from "../../components/news-board";
 import { SiteShell } from "../../components/site-shell";
-import { buildMetadata } from "../../lib/seo";
+import { StructuredData } from "../../components/structured-data";
+import { getHomeSiteData } from "../../lib/home-site-data";
+import { buildMetadata, breadcrumbJsonLd } from "../../lib/seo";
+
+const pageData = seoPages.servicePages.updatesHub;
 
 export const metadata = buildMetadata({
-  title: "Migration Updates Hub | Australia, Canada, UK & NZ News | MinRosh",
-  description:
-    "Track immigration and visa updates across Australia, Canada, the United Kingdom, and New Zealand with MinRosh Migration's filterable updates hub.",
-  path: "/updates",
-  keywords: [
-    "migration updates Australia",
-    "visa news Australia",
-    "Canada immigration updates",
-    "UK visa updates",
-  ],
+  title: pageData.metaTitle,
+  description: pageData.metaDescription,
+  path: pageData.path,
+  keywords: pageData.keywords,
 });
 
 export default function UpdatesPage() {
+  const siteData = getHomeSiteData(siteDataStatic);
   return (
-    <SiteShell siteData={siteData} currentPath="/updates">
+    <SiteShell siteData={siteData} currentPath={pageData.path}>
+      <StructuredData
+        data={breadcrumbJsonLd([
+          { name: "Home", path: "/" },
+          { name: "Visa Updates", path: pageData.path },
+        ])}
+      />
       <section className="content-page">
+        <nav className="breadcrumbs" aria-label="Breadcrumb">
+          <span>
+            <Link href="/">Home</Link>
+          </span>
+          <span className="breadcrumbs__sep">/</span>
+          <span>Visa Updates</span>
+        </nav>
         <section className="content-hero">
           <div className="content-hero__grid">
             <div className="content-hero__copy">
-              <p className="section-label">Updates Hub</p>
-              <h1>Official immigration news board for the destination systems MinRosh tracks</h1>
-              <p>
-                This updates hub is designed to help clients and prospective applicants monitor
-                official immigration developments while also accessing MinRosh guidance and next
-                steps.
-              </p>
+              <p className="section-label">{pageData.sectionLabel}</p>
+              <h1>{pageData.headline}</h1>
+              <p>{pageData.intro}</p>
             </div>
             <div className="content-hero__media" aria-hidden="true">
               <PublicFileImg

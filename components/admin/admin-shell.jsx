@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
@@ -45,6 +46,88 @@ const nav = [
         <circle cx="9" cy="7" r="4" />
         <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
         <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+      </Icon>
+    ),
+  },
+  {
+    href: "/admin/leads",
+    label: "Leads",
+    icon: (
+      <Icon>
+        <path d="M12 2v4" />
+        <path d="m16 6-4-4-4 4" />
+        <path d="M4 10v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V10" />
+      </Icon>
+    ),
+  },
+  {
+    href: "/admin/pipeline",
+    label: "Pipeline",
+    icon: (
+      <Icon>
+        <rect x="3" y="3" width="7" height="7" rx="1" />
+        <rect x="14" y="3" width="7" height="4" rx="1" />
+        <rect x="14" y="10" width="7" height="11" rx="1" />
+        <rect x="3" y="12" width="7" height="9" rx="1" />
+      </Icon>
+    ),
+  },
+  {
+    href: "/admin/inbox",
+    label: "Inbox",
+    icon: (
+      <Icon>
+        <path d="M22 12h-6l-2 3h-4l-2-3H2" />
+        <path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z" />
+      </Icon>
+    ),
+  },
+  {
+    href: "/admin/tasks",
+    label: "Tasks",
+    icon: (
+      <Icon>
+        <path d="M9 11l3 3L22 4" />
+        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+      </Icon>
+    ),
+  },
+  {
+    href: "/admin/automations",
+    label: "Automations",
+    icon: (
+      <Icon>
+        <path d="M12 2v4" />
+        <path d="m16.2 7.8 2.9-2.9" />
+        <path d="M18 12h4" />
+        <path d="m16.2 16.2 2.9 2.9" />
+        <path d="M12 18v4" />
+        <path d="m7.8 16.2-2.9 2.9" />
+        <path d="M6 12H2" />
+        <path d="m7.8 7.8-2.9-2.9" />
+        <circle cx="12" cy="12" r="3" />
+      </Icon>
+    ),
+  },
+  {
+    href: "/admin/reports",
+    label: "Reports",
+    icon: (
+      <Icon>
+        <path d="M3 3v18h18" />
+        <path d="M7 12v5" />
+        <path d="M12 8v9" />
+        <path d="M17 5v12" />
+      </Icon>
+    ),
+  },
+  {
+    href: "/admin/quotes",
+    label: "Quotes",
+    icon: (
+      <Icon>
+        <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
+        <path d="M14 2v4a2 2 0 0 0 2 2h4" />
       </Icon>
     ),
   },
@@ -94,6 +177,7 @@ const nav = [
 export function AdminShell({ children }) {
   const pathname = usePathname();
   const router = useRouter();
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   async function logout() {
     await fetch("/api/admin/logout", { method: "POST" });
@@ -123,16 +207,37 @@ export function AdminShell({ children }) {
     }
   }
 
+  const asideClass =
+    "fixed left-0 top-0 z-40 flex h-screen w-56 flex-col border-r border-border bg-card shadow-sm transition-transform max-md:w-[min(100vw-3rem,16rem)]";
+
   return (
     <div className="flex min-h-screen">
-      <aside className="fixed left-0 top-0 z-40 flex h-screen w-56 flex-col border-r border-border bg-card shadow-sm">
+      <button
+        type="button"
+        className="fixed left-3 top-3 z-50 flex h-10 w-10 items-center justify-center rounded-md border border-border bg-card shadow md:hidden"
+        aria-label="Open menu"
+        onClick={() => setMobileNavOpen(true)}
+      >
+        <span className="text-lg leading-none">☰</span>
+      </button>
+      {mobileNavOpen ? (
+        <button
+          type="button"
+          className="fixed inset-0 z-30 bg-black/40 md:hidden"
+          aria-label="Close menu"
+          onClick={() => setMobileNavOpen(false)}
+        />
+      ) : null}
+      <aside
+        className={cn(asideClass, "max-md:-translate-x-full", mobileNavOpen && "max-md:translate-x-0")}
+      >
         <div className="border-b border-border p-4">
-          <Link href="/" className="text-lg font-semibold text-primary">
+          <Link href="/" className="text-lg font-semibold text-primary" onClick={() => setMobileNavOpen(false)}>
             MinRosh Admin
           </Link>
-          <p className="text-xs text-muted-foreground">Migration portal</p>
+          <p className="text-xs text-muted-foreground">CRM workspace</p>
         </div>
-        <nav className="flex flex-1 flex-col gap-1 p-3">
+        <nav className="flex flex-1 flex-col gap-1 overflow-y-auto p-3">
           {nav.map((item) => {
             const active = pathname === item.href;
             return (
@@ -143,8 +248,9 @@ export function AdminShell({ children }) {
                   "flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors",
                   active
                     ? "bg-primary text-primary-foreground"
-                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                    : "text-muted-foreground hover:bg-muted hover:text-foreground",
                 )}
+                onClick={() => setMobileNavOpen(false)}
               >
                 {item.icon}
                 {item.label}
@@ -173,12 +279,16 @@ export function AdminShell({ children }) {
             </Icon>
             Log out
           </Button>
-          <Link href="/" className="mt-2 block text-center text-xs text-muted-foreground hover:underline">
+          <Link
+            href="/"
+            className="mt-2 block text-center text-xs text-muted-foreground hover:underline"
+            onClick={() => setMobileNavOpen(false)}
+          >
             View public site
           </Link>
         </div>
       </aside>
-      <main className="ml-56 flex-1 p-8">{children}</main>
+      <main className="min-w-0 flex-1 p-4 pt-16 md:ml-56 md:p-8 md:pt-8">{children}</main>
     </div>
   );
 }

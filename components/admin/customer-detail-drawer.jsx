@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 function statusVariant(s) {
   if (s === "current") return "success";
@@ -22,10 +23,19 @@ export function CustomerDetailDrawer({ customerId, open, onClose, onRefresh, boo
   const [status, setStatus] = useState("prospective");
   const [notes, setNotes] = useState("");
   const [mobile, setMobile] = useState("");
+  const [visaExpiryDate, setVisaExpiryDate] = useState("");
   const [marketingConsent, setMarketingConsent] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
   const [zipLoading, setZipLoading] = useState(false);
+  const [sheetBusy, setSheetBusy] = useState(false);
+  const [company, setCompany] = useState("");
+  const [preferredChannel, setPreferredChannel] = useState("");
+  const [tagsStr, setTagsStr] = useState("");
+  const [crmTab, setCrmTab] = useState("profile");
+  const [timelineInteractions, setTimelineInteractions] = useState([]);
+  const [timelineLoading, setTimelineLoading] = useState(false);
+  const [noteText, setNoteText] = useState("");
 
   const loadDetail = useCallback(async () => {
     if (!customerId) return;
@@ -78,9 +88,25 @@ export function CustomerDetailDrawer({ customerId, open, onClose, onRefresh, boo
     setStatus(customer.status || "prospective");
     setNotes(customer.notes ?? "");
     setMobile(customer.mobile ?? "");
+    setVisaExpiryDate(customer.visaExpiryDate ?? "");
     setMarketingConsent(customer.marketingConsent !== false);
+    setCompany(customer.company || "");
+    setPreferredChannel(customer.preferredChannel || "");
+    setTagsStr(Array.isArray(customer.tags) ? customer.tags.join(", ") : "");
     setMessage("");
   }, [customer]);
+
+  useEffect(() => {
+    if (!open || !customerId || crmTab !== "timeline") return;
+    setTimelineLoading(true);
+    fetch(`/api/admin/interactions?customerId=${encodeURIComponent(customerId)}&limit=120`)
+      .then((r) => r.json())
+      .then((d) => {
+        setTimelineInteractions(d.interactions || []);
+        setTimelineLoading(false);
+      })
+      .catch(() => setTimelineLoading(false));
+  }, [open, customerId, crmTab]);
 
   useEffect(() => {
     if (!open) return;
@@ -120,9 +146,16 @@ export function CustomerDetailDrawer({ customerId, open, onClose, onRefresh, boo
           name: name.trim(),
           email: email.trim(),
           mobile: mobile.trim(),
+          visaExpiryDate: visaExpiryDate.trim(),
           status,
           notes: notes.trim(),
           marketingConsent,
+          company: company.trim(),
+          preferredChannel: preferredChannel.trim(),
+          tags: tagsStr
+            .split(",")
+            .map((t) => t.trim())
+            .filter(Boolean),
         }),
       });
       const data = await res.json().catch(() => ({}));
@@ -213,6 +246,58 @@ export function CustomerDetailDrawer({ customerId, open, onClose, onRefresh, boo
     await onRefresh();
   }
 
+  async function addTimelineNote() {
+    if (!customer || !noteText.trim()) return;
+    setSaving(true);
+    try {
+      const res = await fetch("/api/admin/interactions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          customerId: customer.id,
+          type: "note",
+          body: noteText.trim(),
+        }),
+      });
+      if (!res.ok) {
+        setMessage("Could not add note");
+        setSaving(false);
+        return;
+      }
+      setNoteText("");
+      setCrmTab("timeline");
+      const r = await fetch(`/api/admin/interactions?customerId=${encodeURIComponent(customer.id)}&limit=120`);
+      const d = await r.json();
+      setTimelineInteractions(d.interactions || []);
+      setMessage("Note added.");
+    } catch {
+      setMessage("Network error");
+    }
+    setSaving(false);
+  }
+
+  async function openSheetRow() {
+    if (!customer) return;
+    setSheetBusy(true);
+    try {
+      const res = await fetch(`/api/admin/customers/${encodeURIComponent(customer.id)}/status-sheet-link`);
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.url) {
+        if (res.status === 503) {
+          setMessage(data.error || "Status sheet integration is not ready yet.");
+        } else {
+          setMessage(data.error || "Could not locate matching sheet row.");
+        }
+        setSheetBusy(false);
+        return;
+      }
+      window.open(data.url, "_blank", "noopener,noreferrer");
+    } catch {
+      setMessage("Network error while opening sheet row.");
+    }
+    setSheetBusy(false);
+  }
+
   if (!open || !customerId) return null;
 
   return (
@@ -263,9 +348,56 @@ export function CustomerDetailDrawer({ customerId, open, onClose, onRefresh, boo
             <p className="text-sm text-muted-foreground">No data.</p>
           ) : (
             <>
+              <div className="flex flex-wrap gap-2">
+                {email ? (
+                  <Button type="button" variant="outline" size="sm" asChild>
+                    <a href={`mailto:${encodeURIComponent(email)}`} target="_blank" rel="noreferrer">
+                      Email
+                    </a>
+                  </Button>
+                ) : null}
+                {mobile?.replace(/\D/g, "").length >= 8 ? (
+                  <Button type="button" variant="outline" size="sm" asChild>
+                    <a
+                      href={`https://wa.me/${mobile.replace(/\D/g, "")}`}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      WhatsApp
+                    </a>
+                  </Button>
+                ) : null}
+                <Button type="button" variant="outline" size="sm" asChild>
+                  <a href="/admin/tasks">Tasks</a>
+                </Button>
+              </div>
+
+              <Tabs value={crmTab} onValueChange={setCrmTab}>
+                <TabsList className="grid w-full grid-cols-2">
+                  <TabsTrigger value="profile">Profile</TabsTrigger>
+                  <TabsTrigger value="timeline">Timeline</TabsTrigger>
+                </TabsList>
+                <TabsContent value="profile" className="space-y-6 pt-4">
               <section className="space-y-3">
-                <h3 className="text-sm font-semibold text-foreground">Profile & notes</h3>
+                <h3 className="text-sm font-semibold text-foreground">Profile & CRM</h3>
                 <div className="grid gap-3">
+                  <div className="space-y-1.5">
+                    <Label htmlFor="cd-company">Company / account</Label>
+                    <Input id="cd-company" value={company} onChange={(e) => setCompany(e.target.value)} />
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label htmlFor="cd-channel">Preferred channel</Label>
+                    <Input
+                      id="cd-channel"
+                      placeholder="email, whatsapp, phone…"
+                      value={preferredChannel}
+                      onChange={(e) => setPreferredChannel(e.target.value)}
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label htmlFor="cd-tags">Tags (comma-separated)</Label>
+                    <Input id="cd-tags" value={tagsStr} onChange={(e) => setTagsStr(e.target.value)} />
+                  </div>
                   <div className="space-y-1.5">
                     <Label htmlFor="cd-name">Name</Label>
                     <Input id="cd-name" value={name} onChange={(e) => setName(e.target.value)} />
@@ -273,6 +405,18 @@ export function CustomerDetailDrawer({ customerId, open, onClose, onRefresh, boo
                   <div className="space-y-1.5">
                     <Label htmlFor="cd-email">Email</Label>
                     <Input id="cd-email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label htmlFor="cd-visa-expiry">Visa expiry date (optional)</Label>
+                    <Input
+                      id="cd-visa-expiry"
+                      type="date"
+                      value={visaExpiryDate}
+                      onChange={(e) => setVisaExpiryDate(e.target.value)}
+                    />
+                    <p className="text-xs text-muted-foreground">
+                      Saving this creates calendar reminders automatically (14d, 7d, 1d).
+                    </p>
                   </div>
                   <div className="space-y-1.5">
                     <Label htmlFor="cd-mobile">Mobile (E.164, SMS upload gate)</Label>
@@ -330,6 +474,45 @@ export function CustomerDetailDrawer({ customerId, open, onClose, onRefresh, boo
                   {message ? <p className="text-sm text-muted-foreground">{message}</p> : null}
                 </div>
               </section>
+                </TabsContent>
+                <TabsContent value="timeline" className="space-y-4 pt-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="cd-note">Add interaction note</Label>
+                    <textarea
+                      id="cd-note"
+                      rows={3}
+                      className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                      value={noteText}
+                      onChange={(e) => setNoteText(e.target.value)}
+                    />
+                    <Button type="button" size="sm" disabled={saving} onClick={addTimelineNote}>
+                      Save note
+                    </Button>
+                  </div>
+                  {timelineLoading ? (
+                    <p className="text-sm text-muted-foreground">Loading timeline…</p>
+                  ) : (
+                    <ul className="max-h-64 space-y-2 overflow-y-auto text-xs">
+                      {[...timelineInteractions.map((i) => ({ kind: "crm", at: i.at, ...i })), ...activitySorted.map((a) => ({ kind: "activity", at: a.at, ...a }))]
+                        .sort((a, b) => String(a.at).localeCompare(String(b.at)))
+                        .map((row, idx) => (
+                          <li key={`${row.kind}-${idx}`} className="rounded-md border border-border px-2 py-1.5">
+                            <span className="text-muted-foreground">{row.at?.slice(0, 19)}</span>{" "}
+                            {row.kind === "crm" ? (
+                              <>
+                                <strong>{row.type}</strong> {row.body?.slice(0, 200)}
+                              </>
+                            ) : (
+                              <>
+                                <strong>{row.action}</strong> {row.detail}
+                              </>
+                            )}
+                          </li>
+                        ))}
+                    </ul>
+                  )}
+                </TabsContent>
+              </Tabs>
 
               {customer.passportOcrLatest ? (
                 <section className="space-y-2 rounded-md border border-border bg-muted/25 p-3">
@@ -407,6 +590,18 @@ export function CustomerDetailDrawer({ customerId, open, onClose, onRefresh, boo
                 >
                   Copy relative path
                 </Button>
+              </section>
+
+              <section className="space-y-2">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <h3 className="text-sm font-semibold text-foreground">Visa status sheet</h3>
+                  <Button type="button" variant="outline" size="sm" disabled={sheetBusy} onClick={openSheetRow}>
+                    {sheetBusy ? "Opening…" : "Open matching sheet row"}
+                  </Button>
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Opens the exact Google Sheets row used for client portal status tracking.
+                </p>
               </section>
 
               <section className="space-y-2">

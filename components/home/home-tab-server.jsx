@@ -3,6 +3,8 @@ import { PublicFileImg } from "../public-file-img";
 import { CountryCoverage } from "../country-coverage";
 import { NewsBoard } from "../news-board";
 import { SmartNavigator } from "../smart-navigator";
+import { PathwayMapPanel } from "./pathway-map-panel";
+import { GoogleReviewsPanel } from "./google-reviews-panel";
 
 const countryBannerLinks = [
   { label: "Australia", href: "/destinations/australia" },
@@ -191,6 +193,8 @@ export function HomeTabServer({ siteData, newsData }) {
         ))}
       </section>
 
+      <PathwayMapPanel />
+
       <section className="split-section editorial-section editorial-section--story">
         <div>
           <p className="section-label">Why Choose MinRosh</p>
@@ -236,6 +240,8 @@ export function HomeTabServer({ siteData, newsData }) {
       <section className="news-section">
         <NewsBoard initialNews={newsData} limit={6} />
       </section>
+
+      <GoogleReviewsPanel />
 
       <section className="faq-section">
         <div className="section-head">

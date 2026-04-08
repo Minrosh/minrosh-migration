@@ -15,5 +15,6 @@ data-newsletter.json
 .env
 .env.*
 !.env.example
+.secrets/
 public/uploads/*
 !public/uploads/.gitkeep

@@ -3,12 +3,19 @@ import { readEnquiriesList } from "@/lib/admin/enquiries-read";
 import { readCustomers } from "@/lib/admin/json-store";
 import { listInvoices } from "@/lib/admin/invoices-service";
 import { readAdminSuccessStories, readAudit } from "@/lib/admin/json-store";
+import { getLeadSheetSummary } from "@/lib/google-sheets-crm";
 
 export async function GET() {
   if (!(await verifyAdminRequest())) return adminJsonUnauthorized();
   const { customers = [] } = readCustomers();
   const { stories = [] } = readAdminSuccessStories();
   const { entries = [] } = readAudit();
+  let sheetSummary = { ok: false };
+  try {
+    sheetSummary = await getLeadSheetSummary();
+  } catch {
+    sheetSummary = { ok: false };
+  }
   return Response.json({
     enquiries: readEnquiriesList().length,
     customers: customers.length,
@@ -17,5 +24,6 @@ export async function GET() {
     pendingInvoices: listInvoices().filter((i) => i.status === "pending").length,
     successStories: stories.length,
     auditEntries: entries.length,
+    leadSheet: sheetSummary,
   });
 }

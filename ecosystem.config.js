@@ -5,6 +5,10 @@ const path = require("path");
  * PM2's `env_file` key is only supported in newer PM2 versions; many servers ignore it,
  * which leaves SMTP_* unset and shows "SMTP is not configured" on the contact form.
  * We merge project-root .env here so mail and admin secrets always load.
+ *
+ * Important: `pm2 restart --update-env` does not re-read this file or .env — it reapplies
+ * the saved process env. After changing .env, run: `pm2 delete minrosh-next && pm2 start ecosystem.config.js && pm2 save`
+ * (or `pm2 start ecosystem.config.js --only minrosh-next` if already defined) so merged vars apply.
  */
 function loadDotEnv(absPath) {
   const out = {};

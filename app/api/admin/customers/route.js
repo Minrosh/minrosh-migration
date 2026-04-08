@@ -7,14 +7,20 @@ import {
   addCustomer,
   deleteCustomer,
   findCustomerById,
+  findDuplicateCustomerCandidates,
+  mergeCustomers,
   regenerateMagicLink,
   updateCustomer,
 } from "@/lib/admin/customers-service";
 import { getClientIp } from "@/lib/security/request-ip";
+import { createVisaExpiryReminder } from "@/lib/google-calendar";
 
 export async function GET(request) {
   if (!(await verifyAdminRequest())) return adminJsonUnauthorized();
   const { searchParams } = new URL(request.url);
+  if (searchParams.get("duplicates") === "1") {
+    return Response.json({ pairs: findDuplicateCustomerCandidates() });
+  }
   const limit = Math.min(500, Math.max(1, Number(searchParams.get("limit")) || 200));
   const offset = Math.max(0, Number(searchParams.get("offset")) || 0);
   const { customers } = readCustomers();
@@ -35,6 +41,20 @@ export async function POST(request) {
   }
   const action = body?.action;
   const ip = getClientIp(request);
+
+  if (action === "merge") {
+    const winnerId = String(body.winnerId || "").trim();
+    const loserId = String(body.loserId || "").trim();
+    if (!winnerId || !loserId) {
+      return Response.json({ error: "winnerId and loserId required" }, { status: 400 });
+    }
+    const result = mergeCustomers(winnerId, loserId);
+    if (!result.ok) {
+      return Response.json({ error: result.error || "Merge failed" }, { status: 400 });
+    }
+    appendAudit("customer_merge", winnerId, { ip, route: "POST /api/admin/customers merge" });
+    return Response.json({ customer: toCustomerListRow(result.customer) });
+  }
 
   if (action === "regenerateToken") {
     const regen = regenerateMagicLink(body.id);
@@ -73,7 +93,25 @@ export async function PATCH(request) {
   }
   const { id, ...rest } = body;
   if (!id) return Response.json({ error: "id required" }, { status: 400 });
-  const allowed = new Set(["name", "email", "status", "notes", "mobile", "marketingConsent"]);
+  const allowed = new Set([
+    "name",
+    "email",
+    "status",
+    "notes",
+    "mobile",
+    "marketingConsent",
+    "visaExpiryDate",
+    "company",
+    "preferredChannel",
+    "addressLine1",
+    "addressLine2",
+    "city",
+    "state",
+    "postcode",
+    "country",
+    "tags",
+    "socialProfiles",
+  ]);
   const patch = {};
   for (const key of allowed) {
     if (rest[key] === undefined) continue;
@@ -87,6 +125,16 @@ export async function PATCH(request) {
       patch[key] = rest[key];
     } else if (key === "marketingConsent") {
       patch[key] = Boolean(rest[key]);
+    } else if (key === "visaExpiryDate") {
+      patch[key] = String(rest[key] || "").trim().slice(0, 16);
+    } else if (key === "company" || key === "preferredChannel") {
+      patch[key] = String(rest[key] || "").trim().slice(0, 200);
+    } else if (key === "addressLine1" || key === "addressLine2" || key === "city" || key === "state" || key === "postcode" || key === "country") {
+      patch[key] = String(rest[key] || "").trim().slice(0, 200);
+    } else if (key === "tags") {
+      patch[key] = Array.isArray(rest[key]) ? rest[key].map((t) => String(t).trim().slice(0, 40)).filter(Boolean).slice(0, 30) : [];
+    } else if (key === "socialProfiles") {
+      patch[key] = rest[key] && typeof rest[key] === "object" ? rest[key] : {};
     }
   }
   if (Object.keys(patch).length === 0) {
@@ -94,6 +142,17 @@ export async function PATCH(request) {
   }
   const row = updateCustomer(id, patch);
   if (!row) return Response.json({ error: "Not found" }, { status: 404 });
+  if (patch.visaExpiryDate && /^\d{4}-\d{2}-\d{2}$/.test(patch.visaExpiryDate)) {
+    try {
+      await createVisaExpiryReminder({
+        customerId: row.id,
+        customerName: row.name,
+        visaExpiryDate: patch.visaExpiryDate,
+      });
+    } catch {
+      // Deadline sync is best-effort; do not block customer save.
+    }
+  }
   const ip = getClientIp(request);
   appendAudit("customer_update", id, { ip, route: "PATCH /api/admin/customers" });
   return Response.json({ customer: toCustomerListRow(row) });

@@ -95,7 +95,7 @@ export default function BookConsultationPage() {
 
           <div className="content-page__aside contact-form-column">
             <AgentRegistrationStrip brand={siteData.brand} />
-            <ContactLeadForm />
+            <ContactLeadForm mode="consultation" />
           </div>
         </div>
       </section>

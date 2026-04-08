@@ -6,6 +6,7 @@ export function PublicUploadForm({ token }) {
   const [status, setStatus] = useState("");
   const [loading, setLoading] = useState(false);
   const [docs, setDocs] = useState([]);
+  const [portalStatus, setPortalStatus] = useState(null);
   const [gate, setGate] = useState("loading");
   const [phoneLast4, setPhoneLast4] = useState("");
   const [otpCode, setOtpCode] = useState("");
@@ -38,6 +39,7 @@ export function PublicUploadForm({ token }) {
     }
     setGate("ok");
     setStatus("");
+    setPortalStatus(data?.customer?.portalStatus || null);
     const serverDocs = Array.isArray(data?.customer?.documents) ? data.customer.documents : [];
     setDocs((prev) => (serverDocs.length ? serverDocs : prev));
   }, [token]);
@@ -225,6 +227,14 @@ export function PublicUploadForm({ token }) {
         Drag and drop files here, or choose below. PDFs and images only — up to 15&nbsp;MB per file, up to 20 files
         at once. This link expires 72 hours after it was issued unless your agent sends a new one.
       </p>
+      {portalStatus ? (
+        <div className="rounded-md border border-emerald-200 bg-emerald-50 p-3 text-sm text-slate-800">
+          <p className="font-semibold text-emerald-900">Visa application status: {portalStatus.status}</p>
+          {portalStatus.stage ? <p className="mt-1">Stage: {portalStatus.stage}</p> : null}
+          {portalStatus.updatedAt ? <p className="mt-1">Last updated: {portalStatus.updatedAt}</p> : null}
+          {portalStatus.note ? <p className="mt-1">{portalStatus.note}</p> : null}
+        </div>
+      ) : null}
       <label className="block text-sm font-medium text-slate-700">
         PDF or images (max 15MB each, max 20 files)
         <input

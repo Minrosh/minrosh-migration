@@ -4,18 +4,9 @@ import { SiteTopbar } from "./site-topbar";
 import { SiteFooter } from "./site-footer";
 import { getFooterStats } from "../lib/site-stats";
 import { getDestinationNavLinks } from "../lib/destination-nav";
+import { GLOBAL_HEADER_PRIMARY_LINKS } from "../lib/public-indexable-routes";
 
-const globalPrimaryLinks = [
-  { href: "/", label: "Home" },
-  { href: "/skilled-migration", label: "Skilled" },
-  { href: "/partner-visa-australia", label: "Partner" },
-  { href: "/student-visa-australia", label: "Student" },
-  { href: "/education-consultation", label: "Education" },
-  { href: "/updates", label: "Updates" },
-  { href: "/faq", label: "FAQ" },
-  { href: "/about", label: "About" },
-  { href: "/contact", label: "Contact" },
-];
+const globalPrimaryLinks = GLOBAL_HEADER_PRIMARY_LINKS;
 
 /**
  * @param {object} props
