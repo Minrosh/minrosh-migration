@@ -1,0 +1,7 @@
+{
+  "rules": [
+    { "id": "rem-before-3", "enabled": true, "offsetDays": -3, "channel": "email" },
+    { "id": "rem-after-1", "enabled": true, "offsetDays": 1, "channel": "email" },
+    { "id": "rem-after-7", "enabled": true, "offsetDays": 7, "channel": "email" }
+  ]
+}

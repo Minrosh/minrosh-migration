@@ -9,6 +9,7 @@
     "start": "next start",
     "lint": "next lint",
     "test:contact": "node scripts/test-contact-save.mjs",
+    "test:invoice": "node scripts/test-invoice-platform.mjs",
     "test:smtp": "node --env-file=.env scripts/test-smtp.mjs",
     "test:smtp:shell": "node scripts/test-smtp.mjs",
     "audit:production": "npm audit --production",

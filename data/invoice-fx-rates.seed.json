@@ -1,0 +1,6 @@
+{
+  "baseCurrency": "AUD",
+  "rates": [
+    { "code": "AUD", "rate": 1, "asOf": "2026-01-01T00:00:00.000Z", "source": "manual-seed" }
+  ]
+}

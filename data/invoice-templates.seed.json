@@ -1,0 +1,16 @@
+{
+  "templates": [
+    {
+      "id": "tpl-default-au",
+      "name": "Default AU Tax Invoice",
+      "currency": "AUD",
+      "defaultTerms": "Payment due within 7 days.",
+      "issuer": {
+        "businessName": "MinRosh Migration",
+        "abn": "00 000 000 000",
+        "email": "accounts@example.com"
+      },
+      "lineDefaults": []
+    }
+  ]
+}
