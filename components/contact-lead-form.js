@@ -7,6 +7,7 @@ import {
   quizSummaryFromNavigatorDetail,
   readNavigatorQuizSummaryLine,
 } from "@/lib/navigator-session";
+import { trackEvent } from "@/lib/client-analytics";
 
 const initialForm = {
   firstName: "",
@@ -81,6 +82,12 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
 
   async function handleSubmit(event) {
     event.preventDefault();
+    trackEvent("contact_form_submit_attempt", {
+      form_mode: mode,
+      preferred_country: form.preferredCountry,
+      main_need: form.mainNeed,
+      has_quiz_summary: Boolean(quizSummaryLine),
+    });
     setState({ status: "loading", message: "" });
     try {
       const response = await fetch("/api/contact", {
@@ -105,10 +112,20 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
       if (typeof window !== "undefined") {
         window.dispatchEvent(new Event("minrosh:enquiry-created"));
       }
+      trackEvent("contact_form_submit_success", {
+        form_mode: mode,
+        consultation_booked: Boolean(data.consultationBooked),
+        preferred_country: form.preferredCountry,
+        main_need: form.mainNeed,
+      });
       setForm(initialForm);
       setQuizSummaryLine("");
       clearNavigatorSummarySession();
     } catch (error) {
+      trackEvent("contact_form_submit_error", {
+        form_mode: mode,
+        error_message: String(error?.message || "unknown_error").slice(0, 120),
+      });
       setState({
         status: "error",
         message: error.message || "Could not submit enquiry.",

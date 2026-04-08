@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { PublicFileImg } from "./public-file-img";
+import { personalizedCtaForPath, recommendedLinksForPath } from "../lib/content-personalization";
 
 export function ContentPage({
   eyebrow,
@@ -10,14 +11,25 @@ export function ContentPage({
   officialResources = [],
   faq = [],
   related = [],
+  currentPath = "",
   /** Optional regulatory / compliance callout (e.g. TSMIT). */
   alertBanner = null,
   heroImage = { src: "/images/brisbane-skyline.jpg", alt: "Brisbane skyline and riverfront" },
-  ctaTitle = "Ready to discuss your options?",
-  ctaBody = "Start with a clear enquiry and MinRosh will help you map the most relevant next steps.",
+  ctaTitle = "",
+  ctaBody = "",
   /** Optional tools/widgets in the aside (e.g. TSMIT calculator). */
   asideTools = null,
 }) {
+  const resolvedPath = currentPath || breadcrumbs[breadcrumbs.length - 1]?.href || "";
+  const personalizedCta = personalizedCtaForPath(resolvedPath);
+  const mergedRelated = [
+    ...related,
+    ...recommendedLinksForPath(resolvedPath).filter((item) => item.href !== resolvedPath),
+  ];
+  const dedupedRelated = mergedRelated.filter(
+    (item, index) => mergedRelated.findIndex((candidate) => candidate.href === item.href) === index
+  );
+
   return (
     <article className="content-page">
       {breadcrumbs.length ? (
@@ -120,8 +132,8 @@ export function ContentPage({
           {asideTools ? <div className="content-page__aside-tools">{asideTools}</div> : null}
           <div className="content-aside-card bento-hover">
             <p className="section-label">Next Step</p>
-            <h3>{ctaTitle}</h3>
-            <p>{ctaBody}</p>
+            <h3>{ctaTitle || personalizedCta.title}</h3>
+            <p>{ctaBody || personalizedCta.body}</p>
             <div className="content-aside-card__actions">
               <Link href="/book-consultation" className="btn btn-primary">
                 Book Consultation
@@ -132,11 +144,11 @@ export function ContentPage({
             </div>
           </div>
 
-          {related.length ? (
+          {dedupedRelated.length ? (
             <div className="content-aside-card bento-hover">
               <p className="section-label">Related Pages</p>
               <div className="content-links">
-                {related.map((item) => (
+                {dedupedRelated.map((item) => (
                   <Link key={item.href} href={item.href} className="content-links__item">
                     <strong>{item.title}</strong>
                     <span>Open page</span>

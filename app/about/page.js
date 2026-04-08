@@ -62,6 +62,16 @@ const sections = [
       "Consultation notes designed for follow-through",
     ],
   },
+  {
+    title: "Trust, registration, and standards",
+    body:
+      "MinRosh maintains a compliance-first approach supported by professional standards, clear conduct expectations, and official-source verification before clients commit to major decisions.",
+    bullets: [
+      `OMARA register reference: ${siteData.brand.marn}`,
+      siteData.brand.specialistAccreditationNote,
+      "Official legislative and code-of-conduct links are published across legal pages",
+    ],
+  },
 ];
 
 export default function AboutPage() {

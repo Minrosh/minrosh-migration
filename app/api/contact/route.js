@@ -71,6 +71,9 @@ export async function POST(request) {
       phone: enquiryRecord.phone,
       mainNeed: enquiryRecord.mainNeed,
       message: enquiryRecord.message,
+      quizCompleted: Boolean(String(enquiryRecord.quizSummary || "").trim()),
+      quizCompletionDepth: String(enquiryRecord.quizSummary || "").trim() ? 10 : 0,
+      consultationRequested: Boolean(enquiryRecord.preferredDate && enquiryRecord.preferredTime),
     });
     runAutomationRules({ trigger: "lead_created", payload: { customerId: lead.customerId } });
   } catch {

@@ -20,6 +20,10 @@
           "Salary thresholds and going rates",
           "English and tuberculosis testing where required"
         ]
+      },
+      {
+        "title": "Timeline and evidence discipline",
+        "body": "Strong UK work-route applications are built on consistent role evidence, salary documentation, and accurate sequencing against sponsor timelines."
       }
     ],
     "faq": [
@@ -53,9 +57,18 @@
       {
         "title": "Evidence and planning",
         "body": "We help you map relationship history and finances to the categories you are reading on GOV.UK, so you know what to collect before professional review."
+      },
+      {
+        "title": "Common family-route blockers",
+        "body": "Applications often stall when financial thresholds, accommodation evidence, or relationship timelines are not documented consistently."
       }
     ],
-    "faq": [],
+    "faq": [
+      {
+        "question": "Do UK family routes always have financial thresholds?",
+        "answer": "Many do, but exact requirements vary by route and policy updates. Check current GOV.UK guidance for your specific category."
+      }
+    ],
     "related": [
       { "title": "UK hub", "href": "/destinations/united-kingdom" },
       { "title": "Contact", "href": "/destinations/united-kingdom/contact" }
@@ -81,9 +94,18 @@
       {
         "title": "Course and provider",
         "body": "We help you sanity-check how your chosen course and location align with your study story and budget."
+      },
+      {
+        "title": "Readiness before visa submission",
+        "body": "Before submitting, ensure CAS details, maintenance evidence, and personal history records are coherent and current."
       }
     ],
-    "faq": [],
+    "faq": [
+      {
+        "question": "Can dependants be included for UK student routes?",
+        "answer": "Dependant eligibility depends on route type and current rules. Confirm this carefully on GOV.UK before planning family travel."
+      }
+    ],
     "related": [
       { "title": "UK hub", "href": "/destinations/united-kingdom" },
       { "title": "Education planning", "href": "/destinations/united-kingdom/education" }
@@ -109,6 +131,10 @@
       {
         "title": "From offer to visa prep",
         "body": "Once you have a credible CAS pathway, we tie timelines to funds evidence and any dependants."
+      },
+      {
+        "title": "Cost and location planning",
+        "body": "Programme location changes your financial profile significantly, so compare tuition and living cost implications before final commitment."
       }
     ],
     "faq": [],
@@ -137,6 +163,10 @@
       {
         "title": "What to watch",
         "body": "Salary lists, financial thresholds, and student maintenance figures are common update points. Note effective dates carefully."
+      },
+      {
+        "title": "How to respond when rules change",
+        "body": "If an update lands mid-cycle, recalculate eligibility and evidence requirements immediately before proceeding with the same timeline."
       }
     ],
     "faq": [],
@@ -197,6 +227,10 @@
       {
         "title": "Scope",
         "body": "We are not a UK law firm; we provide migration-agent-style clarity and triage, and we point to solicitors where UK legal advice is required."
+      },
+      {
+        "title": "Best use of MinRosh support",
+        "body": "Use us for pathway triage, timeline sequencing, and document-readiness planning before legal or sponsored submission steps."
       }
     ],
     "faq": [],
@@ -225,6 +259,10 @@
       {
         "title": "Connect",
         "body": "Use the site contact form or book a consultation; note United Kingdom in your message."
+      },
+      {
+        "title": "What to include in your first enquiry",
+        "body": "Include route type, sponsor status (if any), and timeline target so we can suggest the right next action without delays."
       }
     ],
     "faq": [],

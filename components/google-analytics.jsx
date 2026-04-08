@@ -17,6 +17,13 @@ window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 gtag('config', '${id}');
+window.minroshTrack = function(eventName, params){
+  try {
+    gtag('event', eventName, params || {});
+  } catch (_e) {
+    // Silently ignore analytics errors to avoid blocking UX.
+  }
+}
         `.trim()}
       </Script>
     </>

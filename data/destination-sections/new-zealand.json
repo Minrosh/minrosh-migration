@@ -24,6 +24,15 @@
       {
         "title": "Documentation and timing",
         "body": "NZ applications often need tight alignment between employment agreements, role descriptions, and your background. Early document planning reduces rework when INZ requests clarification."
+      },
+      {
+        "title": "Risk controls before submission",
+        "body": "Reduce avoidable delays by validating role details, qualification evidence, and consistency across all forms before lodgement.",
+        "bullets": [
+          "Keep employment dates and role scope consistent across references",
+          "Check validity windows for medical and police documents",
+          "Prepare a fallback plan if timelines shift"
+        ]
       }
     ],
     "faq": [
@@ -60,6 +69,12 @@
       }
     ],
     "faq": [],
+    "faq": [
+      {
+        "question": "What evidence is strongest for NZ partner applications?",
+        "answer": "Evidence that consistently shows relationship history, shared commitments, and social recognition usually has the strongest practical value."
+      }
+    ],
     "related": [
       { "title": "New Zealand hub", "href": "/destinations/new-zealand" },
       { "title": "Contact", "href": "/destinations/new-zealand/contact" }
@@ -85,6 +100,10 @@
       {
         "title": "Provider and programme fit",
         "body": "We help you think through how your offer of place, fees, and living costs come together in an application-ready picture."
+      },
+      {
+        "title": "Compliance and transition planning",
+        "body": "Student planning should include attendance, funds continuity, and a realistic transition path if you later explore work or residence routes."
       }
     ],
     "faq": [],
@@ -113,6 +132,10 @@
       {
         "title": "From course choice to visa prep",
         "body": "Once you hold a credible offer of place, we align timelines with English tests, funds evidence, and any dependants included in your plan."
+      },
+      {
+        "title": "Budget and timeline readiness",
+        "body": "Before finalising a provider, compare tuition runway, living costs, and intake timing so your visa preparation remains realistic."
       }
     ],
     "faq": [],
@@ -141,6 +164,10 @@
       {
         "title": "What to monitor",
         "body": "Watch visa instruction updates, median wage references where applicable, and accreditation rules if you depend on employer-backed categories."
+      },
+      {
+        "title": "How to respond to policy changes",
+        "body": "When a rule changes mid-process, re-check eligibility assumptions and update your document sequencing instead of relying on old preparation plans."
       }
     ],
     "faq": [],
@@ -201,6 +228,10 @@
       {
         "title": "How we help",
         "body": "We focus on sequencing, document clarity, and honest fit checks rather than promising outcomes INZ cannot guarantee."
+      },
+      {
+        "title": "When to escalate to deeper review",
+        "body": "If you have prior refusals, tight deadlines, or mixed pathway history, a consultation is the best way to map a safer next-step strategy."
       }
     ],
     "faq": [],
@@ -229,6 +260,10 @@
       {
         "title": "Reach MinRosh",
         "body": "Use the main contact page for the enquiry form, or book a consultation directly. Mention New Zealand in your message so we route you efficiently."
+      },
+      {
+        "title": "What to include in your first enquiry",
+        "body": "Share your location, target visa type, and timeline constraints so we can recommend the correct pathway page or consultation format quickly."
       }
     ],
     "faq": [],

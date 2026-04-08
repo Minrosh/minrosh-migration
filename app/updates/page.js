@@ -24,6 +24,7 @@ export default function UpdatesPage() {
     seoPages.guidePages.visaFeesGuide,
     seoPages.guidePages.processingTimesGuide,
     seoPages.guidePages.documentChecklistGuide,
+    seoPages.guidePages.countryComparisonGuide,
   ];
 
   return (

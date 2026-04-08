@@ -673,6 +673,47 @@
         "title": "Start with a free assessment",
         "href": "/assessment"
       }
+    },
+    "countryComparisonGuide": {
+      "path": "/australia-vs-canada-migration-guide",
+      "title": "Australia vs Canada Migration Guide (2026)",
+      "metaTitle": "Australia vs Canada Migration Guide (2026)",
+      "metaDescription": "Compare Australia and Canada migration pathways in 2026: skilled routes, study options, processing dynamics, and practical decision factors before you commit.",
+      "headline": "Australia vs Canada Migration Guide (2026)",
+      "intro": "Australia and Canada are both strong migration destinations, but pathway mechanics differ. This guide helps you compare practical factors such as route structure, evidence readiness, cost planning, and timeline risk before making a major commitment.",
+      "published": "2026-04-08",
+      "sections": [
+        {
+          "title": "How the systems differ at a high level",
+          "body": "Australia relies heavily on subclass-specific pathways and nomination structures, while Canada combines federal and provincial programs with separate intake and selection dynamics. Both require careful sequencing and realistic competitiveness checks."
+        },
+        {
+          "title": "Skilled route comparison",
+          "body": "In Australia, many applicants focus on points-tested pathways linked to occupation and nomination settings. In Canada, candidates often evaluate federal Express Entry and provincial nominations. Neither system rewards guesswork; both reward preparation quality and timing."
+        },
+        {
+          "title": "Study pathway comparison",
+          "body": "Study routes in both countries can support longer-term planning, but eligibility, post-study settings, and institution strategy differ. Course choice should align with visa compliance requirements first, then broader migration planning."
+        },
+        {
+          "title": "Decision framework before committing",
+          "body": "Use a practical framework: profile competitiveness, documentation readiness, budget runway, timeline flexibility, and pathway fallback options. A side-by-side review reduces emotional decisions based on headline trends."
+        }
+      ],
+      "faq": [
+        {
+          "question": "Is Australia easier than Canada for skilled migration?",
+          "answer": "There is no universal answer. Difficulty depends on your occupation, language profile, evidence quality, and current policy settings in each system."
+        },
+        {
+          "question": "Should I choose by processing time alone?",
+          "answer": "No. Processing speed is only one factor. Pathway suitability, cost exposure, and evidence readiness are often more important for long-term outcomes."
+        }
+      ],
+      "relatedService": {
+        "title": "Book a country-comparison consultation",
+        "href": "/book-consultation"
+      }
     }
   }
 }

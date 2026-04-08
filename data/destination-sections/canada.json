@@ -24,6 +24,15 @@
           "ECA and qualification matching",
           "Provincial program fit versus federal tracks"
         ]
+      },
+      {
+        "title": "Readiness and timing",
+        "body": "Skilled candidates should plan for evidence readiness before profile submission so invitations can be actioned without last-minute document issues.",
+        "bullets": [
+          "Align work references with occupational claims",
+          "Prepare financial and identity evidence early",
+          "Track expiry dates for key supporting documents"
+        ]
       }
     ],
     "faq": [
@@ -57,9 +66,18 @@
       {
         "title": "Planning sponsorship",
         "body": "We help sponsors and applicants understand evidence expectations and timelines at a high level before you commit to a complex paper trail."
+      },
+      {
+        "title": "Common family-route risk points",
+        "body": "Most delays come from incomplete sponsorship forms, missing supporting evidence, or inconsistent relationship timelines."
       }
     ],
-    "faq": [],
+    "faq": [
+      {
+        "question": "Does sponsor income always matter in Canada family applications?",
+        "answer": "Financial requirements depend on the stream and who is being sponsored. Always follow the specific IRCC pathway checklist."
+      }
+    ],
     "related": [
       { "title": "Canada hub", "href": "/destinations/canada" },
       { "title": "Contact", "href": "/destinations/canada/contact" }
@@ -85,9 +103,18 @@
       {
         "title": "Institution and province",
         "body": "DLI choice, province, and post-graduation work permit rules can interact. We help you ask the right questions early."
+      },
+      {
+        "title": "Student compliance essentials",
+        "body": "Applications should clearly demonstrate funds, genuine study intent, and consistency between course choice and background."
       }
     ],
-    "faq": [],
+    "faq": [
+      {
+        "question": "Can I change schools after getting a Canada study permit?",
+        "answer": "Possible changes depend on your permit conditions and IRCC rules in force. Validate implications before making transitions."
+      }
+    ],
     "related": [
       { "title": "Canada hub", "href": "/destinations/canada" },
       { "title": "Education planning", "href": "/destinations/canada/education" }
@@ -113,6 +140,10 @@
       {
         "title": "Shortlisting",
         "body": "We compare options for credibility, duration, total cost, and how they support your stated study goals."
+      },
+      {
+        "title": "Budget planning before offer acceptance",
+        "body": "Estimate first-year tuition, living costs, and settlement buffer so your application remains financially credible end-to-end."
       }
     ],
     "faq": [],
@@ -141,6 +172,10 @@
       {
         "title": "Reliable monitoring",
         "body": "Follow IRCC program pages you depend on, and note effective dates when rules change mid-year."
+      },
+      {
+        "title": "Interpreting update impact",
+        "body": "When policy changes arrive, check whether they alter your category, timeline, or required evidence before acting."
       }
     ],
     "faq": [],
@@ -201,6 +236,10 @@
       {
         "title": "Our role",
         "body": "Structured triage, sequencing, and clarity—not a substitute for reading IRCC instructions where you self-represent."
+      },
+      {
+        "title": "When deeper review is recommended",
+        "body": "If you have refusals, inadmissibility concerns, or a compressed timeline, consultation-first planning is safer than self-navigation."
       }
     ],
     "faq": [],
@@ -229,6 +268,10 @@
       {
         "title": "Ways to connect",
         "body": "Use /contact for the form or book a consultation. Mention Canada in the subject or first line."
+      },
+      {
+        "title": "What to include in your first message",
+        "body": "Share your goal, current location, language test status, and intended timeline so we can route you to the right service path quickly."
       }
     ],
     "faq": [],

@@ -3,42 +3,111 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 
-const SRI_LANKA_CITIES = [
-  { label: "Colombo", lat: 6.9271, lng: 79.8612 },
-  { label: "Kandy", lat: 7.2906, lng: 80.6337 },
-  { label: "Galle", lat: 6.0535, lng: 80.221 },
-  { label: "Jaffna", lat: 9.6615, lng: 80.0255 },
-  { label: "Kurunegala", lat: 7.4863, lng: 80.3623 },
+const WORLD_ORIGINS = [
+  { label: "Colombo, Sri Lanka", lat: 6.9271, lng: 79.8612 },
+  { label: "Kandy, Sri Lanka", lat: 7.2906, lng: 80.6337 },
+  { label: "Dubai, UAE", lat: 25.2048, lng: 55.2708 },
+  { label: "Doha, Qatar", lat: 25.2854, lng: 51.531 },
+  { label: "New Delhi, India", lat: 28.6139, lng: 77.209 },
+  { label: "Mumbai, India", lat: 19.076, lng: 72.8777 },
+  { label: "Singapore", lat: 1.3521, lng: 103.8198 },
+  { label: "Kuala Lumpur, Malaysia", lat: 3.139, lng: 101.6869 },
+  { label: "London, UK", lat: 51.5072, lng: -0.1276 },
+  { label: "Toronto, Canada", lat: 43.6532, lng: -79.3832 },
+  { label: "Auckland, New Zealand", lat: -36.8509, lng: 174.7645 },
+  { label: "Nairobi, Kenya", lat: -1.2864, lng: 36.8172 },
+  { label: "Lagos, Nigeria", lat: 6.5244, lng: 3.3792 },
+  { label: "São Paulo, Brazil", lat: -23.5505, lng: -46.6333 },
+  { label: "Berlin, Germany", lat: 52.52, lng: 13.405 },
 ];
 
-const AUSTRALIA_GOALS = [
+const WORLD_DESTINATIONS = [
   {
     label: "University of Queensland (Brisbane)",
-    city: "Brisbane",
     lat: -27.4975,
     lng: 153.0137,
-    community: "Sunnybank, Mount Gravatt, and Eight Mile Plains have active Sri Lankan communities.",
+    detail: "Brisbane education pathway with strong student support ecosystems.",
   },
   {
     label: "University of Melbourne (Melbourne)",
-    city: "Melbourne",
     lat: -37.7963,
     lng: 144.9614,
-    community: "Point Cook, Glen Waverley, and Dandenong connect many Sri Lankan families and students.",
+    detail: "Melbourne route with major graduate and professional migration pipelines.",
   },
   {
     label: "UNSW Sydney (Sydney)",
-    city: "Sydney",
     lat: -33.9173,
     lng: 151.2313,
-    community: "Parramatta, Toongabbie, and Homebush host vibrant Sri Lankan community networks.",
+    detail: "Sydney track for higher education and skilled career transitions.",
+  },
+  {
+    label: "Monash University (Melbourne)",
+    lat: -37.9105,
+    lng: 145.1364,
+    detail: "Major research university with diverse international intake pathways.",
+  },
+  {
+    label: "University of Toronto (Toronto)",
+    lat: 43.6629,
+    lng: -79.3957,
+    detail: "Canada destination for advanced study and long-term skilled planning.",
+  },
+  {
+    label: "University of British Columbia (Vancouver)",
+    lat: 49.2606,
+    lng: -123.246,
+    detail: "Strong west-coast study pathway with post-study planning potential.",
+  },
+  {
+    label: "University of Auckland (Auckland)",
+    lat: -36.8523,
+    lng: 174.7682,
+    detail: "New Zealand education route with structured study-to-work planning.",
+  },
+  {
+    label: "University of Manchester (Manchester)",
+    lat: 53.4668,
+    lng: -2.2339,
+    detail: "UK higher education option with diverse postgraduate pathways.",
+  },
+  {
+    label: "University of California, Berkeley (California)",
+    lat: 37.8719,
+    lng: -122.2585,
+    detail: "US destination often chosen for graduate and research-focused tracks.",
+  },
+  {
+    label: "NUS (Singapore)",
+    lat: 1.2966,
+    lng: 103.7764,
+    detail: "Singapore destination with strong regional career mobility outcomes.",
+  },
+  {
+    label: "ETH Zurich (Zurich)",
+    lat: 47.3763,
+    lng: 8.548,
+    detail: "European technical education destination for high-skill profiles.",
   },
   {
     label: "Adelaide Skilled Migration Pathway",
     city: "Adelaide",
     lat: -34.9285,
     lng: 138.6007,
-    community: "Mawson Lakes and Salisbury are common hubs for new migrant families.",
+    detail: "Regional-skilled focused pathway for long-term settlement planning.",
+  },
+  {
+    label: "Toronto Skilled Migration Pathway",
+    city: "Toronto",
+    lat: 43.6532,
+    lng: -79.3832,
+    detail: "Ontario-focused skilled migration planning pathway.",
+  },
+  {
+    label: "London Skilled Worker Pathway",
+    city: "London",
+    lat: 51.5072,
+    lng: -0.1276,
+    detail: "UK skilled worker route planning with sponsor readiness emphasis.",
   },
 ];
 
@@ -54,8 +123,8 @@ function haversineKm(from, to) {
 }
 
 export function PathwayMapPanel() {
-  const [cityIndex, setCityIndex] = useState(1);
-  const [goalIndex, setGoalIndex] = useState(0);
+  const [fromQuery, setFromQuery] = useState("Kandy, Sri Lanka");
+  const [goalQuery, setGoalQuery] = useState("University of Queensland (Brisbane)");
   const [ready, setReady] = useState(false);
   const [error, setError] = useState("");
   const mapRef = useRef(null);
@@ -63,8 +132,14 @@ export function PathwayMapPanel() {
   const overlaysRef = useRef({ fromMarker: null, toMarker: null, line: null });
 
   const mapsKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "";
-  const city = SRI_LANKA_CITIES[cityIndex] || SRI_LANKA_CITIES[0];
-  const goal = AUSTRALIA_GOALS[goalIndex] || AUSTRALIA_GOALS[0];
+  const city =
+    WORLD_ORIGINS.find((item) => item.label.toLowerCase() === fromQuery.trim().toLowerCase()) ||
+    WORLD_ORIGINS.find((item) => item.label.toLowerCase().includes(fromQuery.trim().toLowerCase())) ||
+    WORLD_ORIGINS[0];
+  const goal =
+    WORLD_DESTINATIONS.find((item) => item.label.toLowerCase() === goalQuery.trim().toLowerCase()) ||
+    WORLD_DESTINATIONS.find((item) => item.label.toLowerCase().includes(goalQuery.trim().toLowerCase())) ||
+    WORLD_DESTINATIONS[0];
 
   const distanceKm = useMemo(() => haversineKm(city, goal), [city, goal]);
   const estFlightHours = useMemo(() => Math.max(9, Math.round(distanceKm / 850)), [distanceKm]);
@@ -120,7 +195,7 @@ export function PathwayMapPanel() {
     overlaysRef.current.fromMarker = new window.google.maps.Marker({
       position: from,
       map,
-      title: `${city.label}, Sri Lanka`,
+      title: city.label,
     });
     overlaysRef.current.toMarker = new window.google.maps.Marker({
       position: to,
@@ -146,31 +221,41 @@ export function PathwayMapPanel() {
     <section className="pathway-map editorial-section editorial-section--compact">
       <div className="section-head">
         <div>
-          <p className="section-label">Sri Lanka to Australia Pathway Map</p>
+          <p className="section-label">Global Pathway Map</p>
           <h2>Make your migration pathway feel real before you lodge.</h2>
         </div>
       </div>
       <div className="pathway-map__grid">
         <div className="pathway-map__panel bento-hover">
           <label>
-            Start city in Sri Lanka
-            <select value={cityIndex} onChange={(e) => setCityIndex(Number(e.target.value))}>
-              {SRI_LANKA_CITIES.map((item, i) => (
-                <option key={item.label} value={i}>
-                  {item.label}
-                </option>
+            Start city (worldwide)
+            <input
+              type="search"
+              list="pathway-from-cities"
+              value={fromQuery}
+              onChange={(e) => setFromQuery(e.target.value)}
+              placeholder="Search city (e.g. Colombo, Dubai, London)"
+            />
+            <datalist id="pathway-from-cities">
+              {WORLD_ORIGINS.map((item) => (
+                <option key={item.label} value={item.label} />
               ))}
-            </select>
+            </datalist>
           </label>
           <label>
-            Goal in Australia
-            <select value={goalIndex} onChange={(e) => setGoalIndex(Number(e.target.value))}>
-              {AUSTRALIA_GOALS.map((item, i) => (
-                <option key={item.label} value={i}>
-                  {item.label}
-                </option>
+            Destination (universities, colleges, and skilled pathways)
+            <input
+              type="search"
+              list="pathway-goals"
+              value={goalQuery}
+              onChange={(e) => setGoalQuery(e.target.value)}
+              placeholder="Search destination or institution"
+            />
+            <datalist id="pathway-goals">
+              {WORLD_DESTINATIONS.map((item) => (
+                <option key={item.label} value={item.label} />
               ))}
-            </select>
+            </datalist>
           </label>
           <p>
             Approx route distance: <strong>{distanceKm.toLocaleString()} km</strong>
@@ -178,7 +263,7 @@ export function PathwayMapPanel() {
           <p>
             Typical total flight duration: <strong>{estFlightHours} to {estFlightHours + 3} hours</strong>
           </p>
-          <p>{goal.community}</p>
+          <p>{goal.detail}</p>
           <Link
             href={`/book-consultation?fromCity=${encodeURIComponent(city.label)}&pathwayGoal=${encodeURIComponent(goal.label)}`}
             className="btn btn-primary"

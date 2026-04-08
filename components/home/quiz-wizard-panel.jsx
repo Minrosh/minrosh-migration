@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { calculateQuizResult, quizOptions } from "@/lib/quiz";
 import { persistNavigatorSummary } from "@/lib/navigator-session";
+import { trackEvent } from "@/lib/client-analytics";
 import { QuizResultSkeleton as DefaultQuizResultSkeleton } from "./quiz-result-skeleton";
 
 const quizSteps = [
@@ -154,6 +155,11 @@ export function QuizWizardPanel({ isActive, onGoToContact, resultSkeleton }) {
       };
       persistNavigatorSummary(detail);
       window.dispatchEvent(new CustomEvent("minrosh:navigator-summary", { detail }));
+      trackEvent("quiz_completed", {
+        points_score: quizResult.score,
+        traffic_light: quizResult.trafficLight,
+        sid_stream: quizResult.sidStreamLabel,
+      });
     }
   }, [quizComplete, quizResult, resultSkeletonActive]);
 
@@ -440,7 +446,12 @@ export function QuizWizardPanel({ isActive, onGoToContact, resultSkeleton }) {
               <button
                 type="button"
                 className="btn btn-primary"
-                onClick={() => onGoToContact?.()}
+                onClick={() => {
+                  trackEvent("quiz_continue_to_report_clicked", {
+                    points_score: quizResult?.score || 0,
+                  });
+                  onGoToContact?.();
+                }}
                 disabled={!quizComplete}
               >
                 Continue to Full Report
@@ -560,7 +571,16 @@ export function QuizWizardPanel({ isActive, onGoToContact, resultSkeleton }) {
                   </ul>
                 </div>
               ) : null}
-              <button type="button" className="btn btn-primary" onClick={() => onGoToContact?.()}>
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={() => {
+                  trackEvent("quiz_get_full_report_clicked", {
+                    points_score: quizResult?.score || 0,
+                  });
+                  onGoToContact?.();
+                }}
+              >
                 Get Full Report
               </button>
             </>
