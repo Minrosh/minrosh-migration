@@ -550,6 +550,129 @@
         "title": "Skilled Migration Australia guidance",
         "href": "/skilled-migration"
       }
+    },
+    "visaFeesGuide": {
+      "path": "/australia-visa-fees-and-costs-guide",
+      "title": "Australia Visa Fees and Costs Guide (2026)",
+      "metaTitle": "Australia Visa Fees and Costs Guide (2026)",
+      "metaDescription": "Understand typical Australia visa costs in 2026, including government charges, skills assessment, English tests, health checks, police checks, and document preparation planning.",
+      "headline": "Australia Visa Fees and Costs Guide (2026)",
+      "intro": "Visa costs are not only government application charges. Most applicants also face related costs such as English tests, skills assessment, health checks, police certificates, and certified documents. This guide helps you plan costs in realistic stages.",
+      "published": "2026-04-08",
+      "sections": [
+        {
+          "title": "What visa costs usually include",
+          "body": "Most migration pathways involve more than one payment point. In addition to the visa application charge, applicants often pay for testing, assessments, document preparation, and compliance checks before and after lodgement."
+        },
+        {
+          "title": "Core cost categories to budget for",
+          "body": "Common categories include the visa application charge, skills assessment fees, English tests, medical examinations, police certificates, translations, and occasional document certification requirements. The mix varies by pathway and personal profile."
+        },
+        {
+          "title": "How to avoid cost mistakes",
+          "body": "Rushed sequencing creates unnecessary rework. Applicants can waste money by booking tests too early, choosing the wrong assessment pathway, or preparing documents in a format that does not meet authority expectations."
+        },
+        {
+          "title": "Plan in stages, not one number",
+          "body": "A staged budget works better than relying on one headline figure. Split your plan into early-stage readiness costs, pre-lodgement costs, and post-invitation or post-lodgement costs so you can make better decisions as your case progresses."
+        }
+      ],
+      "faq": [
+        {
+          "question": "How much does an Australia visa cost in total?",
+          "answer": "Total cost depends on the visa stream and your profile. Beyond the government charge, related costs can include assessments, tests, health checks, police certificates, and document preparation."
+        },
+        {
+          "question": "Can I pay everything at once?",
+          "answer": "Most applicants pay in stages. Budgeting by milestones is usually safer than committing all spending at the start."
+        }
+      ],
+      "relatedService": {
+        "title": "Book a consultation for a tailored cost plan",
+        "href": "/book-consultation"
+      }
+    },
+    "processingTimesGuide": {
+      "path": "/australia-visa-processing-times-guide",
+      "title": "Australia Visa Processing Times Guide (2026)",
+      "metaTitle": "Australia Visa Processing Times Guide (2026)",
+      "metaDescription": "Learn how Australian visa processing times work in 2026, why timelines vary, and how better preparation can reduce avoidable delays.",
+      "headline": "Australia Visa Processing Times Guide (2026)",
+      "intro": "Processing times depend on pathway, application quality, demand, and external checks. This guide explains how timelines are usually shaped and what applicants can do to reduce avoidable delays.",
+      "published": "2026-04-08",
+      "sections": [
+        {
+          "title": "Why processing times vary",
+          "body": "Timelines are affected by visa stream volume, policy settings, case complexity, and document quality. Two applicants in similar pathways can still experience different outcomes when evidence quality differs."
+        },
+        {
+          "title": "What slows applications down",
+          "body": "Common delay factors include incomplete forms, inconsistent supporting evidence, late health or police checks, and responses that do not fully address follow-up requests."
+        },
+        {
+          "title": "How to improve timeline quality",
+          "body": "You cannot guarantee speed, but you can improve quality. Structured document preparation, consistency checks, and clear sequencing reduce avoidable friction in case processing."
+        },
+        {
+          "title": "Use official processing information carefully",
+          "body": "Published processing indicators are useful as a broad benchmark, not a promise. Always interpret them with your own case profile in mind."
+        }
+      ],
+      "faq": [
+        {
+          "question": "Can a migration agent guarantee faster processing?",
+          "answer": "No. No adviser can guarantee processing speed. Professional guidance is mainly about reducing avoidable errors and strengthening evidence quality."
+        },
+        {
+          "question": "What should I do if my case is taking longer than expected?",
+          "answer": "Review whether all required actions are complete, check for follow-up requests, and seek professional review if there are unresolved complexity factors."
+        }
+      ],
+      "relatedService": {
+        "title": "Skilled Migration Australia guidance",
+        "href": "/skilled-migration"
+      }
+    },
+    "documentChecklistGuide": {
+      "path": "/australia-visa-document-checklist-guide",
+      "title": "Australia Visa Document Checklist Guide (2026)",
+      "metaTitle": "Australia Visa Document Checklist Guide (2026)",
+      "metaDescription": "Use this practical 2026 document checklist guide for Australian visa planning: identity, qualifications, employment, financial, health, and character evidence.",
+      "headline": "Australia Visa Document Checklist Guide (2026)",
+      "intro": "A strong visa application relies on consistency across your document set. This guide outlines practical checklist categories and explains how to prepare evidence in a cleaner order.",
+      "published": "2026-04-08",
+      "sections": [
+        {
+          "title": "Identity and civil documents",
+          "body": "Start with current passport details, birth records where relevant, and relationship or civil status documents that match your pathway. Ensure names and dates are consistent across all records."
+        },
+        {
+          "title": "Education and qualification evidence",
+          "body": "Gather transcripts, certificates, and supporting academic records early. Where required, prepare institution-issued documents in formats accepted by the relevant authority."
+        },
+        {
+          "title": "Employment and skills evidence",
+          "body": "For skilled pathways, employment references should align with nominated duties and timeline claims. Keep dates consistent across CV, references, and supporting records."
+        },
+        {
+          "title": "Health, character, and financial readiness",
+          "body": "Depending on your visa stream, health checks, police certificates, and financial evidence may be needed at different stages. Map expiry windows so key documents stay valid when needed."
+        }
+      ],
+      "faq": [
+        {
+          "question": "Should I collect all documents before the first assessment?",
+          "answer": "Not always. Start with core identity and pathway-critical evidence, then build the full checklist based on the recommended sequence for your case."
+        },
+        {
+          "question": "Do scanned copies need certification?",
+          "answer": "Certification expectations vary by authority and context. Use official instructions for your pathway before finalising document packs."
+        }
+      ],
+      "relatedService": {
+        "title": "Start with a free assessment",
+        "href": "/assessment"
+      }
     }
   }
 }

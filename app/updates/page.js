@@ -20,6 +20,12 @@ export const metadata = buildMetadata({
 
 export default function UpdatesPage() {
   const siteData = getHomeSiteData(siteDataStatic);
+  const latestGuides = [
+    seoPages.guidePages.visaFeesGuide,
+    seoPages.guidePages.processingTimesGuide,
+    seoPages.guidePages.documentChecklistGuide,
+  ];
+
   return (
     <SiteShell siteData={siteData} currentPath={pageData.path}>
       <StructuredData
@@ -51,6 +57,21 @@ export default function UpdatesPage() {
                 height={900}
               />
             </div>
+          </div>
+        </section>
+
+        <section className="content-section bento-hover">
+          <h2>Featured planning guides</h2>
+          <p>
+            Use these practical guides to plan budget, timing, and document readiness before you lodge.
+          </p>
+          <div className="content-links">
+            {latestGuides.map((guide) => (
+              <Link key={guide.path} href={guide.path} className="content-links__item">
+                <strong>{guide.title}</strong>
+                <span>Open guide</span>
+              </Link>
+            ))}
           </div>
         </section>
 

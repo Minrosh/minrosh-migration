@@ -15,7 +15,7 @@ export default function PrivacyPolicyPage() {
       <ContentPage
         eyebrow="Legal"
         title="Privacy Policy"
-        intro="This starter privacy policy explains the general approach MinRosh Migration takes to handling contact details, enquiry information, and communications submitted through the website."
+        intro="This policy explains how MinRosh Migration collects, uses, stores, and safeguards personal information provided through website forms, email, phone, and related services."
         breadcrumbs={[
           { href: "/", label: "Home" },
           { href: "/privacy-policy", label: "Privacy Policy" },
@@ -27,15 +27,19 @@ export default function PrivacyPolicyPage() {
           },
           {
             title: "How information is used",
-            body: "Information is generally used to respond to enquiries, organise consultations, send service-related follow-up messages, and improve how MinRosh understands the needs of visitors using the website.",
+            body: "Information is used to respond to enquiries, schedule consultations, deliver service-related communication, and maintain administrative records required to provide migration and education support services.",
           },
           {
-            title: "Storage and access",
-            body: "Website enquiry information may be stored securely on MinRosh systems or trusted service providers used to operate the business. Access is intended to be limited to authorised personnel handling enquiries, communications, and administration.",
+            title: "Storage, security, and access",
+            body: "Information may be stored on secure systems operated by MinRosh Migration and trusted service providers used for communications and business operations. Access is limited to authorised personnel who need the information to perform service, administration, or compliance duties.",
           },
           {
-            title: "Updates to this policy",
-            body: "This privacy policy is a professional starter version and should be reviewed against your final business processes, data-handling tools, and legal obligations before launch.",
+            title: "Your choices and contact",
+            body: "You can request access to your personal information or ask for corrections by contacting MinRosh Migration. Marketing communication preferences can be updated at any time using unsubscribe links or direct contact.",
+          },
+          {
+            title: "Policy updates",
+            body: "This policy may be updated from time to time to reflect operational, legal, or regulatory changes. The latest version is published on this page.",
           },
         ]}
       />
