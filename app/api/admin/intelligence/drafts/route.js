@@ -2,6 +2,7 @@ import { adminJsonUnauthorized, requireAdminWrite, verifyAdminRequest } from "@/
 import { appendAudit } from "@/lib/admin/audit";
 import { getClientIp } from "@/lib/security/request-ip";
 import { readIntelligenceDrafts, updateDraftStatus } from "@/lib/intelligence/store";
+import { publishDraftToNewsStore } from "@/lib/intelligence/publish";
 
 export async function GET() {
   if (!(await verifyAdminRequest())) return adminJsonUnauthorized();
@@ -24,6 +25,7 @@ export async function PATCH(request) {
   if (!["pending", "approved", "rejected"].includes(status)) {
     return Response.json({ error: "Invalid status" }, { status: 400 });
   }
+  const previous = readIntelligenceDrafts().drafts?.find((d) => d.id === id) || null;
   const draft = updateDraftStatus({
     id,
     status,
@@ -31,9 +33,32 @@ export async function PATCH(request) {
     edits: body.edits,
   });
   if (!draft) return Response.json({ error: "Draft not found" }, { status: 404 });
+  let publishedNews = null;
+  if (status === "approved") {
+    publishedNews = publishDraftToNewsStore(draft);
+    updateDraftStatus({
+      id,
+      status,
+      moderationNote: body.moderationNote,
+      edits: {
+        publishedNewsHref: publishedNews?.href || "",
+        publishedNewsDate: publishedNews?.date || "",
+        publishedNewsTitle: publishedNews?.title || "",
+      },
+    });
+  }
   appendAudit(`intel_draft_${status}`, id, {
     ip: getClientIp(request),
     route: "PATCH /api/admin/intelligence/drafts",
+    meta: {
+      fromStatus: previous?.status || "unknown",
+      toStatus: status,
+      country: draft.country,
+      headline: draft.headline,
+      sourceName: draft.sourceName,
+      moderationNote: String(body.moderationNote || "").slice(0, 500),
+      publishedNewsHref: publishedNews?.href || "",
+    },
   });
-  return Response.json({ draft });
+  return Response.json({ draft, publishedNews });
 }

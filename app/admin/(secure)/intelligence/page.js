@@ -5,6 +5,13 @@ import { Button } from "@/components/ui/button";
 
 function DraftCard({ draft, onStatus }) {
   const [note, setNote] = useState(draft.moderationNote || "");
+  const [headline, setHeadline] = useState(draft.headline || "");
+  const [summary, setSummary] = useState(draft.summary || "");
+  const [body, setBody] = useState(draft.body || "");
+  const [seoTitle, setSeoTitle] = useState(draft.seoTitle || "");
+  const [seoDescription, setSeoDescription] = useState(draft.seoDescription || "");
+  const [href, setHref] = useState(draft.href || "/updates");
+  const edits = { headline, summary, body, seoTitle, seoDescription, href };
   return (
     <article className="rounded-lg border border-border bg-card p-4 shadow-sm">
       <div className="mb-2 flex items-center justify-between gap-3">
@@ -17,6 +24,42 @@ function DraftCard({ draft, onStatus }) {
         {draft.country} · {draft.sourceName}
       </p>
       <p className="mb-3 text-sm">{draft.summary}</p>
+      <label className="mb-2 block text-xs text-muted-foreground">Headline</label>
+      <input
+        className="mb-3 w-full rounded-md border border-input bg-background p-2 text-sm"
+        value={headline}
+        onChange={(e) => setHeadline(e.target.value)}
+      />
+      <label className="mb-2 block text-xs text-muted-foreground">Summary</label>
+      <textarea
+        className="mb-3 min-h-16 w-full rounded-md border border-input bg-background p-2 text-sm"
+        value={summary}
+        onChange={(e) => setSummary(e.target.value)}
+      />
+      <label className="mb-2 block text-xs text-muted-foreground">Body</label>
+      <textarea
+        className="mb-3 min-h-32 w-full rounded-md border border-input bg-background p-2 text-sm"
+        value={body}
+        onChange={(e) => setBody(e.target.value)}
+      />
+      <label className="mb-2 block text-xs text-muted-foreground">SEO Title</label>
+      <input
+        className="mb-3 w-full rounded-md border border-input bg-background p-2 text-sm"
+        value={seoTitle}
+        onChange={(e) => setSeoTitle(e.target.value)}
+      />
+      <label className="mb-2 block text-xs text-muted-foreground">SEO Description</label>
+      <textarea
+        className="mb-3 min-h-16 w-full rounded-md border border-input bg-background p-2 text-sm"
+        value={seoDescription}
+        onChange={(e) => setSeoDescription(e.target.value)}
+      />
+      <label className="mb-2 block text-xs text-muted-foreground">Published Link (href)</label>
+      <input
+        className="mb-3 w-full rounded-md border border-input bg-background p-2 text-sm"
+        value={href}
+        onChange={(e) => setHref(e.target.value)}
+      />
       <textarea
         className="mb-3 min-h-20 w-full rounded-md border border-input bg-background p-2 text-sm"
         value={note}
@@ -24,11 +67,14 @@ function DraftCard({ draft, onStatus }) {
         placeholder="Moderation note"
       />
       <div className="flex flex-wrap gap-2">
-        <Button size="sm" onClick={() => onStatus(draft.id, "approved", note)}>
+        <Button size="sm" onClick={() => onStatus(draft.id, "approved", note, edits)}>
           Approve
         </Button>
-        <Button size="sm" variant="outline" onClick={() => onStatus(draft.id, "rejected", note)}>
+        <Button size="sm" variant="outline" onClick={() => onStatus(draft.id, "rejected", note, edits)}>
           Reject
+        </Button>
+        <Button size="sm" variant="secondary" onClick={() => onStatus(draft.id, "pending", note, edits)}>
+          Save edits
         </Button>
         <a href={draft.sourceUrl} target="_blank" rel="noreferrer" className="text-xs text-primary underline">
           Official source
@@ -81,11 +127,11 @@ export default function AdminIntelligencePage() {
     }
   }
 
-  async function setDraftStatus(id, status, moderationNote) {
+  async function setDraftStatus(id, status, moderationNote, edits) {
     const response = await fetch("/api/admin/intelligence/drafts", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id, status, moderationNote }),
+      body: JSON.stringify({ id, status, moderationNote, edits }),
     });
     if (!response.ok) {
       const data = await response.json().catch(() => ({}));
