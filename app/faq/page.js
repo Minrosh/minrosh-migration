@@ -3,6 +3,7 @@ import { ContentPage } from "../../components/content-page";
 import { SiteShell } from "../../components/site-shell";
 import { StructuredData } from "../../components/structured-data";
 import { buildMetadata, breadcrumbJsonLd, faqJsonLd } from "../../lib/seo";
+import { mergedFaqItems } from "../../lib/intelligence/faq";
 
 export const metadata = buildMetadata({
   title: "Migration FAQ | MinRosh Migration",
@@ -17,6 +18,7 @@ export const metadata = buildMetadata({
 });
 
 export default function FAQPage() {
+  const faqItems = mergedFaqItems();
   return (
     <SiteShell siteData={siteData} currentPath="/faq">
       <StructuredData
@@ -25,7 +27,7 @@ export default function FAQPage() {
             { name: "Home", path: "/" },
             { name: "FAQ", path: "/faq" },
           ]),
-          faqJsonLd(siteData.faq),
+          faqJsonLd(faqItems),
         ]}
       />
       <ContentPage
@@ -36,7 +38,7 @@ export default function FAQPage() {
           { href: "/", label: "Home" },
           { href: "/faq", label: "FAQ" },
         ]}
-        faq={siteData.faq}
+        faq={faqItems}
         related={[
           { href: "/assessment", title: "Free Assessment" },
           { href: "/book-consultation", title: "Book Consultation" },

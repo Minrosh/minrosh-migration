@@ -3,6 +3,9 @@ import { appendAudit } from "@/lib/admin/audit";
 import { getClientIp } from "@/lib/security/request-ip";
 import { readIntelligenceDrafts, updateDraftStatus } from "@/lib/intelligence/store";
 import { publishDraftToNewsStore } from "@/lib/intelligence/publish";
+import { evaluateDraftGrounding } from "@/lib/intelligence/grounding";
+import { applyFaqSuggestionsFromDraft } from "@/lib/intelligence/faq";
+import { queueFacebookPostFromDraft } from "@/lib/intelligence/facebook";
 
 export async function GET() {
   if (!(await verifyAdminRequest())) return adminJsonUnauthorized();
@@ -34,8 +37,22 @@ export async function PATCH(request) {
   });
   if (!draft) return Response.json({ error: "Draft not found" }, { status: 404 });
   let publishedNews = null;
+  let faqPatches = [];
+  let facebookPost = null;
   if (status === "approved") {
+    const grounding = evaluateDraftGrounding(draft);
+    if (!grounding.ok) {
+      return Response.json(
+        {
+          error: "Grounding verification failed. Draft cannot be approved.",
+          grounding,
+        },
+        { status: 409 }
+      );
+    }
     publishedNews = publishDraftToNewsStore(draft);
+    faqPatches = applyFaqSuggestionsFromDraft(draft);
+    facebookPost = queueFacebookPostFromDraft(draft, publishedNews);
     updateDraftStatus({
       id,
       status,
@@ -44,6 +61,9 @@ export async function PATCH(request) {
         publishedNewsHref: publishedNews?.href || "",
         publishedNewsDate: publishedNews?.date || "",
         publishedNewsTitle: publishedNews?.title || "",
+        faqPatchIds: faqPatches.map((p) => p.id),
+        facebookPostId: facebookPost?.id || "",
+        groundingApprovedAt: new Date().toISOString(),
       },
     });
   }
@@ -58,7 +78,9 @@ export async function PATCH(request) {
       sourceName: draft.sourceName,
       moderationNote: String(body.moderationNote || "").slice(0, 500),
       publishedNewsHref: publishedNews?.href || "",
+      faqPatchCount: faqPatches.length,
+      facebookPostId: facebookPost?.id || "",
     },
   });
-  return Response.json({ draft, publishedNews });
+  return Response.json({ draft, publishedNews, faqPatches, facebookPost });
 }

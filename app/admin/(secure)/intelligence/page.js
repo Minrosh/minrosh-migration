@@ -23,6 +23,10 @@ function DraftCard({ draft, onStatus }) {
       <p className="mb-2 text-sm text-muted-foreground">
         {draft.country} · {draft.sourceName}
       </p>
+      <p className="mb-2 text-xs text-muted-foreground">
+        Grounding confidence:{" "}
+        <strong>{Number(draft?.grounding?.confidence || 0).toFixed(2)}</strong>
+      </p>
       <p className="mb-3 text-sm">{draft.summary}</p>
       <label className="mb-2 block text-xs text-muted-foreground">Headline</label>
       <input
