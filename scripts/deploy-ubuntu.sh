@@ -76,3 +76,4 @@ pm2 start ecosystem.config.js
 pm2 save
 
 echo "==> Done. Put SMTP_*, ADMIN_PASSWORD, etc. in $ROOT/.env — PM2 loads them from ecosystem.config.js."
+echo "==> After deploy: if forms show Server Action errors, hard-refresh the site (Ctrl+Shift+R) so the browser loads new /_next/static chunks."

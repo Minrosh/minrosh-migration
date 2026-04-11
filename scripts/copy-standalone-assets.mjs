@@ -68,10 +68,50 @@ if (fs.existsSync(dataSrc)) {
   fs.cpSync(dataSrc, dataDest, { recursive: true, force: true });
 }
 
+/**
+ * Standalone file tracing can omit `next/dist/server/web` (e.g. `./web/sandbox`).
+ * Merge the full tree from the installed `next` package so PM2 never hits MODULE_NOT_FOUND.
+ */
+const nextServerWebSrc = path.join(
+  root,
+  "node_modules",
+  "next",
+  "dist",
+  "server",
+  "web",
+);
+const nextServerWebDest = path.join(
+  standalone,
+  "node_modules",
+  "next",
+  "dist",
+  "server",
+  "web",
+);
+if (fs.existsSync(nextServerWebSrc)) {
+  fs.mkdirSync(path.dirname(nextServerWebDest), { recursive: true });
+  fs.cpSync(nextServerWebSrc, nextServerWebDest, { recursive: true, force: true });
+  console.log("Standalone: merged next/dist/server/web (sandbox + fetch helpers).");
+} else {
+  console.warn(
+    "copy-standalone-assets: node_modules/next/dist/server/web missing — run npm ci before build.",
+  );
+}
+
 const mustExist = [
   path.join(standalone, ".next", "server", "middleware-manifest.json"),
   path.join(standalone, ".next", "required-server-files.json"),
   path.join(standalone, "server.js"),
+  path.join(
+    standalone,
+    "node_modules",
+    "next",
+    "dist",
+    "server",
+    "web",
+    "sandbox",
+    "index.js",
+  ),
 ];
 for (const p of mustExist) {
   if (!fs.existsSync(p)) {
