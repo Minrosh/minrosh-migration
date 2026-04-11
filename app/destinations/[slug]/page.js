@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import destinations from "../../../data/destinations.json";
 import siteData from "../../../data/site.json";
 import { ContentPage } from "../../../components/content-page";
+import { HubAustraliaAside } from "../../../components/hub-australia-aside";
 import { SiteShell } from "../../../components/site-shell";
 import { StructuredData } from "../../../components/structured-data";
 import { buildMetadata, breadcrumbJsonLd } from "../../../lib/seo";
@@ -59,6 +60,7 @@ export default async function DestinationPage({ params }) {
         officialResources={page.officialLinks}
         sections={page.sections}
         related={page.relatedSiteLinks}
+        asideTools={slug === "australia" ? <HubAustraliaAside /> : null}
         heroImage={{
           src: "/images/team-office-real.jpg",
           alt: "Professional office environment for migration planning discussions",
