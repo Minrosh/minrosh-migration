@@ -1,5 +1,9 @@
 import { cookies } from "next/headers";
-import { hasAdminPasswordConfigured, verifyAdminPassword } from "@/lib/admin/admin-auth";
+import {
+  hasAdminPasswordConfigured,
+  hasAdminSessionSigningSecret,
+  verifyAdminPassword,
+} from "@/lib/admin/admin-auth";
 import { appendAudit } from "@/lib/admin/audit";
 import { createSessionToken } from "@/lib/admin/session";
 import { adminSessionCookieName, clearAdminSessionCookies } from "@/lib/admin/session-cookie";
@@ -43,13 +47,29 @@ export async function POST(request) {
     const totp = String(body?.totp || body?.totpCode || "")
       .replace(/\s/g, "")
       .trim();
-    if (!totp || !verifySync({ token: totp, secret: totpSecret })) {
+    let totpOk = false;
+    try {
+      totpOk = Boolean(totp && verifySync({ token: totp, secret: totpSecret }));
+    } catch {
+      totpOk = false;
+    }
+    if (!totpOk) {
       appendAudit("admin_login_failed", "invalid totp", {
         ip,
         route: "POST /api/admin/login",
       });
       return Response.json({ error: "Invalid authenticator code" }, { status: 401 });
     }
+  }
+
+  if (!hasAdminSessionSigningSecret()) {
+    return Response.json(
+      {
+        error:
+          "Admin session signing is not configured. Set ADMIN_SESSION_SECRET or a non-placeholder ADMIN_PASSWORD in .env. Edge middleware cannot use data/admin-auth.json for cookies.",
+      },
+      { status: 503 },
+    );
   }
 
   const token = await createSessionToken();

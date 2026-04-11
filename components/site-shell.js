@@ -2,6 +2,7 @@ import Link from "next/link";
 import { PublicFileImg } from "./public-file-img";
 import { SiteTopbar } from "./site-topbar";
 import { SiteFooter } from "./site-footer";
+import { SiteHeaderNav } from "./site-header-nav";
 import { getFooterStats } from "../lib/site-stats";
 import { getDestinationNavLinks } from "../lib/destination-nav";
 import { GLOBAL_HEADER_PRIMARY_LINKS } from "../lib/public-indexable-routes";
@@ -49,28 +50,7 @@ export function SiteShell({
               <strong>{siteData.brand.name}</strong>
             </span>
           </Link>
-          <nav className="site-nav site-nav--static" aria-label="Primary">
-            <div className="site-nav__group site-nav__group--main">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={`site-nav__link ${currentPath === link.href ? "is-active" : ""}`}
-                  aria-current={currentPath === link.href ? "page" : undefined}
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </div>
-            <div className="site-nav__group site-nav__group--actions">
-              <Link href="/book-consultation" className="btn btn-primary site-nav__cta">
-                Book Consultation
-              </Link>
-              <Link href="/assessment" className="btn btn-ghost site-nav__cta-secondary">
-                Check Eligibility
-              </Link>
-            </div>
-          </nav>
+          <SiteHeaderNav navLinks={navLinks} currentPath={currentPath} />
         </div>
       </header>
 

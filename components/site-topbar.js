@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { listPublicSocialIcons } from "../lib/social-public";
+import { SiteSocialIcons } from "./site-social-icons";
 
 const destinationLinks = [
   { label: "Australia", href: "/destinations/australia" },
@@ -25,6 +27,11 @@ export function SiteTopbar({ siteData }) {
             {siteData.brand.phoneSecondary}
           </a>
         </div>
+        {listPublicSocialIcons(siteData.brand).length ? (
+          <div className="site-topbar__group site-topbar__group--social" aria-label="Social and messaging">
+            <SiteSocialIcons brand={siteData.brand} variant="topbar" />
+          </div>
+        ) : null}
       </div>
     </div>
   );

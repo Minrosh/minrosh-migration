@@ -4,7 +4,8 @@ import { getAdminSessionValueFromRequestCookies } from "./lib/admin/session-cook
 
 /**
  * Edge middleware: signed-session cookie only (cannot read data/admin-auth.json).
- * Misconfiguration surfaces as 503 from /api/admin/login, not here.
+ * You must set ADMIN_SESSION_SECRET or a non-placeholder ADMIN_PASSWORD so HMAC verification works.
+ * If login succeeds but every navigation bounces to /admin/login, signing secret is missing or wrong.
  */
 export async function middleware(request) {
   const { pathname } = request.nextUrl;

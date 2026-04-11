@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "generate:brochure": "node scripts/generate-brochure.mjs",
+    "prebuild:verify": "bash scripts/pre-build-verify.sh",
     "build": "node scripts/verify-required-assets.mjs && next build && node scripts/generate-brochure.mjs && node scripts/copy-standalone-assets.mjs",
     "start": "next start",
     "lint": "next lint",
@@ -22,6 +23,7 @@
     "@radix-ui/react-separator": "^1.1.8",
     "@radix-ui/react-slot": "^1.2.4",
     "@radix-ui/react-tabs": "^1.1.13",
+    "@supabase/supabase-js": "^2.103.0",
     "@tanstack/react-table": "^8.21.3",
     "bcryptjs": "^3.0.2",
     "class-variance-authority": "^0.7.1",

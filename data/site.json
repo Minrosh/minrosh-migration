@@ -14,7 +14,15 @@
     "phoneSecondary": "0481 706 474",
     "whatsapp": "61478100542",
     "whatsappSecondary": "61481706474",
-    "location": "Brisbane, Queensland"
+    "location": "Brisbane, Queensland",
+    "social": {
+      "facebook": "https://www.facebook.com/61568816781409/",
+      "instagram": "",
+      "linkedin": "",
+      "youtube": "",
+      "x": "",
+      "tiktok": ""
+    }
   },
   "consultationHoursNote": "Consultations are usually scheduled during business hours (AEST). We confirm your appointment by email or phone after you enquire.",
   "processSectionLead": "Each step is designed to reduce guesswork: from your first assessment through a clear view of options, a direct conversation, and structured next actions you can follow with confidence.",

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { PublicFileImg } from "./public-file-img";
 import { NewsletterForm } from "./newsletter-form";
+import { SiteSocialIcons } from "./site-social-icons";
 
 /**
  * Client island: brand + stats, optional middle columns (nav), newsletter last.
@@ -38,6 +39,7 @@ export function SiteFooterInteractive({ siteData, initialStats, children }) {
           <a href={`mailto:${siteData.brand.email}`}>{siteData.brand.email}</a>
           <a href={`tel:${siteData.brand.phone.replace(/\s+/g, "")}`}>{siteData.brand.phone}</a>
         </div>
+        <SiteSocialIcons brand={siteData.brand} variant="footer" />
         <div className="site-footer__stats">
           <div className="site-footer__stat">
             <strong>{stats.enquiryCount}</strong>

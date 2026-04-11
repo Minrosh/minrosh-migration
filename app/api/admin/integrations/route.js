@@ -39,6 +39,18 @@ export async function GET() {
     { key: "NEXT_PUBLIC_GOOGLE_MAPS_API_KEY", required: true },
     { key: "GOOGLE_PLACES_API_KEY", required: true },
     { key: "GOOGLE_PLACES_PLACE_ID", required: true },
+    {
+      key: "NEXT_PUBLIC_SUPABASE_URL",
+      required: false,
+      configured: Boolean(String(process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL || "").trim()),
+      note: "Optional Postgres backend; use with SUPABASE_SERVICE_ROLE_KEY on server routes only",
+    },
+    {
+      key: "SUPABASE_SERVICE_ROLE_KEY",
+      required: false,
+      configured: Boolean(String(process.env.SUPABASE_SERVICE_ROLE_KEY || "").trim()),
+      note: "Server-only; never expose to the browser",
+    },
   ].map((item) => {
     if (Object.hasOwn(item, "configured")) {
       return {

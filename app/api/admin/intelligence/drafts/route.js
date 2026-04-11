@@ -6,6 +6,8 @@ import { publishDraftToNewsStore } from "@/lib/intelligence/publish";
 import { evaluateDraftGrounding } from "@/lib/intelligence/grounding";
 import { applyFaqSuggestionsFromDraft } from "@/lib/intelligence/faq";
 import { queueFacebookPostFromDraft } from "@/lib/intelligence/facebook";
+import { queueNewsletterFromDraft } from "@/lib/intelligence/channels";
+import { appendPublishHistory } from "@/lib/intelligence/publish-history";
 
 export async function GET() {
   if (!(await verifyAdminRequest())) return adminJsonUnauthorized();
@@ -39,6 +41,8 @@ export async function PATCH(request) {
   let publishedNews = null;
   let faqPatches = [];
   let facebookPost = null;
+  let newsletterQueueItem = null;
+  let publishHistoryEntry = null;
   if (status === "approved") {
     const grounding = evaluateDraftGrounding(draft);
     if (!grounding.ok) {
@@ -53,6 +57,15 @@ export async function PATCH(request) {
     publishedNews = publishDraftToNewsStore(draft);
     faqPatches = applyFaqSuggestionsFromDraft(draft);
     facebookPost = queueFacebookPostFromDraft(draft, publishedNews);
+    newsletterQueueItem = queueNewsletterFromDraft(draft, publishedNews);
+    publishHistoryEntry = appendPublishHistory({
+      intelligenceDraftId: draft.id,
+      faqPatchIds: faqPatches.map((p) => p.id),
+      facebookPostId: facebookPost?.id || "",
+      newsletterChannelItemId: newsletterQueueItem?.id || "",
+      newsHref: publishedNews?.href || "",
+      newsTitle: publishedNews?.title || "",
+    });
     updateDraftStatus({
       id,
       status,
@@ -63,6 +76,8 @@ export async function PATCH(request) {
         publishedNewsTitle: publishedNews?.title || "",
         faqPatchIds: faqPatches.map((p) => p.id),
         facebookPostId: facebookPost?.id || "",
+        newsletterChannelItemId: newsletterQueueItem?.id || "",
+        publishHistoryId: publishHistoryEntry?.id || "",
         groundingApprovedAt: new Date().toISOString(),
       },
     });
@@ -80,7 +95,15 @@ export async function PATCH(request) {
       publishedNewsHref: publishedNews?.href || "",
       faqPatchCount: faqPatches.length,
       facebookPostId: facebookPost?.id || "",
+      newsletterChannelItemId: newsletterQueueItem?.id || "",
     },
   });
-  return Response.json({ draft, publishedNews, faqPatches, facebookPost });
+  return Response.json({
+    draft,
+    publishedNews,
+    faqPatches,
+    facebookPost,
+    newsletterQueueItem,
+    publishHistoryEntry,
+  });
 }

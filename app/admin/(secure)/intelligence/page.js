@@ -93,19 +93,24 @@ export default function AdminIntelligencePage() {
   const [runningScan, setRunningScan] = useState(false);
   const [drafts, setDrafts] = useState([]);
   const [alerts, setAlerts] = useState([]);
+  const [publishHistory, setPublishHistory] = useState([]);
+  const [rollbackId, setRollbackId] = useState("");
   const [message, setMessage] = useState("");
 
   async function load() {
     setLoading(true);
     try {
-      const [dRes, aRes] = await Promise.all([
+      const [dRes, aRes, hRes] = await Promise.all([
         fetch("/api/admin/intelligence/drafts", { cache: "no-store" }),
         fetch("/api/admin/intelligence/alerts", { cache: "no-store" }),
+        fetch("/api/admin/intelligence/publish-history", { cache: "no-store" }),
       ]);
       const dJson = await dRes.json();
       const aJson = await aRes.json();
+      const hJson = await hRes.json();
       setDrafts(Array.isArray(dJson.drafts) ? dJson.drafts : []);
       setAlerts(Array.isArray(aJson.alerts) ? aJson.alerts : []);
+      setPublishHistory(Array.isArray(hJson.entries) ? hJson.entries : []);
     } finally {
       setLoading(false);
     }
@@ -145,6 +150,34 @@ export default function AdminIntelligencePage() {
     await load();
   }
 
+  async function rollbackPublish(entryId) {
+    if (
+      !confirm(
+        "Roll back this publish? The news item, FAQ patches linked to this draft, and queued Facebook posts will be reverted or cancelled."
+      )
+    ) {
+      return;
+    }
+    setRollbackId(entryId);
+    setMessage("");
+    try {
+      const response = await fetch("/api/admin/intelligence/publish-history", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: entryId }),
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        setMessage(data.error || "Rollback failed.");
+        return;
+      }
+      setMessage("Rollback completed.");
+      await load();
+    } finally {
+      setRollbackId("");
+    }
+  }
+
   const pendingDrafts = useMemo(() => drafts.filter((d) => d.status === "pending"), [drafts]);
 
   return (
@@ -174,6 +207,56 @@ export default function AdminIntelligencePage() {
           ))}
           {!alerts.length && !loading ? (
             <p className="text-sm text-muted-foreground">No alerts yet.</p>
+          ) : null}
+        </div>
+      </section>
+
+      <section className="mb-8">
+        <h2 className="mb-2 text-xl font-semibold">Publish history</h2>
+        <p className="mb-3 text-sm text-muted-foreground">
+          Recent publishes from approved drafts. Roll back removes the news row, deactivates FAQ patches, and cancels
+          queued Facebook posts for that draft.
+        </p>
+        <div className="grid gap-2">
+          {publishHistory.slice(0, 20).map((entry) => (
+            <div
+              key={entry.id}
+              className="flex flex-col gap-2 rounded-md border border-border bg-card p-3 text-sm sm:flex-row sm:items-center sm:justify-between"
+            >
+              <div>
+                <p className="font-medium">
+                  {entry.newsTitle || entry.intelligenceDraftId || entry.id}{" "}
+                  <span className="ml-2 rounded-full bg-muted px-2 py-0.5 text-xs uppercase tracking-wide">
+                    {entry.status || "published"}
+                  </span>
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  {entry.createdAt || ""} · draft {entry.intelligenceDraftId || "—"}
+                  {entry.newsHref ? (
+                    <>
+                      {" "}
+                      ·{" "}
+                      <a href={entry.newsHref} className="text-primary underline" target="_blank" rel="noreferrer">
+                        link
+                      </a>
+                    </>
+                  ) : null}
+                </p>
+              </div>
+              {entry.status === "published" ? (
+                <Button
+                  size="sm"
+                  variant="outline"
+                  disabled={rollbackId === entry.id}
+                  onClick={() => rollbackPublish(entry.id)}
+                >
+                  {rollbackId === entry.id ? "Rolling back…" : "Rollback"}
+                </Button>
+              ) : null}
+            </div>
+          ))}
+          {!publishHistory.length && !loading ? (
+            <p className="text-sm text-muted-foreground">No publish history yet.</p>
           ) : null}
         </div>
       </section>

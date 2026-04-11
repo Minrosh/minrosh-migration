@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 # Run on the Ubuntu server from your project root (e.g. ~/minrosh-migration).
 # Prerequisites: Node 20+, PM2, git, and a .env or exported vars with ADMIN_PASSWORD, SMTP_*, etc.
+#
+# Git: pulls origin/$DEPLOY_GIT_BRANCH (default: main). Example staging from develop:
+#   DEPLOY_GIT_BRANCH=develop ./scripts/deploy-ubuntu.sh
 
 set -euo pipefail
 
@@ -17,8 +20,11 @@ fi
 if [[ "${DEPLOY_SKIP_GIT_PULL:-}" == "1" ]]; then
   echo "==> Skipping git pull (DEPLOY_SKIP_GIT_PULL=1)"
 else
-  echo "==> Pull latest (optional — set DEPLOY_SKIP_GIT_PULL=1 if you deploy without git)"
-  git pull origin main
+  DEPLOY_GIT_BRANCH="${DEPLOY_GIT_BRANCH:-main}"
+  echo "==> Fetch & fast-forward origin/${DEPLOY_GIT_BRANCH} (override with DEPLOY_GIT_BRANCH=…, or DEPLOY_SKIP_GIT_PULL=1)"
+  git fetch origin "$DEPLOY_GIT_BRANCH"
+  git checkout "$DEPLOY_GIT_BRANCH"
+  git pull --ff-only origin "$DEPLOY_GIT_BRANCH"
 fi
 
 echo "==> Install & build"

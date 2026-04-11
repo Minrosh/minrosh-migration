@@ -1,6 +1,7 @@
 import siteDataStatic from "../../data/site.json";
 import seoPages from "../../data/seo-pages.json";
 import { buildWhatsAppUrl, WHATSAPP_LEAD_MESSAGE } from "../../lib/whatsapp-prefill";
+import { listPublicSocialIcons } from "../../lib/social-public";
 import { getHomeSiteData } from "../../lib/home-site-data";
 import { ContactLeadForm } from "../../components/contact-lead-form";
 import { QuickEnquiryForm } from "../../components/quick-enquiry-form";
@@ -10,6 +11,7 @@ import { StructuredData } from "../../components/structured-data";
 import { buildMetadata, breadcrumbJsonLd } from "../../lib/seo";
 import Link from "next/link";
 import { PublicFileImg } from "../../components/public-file-img";
+import { SiteSocialIcons } from "../../components/site-social-icons";
 
 const pageData = seoPages.servicePages.contact;
 
@@ -107,6 +109,12 @@ export default function ContactPage() {
                 <Link href="/">{siteData.brand.location}</Link>
               </div>
             </div>
+            {listPublicSocialIcons(siteData.brand, { includeWhatsApp: false }).length ? (
+              <div className="contact-social">
+                <span className="contact-social__label">Social</span>
+                <SiteSocialIcons brand={siteData.brand} variant="contact" includeWhatsApp={false} />
+              </div>
+            ) : null}
           </div>
           <div className="contact-form-column">
             <AgentRegistrationStrip brand={siteData.brand} />

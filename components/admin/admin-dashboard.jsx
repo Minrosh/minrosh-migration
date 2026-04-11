@@ -8,7 +8,9 @@ export function AdminDashboard() {
   const [stats, setStats] = useState(null);
   const [integrations, setIntegrations] = useState(null);
   const [integrationTest, setIntegrationTest] = useState(null);
+  const [supabaseTest, setSupabaseTest] = useState(null);
   const [testing, setTesting] = useState(false);
+  const [testingDb, setTestingDb] = useState(false);
   const [err, setErr] = useState("");
 
   useEffect(() => {
@@ -40,6 +42,18 @@ export function AdminDashboard() {
       setIntegrationTest({ ok: false, results: [{ name: "Request", ok: false, detail: "Network error" }] });
     }
     setTesting(false);
+  }
+
+  async function runSupabaseProbe() {
+    setTestingDb(true);
+    try {
+      const res = await fetch("/api/admin/integrations/supabase");
+      const data = await res.json().catch(() => ({}));
+      setSupabaseTest(data);
+    } catch {
+      setSupabaseTest({ ok: false, detail: "Network error" });
+    }
+    setTestingDb(false);
   }
 
   const items = [
@@ -122,22 +136,32 @@ export function AdminDashboard() {
             <CardTitle className="text-base">Integrations & environment readiness</CardTitle>
           </CardHeader>
           <CardContent className="space-y-2 text-sm">
-            <p className={integrations.ready ? "text-emerald-700" : "text-amber-700"}>
+            <p className={integrations.ready ? "text-emerald-400" : "text-amber-400"}>
               {integrations.ready ? "All required variables are configured." : "Some required variables are missing."}
             </p>
-            <button
-              type="button"
-              onClick={runIntegrationTest}
-              disabled={testing}
-              className="rounded-md border border-border px-3 py-1.5 text-xs font-medium hover:bg-muted disabled:opacity-50"
-            >
-              {testing ? "Running tests…" : "Test integrations"}
-            </button>
+            <div className="flex flex-wrap gap-2">
+              <button
+                type="button"
+                onClick={runIntegrationTest}
+                disabled={testing}
+                className="rounded-md border border-border px-3 py-1.5 text-xs font-medium hover:bg-muted disabled:opacity-50"
+              >
+                {testing ? "Running tests…" : "Test Google integrations"}
+              </button>
+              <button
+                type="button"
+                onClick={runSupabaseProbe}
+                disabled={testingDb}
+                className="rounded-md border border-border px-3 py-1.5 text-xs font-medium hover:bg-muted disabled:opacity-50"
+              >
+                {testingDb ? "Probing…" : "Test Supabase DB"}
+              </button>
+            </div>
             <ul className="space-y-1">
               {integrations.checks.map((c) => (
                 <li key={c.key} className="flex items-center justify-between gap-3">
                   <code className="rounded bg-muted px-1">{c.key}</code>
-                  <span className={c.configured ? "text-emerald-700" : "text-amber-700"}>
+                  <span className={c.configured ? "text-emerald-400" : "text-amber-400"}>
                     {c.configured ? "configured" : c.required ? "missing (required)" : "optional"}
                   </span>
                 </li>
@@ -145,19 +169,30 @@ export function AdminDashboard() {
             </ul>
             {integrationTest?.results?.length ? (
               <div className="mt-3 space-y-1 rounded-md border border-border p-3">
-                <p className={integrationTest.ok ? "text-emerald-700" : "text-amber-700"}>
+                <p className={integrationTest.ok ? "text-emerald-400" : "text-amber-400"}>
                   {integrationTest.ok ? "All integration probes passed." : "One or more probes failed."}
                 </p>
                 <ul className="space-y-1">
                   {integrationTest.results.map((r) => (
                     <li key={r.name} className="flex items-center justify-between gap-2">
                       <span>{r.name}</span>
-                      <span className={r.ok ? "text-emerald-700" : "text-amber-700"}>
+                      <span className={r.ok ? "text-emerald-400" : "text-amber-400"}>
                         {r.ok ? `PASS - ${r.detail}` : `FAIL - ${r.detail}`}
                       </span>
                     </li>
                   ))}
                 </ul>
+              </div>
+            ) : null}
+            {supabaseTest ? (
+              <div className="mt-3 space-y-1 rounded-md border border-border p-3">
+                <p className={supabaseTest.ok ? "text-emerald-400" : "text-amber-400"}>
+                  {supabaseTest.ok
+                    ? "Supabase: connected (minrosh_db_ping readable)."
+                    : `Supabase: ${supabaseTest.configured ? "configured but failed" : "not configured or failed"}.`}
+                </p>
+                {supabaseTest.detail ? <p className="text-xs text-muted-foreground">{supabaseTest.detail}</p> : null}
+                {supabaseTest.hint ? <p className="text-xs text-muted-foreground">{supabaseTest.hint}</p> : null}
               </div>
             ) : null}
           </CardContent>
