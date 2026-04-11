@@ -401,6 +401,24 @@ export function AIConcierge({ siteData }) {
             </button>
           </div>
 
+          <div className="ai-concierge__trust" role="note">
+            <p>
+              Replies are general orientation only. Decisions about visas require verification against
+              current official rules and often a conversation with a registered migration agent.
+            </p>
+            <div className="ai-concierge__trust-actions">
+              <Link href="/book-consultation" className="ai-concierge__trust-link">
+                Book consultation
+              </Link>
+              <Link href="/contact" className="ai-concierge__trust-link">
+                Contact the team
+              </Link>
+              <a className="ai-concierge__trust-link" href={waFloat} target="_blank" rel="noreferrer">
+                WhatsApp
+              </a>
+            </div>
+          </div>
+
           <details ref={suggestionsRef} className="ai-concierge__suggestions">
             <summary>Suggested questions</summary>
             <div className="ai-concierge__suggestions-inner">

@@ -39,7 +39,7 @@ const assessmentSteps = [
 
 export default function AssessmentPage() {
   return (
-    <SiteShell siteData={siteData} currentPath="">
+    <SiteShell siteData={siteData} currentPath="/assessment">
       <StructuredData
         data={breadcrumbJsonLd([
           { name: "Home", path: "/" },

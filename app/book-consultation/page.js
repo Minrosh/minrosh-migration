@@ -25,7 +25,7 @@ export default function BookConsultationPage() {
   const siteData = getHomeSiteData(siteDataStatic);
 
   return (
-    <SiteShell siteData={siteData} currentPath="">
+    <SiteShell siteData={siteData} currentPath={pageData.path}>
       <StructuredData
         data={breadcrumbJsonLd([
           { name: "Home", path: "/" },

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { PublicFileImg } from "./public-file-img";
 import { SiteTopbar } from "./site-topbar";
@@ -26,12 +26,32 @@ export function PortalPage({ siteData, homeTab, footer }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [headerCompact, setHeaderCompact] = useState(false);
   const [selectedPathwayIndex, setSelectedPathwayIndex] = useState(0);
+  const menuToggleRef = useRef(null);
 
   useEffect(() => {
     document.body.dataset.menu = menuOpen ? "open" : "closed";
     return () => {
       document.body.dataset.menu = "closed";
     };
+  }, [menuOpen]);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const first = document.getElementById("tab-home");
+    window.requestAnimationFrame(() => first?.focus?.());
+  }, [menuOpen]);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    function onKeyDown(event) {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        setMenuOpen(false);
+        menuToggleRef.current?.focus?.();
+      }
+    }
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
   }, [menuOpen]);
 
   useEffect(() => {
@@ -167,11 +187,20 @@ export function PortalPage({ siteData, homeTab, footer }) {
             </span>
           </button>
           <button
+            ref={menuToggleRef}
             type="button"
             className="menu-toggle"
             aria-expanded={menuOpen ? "true" : "false"}
             aria-label={menuOpen ? "Close navigation" : "Open navigation"}
-            onClick={() => setMenuOpen((current) => !current)}
+            onClick={() =>
+              setMenuOpen((current) => {
+                const next = !current;
+                if (!next) {
+                  window.requestAnimationFrame(() => menuToggleRef.current?.focus?.());
+                }
+                return next;
+              })
+            }
           >
             <span />
             <span />
@@ -197,6 +226,12 @@ export function PortalPage({ siteData, homeTab, footer }) {
               <button type="button" className="btn btn-primary site-nav__cta" onClick={() => handleTabChange("quiz")}>
                 Check Eligibility
               </button>
+              <Link href="/tools" className="btn btn-ghost site-nav__cta" onClick={() => setMenuOpen(false)}>
+                Client tools
+              </Link>
+              <Link href="/book-consultation" className="btn btn-ghost site-nav__cta" onClick={() => setMenuOpen(false)}>
+                Book consultation
+              </Link>
             </div>
           </nav>
         </div>

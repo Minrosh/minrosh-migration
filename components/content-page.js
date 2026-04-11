@@ -2,6 +2,18 @@ import Link from "next/link";
 import { PublicFileImg } from "./public-file-img";
 import { personalizedCtaForPath, recommendedLinksForPath } from "../lib/content-personalization";
 
+/** Stable in-page anchors for section titles (deduped with index). */
+export function sectionAnchorId(title, index) {
+  const base = String(title || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 48);
+  return `${base || "section"}-${index}`;
+}
+
 export function ContentPage({
   eyebrow,
   title,
@@ -29,6 +41,15 @@ export function ContentPage({
   const dedupedRelated = mergedRelated.filter(
     (item, index) => mergedRelated.findIndex((candidate) => candidate.href === item.href) === index
   );
+
+  const tocEntries = [];
+  sections.forEach((section, index) => {
+    tocEntries.push({ id: sectionAnchorId(section.title, index), label: section.title });
+  });
+  if (faq.length) {
+    tocEntries.push({ id: "page-faq", label: "FAQ" });
+  }
+  const showToc = tocEntries.length >= 2;
 
   return (
     <article className="content-page">
@@ -71,6 +92,19 @@ export function ContentPage({
 
       <div className="content-page__grid">
         <div className="content-page__main">
+          {showToc ? (
+            <nav className="content-page__toc content-page__toc--inline" aria-label="On this page">
+              <p className="content-page__toc-label">On this page</p>
+              <ul className="content-page__toc-list">
+                {tocEntries.map((item) => (
+                  <li key={item.id}>
+                    <a href={`#${item.id}`}>{item.label}</a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          ) : null}
+
           {officialResources.length ? (
             <section className="official-resources" aria-label="Official government sources">
               <h2>Official sources to verify requirements</h2>
@@ -87,7 +121,7 @@ export function ContentPage({
           ) : null}
 
           {sections.map((section, index) => (
-            <div key={section.title}>
+            <div key={`${section.title}-${index}`} id={sectionAnchorId(section.title, index)} className="content-section-anchor">
               {index > 0 || officialResources.length ? (
                 <hr className="content-divider" aria-hidden="true" />
               ) : null}
@@ -108,7 +142,7 @@ export function ContentPage({
           {faq.length ? (
             <>
               <hr className="content-divider" aria-hidden="true" />
-            <section className="faq-section">
+            <section className="faq-section" id="page-faq">
               <div className="section-head">
                 <div>
                   <p className="section-label">FAQ</p>
@@ -129,17 +163,34 @@ export function ContentPage({
         </div>
 
         <aside className="content-page__aside">
+          {showToc ? (
+            <nav className="content-page__toc content-page__toc--sticky" aria-label="On this page">
+              <div className="content-page__toc-inner bento-hover">
+                <p className="content-page__toc-label">On this page</p>
+                <ol className="content-page__toc-list content-page__toc-list--numbered">
+                  {tocEntries.map((item) => (
+                    <li key={item.id}>
+                      <a href={`#${item.id}`}>{item.label}</a>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            </nav>
+          ) : null}
           {asideTools ? <div className="content-page__aside-tools">{asideTools}</div> : null}
           <div className="content-aside-card bento-hover">
-            <p className="section-label">Next Step</p>
+            <p className="section-label">Next steps</p>
             <h3>{ctaTitle || personalizedCta.title}</h3>
             <p>{ctaBody || personalizedCta.body}</p>
             <div className="content-aside-card__actions">
               <Link href="/book-consultation" className="btn btn-primary">
-                Book Consultation
+                Book consultation
               </Link>
-              <Link href="/#quiz" className="btn btn-ghost">
-                Check Eligibility
+              <Link href="/assessment" className="btn btn-ghost">
+                Free assessment
+              </Link>
+              <Link href="/#quiz" className="content-aside-card__text-link">
+                Open points wizard on homepage
               </Link>
             </div>
           </div>

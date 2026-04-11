@@ -9,6 +9,39 @@ import {
 } from "@/lib/navigator-session";
 import { trackEvent } from "@/lib/client-analytics";
 
+function validateLeadForm(form, mode) {
+  /** @type {Record<string, string>} */
+  const errors = {};
+  if (!String(form.firstName || "").trim()) {
+    errors.firstName = "Please enter your first name.";
+  }
+  const email = String(form.email || "").trim();
+  if (!email) {
+    errors.email = "Please enter your email.";
+  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    errors.email = "Please enter a valid email address.";
+  }
+  const message = String(form.message || "").trim();
+  if (!message) {
+    errors.message = "Please describe your situation so we can respond usefully.";
+  } else if (message.length < 24) {
+    errors.message = "A little more detail (at least one or two sentences) helps us triage your enquiry.";
+  }
+  const phone = String(form.phone || "").trim();
+  if (phone && phone.replace(/\D/g, "").length < 8) {
+    errors.phone = "Please check your phone number, or leave it blank.";
+  }
+  if (mode === "consultation") {
+    if (!String(form.preferredDate || "").trim()) {
+      errors.preferredDate = "Please choose a preferred date.";
+    }
+    if (!String(form.preferredTime || "").trim()) {
+      errors.preferredTime = "Please choose a preferred time.";
+    }
+  }
+  return errors;
+}
+
 const initialForm = {
   firstName: "",
   lastName: "",
@@ -28,6 +61,7 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
   const [form, setForm] = useState(initialForm);
   const [quizSummaryLine, setQuizSummaryLine] = useState("");
   const [state, setState] = useState({ status: "idle", message: "" });
+  const [fieldErrors, setFieldErrors] = useState({});
   const hpRef = useRef(null);
 
   useEffect(() => {
@@ -82,6 +116,13 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
 
   async function handleSubmit(event) {
     event.preventDefault();
+    const errors = validateLeadForm(form, mode);
+    setFieldErrors(errors);
+    if (Object.keys(errors).length > 0) {
+      trackEvent("contact_form_validation_error", { form_mode: mode, fields: Object.keys(errors).join(",") });
+      return;
+    }
+
     trackEvent("contact_form_submit_attempt", {
       form_mode: mode,
       preferred_country: form.preferredCountry,
@@ -119,6 +160,7 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
         main_need: form.mainNeed,
       });
       setForm(initialForm);
+      setFieldErrors({});
       setQuizSummaryLine("");
       clearNavigatorSummarySession();
     } catch (error) {
@@ -136,7 +178,7 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
   return (
     <form className={`contact-form bento-hover ${className}`.trim()} onSubmit={handleSubmit}>
       <div className="contact-grid">
-        <label>
+        <label className={fieldErrors.firstName ? "has-error" : ""}>
           <span>First name</span>
           <input
             name="firstName"
@@ -144,7 +186,14 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
             value={form.firstName}
             onChange={handleChange}
             required
+            aria-invalid={fieldErrors.firstName ? "true" : undefined}
+            aria-describedby={fieldErrors.firstName ? "err-firstName" : undefined}
           />
+          {fieldErrors.firstName ? (
+            <span className="field-error" id="err-firstName" role="alert">
+              {fieldErrors.firstName}
+            </span>
+          ) : null}
         </label>
         <label>
           <span>Last name</span>
@@ -155,7 +204,7 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
             onChange={handleChange}
           />
         </label>
-        <label>
+        <label className={fieldErrors.email ? "has-error" : ""}>
           <span>Email</span>
           <input
             type="email"
@@ -164,9 +213,16 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
             value={form.email}
             onChange={handleChange}
             required
+            aria-invalid={fieldErrors.email ? "true" : undefined}
+            aria-describedby={fieldErrors.email ? "err-email" : undefined}
           />
+          {fieldErrors.email ? (
+            <span className="field-error" id="err-email" role="alert">
+              {fieldErrors.email}
+            </span>
+          ) : null}
         </label>
-        <label>
+        <label className={fieldErrors.phone ? "has-error" : ""}>
           <span>Phone</span>
           <input
             name="phone"
@@ -174,7 +230,14 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
             autoComplete="tel"
             value={form.phone}
             onChange={handleChange}
+            aria-invalid={fieldErrors.phone ? "true" : undefined}
+            aria-describedby={fieldErrors.phone ? "err-phone" : undefined}
           />
+          {fieldErrors.phone ? (
+            <span className="field-error" id="err-phone" role="alert">
+              {fieldErrors.phone}
+            </span>
+          ) : null}
         </label>
         <label>
           <span>Preferred country</span>
@@ -199,7 +262,7 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
         </label>
         {mode === "consultation" ? (
           <>
-            <label>
+            <label className={fieldErrors.preferredDate ? "has-error" : ""}>
               <span>Preferred date</span>
               <input
                 type="date"
@@ -207,9 +270,16 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
                 value={form.preferredDate}
                 onChange={handleChange}
                 required
+                aria-invalid={fieldErrors.preferredDate ? "true" : undefined}
+                aria-describedby={fieldErrors.preferredDate ? "err-preferredDate" : undefined}
               />
+              {fieldErrors.preferredDate ? (
+                <span className="field-error" id="err-preferredDate" role="alert">
+                  {fieldErrors.preferredDate}
+                </span>
+              ) : null}
             </label>
-            <label>
+            <label className={fieldErrors.preferredTime ? "has-error" : ""}>
               <span>Preferred time</span>
               <input
                 type="time"
@@ -217,7 +287,14 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
                 value={form.preferredTime}
                 onChange={handleChange}
                 required
+                aria-invalid={fieldErrors.preferredTime ? "true" : undefined}
+                aria-describedby={fieldErrors.preferredTime ? "err-preferredTime" : undefined}
               />
+              {fieldErrors.preferredTime ? (
+                <span className="field-error" id="err-preferredTime" role="alert">
+                  {fieldErrors.preferredTime}
+                </span>
+              ) : null}
             </label>
             <label>
               <span>Consultation length</span>
@@ -241,7 +318,7 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
             </label>
           </>
         ) : null}
-        <label className="contact-grid__full">
+        <label className={`contact-grid__full${fieldErrors.message ? " has-error" : ""}`}>
           <span>Your enquiry</span>
           <textarea
             name="message"
@@ -251,7 +328,16 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
             onChange={handleChange}
             placeholder="Tell us about your situation, timeline, and the visa pathway you want to explore."
             required
+            aria-invalid={fieldErrors.message ? "true" : undefined}
+            aria-describedby={fieldErrors.message ? "err-message" : undefined}
           />
+          {fieldErrors.message ? (
+            <span className="field-error" id="err-message" role="alert">
+              {fieldErrors.message}
+            </span>
+          ) : (
+            <span className="contact-form__hint">Most people write at least a short paragraph (about 25+ characters).</span>
+          )}
         </label>
       </div>
       <input

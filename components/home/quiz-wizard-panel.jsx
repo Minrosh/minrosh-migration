@@ -86,6 +86,29 @@ const quizSteps = [
   },
 ];
 
+function buildQuizSummaryText(quizForm, quizResult) {
+  if (!quizResult) return "";
+  const lines = [
+    "MinRosh Migration — 2026 Points Wizard summary (indicative only)",
+    `Date: ${new Date().toISOString().slice(0, 10)}`,
+    "",
+    `Occupation (as entered): ${quizForm.occupationName || "n/a"}`,
+    `Estimated points: ${quizResult.score}`,
+    `Priority: ${quizResult.trafficLightLabel}`,
+    `SID: ${quizResult.sidStreamLabel}`,
+    "",
+    "Notes:",
+    ...quizResult.messages.map((m) => `- ${m}`),
+    "",
+    "Breakdown:",
+    ...quizResult.pointsBreakdown.map((row) => `- ${row.label}: ${row.points} pts`),
+    "",
+    "Always verify against current Department of Home Affairs rules before making decisions.",
+    "This summary does not constitute migration advice.",
+  ];
+  return lines.join("\n");
+}
+
 const initialQuiz = {
   occupationName: "",
   age: "",
@@ -111,6 +134,7 @@ export function QuizWizardPanel({ isActive, onGoToContact, resultSkeleton }) {
   const [quizForm, setQuizForm] = useState(initialQuiz);
   const [quizStepIndex, setQuizStepIndex] = useState(0);
   const [resultSkeletonActive, setResultSkeletonActive] = useState(false);
+  const [copySummaryState, setCopySummaryState] = useState("");
 
   const quizResult = useMemo(() => calculateQuizResult(quizForm), [quizForm]);
   const currentQuizStep = quizSteps[quizStepIndex];
@@ -119,6 +143,11 @@ export function QuizWizardPanel({ isActive, onGoToContact, resultSkeleton }) {
   const quizComplete = quizSteps.every((step) =>
     step.fields.every((field) => fieldIsComplete(field, quizForm))
   );
+
+  const summaryText = useMemo(() => {
+    if (!quizResult || !quizComplete) return "";
+    return buildQuizSummaryText(quizForm, quizResult);
+  }, [quizForm, quizResult, quizComplete]);
 
   useEffect(() => {
     if (!quizComplete) {
@@ -174,6 +203,32 @@ export function QuizWizardPanel({ isActive, onGoToContact, resultSkeleton }) {
 
   function goToPreviousQuizStep() {
     setQuizStepIndex((current) => Math.max(current - 1, 0));
+  }
+
+  async function copySummaryToClipboard() {
+    if (!summaryText) return;
+    try {
+      await navigator.clipboard.writeText(summaryText);
+      setCopySummaryState("copied");
+      trackEvent("quiz_summary_copied", { points_score: quizResult?.score ?? 0 });
+      window.setTimeout(() => setCopySummaryState(""), 2400);
+    } catch {
+      setCopySummaryState("failed");
+      window.setTimeout(() => setCopySummaryState(""), 4000);
+    }
+  }
+
+  function downloadSummaryFile() {
+    if (!summaryText || typeof document === "undefined") return;
+    const blob = new Blob([summaryText], { type: "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = `minrosh-points-wizard-${new Date().toISOString().slice(0, 10)}.txt`;
+    anchor.rel = "noopener";
+    anchor.click();
+    URL.revokeObjectURL(url);
+    trackEvent("quiz_summary_downloaded", { points_score: quizResult?.score ?? 0 });
   }
 
   return (
@@ -571,6 +626,24 @@ export function QuizWizardPanel({ isActive, onGoToContact, resultSkeleton }) {
                   </ul>
                 </div>
               ) : null}
+              <div className="quiz-summary-artifact">
+                <h4 className="quiz-summary-artifact__title">Your summary</h4>
+                <p className="quiz-summary-artifact__lede">
+                  Copy or download this text for your records. It is also prefilled when you open the
+                  contact flow from this site.
+                </p>
+                <pre className="quiz-summary-artifact__pre" tabIndex={0}>
+                  {summaryText}
+                </pre>
+                <div className="quiz-summary-artifact__actions">
+                  <button type="button" className="btn btn-secondary" onClick={() => copySummaryToClipboard()}>
+                    {copySummaryState === "copied" ? "Copied" : copySummaryState === "failed" ? "Copy blocked" : "Copy summary"}
+                  </button>
+                  <button type="button" className="btn btn-ghost" onClick={() => downloadSummaryFile()}>
+                    Download .txt
+                  </button>
+                </div>
+              </div>
               <button
                 type="button"
                 className="btn btn-primary"
