@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 
 const FEATURED_ORIGINS = [
@@ -369,6 +369,8 @@ function normalizeGoalQuery(raw) {
 }
 
 export function PathwayMapPanel() {
+  const fromListboxId = useId();
+  const goalListboxId = useId();
   const [fromQuery, setFromQuery] = useState("Kandy, Sri Lanka");
   const [goalQuery, setGoalQuery] = useState("University of Queensland (Brisbane)");
   const [fromOpen, setFromOpen] = useState(false);
@@ -626,6 +628,10 @@ export function PathwayMapPanel() {
             Start city (worldwide)
             <input
               type="search"
+              role="combobox"
+              aria-controls={fromListboxId}
+              aria-autocomplete="list"
+              aria-haspopup="listbox"
               value={fromQuery}
               onChange={(e) => {
                 setFromQuery(e.target.value);
@@ -636,23 +642,29 @@ export function PathwayMapPanel() {
               onKeyDown={handleFromKeyDown}
               placeholder="Search any city worldwide"
               aria-label="Search worldwide start city"
-              aria-expanded={fromOpen ? "true" : "false"}
+              aria-expanded={fromOpen}
             />
-            {fromOpen && fromFiltered.length ? (
-              <div className="pathway-map__suggestions" role="listbox" aria-label="Start city suggestions">
-                {fromFiltered.map((item, index) => (
-                  <button
-                    key={item.label}
-                    type="button"
-                    className={`pathway-map__suggestion ${index === fromActiveIndex ? "is-active" : ""}`}
-                    onMouseDown={() => chooseFrom(item)}
-                  >
-                    <strong>{item.label}</strong>
-                    <span>{item.country}</span>
-                  </button>
-                ))}
-              </div>
-            ) : null}
+            <div
+              id={fromListboxId}
+              className="pathway-map__suggestions"
+              role="listbox"
+              aria-label="Start city suggestions"
+              hidden={!fromOpen || !fromFiltered.length}
+            >
+              {fromFiltered.map((item, index) => (
+                <button
+                  key={item.label}
+                  type="button"
+                  role="option"
+                  aria-selected={index === fromActiveIndex}
+                  className={`pathway-map__suggestion ${index === fromActiveIndex ? "is-active" : ""}`}
+                  onMouseDown={() => chooseFrom(item)}
+                >
+                  <strong>{item.label}</strong>
+                  <span>{item.country}</span>
+                </button>
+              ))}
+            </div>
             {fromOpen && originLoading ? (
               <p className="pathway-map__no-match" role="status">
                 Searching worldwide cities...
@@ -673,6 +685,10 @@ export function PathwayMapPanel() {
             Destination (Australian universities only)
             <input
               type="search"
+              role="combobox"
+              aria-controls={goalListboxId}
+              aria-autocomplete="list"
+              aria-haspopup="listbox"
               value={goalQuery}
               onChange={(e) => {
                 setGoalQuery(e.target.value);
@@ -683,23 +699,29 @@ export function PathwayMapPanel() {
               onKeyDown={handleGoalKeyDown}
               placeholder="Search Australian university"
               aria-label="Search Australian university destination"
-              aria-expanded={goalOpen ? "true" : "false"}
+              aria-expanded={goalOpen}
             />
-            {goalOpen && goalFiltered.length ? (
-              <div className="pathway-map__suggestions" role="listbox" aria-label="Destination suggestions">
-                {goalFiltered.map((item, index) => (
-                  <button
-                    key={item.label}
-                    type="button"
-                    className={`pathway-map__suggestion ${index === goalActiveIndex ? "is-active" : ""}`}
-                    onMouseDown={() => chooseGoal(item)}
-                  >
-                    <strong>{item.label}</strong>
-                    <span>{item.country}</span>
-                  </button>
-                ))}
-              </div>
-            ) : null}
+            <div
+              id={goalListboxId}
+              className="pathway-map__suggestions"
+              role="listbox"
+              aria-label="Destination suggestions"
+              hidden={!goalOpen || !goalFiltered.length}
+            >
+              {goalFiltered.map((item, index) => (
+                <button
+                  key={item.label}
+                  type="button"
+                  role="option"
+                  aria-selected={index === goalActiveIndex}
+                  className={`pathway-map__suggestion ${index === goalActiveIndex ? "is-active" : ""}`}
+                  onMouseDown={() => chooseGoal(item)}
+                >
+                  <strong>{item.label}</strong>
+                  <span>{item.country}</span>
+                </button>
+              ))}
+            </div>
             {goalOpen && goalQuery.trim() && !goalFiltered.length ? (
               <p className="pathway-map__no-match" role="status">
                 No match found. Try university, college, pathway type, city, or country.

@@ -2,6 +2,9 @@
 # Run on the Ubuntu server from your project root (e.g. ~/minrosh-migration).
 # Prerequisites: Node 20+, PM2, git, and a .env or exported vars with ADMIN_PASSWORD, SMTP_*, etc.
 #
+# Prefer one command (pull/build/PM2 + log flush) so pasted lines are not concatenated:
+#   bash scripts/update-server.sh
+#
 # Git: pulls origin/$DEPLOY_GIT_BRANCH (default: main). Example staging from develop:
 #   DEPLOY_GIT_BRANCH=develop ./scripts/deploy-ubuntu.sh
 
