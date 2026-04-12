@@ -3,6 +3,8 @@
 # Avoids pasted one-liners like "cd ~/minrosh-migrationgit pull..." missing && or newlines.
 #
 # Usage (on server):
+#   cd ~/minrosh-migration && ./deploy-server.sh
+# Or:
 #   bash ~/minrosh-migration/scripts/update-server.sh
 # Or from repo root:
 #   bash scripts/update-server.sh
