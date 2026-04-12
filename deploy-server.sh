@@ -5,4 +5,5 @@
 
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")" && pwd)"
+echo "==> deploy-server: repo=$ROOT (also: npm run deploy:server from this directory)"
 exec bash "$ROOT/scripts/update-server.sh" "$ROOT"

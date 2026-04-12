@@ -6,6 +6,7 @@
     "dev": "next dev",
     "generate:brochure": "node scripts/generate-brochure.mjs",
     "prebuild:verify": "bash scripts/pre-build-verify.sh",
+    "deploy:server": "bash ./deploy-server.sh",
     "build": "node scripts/verify-required-assets.mjs && next build && node scripts/generate-brochure.mjs && node scripts/copy-standalone-assets.mjs",
     "start": "next start",
     "lint": "next lint",
