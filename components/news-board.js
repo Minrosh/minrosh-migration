@@ -11,7 +11,13 @@ const filters = [
   { label: "New Zealand", values: ["new zealand"] },
 ];
 
-export function NewsBoard({ initialNews = [], limit, compact = false, showHeader = true }) {
+export function NewsBoard({
+  initialNews = [],
+  limit,
+  compact = false,
+  showHeader = true,
+  carousel = false,
+}) {
   const [activeFilter, setActiveFilter] = useState("All");
 
   const filteredItems = useMemo(() => {
@@ -26,6 +32,33 @@ export function NewsBoard({ initialNews = [], limit, compact = false, showHeader
 
     return typeof limit === "number" ? source.slice(0, limit) : source;
   }, [activeFilter, initialNews, limit]);
+
+  const newsArticles = filteredItems.map((item, idx) => (
+    <article
+      key={`${item.date}-${item.title}-${idx}`}
+      className={`news-card bento-hover${carousel ? " news-card--carousel" : ""}`}
+    >
+      <div className="news-card__meta">
+        <span className="news-card__country">{item.country}</span>
+        <time dateTime={item.date}>{item.date}</time>
+      </div>
+      <h3>{item.title}</h3>
+      <p>{item.summary}</p>
+      <div className="news-card__actions">
+        {item.href ? (
+          <Link href={item.href} className="news-card__link">
+            Read MinRosh guide
+          </Link>
+        ) : null}
+        {item.sourceUrl ? (
+          <a href={item.sourceUrl} className="news-card__link" target="_blank" rel="noreferrer">
+            Official source
+          </a>
+        ) : null}
+      </div>
+      {item.source ? <p className="news-card__source">Source: {item.source}</p> : null}
+    </article>
+  ));
 
   return (
     <section className={`news-board ${compact ? "news-board--compact" : ""}`}>
@@ -62,36 +95,17 @@ export function NewsBoard({ initialNews = [], limit, compact = false, showHeader
           ))}
         </div>
       )}
-      <div className="news-grid">
-        {filteredItems.map((item, idx) => (
-          <article key={`${item.date}-${item.title}-${idx}`} className="news-card bento-hover">
-            <div className="news-card__meta">
-              <span className="news-card__country">{item.country}</span>
-              <time dateTime={item.date}>{item.date}</time>
-            </div>
-            <h3>{item.title}</h3>
-            <p>{item.summary}</p>
-            <div className="news-card__actions">
-              {item.href ? (
-                <Link href={item.href} className="news-card__link">
-                  Read MinRosh guide
-                </Link>
-              ) : null}
-              {item.sourceUrl ? (
-                <a
-                  href={item.sourceUrl}
-                  className="news-card__link"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Official source
-                </a>
-              ) : null}
-            </div>
-            {item.source ? <p className="news-card__source">Source: {item.source}</p> : null}
-          </article>
-        ))}
-      </div>
+      {carousel ? (
+        <div
+          className="news-board__carousel"
+          role="region"
+          aria-label="Immigration news, scroll horizontally"
+        >
+          <div className="news-board__carousel-track">{newsArticles}</div>
+        </div>
+      ) : (
+        <div className="news-grid">{newsArticles}</div>
+      )}
     </section>
   );
 }
