@@ -59,7 +59,7 @@ export function SiteShell({
               />
             </span>
             <span className="brand__text">
-              <strong className="bg-clip-text text-transparent bg-gradient-to-r from-brand-plum to-brand-rose">
+              <strong className="brand__name text-brand-plum">
                 {siteData.brand.name}
               </strong>
             </span>

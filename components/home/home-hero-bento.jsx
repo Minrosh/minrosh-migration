@@ -60,13 +60,13 @@ export function HomeHeroBento({ siteData, trustNote }) {
             <div className="sticky bottom-3 z-10 mt-6 flex flex-col gap-3 rounded-2xl bg-white/95 p-2 shadow-lg shadow-brand-plum/10 backdrop-blur sm:static sm:bg-transparent sm:p-0 sm:shadow-none sm:backdrop-blur-0 sm:flex-row sm:flex-wrap">
               <Link
                 href="/#quiz"
-                className="inline-flex min-h-[48px] w-full items-center justify-center rounded-xl bg-orange-500 px-6 py-3.5 text-center text-sm font-semibold text-white shadow-lg shadow-orange-500/25 outline-none ring-offset-2 ring-offset-white transition hover:scale-[1.02] hover:bg-orange-400 focus-visible:ring-2 focus-visible:ring-orange-300 sm:w-auto sm:min-w-[200px]"
+                className="inline-flex min-h-[48px] w-full items-center justify-center rounded-xl bg-orange-500 px-6 py-3.5 text-center text-sm font-semibold text-white no-underline shadow-md shadow-orange-500/20 outline-none ring-offset-2 ring-offset-white transition hover:scale-[1.01] hover:bg-orange-400 hover:no-underline focus-visible:ring-2 focus-visible:ring-orange-300 sm:w-auto sm:min-w-[200px]"
               >
                 {siteData.hero.primaryCta}
               </Link>
               <Link
                 href="/book-consultation"
-                className="inline-flex min-h-[48px] w-full items-center justify-center rounded-xl border border-brand-rose/35 bg-white px-6 py-3.5 text-center text-sm font-semibold text-brand-plum shadow-sm outline-none ring-offset-2 ring-offset-white transition hover:scale-[1.02] hover:bg-brand-cream focus-visible:ring-2 focus-visible:ring-brand-rose/50 sm:w-auto"
+                className="inline-flex min-h-[48px] w-full items-center justify-center rounded-xl border border-brand-rose/35 bg-white px-6 py-3.5 text-center text-sm font-semibold text-brand-plum no-underline shadow-sm outline-none ring-offset-2 ring-offset-white transition hover:scale-[1.01] hover:bg-brand-cream hover:no-underline focus-visible:ring-2 focus-visible:ring-brand-rose/50 sm:w-auto"
               >
                 {siteData.hero.secondaryCta}
               </Link>
@@ -86,11 +86,8 @@ export function HomeHeroBento({ siteData, trustNote }) {
               ))}
             </ul>
 
-            <p className="mt-5 flex flex-wrap items-start gap-2 text-sm text-brand-plum/65">
-              <span className="mt-0.5 font-bold text-brand-rose" aria-hidden>
-                ✓
-              </span>
-              <span>{trustNote}</span>
+            <p className="mt-5 border-l-[3px] border-brand-rose/35 pl-3 text-sm leading-relaxed text-brand-plum/70">
+              {trustNote}
             </p>
           </div>
 

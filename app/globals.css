@@ -355,11 +355,11 @@ a {
 
 /* Public marketing shell: frosted chrome over hero so utility + nav read clearly */
 .site-header.site-header--marketing .site-header__chrome {
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  background: linear-gradient(180deg, rgba(255, 253, 251, 0.82) 0%, rgba(255, 253, 251, 0.58) 100%);
-  border-bottom: 1px solid rgba(74, 29, 66, 0.07);
-  box-shadow: 0 12px 36px rgba(25, 10, 40, 0.07);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  background: linear-gradient(180deg, rgba(255, 253, 251, 0.92) 0%, rgba(255, 253, 251, 0.78) 100%);
+  border-bottom: 1px solid rgba(74, 29, 66, 0.08);
+  box-shadow: 0 10px 32px rgba(25, 10, 40, 0.06);
 }
 
 /* Clipped decorative layer only — fixed mobile nav must not be clipped by the header. */
@@ -520,8 +520,14 @@ a {
   z-index: 1;
 }
 
-.site-header--backdrop .brand__text strong {
-  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
+.site-header--backdrop .brand__text strong,
+.site-header--backdrop .brand__name {
+  text-shadow: none;
+}
+
+.brand__text strong.brand__name {
+  font-weight: 800;
+  letter-spacing: -0.03em;
 }
 
 .site-header.is-compact {
@@ -619,7 +625,8 @@ a.brand:focus-visible {
   max-width: 26rem;
 }
 
-.site-header.is-compact .brand__text strong {
+.site-header.is-compact .brand__text strong,
+.site-header.is-compact .brand__name {
   font-size: 1.14rem;
 }
 
@@ -644,15 +651,15 @@ a.brand:focus-visible {
 }
 
 .site-nav__group--main {
-  padding: 6px 12px 6px 14px;
+  padding: 5px 10px 5px 12px;
   border-radius: 999px;
-  border: 1px solid rgba(74, 29, 66, 0.1);
-  background: rgba(255, 255, 255, 0.88);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(74, 29, 66, 0.09);
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.95) inset,
-    0 8px 28px rgba(74, 29, 66, 0.06);
+    0 1px 0 rgba(255, 255, 255, 0.98) inset,
+    0 4px 18px rgba(74, 29, 66, 0.05);
   flex: 1 1 auto;
   min-width: 0;
   flex-wrap: wrap;
@@ -685,15 +692,15 @@ a.brand:focus-visible {
   padding: 0 18px;
   font-size: 0.875rem;
   letter-spacing: 0.01em;
-  background: linear-gradient(165deg, var(--brand-rose) 0%, #8f3a62 100%);
-  border: 1px solid rgba(74, 29, 66, 0.14);
-  box-shadow: 0 8px 22px rgba(139, 61, 106, 0.28);
+  background: var(--brand-rose);
+  border: 1px solid rgba(74, 29, 66, 0.12);
+  box-shadow: 0 4px 14px rgba(139, 61, 106, 0.22);
 }
 
 .btn.site-nav__cta--primary:hover,
 .btn.site-nav__cta--primary:focus-visible {
-  background: linear-gradient(165deg, #c75f82 0%, var(--brand-rose) 100%);
-  box-shadow: 0 10px 26px rgba(139, 61, 106, 0.32);
+  background: #b84e73;
+  box-shadow: 0 6px 18px rgba(139, 61, 106, 0.26);
 }
 
 .btn.site-nav__cta--secondary {
@@ -5818,7 +5825,34 @@ a.brand:focus-visible {
 
   .site-nav__mega-host {
     display: flex;
-    align-items: stretch;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  /*
+   * Replace animated ::after underlines in the pill (they read as stray “ticks” when links wrap).
+   * Do not set overflow-x on this row — it would clip the visas mega dropdown.
+   */
+  .site-nav__group--main .site-nav__link::after {
+    display: none;
+  }
+
+  .site-nav__group--main .site-nav__link {
+    flex-shrink: 0;
+    border-bottom: 2px solid transparent;
+    transition:
+      color 0.2s ease,
+      border-color 0.2s ease,
+      background 0.2s ease;
+  }
+
+  .site-nav__group--main .site-nav__link.is-active {
+    border-bottom-color: var(--brand-gold);
+  }
+
+  .site-nav__group--main .site-nav__link:hover:not(.is-active),
+  .site-nav__group--main .site-nav__link:focus-visible:not(.is-active) {
+    border-bottom-color: rgba(202, 166, 77, 0.45);
   }
 
   .site-nav__search-host {
@@ -5847,9 +5881,16 @@ a.brand:focus-visible {
   }
 }
 
+@media (min-width: 1280px) {
+  .site-nav__group--main {
+    flex-wrap: nowrap;
+    row-gap: 0;
+  }
+}
+
 .visas-mega {
   position: relative;
-  align-self: stretch;
+  align-self: center;
   display: flex;
   align-items: center;
 }
@@ -5871,7 +5912,9 @@ a.brand:focus-visible {
   border-radius: 10px;
   cursor: pointer;
   font-weight: 700;
-  font-size: 0.86rem;
+  font-size: 0.8125rem;
+  line-height: 1.2;
+  white-space: nowrap;
   color: var(--brand-plum);
   transition:
     color 0.2s ease,
@@ -5887,6 +5930,7 @@ a.brand:focus-visible {
 
 .visas-mega__chevron {
   display: inline-block;
+  flex-shrink: 0;
   width: 0;
   height: 0;
   margin-left: 2px;
@@ -5894,6 +5938,8 @@ a.brand:focus-visible {
   border-right: 5px solid transparent;
   border-top: 6px solid currentColor;
   opacity: 0.55;
+  transform-origin: 50% 35%;
+  transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
 .visas-mega[open] .visas-mega__chevron {
