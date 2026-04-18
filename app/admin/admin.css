@@ -3,28 +3,28 @@
 @tailwind utilities;
 
 @layer base {
-  /* Dark theme (single palette for entire admin + login). */
+  /* Light theme (single palette for entire admin + login). */
   .admin-root {
-    --background: 224 71% 4%;
-    --foreground: 210 40% 98%;
-    --card: 224 71% 6%;
-    --card-foreground: 210 40% 98%;
-    --primary: 263 70% 58%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 215 28% 17%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 215 28% 17%;
-    --muted-foreground: 217 10% 64%;
-    --accent: 215 28% 17%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62% 50%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 215 28% 20%;
-    --input: 215 28% 20%;
-    --ring: 263 70% 58%;
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --primary: 263 65% 45%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 220 14% 96%;
+    --secondary-foreground: 222 47% 11%;
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 9% 46%;
+    --accent: 220 14% 96%;
+    --accent-foreground: 222 47% 11%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 263 65% 45%;
     --radius: 0.5rem;
     font-family: var(--font-sans, ui-sans-serif, system-ui, sans-serif);
-    color-scheme: dark;
+    color-scheme: light;
   }
 
   .admin-root *,

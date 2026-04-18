@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { PublicFileImg } from "./public-file-img";
+import { GlossaryParagraph } from "./glossary-paragraph";
 import { personalizedCtaForPath, recommendedLinksForPath } from "../lib/content-personalization";
 
 /** Stable in-page anchors for section titles (deduped with index). */
@@ -69,11 +70,11 @@ export function ContentPage({
           <div className="content-hero__copy">
             <p className="section-label">{eyebrow}</p>
             <h1>{title}</h1>
-            <p>{intro}</p>
+            <GlossaryParagraph text={intro} />
             {alertBanner ? (
               <div className="content-alert-banner" role="note">
                 <strong>{alertBanner.title}</strong>
-                <p>{alertBanner.body}</p>
+                <GlossaryParagraph text={alertBanner.body} />
                 {alertBanner.href ? (
                   <p className="content-alert-banner__link">
                     <a href={alertBanner.href} target="_blank" rel="noreferrer">
@@ -125,17 +126,23 @@ export function ContentPage({
               {index > 0 || officialResources.length ? (
                 <hr className="content-divider" aria-hidden="true" />
               ) : null}
-              <section className="content-section bento-hover">
-                <h2>{section.title}</h2>
-                <p>{section.body}</p>
-                {section.bullets?.length ? (
-                  <ul className="feature-list">
-                    {section.bullets.map((item) => (
-                      <li key={item}>{item}</li>
-                    ))}
-                  </ul>
-                ) : null}
-              </section>
+              <details className="content-section content-accordion bento-hover" open={index === 0}>
+                <summary className="content-accordion__summary">
+                  <h2>{section.title}</h2>
+                </summary>
+                <div className="content-accordion__body">
+                  <GlossaryParagraph text={section.body} />
+                  {section.bullets?.length ? (
+                    <ul className="feature-list">
+                      {section.bullets.map((item) => (
+                        <li key={item}>
+                          <GlossaryParagraph text={item} as="span" />
+                        </li>
+                      ))}
+                    </ul>
+                  ) : null}
+                </div>
+              </details>
             </div>
           ))}
 
@@ -151,10 +158,14 @@ export function ContentPage({
               </div>
               <div className="faq-grid">
                 {faq.map((item) => (
-                  <article key={item.question} className="faq-card bento-hover">
-                    <h3>{item.question}</h3>
-                    <p>{item.answer}</p>
-                  </article>
+                  <details key={item.question} className="faq-card faq-card--accordion bento-hover">
+                    <summary className="faq-card__summary">
+                      <h3>{item.question}</h3>
+                    </summary>
+                    <div className="faq-card__body">
+                      <GlossaryParagraph text={item.answer} />
+                    </div>
+                  </details>
                 ))}
               </div>
             </section>
@@ -181,7 +192,7 @@ export function ContentPage({
           <div className="content-aside-card bento-hover">
             <p className="section-label">Next steps</p>
             <h3>{ctaTitle || personalizedCta.title}</h3>
-            <p>{ctaBody || personalizedCta.body}</p>
+            <GlossaryParagraph text={ctaBody || personalizedCta.body} />
             <div className="content-aside-card__actions">
               <Link href="/book-consultation" className="btn btn-primary">
                 Book consultation

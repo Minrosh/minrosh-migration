@@ -1,11 +1,15 @@
 import Link from "next/link";
 import { PublicFileImg } from "./public-file-img";
-import { SiteTopbar } from "./site-topbar";
 import { SiteFooter } from "./site-footer";
+import { SiteHeaderMetaRow } from "./site-header-meta-row";
 import { SiteHeaderNav } from "./site-header-nav";
+import { SiteHeaderTrustRow } from "./site-header-trust-row";
+import { SitePublicStickyHeader } from "./site-public-sticky-header";
+import { SiteHeaderMobileUtilities } from "./site-header-mobile-utilities";
 import { getFooterStats } from "../lib/site-stats";
 import { getDestinationNavLinks } from "../lib/destination-nav";
 import { GLOBAL_HEADER_PRIMARY_LINKS } from "../lib/public-indexable-routes";
+import { buildWhatsAppUrl, WHATSAPP_LEAD_MESSAGE } from "../lib/whatsapp-prefill";
 
 const globalPrimaryLinks = GLOBAL_HEADER_PRIMARY_LINKS;
 
@@ -22,6 +26,7 @@ export function SiteShell({
   headerBackdrop = "au",
 }) {
   const footerStats = getFooterStats();
+  const primaryWhatsAppUrl = buildWhatsAppUrl(siteData.brand.whatsapp, WHATSAPP_LEAD_MESSAGE);
   const navLinks = destinationContext
     ? getDestinationNavLinks(destinationContext.slug)
     : globalPrimaryLinks;
@@ -33,13 +38,20 @@ export function SiteShell({
 
   return (
     <div className="portal-shell">
-      <SiteTopbar siteData={siteData} />
-      <header className={`site-header site-header--backdrop ${backdropModifier}`}>
+      <SitePublicStickyHeader
+        backdropModifier={backdropModifier}
+        className="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-brand-plum/10 shadow-sm transition-all duration-300"
+      >
+        <SiteHeaderMetaRow siteData={siteData} />
         <div className="site-header__inner">
-          <Link href={brandHref} className="brand" aria-label={brandAria}>
+          <Link
+            href={brandHref}
+            className="brand hover:scale-105 transition-transform duration-300"
+            aria-label={brandAria}
+          >
             <span className="brand__mark" aria-hidden="true">
               <PublicFileImg
-                src="/images/minrosh-logo.jpg"
+                src="/images/minrosh-logo.png"
                 alt=""
                 width={46}
                 height={46}
@@ -47,15 +59,37 @@ export function SiteShell({
               />
             </span>
             <span className="brand__text">
-              <strong>{siteData.brand.name}</strong>
+              <strong className="bg-clip-text text-transparent bg-gradient-to-r from-brand-plum to-brand-rose">
+                {siteData.brand.name}
+              </strong>
             </span>
           </Link>
-          <SiteHeaderNav navLinks={navLinks} currentPath={currentPath} />
+          <SiteHeaderNav
+            navLinks={navLinks}
+            currentPath={currentPath}
+            enableVisaMega={!destinationContext}
+            enableSiteSearch
+          />
         </div>
-      </header>
+        <SiteHeaderTrustRow brand={siteData.brand} />
+        <SiteHeaderMobileUtilities siteData={siteData} />
+      </SitePublicStickyHeader>
 
-      <main id="main-content" className="portal-main">{children}</main>
+      <main id="main-content" className="portal-main pt-4">{children}</main>
       <SiteFooter siteData={siteData} initialStats={footerStats} />
+      <div className="mobile-sticky-cta" role="region" aria-label="Quick contact actions">
+        <Link href="/assessment" className="mobile-sticky-cta__action mobile-sticky-cta__action--primary">
+          Free assessment
+        </Link>
+        <a
+          href={primaryWhatsAppUrl}
+          className="mobile-sticky-cta__action mobile-sticky-cta__action--secondary"
+          target="_blank"
+          rel="noreferrer"
+        >
+          WhatsApp now
+        </a>
+      </div>
     </div>
   );
 }

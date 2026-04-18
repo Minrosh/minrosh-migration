@@ -19,7 +19,7 @@ export const metadata = buildMetadata({
   title: pageData.metaTitle,
   description: pageData.metaDescription,
   path: pageData.path,
-  keywords: ["Migration Agent Brisbane Contact", "Visa consultation Brisbane", "Contact migration agent"],
+  keywords: pageData.keywords,
 });
 
 export default function ContactPage() {
@@ -68,6 +68,25 @@ export default function ContactPage() {
             </div>
           </div>
         </section>
+        {(pageData.officialResources ?? []).length ? (
+          <section className="official-resources" aria-label="Official government sources">
+            <h2>Official sources to verify requirements</h2>
+            <ul>
+              {(pageData.officialResources ?? []).map((item) => (
+                <li key={item.href}>
+                  <a href={item.href} target="_blank" rel="noreferrer">
+                    {item.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <p className="content-hero__note">
+              For a structured overview of how these tools fit with MinRosh service pages, read the{" "}
+              <Link href="/australian-visas-official-sources">Australian visas official sources hub</Link>
+              .
+            </p>
+          </section>
+        ) : null}
         <div className="contact-layout">
           <div className="contact-copy">
             <p className="section-label">Brisbane Migration Support</p>
@@ -75,7 +94,8 @@ export default function ContactPage() {
             <p>
               Share your migration background, timing, and main visa goal. MinRosh Migration
               supports Brisbane clients and remote clients across Australia with structured next-step
-              guidance.
+              guidance. If you are still choosing a stream, browse the Department of Home Affairs visa
+              listing first, then tell us which subclass or goal you want to stress-test.
             </p>
             <div className="contact-details">
               <div>

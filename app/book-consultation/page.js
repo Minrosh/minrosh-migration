@@ -14,11 +14,7 @@ export const metadata = buildMetadata({
   title: pageData.metaTitle,
   description: pageData.metaDescription,
   path: pageData.path,
-  keywords: [
-    "Book migration consultation",
-    "Australian visa consultation Brisbane",
-    "Migration advice consultation",
-  ],
+  keywords: pageData.keywords,
 });
 
 export default function BookConsultationPage() {
@@ -52,45 +48,87 @@ export default function BookConsultationPage() {
           ) : null}
         </section>
 
+        {(pageData.officialResources ?? []).length ? (
+          <section className="official-resources" aria-label="Official government sources">
+            <h2>Official sources to verify visa options</h2>
+            <ul>
+              {(pageData.officialResources ?? []).map((item) => (
+                <li key={item.href}>
+                  <a href={item.href} target="_blank" rel="noreferrer">
+                    {item.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <p className="content-hero__note">
+              MinRosh helps you interpret pathways against your facts. Subclass names, charges, and
+              criteria are always confirmed on the Department of Home Affairs website before lodgement.
+            </p>
+          </section>
+        ) : null}
+
         <div className="content-page__grid">
           <div className="content-page__main">
-            <section className="content-section bento-hover">
-              <h2>Why book with us?</h2>
-              <p>
-                A consultation gives you a clearer view of your options before you spend time and
-                money on the wrong pathway. We focus on practical strategy, likely next steps, and
-                the issues that may affect your profile.
-              </p>
-              <ul className="feature-list">
-                <li>Personalised visa strategy based on your situation</li>
-                <li>Clear guidance on realistic migration pathways</li>
-                <li>Early identification of common mistakes and weak points</li>
-              </ul>
-            </section>
+            <details className="content-section content-accordion bento-hover" open>
+              <summary className="content-accordion__summary">
+                <h2>Why book with us?</h2>
+              </summary>
+              <div className="content-accordion__body">
+                <p>
+                  A consultation gives you a clearer view of your options before you spend time and
+                  money on the wrong pathway. We focus on practical strategy, likely next steps, and
+                  the issues that may affect your profile.
+                </p>
+                <ul className="feature-list">
+                  <li>Personalised visa strategy based on your situation</li>
+                  <li>Clear guidance on realistic migration pathways</li>
+                  <li>Early identification of common mistakes and weak points</li>
+                  <li>
+                    Orientation using the official{" "}
+                    <a href="https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing">
+                      visa listing
+                    </a>{" "}
+                    and{" "}
+                    <a href="https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-finder">
+                      Visa Finder
+                    </a>{" "}
+                    before you lock in a plan
+                  </li>
+                </ul>
+              </div>
+            </details>
 
-            <section className="content-section bento-hover">
-              <h2>What you’ll get</h2>
-              <p>
-                Consultations are designed to help you leave with clarity, not just more
-                information. We help you understand the strongest pathway signals, the main
-                documents or tests to prioritise, and the likely sequence of steps you should take
-                next.
-              </p>
-              <ul className="feature-list">
-                <li>One-on-one consultation tailored to your background</li>
-                <li>Preliminary visa eligibility and pathway review</li>
-                <li>Step-by-step action plan for your next move</li>
-              </ul>
-            </section>
+            <details className="content-section content-accordion bento-hover">
+              <summary className="content-accordion__summary">
+                <h2>What you’ll get</h2>
+              </summary>
+              <div className="content-accordion__body">
+                <p>
+                  Consultations are designed to help you leave with clarity, not just more
+                  information. We help you understand the strongest pathway signals, the main
+                  documents or tests to prioritise, and the likely sequence of steps you should take
+                  next.
+                </p>
+                <ul className="feature-list">
+                  <li>One-on-one consultation tailored to your background</li>
+                  <li>Preliminary visa eligibility and pathway review</li>
+                  <li>Step-by-step action plan for your next move</li>
+                </ul>
+              </div>
+            </details>
 
-            <section className="content-section bento-hover">
-              <h2>Book your consultation today</h2>
-              <p>
-                Fill in the form and our team will review your enquiry. If you already know the
-                pathway you want to discuss, include that in your message so we can prepare the most
-                relevant next-step guidance.
-              </p>
-            </section>
+            <details className="content-section content-accordion bento-hover">
+              <summary className="content-accordion__summary">
+                <h2>Book your consultation today</h2>
+              </summary>
+              <div className="content-accordion__body">
+                <p>
+                  Fill in the form and our team will review your enquiry. If you already know the
+                  pathway you want to discuss, include that in your message so we can prepare the most
+                  relevant next-step guidance.
+                </p>
+              </div>
+            </details>
           </div>
 
           <div className="content-page__aside contact-form-column">

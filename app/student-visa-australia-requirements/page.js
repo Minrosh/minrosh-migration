@@ -11,12 +11,12 @@ export const metadata = buildMetadata({
   title: guideData.metaTitle,
   description: guideData.metaDescription,
   path: guideData.path,
-  keywords: ["Student visa Australia requirements", "Student visa Australia guide"],
+  keywords: ["Student visa Australia requirements", "Student visa Australia 500", "CoE visa requirements"],
 });
 
 export default function StudentVisaGuidePage() {
   return (
-    <SiteShell siteData={siteData} currentPath="">
+    <SiteShell siteData={siteData} currentPath={guideData.path}>
       <StructuredData
         data={breadcrumbJsonLd([
           { name: "Home", path: "/" },
@@ -42,6 +42,8 @@ export default function StudentVisaGuidePage() {
           { href: "/student-visa-australia", label: "Student Visa" },
           { href: guideData.path, label: "Guide" },
         ]}
+        officialResources={guideData.officialResources ?? []}
+        currentPath={guideData.path}
         sections={guideData.sections}
         faq={guideData.faq}
         related={[

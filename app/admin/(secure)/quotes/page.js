@@ -17,7 +17,8 @@ export default function QuotesPage() {
   function load() {
     fetch("/api/admin/quotes")
       .then((r) => r.json())
-      .then((d) => {
+      .then((payload) => {
+        const d = payload?.data && typeof payload.data === "object" ? payload.data : payload;
         setQuotes(d.quotes || []);
         setLoading(false);
       })

@@ -16,7 +16,7 @@ export const metadata = buildMetadata({
 
 export default function ProcessingTimesGuidePage() {
   return (
-    <SiteShell siteData={siteData} currentPath="">
+    <SiteShell siteData={siteData} currentPath={guideData.path}>
       <StructuredData
         data={breadcrumbJsonLd([
           { name: "Home", path: "/" },
@@ -41,6 +41,8 @@ export default function ProcessingTimesGuidePage() {
           { href: "/", label: "Home" },
           { href: guideData.path, label: "Processing Times Guide" },
         ]}
+        officialResources={guideData.officialResources ?? []}
+        currentPath={guideData.path}
         sections={guideData.sections}
         faq={guideData.faq}
         related={[

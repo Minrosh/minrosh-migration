@@ -368,11 +368,69 @@ function normalizeGoalQuery(raw) {
     .toLowerCase();
 }
 
+/** Light map skin aligned with MinRosh cream / plum. */
+const PATHWAY_MAP_STYLE = [
+  { elementType: "geometry", stylers: [{ color: "#fbf8f4" }] },
+  { elementType: "labels.text.fill", stylers: [{ color: "#5f5560" }] },
+  { elementType: "labels.text.stroke", stylers: [{ color: "#fbf8f4" }] },
+  { featureType: "administrative", elementType: "geometry.stroke", stylers: [{ color: "#e6d9d9" }] },
+  { featureType: "water", elementType: "geometry", stylers: [{ color: "#dbeafe" }] },
+  { featureType: "road", elementType: "geometry", stylers: [{ color: "#ffffff" }] },
+  { featureType: "road.highway", elementType: "geometry.stroke", stylers: [{ color: "#e6d9d9" }] },
+  { featureType: "poi.park", elementType: "geometry", stylers: [{ color: "#e8f0e4" }] },
+  { featureType: "poi", stylers: [{ visibility: "off" }] },
+  { featureType: "transit", stylers: [{ visibility: "off" }] },
+];
+
+const PATHWAY_INTENTS = [
+  { id: "explore", label: "Explore", hint: "Full destination list" },
+  { id: "student", label: "Student", hint: "Study-led destinations" },
+  { id: "skilled", label: "Skilled", hint: "Major hubs & careers" },
+  { id: "partner", label: "Partner", hint: "Capital & regional cities" },
+  { id: "employer", label: "Employer", hint: "Large employment centres" },
+];
+
+function universitiesForIntent(intentId) {
+  if (intentId === "explore" || intentId === "student") return AUSTRALIA_UNIVERSITIES;
+  const metro = /(Sydney|Melbourne|Brisbane|Perth|Adelaide|Canberra)/i;
+  if (intentId === "employer") {
+    return AUSTRALIA_UNIVERSITIES.filter((u) => metro.test(u.label));
+  }
+  if (intentId === "skilled") {
+    return AUSTRALIA_UNIVERSITIES.filter(
+      (u) => metro.test(u.label) || /technology|engineering|business|RMIT|UNSW|UTS|Swinburne|QUT/i.test(u.label)
+    );
+  }
+  if (intentId === "partner") {
+    return AUSTRALIA_UNIVERSITIES.filter(
+      (u) =>
+        metro.test(u.label) ||
+        /(Gold Coast|Newcastle|Wollongong|Darwin|Hobart|Townsville|Sunshine Coast|Toowoomba|Ballarat)/i.test(
+          u.label
+        )
+    );
+  }
+  return AUSTRALIA_UNIVERSITIES;
+}
+
+const FROM_PRESETS = FEATURED_ORIGINS.slice(0, 4);
+const GOAL_PRESETS = [
+  AUSTRALIA_UNIVERSITIES[0],
+  AUSTRALIA_UNIVERSITIES[1],
+  AUSTRALIA_UNIVERSITIES[2],
+  AUSTRALIA_UNIVERSITIES[5],
+  AUSTRALIA_UNIVERSITIES[7],
+  AUSTRALIA_UNIVERSITIES[8],
+];
+
 export function PathwayMapPanel() {
   const fromListboxId = useId();
   const goalListboxId = useId();
+  const sectionRef = useRef(null);
   const [fromQuery, setFromQuery] = useState("Kandy, Sri Lanka");
   const [goalQuery, setGoalQuery] = useState("University of Queensland (Brisbane)");
+  const [pathwayIntent, setPathwayIntent] = useState("explore");
+  const [mapSectionInView, setMapSectionInView] = useState(false);
   const [fromOpen, setFromOpen] = useState(false);
   const [goalOpen, setGoalOpen] = useState(false);
   const [fromActiveIndex, setFromActiveIndex] = useState(-1);
@@ -387,33 +445,75 @@ export function PathwayMapPanel() {
   const overlaysRef = useRef({ fromMarker: null, toMarker: null, line: null });
 
   const mapsKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "";
-  const city = originSuggestions[0] || FEATURED_ORIGINS[0];
+
+  const intentPool = useMemo(() => universitiesForIntent(pathwayIntent), [pathwayIntent]);
+
+  const resolvedOrigin = useMemo(() => {
+    const trimmed = fromQuery.trim();
+    if (!trimmed) return FEATURED_ORIGINS[0];
+    const pool = [...originSuggestions, ...FEATURED_ORIGINS];
+    const exact = pool.find((x) => x.label === trimmed);
+    if (exact) return exact;
+    const ci = pool.find((x) => x.label.toLowerCase() === trimmed.toLowerCase());
+    if (ci) return ci;
+    return originSuggestions[0] || FEATURED_ORIGINS[0];
+  }, [fromQuery, originSuggestions]);
+
   const goalSearch = normalizeGoalQuery(goalQuery);
   const goal =
-    AUSTRALIA_UNIVERSITIES.find((item) => item.label.toLowerCase() === goalSearch) ||
-    AUSTRALIA_UNIVERSITIES.find((item) => item.label.toLowerCase().includes(goalSearch)) ||
+    intentPool.find((item) => item.label.toLowerCase() === goalSearch) ||
+    intentPool.find((item) => item.label.toLowerCase().includes(goalSearch)) ||
+    intentPool[0] ||
     AUSTRALIA_UNIVERSITIES[0];
   const goalHint = `${goal.type} · ${goal.country}`;
   const fromFiltered = originSuggestions;
   const goalFiltered = useMemo(() => {
     const q = normalizeGoalQuery(goalQuery);
-    if (!q) return AUSTRALIA_UNIVERSITIES.slice(0, 8);
-    return AUSTRALIA_UNIVERSITIES.filter(
-      (item) =>
-        item.label.toLowerCase().includes(q) ||
-        item.country.toLowerCase().includes(q) ||
-        item.type.toLowerCase().includes(q)
-    ).slice(0, 8);
-  }, [goalQuery]);
+    if (!q) return intentPool.slice(0, 8);
+    return intentPool
+      .filter(
+        (item) =>
+          item.label.toLowerCase().includes(q) ||
+          item.country.toLowerCase().includes(q) ||
+          item.type.toLowerCase().includes(q)
+      )
+      .slice(0, 8);
+  }, [goalQuery, intentPool]);
 
-  const distanceKm = useMemo(() => haversineKm(city, goal), [city, goal]);
+  const visibleGoalPresets = useMemo(
+    () => GOAL_PRESETS.filter((g) => intentPool.some((p) => p.label === g.label)),
+    [intentPool]
+  );
+
+  const distanceKm = useMemo(() => haversineKm(resolvedOrigin, goal), [resolvedOrigin, goal]);
   const estFlightHours = useMemo(() => Math.max(9, Math.round(distanceKm / 850)), [distanceKm]);
+
+  useEffect(() => {
+    const root = sectionRef.current;
+    if (!root || typeof IntersectionObserver === "undefined") {
+      setMapSectionInView(true);
+      return;
+    }
+    if (typeof window !== "undefined") {
+      const rect = root.getBoundingClientRect();
+      if (rect.top < window.innerHeight + 240) setMapSectionInView(true);
+    }
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) setMapSectionInView(true);
+      },
+      { rootMargin: "240px 0px", threshold: 0.02 }
+    );
+    io.observe(root);
+    return () => io.disconnect();
+  }, []);
 
   useEffect(() => {
     if (!mapsKey) {
       setError("Map preview is unavailable right now.");
       return;
     }
+    if (!mapSectionInView) return;
     if (window.google?.maps) {
       setReady(true);
       return;
@@ -436,7 +536,16 @@ export function PathwayMapPanel() {
       script?.removeEventListener("load", onLoad);
       script?.removeEventListener("error", onError);
     };
-  }, [mapsKey]);
+  }, [mapsKey, mapSectionInView]);
+
+  useEffect(() => {
+    if (!intentPool.length) return;
+    setGoalQuery((current) => {
+      const t = current.trim();
+      if (intentPool.some((u) => u.label === t)) return current;
+      return intentPool[0].label;
+    });
+  }, [pathwayIntent, intentPool]);
 
   useEffect(() => {
     if (!ready || !mapNodeRef.current || !window.google?.maps) return;
@@ -447,40 +556,55 @@ export function PathwayMapPanel() {
         mapTypeControl: false,
         streetViewControl: false,
         fullscreenControl: false,
+        styles: PATHWAY_MAP_STYLE,
+        backgroundColor: "#fbf8f4",
       });
     }
     const map = mapRef.current;
-    const from = { lat: city.lat, lng: city.lng };
+    map.setOptions({ styles: PATHWAY_MAP_STYLE });
+    const from = { lat: resolvedOrigin.lat, lng: resolvedOrigin.lng };
     const to = { lat: goal.lat, lng: goal.lng };
+
+    const g = window.google.maps;
+    const pin = (fill) => ({
+      path: g.SymbolPath.CIRCLE,
+      scale: 9,
+      fillColor: fill,
+      fillOpacity: 1,
+      strokeColor: "#ffffff",
+      strokeWeight: 2,
+    });
 
     overlaysRef.current.fromMarker?.setMap(null);
     overlaysRef.current.toMarker?.setMap(null);
     overlaysRef.current.line?.setMap(null);
 
-    overlaysRef.current.fromMarker = new window.google.maps.Marker({
+    overlaysRef.current.fromMarker = new g.Marker({
       position: from,
       map,
-      title: city.label,
+      title: resolvedOrigin.label,
+      icon: pin("#5b2a4a"),
     });
-    overlaysRef.current.toMarker = new window.google.maps.Marker({
+    overlaysRef.current.toMarker = new g.Marker({
       position: to,
       map,
       title: goal.label,
+      icon: pin("#9b4a6c"),
     });
-    overlaysRef.current.line = new window.google.maps.Polyline({
+    overlaysRef.current.line = new g.Polyline({
       path: [from, to],
       geodesic: true,
-      strokeColor: "#5b2a4a",
-      strokeOpacity: 0.9,
+      strokeColor: "#caa64d",
+      strokeOpacity: 0.92,
       strokeWeight: 3,
       map,
     });
 
-    const bounds = new window.google.maps.LatLngBounds();
+    const bounds = new g.LatLngBounds();
     bounds.extend(from);
     bounds.extend(to);
     map.fitBounds(bounds, 120);
-  }, [ready, city, goal]);
+  }, [ready, resolvedOrigin, goal]);
 
   useEffect(() => {
     setFromActiveIndex(fromFiltered.length ? 0 : -1);
@@ -614,16 +738,88 @@ export function PathwayMapPanel() {
     }
   }
 
+  const consultHref = `/book-consultation?fromCity=${encodeURIComponent(resolvedOrigin.label)}&pathwayGoal=${encodeURIComponent(goal.label)}&pathwayFocus=${encodeURIComponent(pathwayIntent)}`;
+
   return (
-    <section className="pathway-map editorial-section editorial-section--compact">
+    <section ref={sectionRef} className="pathway-map editorial-section editorial-section--compact">
       <div className="section-head">
         <div>
           <p className="section-label">Global Pathway Map</p>
           <h2>Make your migration pathway feel real before you lodge.</h2>
+          <p className="pathway-map__lede">
+            Orientation only: pick where you are today and an illustrative Australian destination. A registered
+            migration agent still needs your full facts before any visa strategy.
+          </p>
         </div>
       </div>
+
+      <ol className="pathway-map__stepper" aria-label="How to use this map">
+        <li className="pathway-map__step">
+          <span className="pathway-map__step-num" aria-hidden>
+            1
+          </span>
+          <span>
+            <strong>Where you are</strong> — your current city (worldwide search).
+          </span>
+        </li>
+        <li className="pathway-map__step">
+          <span className="pathway-map__step-num" aria-hidden>
+            2
+          </span>
+          <span>
+            <strong>What you are exploring</strong> — intent + destination shortlist (not visa advice).
+          </span>
+        </li>
+        <li className="pathway-map__step">
+          <span className="pathway-map__step-num" aria-hidden>
+            3
+          </span>
+          <span>
+            <strong>Next step with MinRosh</strong> — book a consultation when you are ready for tailored guidance.
+          </span>
+        </li>
+      </ol>
+
+      <p className="pathway-map__disclaimer">
+        Route distance and flight times are rough illustrations. City search uses{" "}
+        <a href="https://nominatim.openstreetmap.org/" target="_blank" rel="noreferrer">
+          OpenStreetMap Nominatim
+        </a>
+        ; the map uses Google Maps when an API key is configured.
+      </p>
+
+      <div className="pathway-map__intent-row" role="group" aria-label="Pathway focus">
+        {PATHWAY_INTENTS.map((item) => (
+          <button
+            key={item.id}
+            type="button"
+            className={`pathway-map__intent ${pathwayIntent === item.id ? "is-active" : ""}`}
+            aria-pressed={pathwayIntent === item.id}
+            title={item.hint}
+            onClick={() => setPathwayIntent(item.id)}
+          >
+            {item.label}
+          </button>
+        ))}
+      </div>
+
       <div className="pathway-map__grid">
         <div className="pathway-map__panel bento-hover">
+          <div className="pathway-map__presets" aria-label="Quick pick start cities">
+            <span className="pathway-map__preset-label">Quick start</span>
+            <div className="pathway-map__preset-chips">
+              {FROM_PRESETS.map((item) => (
+                <button
+                  key={item.label}
+                  type="button"
+                  className="pathway-map__preset"
+                  onClick={() => chooseFrom(item)}
+                >
+                  {item.label.split(",")[0]}
+                </button>
+              ))}
+            </div>
+          </div>
           <label>
             Start city (worldwide)
             <input
@@ -681,6 +877,18 @@ export function PathwayMapPanel() {
               </p>
             ) : null}
           </label>
+
+          <div className="pathway-map__presets" aria-label="Popular Australian destinations">
+            <span className="pathway-map__preset-label">Popular destinations</span>
+            <div className="pathway-map__preset-chips">
+              {visibleGoalPresets.map((item) => (
+                <button key={item.label} type="button" className="pathway-map__preset" onClick={() => chooseGoal(item)}>
+                  {item.label.replace(/\s*\([^)]+\)\s*$/, "")}
+                </button>
+              ))}
+            </div>
+          </div>
+
           <label>
             Destination (Australian universities only)
             <input
@@ -738,15 +946,36 @@ export function PathwayMapPanel() {
             Typical total flight duration: <strong>{estFlightHours} to {estFlightHours + 3} hours</strong>
           </p>
           <p>{goal.detail}</p>
-          <Link
-            href={`/book-consultation?fromCity=${encodeURIComponent(city.label)}&pathwayGoal=${encodeURIComponent(goal.label)}`}
-            className="btn btn-primary"
-          >
+          <p className="pathway-map__not-sure">
+            Not sure which pathway fits?{" "}
+            <Link href="/#quiz" className="pathway-map__inline-link">
+              Try the Smart Navigator
+            </Link>{" "}
+            or{" "}
+            <Link href="/assessment" className="pathway-map__inline-link">
+              free assessment
+            </Link>
+            .
+          </p>
+          <Link href={consultHref} className="btn btn-primary">
             Book a consultation for this pathway
           </Link>
         </div>
         <div className="pathway-map__canvas bento-hover">
-          {error ? <p className="pathway-map__fallback">{error}</p> : <div ref={mapNodeRef} className="pathway-map__map" />}
+          {error ? (
+            <p className="pathway-map__fallback">{error}</p>
+          ) : !mapSectionInView ? (
+            <p className="pathway-map__placeholder" role="status">
+              Map loads when this section is in view — scroll a little to preview your route (saves data until
+              then).
+            </p>
+          ) : !ready && mapsKey ? (
+            <p className="pathway-map__placeholder" role="status">
+              Loading map…
+            </p>
+          ) : (
+            <div ref={mapNodeRef} className="pathway-map__map" />
+          )}
         </div>
       </div>
     </section>

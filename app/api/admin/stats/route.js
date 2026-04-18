@@ -4,9 +4,11 @@ import { readCustomers } from "@/lib/admin/json-store";
 import { listInvoices } from "@/lib/admin/invoices-service";
 import { readAdminSuccessStories, readAudit } from "@/lib/admin/json-store";
 import { getLeadSheetSummary } from "@/lib/google-sheets-crm";
+import { apiOk, requestContextFromRequest } from "@/lib/api/response";
 
-export async function GET() {
-  if (!(await verifyAdminRequest())) return adminJsonUnauthorized();
+export async function GET(request) {
+  const context = requestContextFromRequest(request);
+  if (!(await verifyAdminRequest())) return adminJsonUnauthorized(request);
   const { customers = [] } = readCustomers();
   const { stories = [] } = readAdminSuccessStories();
   const { entries = [] } = readAudit();
@@ -16,7 +18,7 @@ export async function GET() {
   } catch {
     sheetSummary = { ok: false };
   }
-  return Response.json({
+  return apiOk({
     enquiries: readEnquiriesList().length,
     customers: customers.length,
     prospective: customers.filter((c) => c.status === "prospective").length,
@@ -25,5 +27,5 @@ export async function GET() {
     successStories: stories.length,
     auditEntries: entries.length,
     leadSheet: sheetSummary,
-  });
+  }, context);
 }

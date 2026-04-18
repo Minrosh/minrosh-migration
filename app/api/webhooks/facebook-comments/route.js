@@ -1,3 +1,8 @@
+/**
+ * Custom inbound handler (shared secret and/or X-Hub-Signature) for comment-derived signals.
+ * Meta’s standard Page webhooks use `object` / `entry` / `changes` payloads; keyword auto-reply and
+ * Messenger DMs belong in a separate, permission-reviewed integration (see Meta social pipeline plan).
+ */
 import { appendAudit } from "@/lib/admin/audit";
 import { createHmac, timingSafeEqual } from "node:crypto";
 import { basicSentimentSignal } from "@/lib/intelligence/sentiment";

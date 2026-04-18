@@ -5,9 +5,8 @@ module.exports = {
     preflight: false,
   },
   content: [
-    "./app/admin/**/*.{js,jsx}",
-    "./components/admin/**/*.{js,jsx}",
-    "./components/ui/**/*.{js,jsx}",
+    "./app/**/*.{js,jsx,ts,tsx}",
+    "./components/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
     extend: {
@@ -41,6 +40,25 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        brand: {
+          plum: "#3d2432",
+          rose: "#9b4a6c",
+          gold: "#caa64d",
+          cream: "#fbf8f4",
+        },
+      },
+      keyframes: {
+        shimmer: {
+          "100%": { transform: "translateX(100%)" }
+        },
+        "fade-up": {
+          "0%": { opacity: "0", transform: "translateY(14px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+      },
+      animation: {
+        "fade-up": "fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both",
+        "fade-up-delay": "fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.12s both",
       },
       borderRadius: {
         lg: "var(--radius)",

@@ -27,13 +27,14 @@ Fix compile and type errors; treat ESLint **errors** as blockers; warnings triag
 
 ## 3. URL / SEO spot-check (recommended)
 
+- Run **`npm run reindex:verify`** after deploy (HEAD-checks `/`, `/sitemap.xml`, `/robots.txt`). See [`docs/SEARCH-CONSOLE-REINDEX.md`](SEARCH-CONSOLE-REINDEX.md) for **Google Search Console** steps (sitemap submit + URL Inspection → Request indexing).
 - Open [`app/sitemap.js`](../app/sitemap.js) output locally or hit `/sitemap.xml` after deploy.
 - Confirm no intended **404** on previously indexed paths (use crawler or manual list from [`content-contract.md`](content-contract.md)).
 - Any removed or renamed public URL → add **permanent** redirect in [`next.config.mjs`](../next.config.mjs).
 
 ## 4. Environment and secrets (production)
 
-- Admin: `ADMIN_PASSWORD` / `ADMIN_SESSION_SECRET` (see `.env.example`).
+- Admin: `ADMIN_SESSION_SECRET` (required for cookie signing); `ADMIN_PASSWORD` or `data/admin-auth.json` for login only (see `.env.example`). Generate: `npm run generate:admin-session-secret`.
 - Cron/webhooks you use: `NURTURE_CRON_SECRET`, `GOOGLE_FORM_WEBHOOK_SECRET`, invoice/Facebook secrets if those routes are enabled.
 - `deploy-ubuntu.sh` preflight: session + optional nurture/google warnings per script.
 

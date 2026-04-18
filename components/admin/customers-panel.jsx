@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
   useReactTable,
@@ -19,6 +19,8 @@ import { AdminTableSkeleton } from "@/components/admin/admin-table-skeleton";
 
 const columnHelper = createColumnHelper();
 
+const PAGE_SIZE = 20;
+
 const TABS = ["current", "past", "prospective"];
 
 function parseTab(value) {
@@ -35,7 +37,12 @@ export function CustomersPanel() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [customers, setCustomers] = useState([]);
+  const [listTotal, setListTotal] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [listBusy, setListBusy] = useState(false);
+  const [searchInput, setSearchInput] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [page, setPage] = useState(0);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState("prospective");
@@ -43,36 +50,58 @@ export function CustomersPanel() {
   const [detailId, setDetailId] = useState(null);
   const [plainBootstrap, setPlainBootstrap] = useState(null);
   const [marketingConsentCreate, setMarketingConsentCreate] = useState(true);
+  const listFetchStartedRef = useRef(false);
 
   useEffect(() => {
     const t = parseTab(searchParams.get("tab"));
     if (t) setTab(t);
   }, [searchParams]);
 
+  useEffect(() => {
+    const t = setTimeout(() => {
+      setDebouncedSearch(searchInput.trim());
+      setPage(0);
+    }, 300);
+    return () => clearTimeout(t);
+  }, [searchInput]);
+
+  useLayoutEffect(() => {
+    setPage(0);
+  }, [tab]);
+
   const load = useCallback(() => {
-    fetch("/api/admin/customers")
+    if (!listFetchStartedRef.current) {
+      listFetchStartedRef.current = true;
+      setLoading(true);
+    } else {
+      setListBusy(true);
+    }
+    const params = new URLSearchParams({
+      status: tab,
+      limit: String(PAGE_SIZE),
+      offset: String(page * PAGE_SIZE),
+    });
+    if (debouncedSearch) params.set("q", debouncedSearch);
+    fetch(`/api/admin/customers?${params.toString()}`)
       .then((r) => r.json())
-      .then((d) => {
+      .then((payload) => {
+        const d = payload?.data && typeof payload.data === "object" ? payload.data : payload;
         setCustomers(d.customers || []);
-        setLoading(false);
+        setListTotal(typeof d.total === "number" ? d.total : 0);
       })
-      .catch(() => setLoading(false));
-  }, []);
+      .catch(() => {
+        setCustomers([]);
+        setListTotal(0);
+      })
+      .finally(() => {
+        setLoading(false);
+        setListBusy(false);
+      });
+  }, [tab, debouncedSearch, page]);
 
   useEffect(() => {
     load();
   }, [load]);
-
-  useEffect(() => {
-    if (detailId && !customers.some((c) => c.id === detailId)) {
-      setDetailId(null);
-    }
-  }, [customers, detailId]);
-
-  const filtered = useMemo(
-    () => customers.filter((c) => c.status === tab),
-    [customers, tab]
-  );
 
   const columns = useMemo(
     () => [
@@ -117,10 +146,15 @@ export function CustomersPanel() {
   );
 
   const table = useReactTable({
-    data: filtered,
+    data: customers,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
+
+  const pageStart = listTotal === 0 ? 0 : page * PAGE_SIZE + 1;
+  const pageEnd = Math.min(listTotal, (page + 1) * PAGE_SIZE);
+  const canPrev = page > 0;
+  const canNext = (page + 1) * PAGE_SIZE < listTotal;
 
   async function createCustomer(e) {
     e.preventDefault();
@@ -129,7 +163,8 @@ export function CustomersPanel() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, email, status, marketingConsent: marketingConsentCreate }),
     });
-    const d = await res.json().catch(() => ({}));
+    const payload = await res.json().catch(() => ({}));
+    const d = payload?.data && typeof payload.data === "object" ? payload.data : payload;
     setName("");
     setEmail("");
     setStatus("prospective");
@@ -227,39 +262,76 @@ export function CustomersPanel() {
         </TabsList>
       </Tabs>
       <Card className="mt-4">
-        <CardContent className="overflow-x-auto pt-6">
-          <table className="w-full text-sm">
-            <thead>
-              {table.getHeaderGroups().map((hg) => (
-                <tr key={hg.id} className="border-b text-left">
-                  {hg.headers.map((h) => (
-                    <th key={h.id} className="p-2 font-semibold">
-                      {flexRender(h.column.columnDef.header, h.getContext())}
-                    </th>
-                  ))}
-                </tr>
-              ))}
-            </thead>
-            <tbody>
-              {table.getRowModel().rows.length === 0 ? (
-                <tr>
-                  <td colSpan={5} className="p-4 text-muted-foreground">
-                    No customers in this tab.
-                  </td>
-                </tr>
-              ) : (
-                table.getRowModel().rows.map((row) => (
-                  <tr key={row.id} className="border-b border-border/60">
-                    {row.getVisibleCells().map((cell) => (
-                      <td key={cell.id} className="p-2 align-top">
-                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                      </td>
+        <CardHeader className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div className="space-y-1.5">
+            <CardTitle className="text-base">Directory</CardTitle>
+            <CardDescription>
+              Filter by name or email as you type. Results are paged ({PAGE_SIZE} per page) for each status tab.
+            </CardDescription>
+          </div>
+          <div className="w-full space-y-2 sm:w-72">
+            <Label htmlFor="customers-search">Search</Label>
+            <Input
+              id="customers-search"
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+              placeholder="Name or email…"
+              autoComplete="off"
+            />
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className={`relative overflow-x-auto rounded-md border border-border ${listBusy ? "opacity-60" : ""}`}>
+            <table className="w-full text-sm">
+              <thead>
+                {table.getHeaderGroups().map((hg) => (
+                  <tr key={hg.id} className="border-b text-left">
+                    {hg.headers.map((h) => (
+                      <th key={h.id} className="p-2 font-semibold">
+                        {flexRender(h.column.columnDef.header, h.getContext())}
+                      </th>
                     ))}
                   </tr>
-                ))
-              )}
-            </tbody>
-          </table>
+                ))}
+              </thead>
+              <tbody>
+                {table.getRowModel().rows.length === 0 ? (
+                  <tr>
+                    <td colSpan={5} className="p-4 text-muted-foreground">
+                      {debouncedSearch
+                        ? "No customers match this search in this tab."
+                        : "No customers in this tab."}
+                    </td>
+                  </tr>
+                ) : (
+                  table.getRowModel().rows.map((row) => (
+                    <tr key={row.id} className="border-b border-border/60">
+                      {row.getVisibleCells().map((cell) => (
+                        <td key={cell.id} className="p-2 align-top">
+                          {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                        </td>
+                      ))}
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+          <div className="flex flex-col gap-3 border-t border-border pt-4 sm:flex-row sm:items-center sm:justify-between">
+            <p className="text-sm text-muted-foreground">
+              {listTotal === 0
+                ? "No rows."
+                : `Showing ${pageStart}–${pageEnd} of ${listTotal}`}
+            </p>
+            <div className="flex flex-wrap gap-2">
+              <Button type="button" variant="outline" size="sm" disabled={!canPrev || listBusy} onClick={() => setPage((p) => Math.max(0, p - 1))}>
+                Previous
+              </Button>
+              <Button type="button" variant="outline" size="sm" disabled={!canNext || listBusy} onClick={() => setPage((p) => p + 1)}>
+                Next
+              </Button>
+            </div>
+          </div>
         </CardContent>
       </Card>
     </div>

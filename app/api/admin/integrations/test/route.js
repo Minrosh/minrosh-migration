@@ -1,6 +1,10 @@
 import { google } from "googleapis";
-import { verifyAdminRequest, adminJsonUnauthorized } from "@/lib/admin/auth-route";
+import { requireAdminWrite } from "@/lib/admin/auth-route";
+import { appendAudit } from "@/lib/admin/audit";
+import { AUDIT_ACTIONS } from "@/lib/admin/audit-actions";
+import { apiOk, requestContextFromRequest } from "@/lib/api/response";
 import { readGoogleServiceAccountCredentialsFromEnv } from "@/lib/google-service-account-private-key";
+import { getClientIp } from "@/lib/security/request-ip";
 
 function getAuth(scopes) {
   const { clientEmail: email, privateKey: key } = readGoogleServiceAccountCredentialsFromEnv();
@@ -75,9 +79,20 @@ async function testDrive() {
   }
 }
 
-export async function POST() {
-  if (!(await verifyAdminRequest())) return adminJsonUnauthorized();
+export async function POST(request) {
+  const context = requestContextFromRequest(request);
+  const denied = await requireAdminWrite(request);
+  if (denied) return denied;
   const results = await Promise.all([testCalendar(), testSheets(), testDrive()]);
   const ok = results.every((r) => r.ok);
-  return Response.json({ ok, results, checkedAt: new Date().toISOString() });
+  appendAudit(AUDIT_ACTIONS.ADMIN_INTEGRATIONS_TEST_RUN, "google-workspace", {
+    ip: getClientIp(request),
+    route: "POST /api/admin/integrations/test",
+    requestId: context.requestId,
+    meta: {
+      ok,
+      checks: results.map((r) => ({ name: r.name, ok: r.ok })),
+    },
+  });
+  return apiOk({ ok, results, checkedAt: new Date().toISOString() }, context);
 }

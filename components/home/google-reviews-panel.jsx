@@ -32,7 +32,10 @@ export function GoogleReviewsPanel({ carousel = false }) {
   useEffect(() => {
     fetch("/api/reviews")
       .then((r) => r.json())
-      .then((d) => setData(d || { reviews: [] }))
+      .then((payload) => {
+        const data = payload?.data && typeof payload.data === "object" ? payload.data : payload;
+        setData(data || { reviews: [] });
+      })
       .catch(() => setData({ reviews: [], reason: "reviews_unavailable" }))
       .finally(() => setLoading(false));
   }, []);

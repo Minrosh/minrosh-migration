@@ -16,7 +16,7 @@ export const metadata = buildMetadata({
 
 export default function PartnerVisaGuidePage() {
   return (
-    <SiteShell siteData={siteData} currentPath="">
+    <SiteShell siteData={siteData} currentPath={guideData.path}>
       <StructuredData
         data={breadcrumbJsonLd([
           { name: "Home", path: "/" },
@@ -42,6 +42,8 @@ export default function PartnerVisaGuidePage() {
           { href: "/partner-visa-australia", label: "Partner Visa" },
           { href: guideData.path, label: "Guide" },
         ]}
+        officialResources={guideData.officialResources ?? []}
+        currentPath={guideData.path}
         sections={guideData.sections}
         faq={guideData.faq}
         related={[

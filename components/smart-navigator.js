@@ -58,7 +58,8 @@ export function SmartNavigator({
       </div>
 
       <div className="quiz-shell">
-        <section className="quiz-card bento-hover">
+        <div className="rounded-[2rem] border border-white/60 bg-white/75 backdrop-blur-md shadow-xl p-3 sm:p-4">
+          <section className="quiz-card bento-hover">
           <div className="quiz-wizard__meta">
             <div>
               <p className="section-label">Step {stepIndex + 1}</p>
@@ -121,9 +122,11 @@ export function SmartNavigator({
               </Link>
             )}
           </div>
-        </section>
+          </section>
+        </div>
 
-        <aside className="quiz-result bento-hover">
+        <div className="rounded-[2rem] border border-white/60 bg-white/75 backdrop-blur-md shadow-xl p-3 sm:p-4">
+          <aside className="quiz-result bento-hover">
           <p className="section-label">Personalised result</p>
           {recommendation ? (
             <>
@@ -166,7 +169,8 @@ export function SmartNavigator({
               </p>
             </>
           )}
-        </aside>
+          </aside>
+        </div>
       </div>
     </section>
   );

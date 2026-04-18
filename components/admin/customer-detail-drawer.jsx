@@ -43,10 +43,12 @@ export function CustomerDetailDrawer({ customerId, open, onClose, onRefresh, boo
     setLoadError("");
     try {
       const res = await fetch(`/api/admin/customers/${encodeURIComponent(customerId)}`);
-      const data = await res.json().catch(() => ({}));
+      const payload = await res.json().catch(() => ({}));
+      const data = payload?.data && typeof payload.data === "object" ? payload.data : payload;
+      const errorMessage = payload?.error?.message || payload?.error || data?.error;
       if (!res.ok) {
         setCustomer(null);
-        setLoadError(data.error || "Could not load customer.");
+        setLoadError(errorMessage || "Could not load customer.");
         setDetailLoading(false);
         return;
       }
@@ -101,7 +103,8 @@ export function CustomerDetailDrawer({ customerId, open, onClose, onRefresh, boo
     setTimelineLoading(true);
     fetch(`/api/admin/interactions?customerId=${encodeURIComponent(customerId)}&limit=120`)
       .then((r) => r.json())
-      .then((d) => {
+      .then((payload) => {
+        const d = payload?.data && typeof payload.data === "object" ? payload.data : payload;
         setTimelineInteractions(d.interactions || []);
         setTimelineLoading(false);
       })
@@ -159,8 +162,11 @@ export function CustomerDetailDrawer({ customerId, open, onClose, onRefresh, boo
         }),
       });
       const data = await res.json().catch(() => ({}));
+      const payload = data;
+      const body = payload?.data && typeof payload.data === "object" ? payload.data : payload;
+      const errorMessage = payload?.error?.message || payload?.error || body?.error;
       if (!res.ok) {
-        setMessage(data.error || "Save failed");
+        setMessage(errorMessage || "Save failed");
         setSaving(false);
         return;
       }
@@ -185,16 +191,19 @@ export function CustomerDetailDrawer({ customerId, open, onClose, onRefresh, boo
         body: JSON.stringify({ action: "regenerateToken", id: customer.id }),
       });
       const data = await res.json().catch(() => ({}));
+      const payload = data;
+      const body = payload?.data && typeof payload.data === "object" ? payload.data : payload;
+      const errorMessage = payload?.error?.message || payload?.error || body?.error;
       if (!res.ok) {
-        setMessage(data.error || "Could not regenerate");
+        setMessage(errorMessage || "Could not regenerate");
         setSaving(false);
         return;
       }
-      if (data.customer) {
-        setCustomer(data.customer);
+      if (body.customer) {
+        setCustomer(body.customer);
       }
-      if (data.magicUploadToken) {
-        setPlainLinkToken(data.magicUploadToken);
+      if (body.magicUploadToken) {
+        setPlainLinkToken(body.magicUploadToken);
       }
       setMessage("New link generated — copy it below.");
       await onRefresh();
@@ -211,7 +220,8 @@ export function CustomerDetailDrawer({ customerId, open, onClose, onRefresh, boo
       const res = await fetch(`/api/admin/customers/${customer.id}/documents-zip`);
       if (!res.ok) {
         const err = await res.json().catch(() => ({}));
-        alert(err.error || "Could not download ZIP");
+        const errorMessage = err?.error?.message || err?.error;
+        alert(errorMessage || "Could not download ZIP");
         setZipLoading(false);
         return;
       }
@@ -259,6 +269,7 @@ export function CustomerDetailDrawer({ customerId, open, onClose, onRefresh, boo
           body: noteText.trim(),
         }),
       });
+      const payload = await res.json().catch(() => ({}));
       if (!res.ok) {
         setMessage("Could not add note");
         setSaving(false);
@@ -267,8 +278,9 @@ export function CustomerDetailDrawer({ customerId, open, onClose, onRefresh, boo
       setNoteText("");
       setCrmTab("timeline");
       const r = await fetch(`/api/admin/interactions?customerId=${encodeURIComponent(customer.id)}&limit=120`);
-      const d = await r.json();
-      setTimelineInteractions(d.interactions || []);
+      const p2 = await r.json();
+      const d2 = p2?.data && typeof p2.data === "object" ? p2.data : p2;
+      setTimelineInteractions(d2.interactions || []);
       setMessage("Note added.");
     } catch {
       setMessage("Network error");
@@ -282,16 +294,19 @@ export function CustomerDetailDrawer({ customerId, open, onClose, onRefresh, boo
     try {
       const res = await fetch(`/api/admin/customers/${encodeURIComponent(customer.id)}/status-sheet-link`);
       const data = await res.json().catch(() => ({}));
-      if (!res.ok || !data.url) {
+      const payload = data;
+      const body = payload?.data && typeof payload.data === "object" ? payload.data : payload;
+      const errorMessage = payload?.error?.message || payload?.error || body?.error;
+      if (!res.ok || !body.url) {
         if (res.status === 503) {
-          setMessage(data.error || "Status sheet integration is not ready yet.");
+          setMessage(errorMessage || "Status sheet integration is not ready yet.");
         } else {
-          setMessage(data.error || "Could not locate matching sheet row.");
+          setMessage(errorMessage || "Could not locate matching sheet row.");
         }
         setSheetBusy(false);
         return;
       }
-      window.open(data.url, "_blank", "noopener,noreferrer");
+      window.open(body.url, "_blank", "noopener,noreferrer");
     } catch {
       setMessage("Network error while opening sheet row.");
     }

@@ -11,7 +11,7 @@ export const metadata = buildMetadata({
   title: pageData.metaTitle,
   description: pageData.metaDescription,
   path: pageData.path,
-  keywords: ["Student Visa Australia", "Study visa Australia", "Student visa requirements"],
+  keywords: pageData.keywords,
 });
 
 export default function StudentVisaPage() {
@@ -32,10 +32,16 @@ export default function StudentVisaPage() {
           { href: "/", label: "Home" },
           { href: pageData.path, label: "Student Visa" },
         ]}
+        officialResources={pageData.officialResources ?? []}
+        currentPath={pageData.path}
         sections={pageData.sections}
         faq={pageData.faq}
         related={[
           ...pageData.relatedGuides,
+          {
+            href: "/immigration-lawyer-australia-vs-registered-migration-agent-guide",
+            title: "Immigration lawyer vs registered migration agent guide",
+          },
           { href: "/contact", title: "Speak with MinRosh Migration" },
         ]}
       />

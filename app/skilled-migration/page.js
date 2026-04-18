@@ -11,7 +11,7 @@ export const metadata = buildMetadata({
   title: pageData.metaTitle,
   description: pageData.metaDescription,
   path: pageData.path,
-  keywords: ["Skilled Migration Australia", "Subclass 189", "Subclass 190", "Subclass 491"],
+  keywords: pageData.keywords,
 });
 
 export default function SkilledMigrationPage() {
@@ -32,6 +32,7 @@ export default function SkilledMigrationPage() {
           { href: "/", label: "Home" },
           { href: pageData.path, label: "Skilled Migration" },
         ]}
+        currentPath={pageData.path}
         officialResources={pageData.officialResources ?? []}
         sections={pageData.sections}
         faq={pageData.faq}
@@ -41,6 +42,14 @@ export default function SkilledMigrationPage() {
         }}
         related={[
           ...pageData.relatedGuides,
+          {
+            href: "/immigration-lawyer-australia-vs-registered-migration-agent-guide",
+            title: "Immigration lawyer vs registered migration agent guide",
+          },
+          {
+            href: "/visa-refusal-help-australia-and-aat-migration-appeal-guide",
+            title: "Visa refusal help and AAT migration appeal guide",
+          },
           { href: "/contact", title: "Contact MinRosh Migration" },
         ]}
       />

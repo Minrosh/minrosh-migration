@@ -18,6 +18,7 @@ const initialForm = {
   preferredCountry: "Australia",
   mainNeed: "Skilled Migration",
   message: "",
+  privacyPolicyAccepted: false,
 };
 
 export function ContactChatPanel({ siteData, isActive }) {
@@ -72,15 +73,26 @@ export function ContactChatPanel({ siteData, isActive }) {
   }, []);
 
   function handleContactChange(event) {
-    const { name, value } = event.target;
-    setContactForm((current) => ({ ...current, [name]: value }));
+    const { name, value, type, checked } = event.target;
+    setContactForm((current) => ({
+      ...current,
+      [name]: type === "checkbox" ? checked : value,
+    }));
   }
 
   async function handleContactSubmit(event) {
     event.preventDefault();
+    if (!contactForm.privacyPolicyAccepted) {
+      setContactState({
+        status: "error",
+        message: "Please confirm you have read the Privacy Policy before submitting.",
+      });
+      return;
+    }
     setContactState({ status: "loading", message: "" });
     const payload = {
       ...contactForm,
+      privacyPolicyAccepted: true,
       company: contactHpRef.current?.value || "",
       quizSummary: quizSummaryLine,
     };
@@ -90,8 +102,10 @@ export function ContactChatPanel({ siteData, isActive }) {
         headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify(payload),
       });
-      const data = await response.json();
-      if (!response.ok || !data.ok) throw new Error(data.error || "Could not submit enquiry.");
+      const payload = await response.json();
+      const data = payload?.data && typeof payload.data === "object" ? payload.data : payload;
+      const errorMessage = payload?.error?.message || payload?.error || data?.error;
+      if (!response.ok || !(payload?.ok ?? data?.ok)) throw new Error(errorMessage || "Could not submit enquiry.");
       setContactState({
         status: "success",
         message:
@@ -132,14 +146,16 @@ export function ContactChatPanel({ siteData, isActive }) {
       } catch {
         throw new Error("Assistant returned an unexpected response.");
       }
-      const reply = data?.choices?.[0]?.message?.content;
+      const envelopeData = data?.data && typeof data.data === "object" ? data.data : data;
+      const reply = envelopeData?.choices?.[0]?.message?.content;
+      const errorMessage = data?.error?.message || data?.error || envelopeData?.error;
       if (!response.ok || !reply) {
         const errMsg =
           response.status === 503 &&
-            (data?.code === "OPENAI_NOT_CONFIGURED" || data?.code === "AI_PROVIDER_NOT_CONFIGURED")
-            ? data.error ||
+            (data?.error?.code === "OPENAI_NOT_CONFIGURED" || data?.error?.code === "AI_PROVIDER_NOT_CONFIGURED")
+            ? errorMessage ||
               "Live assistant is not configured on this server yet. Use WhatsApp or the enquiry form for a human reply."
-            : data.error || "Chat is not available right now.";
+            : errorMessage || "Chat is not available right now.";
         throw new Error(errMsg);
       }
       setChatMessages((current) => [...current, { role: "assistant", content: reply }]);
@@ -274,6 +290,22 @@ export function ContactChatPanel({ siteData, isActive }) {
               />
             </label>
           </div>
+          <label className="contact-grid__full flex items-start gap-2 text-sm">
+            <input
+              type="checkbox"
+              name="privacyPolicyAccepted"
+              checked={Boolean(contactForm.privacyPolicyAccepted)}
+              onChange={handleContactChange}
+              className="mt-1"
+            />
+            <span>
+              I have read the{" "}
+              <a href="/privacy-policy" className="text-primary underline">
+                Privacy Policy
+              </a>{" "}
+              and agree you may use my details to respond.
+            </span>
+          </label>
           <input
             ref={contactHpRef}
             type="text"

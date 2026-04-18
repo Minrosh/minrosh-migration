@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "generate:brochure": "node scripts/generate-brochure.mjs",
+    "generate:admin-session-secret": "node scripts/generate-admin-session-secret.mjs",
     "prebuild:verify": "bash scripts/pre-build-verify.sh",
     "deploy:server": "bash ./deploy-server.sh",
     "build": "node scripts/verify-required-assets.mjs && next build && node scripts/generate-brochure.mjs && node scripts/copy-standalone-assets.mjs",
@@ -14,37 +15,48 @@
     "test:invoice": "node scripts/test-invoice-platform.mjs",
     "test:smtp": "node --env-file=.env scripts/test-smtp.mjs",
     "test:smtp:shell": "node scripts/test-smtp.mjs",
+    "test:unit": "vitest run",
+    "test:e2e": "playwright test",
+    "reindex:verify": "node scripts/reindex-verify.mjs",
     "audit:production": "npm audit --production",
-    "check": "npm run build && npm run test:contact && npm run audit:production"
+    "check": "npm run build && npm run test:unit && npm run test:contact && npm run audit:production"
   },
   "dependencies": {
+    "@fontsource/inter": "^5.2.8",
     "@radix-ui/react-dialog": "^1.1.15",
     "@radix-ui/react-dropdown-menu": "^2.1.16",
     "@radix-ui/react-label": "^2.1.8",
     "@radix-ui/react-separator": "^1.1.8",
     "@radix-ui/react-slot": "^1.2.4",
     "@radix-ui/react-tabs": "^1.1.13",
+    "@resvg/resvg-js": "^2.6.2",
     "@supabase/supabase-js": "^2.103.0",
     "@tanstack/react-table": "^8.21.3",
     "bcryptjs": "^3.0.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "fflate": "^0.8.2",
+    "framer-motion": "^11.18.2",
     "googleapis": "^171.4.0",
     "next": "^15.2.0",
     "nodemailer": "^8.0.4",
     "otplib": "^13.4.0",
     "pdf-lib": "^1.17.1",
+    "qrcode": "^1.5.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "satori": "^0.26.0",
     "tailwind-merge": "^3.5.0",
     "tesseract.js": "^5.1.1"
   },
   "devDependencies": {
+    "@playwright/test": "^1.59.1",
     "autoprefixer": "^10.4.27",
     "eslint": "^8.57.0",
     "eslint-config-next": "^15.5.14",
+    "inngest": "^3.22.13",
     "postcss": "^8.5.8",
-    "tailwindcss": "^3.4.19"
+    "tailwindcss": "^3.4.19",
+    "vitest": "^3.2.4"
   }
 }

@@ -2,10 +2,17 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+
+function enquiryLabel(e) {
+  const name = [e?.firstName, e?.lastName].filter(Boolean).join(" ").trim();
+  return name || e?.email || "Enquiry";
+}
 
 export function AdminDashboard() {
   const [stats, setStats] = useState(null);
+  const [recentEnquiries, setRecentEnquiries] = useState([]);
+  const [recentAudit, setRecentAudit] = useState([]);
   const [integrations, setIntegrations] = useState(null);
   const [integrationTest, setIntegrationTest] = useState(null);
   const [supabaseTest, setSupabaseTest] = useState(null);
@@ -14,19 +21,38 @@ export function AdminDashboard() {
   const [err, setErr] = useState("");
 
   useEffect(() => {
-    fetch("/api/admin/stats")
-      .then((r) => r.json())
-      .then((d) => {
-        if (d.error) setErr(d.error);
-        else setStats(d);
-      })
-      .catch(() => setErr("Could not load stats"));
+    let cancelled = false;
+    (async () => {
+      try {
+        const [statsRes, enqRes, audRes] = await Promise.all([
+          fetch("/api/admin/stats"),
+          fetch("/api/admin/enquiries?limit=5&offset=0"),
+          fetch("/api/admin/audit?limit=5&offset=0"),
+        ]);
+        const statsP = await statsRes.json().catch(() => ({}));
+        const statsD = statsP?.data && typeof statsP.data === "object" ? statsP.data : statsP;
+        const enqD = enqRes.ok ? await enqRes.json().catch(() => ({})) : {};
+        const audP = audRes.ok ? await audRes.json().catch(() => ({})) : {};
+        const audD = audP?.data && typeof audP.data === "object" ? audP.data : audP;
+        if (cancelled) return;
+        if (statsP?.error?.message || statsD.error) setErr(statsP?.error?.message || statsD.error);
+        else setStats(statsD);
+        setRecentEnquiries(Array.isArray(enqD.enquiries) ? enqD.enquiries : []);
+        setRecentAudit(Array.isArray(audD.entries) ? audD.entries : []);
+      } catch {
+        if (!cancelled) setErr("Could not load dashboard");
+      }
+    })();
     fetch("/api/admin/integrations")
       .then((r) => r.json())
-      .then((d) => {
-        if (!d.error) setIntegrations(d);
+      .then((payload) => {
+        const d = payload?.data && typeof payload.data === "object" ? payload.data : payload;
+        if (!payload?.error && !d.error) setIntegrations(d);
       })
       .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   if (err) return <p className="text-destructive">{err}</p>;
@@ -36,7 +62,8 @@ export function AdminDashboard() {
     setTesting(true);
     try {
       const res = await fetch("/api/admin/integrations/test", { method: "POST" });
-      const data = await res.json().catch(() => ({}));
+      const payload = await res.json().catch(() => ({}));
+      const data = payload?.data && typeof payload.data === "object" ? payload.data : payload;
       setIntegrationTest(data);
     } catch {
       setIntegrationTest({ ok: false, results: [{ name: "Request", ok: false, detail: "Network error" }] });
@@ -48,7 +75,8 @@ export function AdminDashboard() {
     setTestingDb(true);
     try {
       const res = await fetch("/api/admin/integrations/supabase");
-      const data = await res.json().catch(() => ({}));
+      const payload = await res.json().catch(() => ({}));
+      const data = payload?.data && typeof payload.data === "object" ? payload.data : payload;
       setSupabaseTest(data);
     } catch {
       setSupabaseTest({ ok: false, detail: "Network error" });
@@ -130,6 +158,73 @@ export function AdminDashboard() {
           </Link>
         ))}
       </div>
+
+      <div className="grid gap-4 lg:grid-cols-2">
+        <Card className="border-border">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base">Recent enquiries</CardTitle>
+            <CardDescription>
+              Five newest website submissions (newest first, same as CRM). There is no separate read/unread flag in
+              storage yet—use CRM to follow up.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-0">
+            {recentEnquiries.length === 0 ? (
+              <p className="text-sm text-muted-foreground">No enquiries on file.</p>
+            ) : (
+              <ul className="divide-y divide-border">
+                {recentEnquiries.map((e, i) => (
+                  <li key={e.id ? String(e.id) : `enq-${e.createdAt || i}`} className="py-3 first:pt-0">
+                    <p className="font-medium leading-snug">{enquiryLabel(e)}</p>
+                    <p className="text-xs text-muted-foreground">{e.email || "—"}</p>
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      {e.createdAt ? String(e.createdAt).replace("T", " ").slice(0, 19) : "—"}
+                      {e.mainNeed ? ` · ${e.mainNeed}` : ""}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            )}
+            <Link
+              href="/admin/crm"
+              className="mt-4 inline-block text-sm font-medium text-primary underline-offset-4 hover:underline"
+            >
+              Open CRM →
+            </Link>
+          </CardContent>
+        </Card>
+
+        <Card className="border-border">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base">Recent activity</CardTitle>
+            <CardDescription>Latest five events from the audit log (newest first).</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-0">
+            {recentAudit.length === 0 ? (
+              <p className="text-sm text-muted-foreground">No audit events yet.</p>
+            ) : (
+              <ul className="divide-y divide-border">
+                {recentAudit.map((row) => (
+                  <li key={row.id || `${row.createdAt}-${row.action}`} className="py-3 first:pt-0">
+                    <p className="text-xs text-muted-foreground">
+                      {row.createdAt ? String(row.createdAt).replace("T", " ").slice(0, 19) : "—"}
+                    </p>
+                    <p className="mt-0.5 font-mono text-xs font-semibold text-foreground">{row.action}</p>
+                    <p className="mt-0.5 line-clamp-2 text-sm text-muted-foreground">{row.detail || "—"}</p>
+                  </li>
+                ))}
+              </ul>
+            )}
+            <Link
+              href="/admin/audit"
+              className="mt-4 inline-block text-sm font-medium text-primary underline-offset-4 hover:underline"
+            >
+              Full audit log →
+            </Link>
+          </CardContent>
+        </Card>
+      </div>
+
       {integrations ? (
         <Card>
           <CardHeader>

@@ -12,7 +12,8 @@ export default function AutomationsPage() {
   useEffect(() => {
     fetch("/api/admin/automations")
       .then((r) => r.json())
-      .then((d) => {
+      .then((payload) => {
+        const d = payload?.data && typeof payload.data === "object" ? payload.data : payload;
         const rulesJson = JSON.stringify(d.rules || [], null, 2);
         setRules(d.rules || []);
         setRaw(rulesJson);
@@ -34,7 +35,9 @@ export default function AutomationsPage() {
       body: JSON.stringify({ rules: parsed }),
     });
     if (!res.ok) {
-      setMsg("Save failed");
+      const payload = await res.json().catch(() => ({}));
+      const d = payload?.data && typeof payload.data === "object" ? payload.data : payload;
+      setMsg(payload?.error?.message || payload?.error || d?.error || "Save failed");
       return;
     }
     setMsg("Saved.");

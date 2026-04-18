@@ -13,7 +13,8 @@ export default function LeadsPage() {
   useEffect(() => {
     fetch("/api/admin/leads")
       .then((r) => r.json())
-      .then((d) => {
+      .then((payload) => {
+        const d = payload?.data && typeof payload.data === "object" ? payload.data : payload;
         setLeads(d.leads || []);
         setLoading(false);
       })
@@ -27,9 +28,11 @@ export default function LeadsPage() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ leadId }),
     });
-    const data = await res.json().catch(() => ({}));
+    const payload = await res.json().catch(() => ({}));
+    const data = payload?.data && typeof payload.data === "object" ? payload.data : payload;
+    const errorMessage = payload?.error?.message || payload?.error;
     if (!res.ok) {
-      setMsg(data.error || "Convert failed (link lead to a customer first)");
+      setMsg(errorMessage || "Convert failed (link lead to a customer first)");
       return;
     }
     setMsg(`Created opportunity ${data.opportunity?.id}`);

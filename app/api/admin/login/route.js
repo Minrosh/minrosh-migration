@@ -5,8 +5,11 @@ import {
   verifyAdminPassword,
 } from "@/lib/admin/admin-auth";
 import { appendAudit } from "@/lib/admin/audit";
+import { AUDIT_ACTIONS } from "@/lib/admin/audit-actions";
 import { createSessionToken } from "@/lib/admin/session";
+import { checkAdminUserLogin } from "@/lib/admin/admin-users-service";
 import { adminSessionCookieName, clearAdminSessionCookies } from "@/lib/admin/session-cookie";
+import { API_ERROR_CODES, apiFail, apiOk, requestContextFromRequest } from "@/lib/api/response";
 import { requireAdminLoginOrigin } from "@/lib/admin/auth-route";
 import { rateLimitAllow } from "@/lib/security/rate-limit";
 import { getClientIp } from "@/lib/security/request-ip";
@@ -14,32 +17,64 @@ import { logSecurityEvent } from "@/lib/security/monitoring-log";
 import { verifySync } from "otplib";
 
 export async function POST(request) {
+  const context = requestContextFromRequest(request);
   const originDenied = requireAdminLoginOrigin(request);
   if (originDenied) return originDenied;
 
   const ip = getClientIp(request);
   if (!rateLimitAllow(`admin-login:${ip}`, { windowMs: 15 * 60 * 1000, max: 25 })) {
-    return Response.json({ error: "Too many login attempts. Try again later." }, { status: 429 });
+    return apiFail({ code: API_ERROR_CODES.RATE_LIMITED, message: "Too many login attempts. Try again later.", status: 429 }, context);
   }
 
   let body;
   try {
     body = await request.json();
   } catch {
-    return Response.json({ error: "Invalid JSON" }, { status: 400 });
+    return apiFail({ code: API_ERROR_CODES.VALIDATION_FAILED, message: "Invalid JSON", status: 400 }, context);
   }
 
   const password = String(body?.password || "");
-  if (!hasAdminPasswordConfigured()) {
-    return Response.json({ error: "Admin password not configured" }, { status: 503 });
-  }
-  if (!verifyAdminPassword(password)) {
-    appendAudit("admin_login_failed", "invalid password", {
-      ip,
-      route: "POST /api/admin/login",
-    });
-    logSecurityEvent("admin_login_failed", { ip });
-    return Response.json({ error: "Invalid password" }, { status: 401 });
+  const email = String(body?.email || "").trim().toLowerCase();
+
+  let sessionMeta = { email: null, role: "super", userId: null };
+
+  if (email) {
+    const auth = checkAdminUserLogin(email, password);
+    if (!auth.ok) {
+      appendAudit(AUDIT_ACTIONS.ADMIN_LOGIN_FAILED, auth.reason === "unverified" ? "email not verified" : "invalid email or password", {
+        ip,
+        route: "POST /api/admin/login",
+        requestId: context.requestId,
+      });
+      logSecurityEvent("admin_login_failed", { ip });
+      if (auth.reason === "unverified") {
+        return apiFail(
+          {
+            code: API_ERROR_CODES.FORBIDDEN,
+            message:
+              "This email is not verified yet. Open the link we sent you, or ask a super admin to resend the verification email from Admin -> Users.",
+            status: 403,
+            details: { reason: "EMAIL_NOT_VERIFIED" },
+          },
+          context
+        );
+      }
+      return apiFail({ code: API_ERROR_CODES.UNAUTHORIZED, message: "Invalid email or password", status: 401 }, context);
+    }
+    sessionMeta = { email: auth.user.email, role: auth.user.role, userId: auth.user.id };
+  } else {
+    if (!hasAdminPasswordConfigured()) {
+      return apiFail({ code: API_ERROR_CODES.UPSTREAM_ERROR, message: "Admin password not configured", status: 503 }, context);
+    }
+    if (!verifyAdminPassword(password)) {
+      appendAudit(AUDIT_ACTIONS.ADMIN_LOGIN_FAILED, "invalid password", {
+        ip,
+        route: "POST /api/admin/login",
+        requestId: context.requestId,
+      });
+      logSecurityEvent("admin_login_failed", { ip });
+      return apiFail({ code: API_ERROR_CODES.UNAUTHORIZED, message: "Invalid password", status: 401 }, context);
+    }
   }
 
   const totpSecret = String(process.env.ADMIN_TOTP_SECRET || "").trim();
@@ -54,27 +89,30 @@ export async function POST(request) {
       totpOk = false;
     }
     if (!totpOk) {
-      appendAudit("admin_login_failed", "invalid totp", {
+      appendAudit(AUDIT_ACTIONS.ADMIN_LOGIN_FAILED, "invalid totp", {
         ip,
         route: "POST /api/admin/login",
+        requestId: context.requestId,
       });
-      return Response.json({ error: "Invalid authenticator code" }, { status: 401 });
+      return apiFail({ code: API_ERROR_CODES.UNAUTHORIZED, message: "Invalid authenticator code", status: 401 }, context);
     }
   }
 
   if (!hasAdminSessionSigningSecret()) {
-    return Response.json(
+    return apiFail(
       {
-        error:
-          "Admin session signing is not configured. Set ADMIN_SESSION_SECRET or a non-placeholder ADMIN_PASSWORD in .env. Edge middleware cannot use data/admin-auth.json for cookies.",
+        code: API_ERROR_CODES.UPSTREAM_ERROR,
+        message:
+          "Admin session signing is not configured. Set ADMIN_SESSION_SECRET in .env (dedicated random secret for cookie HMAC). Edge middleware cannot use data/admin-auth.json or your login password for signing.",
+        status: 503,
       },
-      { status: 503 },
+      context
     );
   }
 
-  const token = await createSessionToken();
+  const token = await createSessionToken(sessionMeta);
   if (!token) {
-    return Response.json({ error: "Could not create session" }, { status: 500 });
+    return apiFail({ code: API_ERROR_CODES.INTERNAL_ERROR, message: "Could not create session", status: 500 }, context);
   }
 
   const jar = await cookies();
@@ -92,5 +130,5 @@ export async function POST(request) {
     maxAge: 60 * 60 * 24 * 7,
   });
 
-  return Response.json({ ok: true });
+  return apiOk({ authenticated: true }, context);
 }

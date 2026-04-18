@@ -25,7 +25,8 @@ export function PipelineBoard() {
   const load = useCallback(() => {
     fetch("/api/admin/opportunities")
       .then((r) => r.json())
-      .then((d) => {
+      .then((payload) => {
+        const d = payload?.data && typeof payload.data === "object" ? payload.data : payload;
         setOpportunities(d.opportunities || []);
         setLoading(false);
       })
@@ -54,8 +55,11 @@ export function PipelineBoard() {
       body: JSON.stringify({ id: opp.id, stage: newStage, expectedVersion: opp.version }),
     });
     const data = await res.json().catch(() => ({}));
+    const payload = data;
+    const body = payload?.data && typeof payload.data === "object" ? payload.data : payload;
+    const errorMessage = payload?.error?.message || payload?.error || body?.error;
     if (!res.ok) {
-      setMsg(data.error || "Could not update stage");
+      setMsg(errorMessage || "Could not update stage");
       load();
       return;
     }

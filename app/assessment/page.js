@@ -88,49 +88,98 @@ export default function AssessmentPage() {
           </div>
         </section>
 
+        <section className="official-resources" aria-label="Official government sources">
+          <h2>Official sources before you assess</h2>
+          <ul>
+            <li>
+              <a href="https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing" target="_blank" rel="noreferrer">
+                Department of Home Affairs — visa listing
+              </a>
+            </li>
+            <li>
+              <a href="https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-finder" target="_blank" rel="noreferrer">
+                Department of Home Affairs — Visa Finder
+              </a>
+            </li>
+            <li>
+              <Link href="/australian-visas-official-sources">MinRosh hub: how to use those tools with our pages</Link>
+            </li>
+          </ul>
+          <p className="content-hero__note">
+            The Smart Navigator and points wizard give indicative direction only. Always confirm criteria, charges,
+            and forms on the Department of Home Affairs website for your subclass.
+          </p>
+        </section>
+
         <div className="content-page__grid">
           <div className="content-page__main">
-            <section className="content-section bento-hover">
-              <h2>What this assessment helps you do</h2>
-              <p>
-                Some visitors already know they need a partner visa, student visa, or skilled
-                migration review. Others need help deciding what to prioritise first. This
-                assessment page is for both groups. It gives a lower-friction way to start, while
-                still leading into the stronger MinRosh conversion tools already built into the
-                website.
-              </p>
-              <ul className="feature-list">
-                <li>Quickly identify whether your strongest next step is quiz, navigator, or consultation</li>
-                <li>Reduce drop-off for visitors who are not ready to fill a long form yet</li>
-                <li>Guide high-intent users into contact with clearer context</li>
-              </ul>
-            </section>
+            <details className="content-section content-accordion bento-hover" open>
+              <summary className="content-accordion__summary">
+                <h2>What this assessment helps you do</h2>
+              </summary>
+              <div className="content-accordion__body">
+                <p>
+                  Some visitors already know they need a partner visa, student visa, or skilled
+                  migration review. Others need help deciding what to prioritise first. This
+                  assessment page is for both groups. It gives a lower-friction way to start, while
+                  still leading into the stronger MinRosh conversion tools already built into the
+                  website.
+                </p>
+                <ul className="feature-list">
+                  <li>Quickly identify whether your strongest next step is quiz, navigator, or consultation</li>
+                  <li>Reduce drop-off for visitors who are not ready to fill a long form yet</li>
+                  <li>Guide high-intent users into contact with clearer context</li>
+                </ul>
+              </div>
+            </details>
 
-            <section className="content-section bento-hover">
-              <h2>What to prepare before you start</h2>
-              <p>
-                A little preparation gives you a stronger assessment outcome. Bring key profile
-                facts so your next-step recommendation is more accurate and useful.
-              </p>
-              <ul className="feature-list">
-                <li>Your occupation, qualification level, and recent work history</li>
-                <li>English test status, partner details, and preferred destination</li>
-                <li>Target timeline and whether you need urgent support</li>
-              </ul>
-            </section>
+            <details className="content-section content-accordion bento-hover">
+              <summary className="content-accordion__summary">
+                <h2>What to prepare before you start</h2>
+              </summary>
+              <div className="content-accordion__body">
+                <p>
+                  A little preparation gives you a stronger assessment outcome. Bring key profile
+                  facts so your next-step recommendation is more accurate and useful.
+                </p>
+                <ul className="feature-list">
+                  <li>Your occupation, qualification level, and recent work history</li>
+                  <li>English test status, partner details, and preferred destination</li>
+                  <li>Target timeline and whether you need urgent support</li>
+                </ul>
+              </div>
+            </details>
 
-            <section className="content-section bento-hover">
-              <h2>After assessment: the decision pathways</h2>
-              <p>
-                Once complete, most users move into one of three practical actions depending on
-                readiness and urgency.
-              </p>
-              <ul className="feature-list">
-                <li>Continue with points wizard for a more detailed profile signal</li>
-                <li>Book consultation when timeline is tight or case complexity is high</li>
-                <li>Use contact form to receive focused follow-up for your scenario</li>
-              </ul>
-            </section>
+            <details className="content-section content-accordion bento-hover">
+              <summary className="content-accordion__summary">
+                <h2>Subclass orientation alongside this page</h2>
+              </summary>
+              <div className="content-accordion__body">
+                <p>
+                  If you do not yet know which Australian visa family fits, spend a few minutes with the
+                  Department of Home Affairs Visa Finder, then open the relevant subclass from the visa listing.
+                  Bring those notes to the Smart Navigator or consultation so advice stays tied to the correct
+                  published criteria.
+                </p>
+              </div>
+            </details>
+
+            <details className="content-section content-accordion bento-hover">
+              <summary className="content-accordion__summary">
+                <h2>After assessment: the decision pathways</h2>
+              </summary>
+              <div className="content-accordion__body">
+                <p>
+                  Once complete, most users move into one of three practical actions depending on
+                  readiness and urgency.
+                </p>
+                <ul className="feature-list">
+                  <li>Continue with points wizard for a more detailed profile signal</li>
+                  <li>Book consultation when timeline is tight or case complexity is high</li>
+                  <li>Use contact form to receive focused follow-up for your scenario</li>
+                </ul>
+              </div>
+            </details>
 
             <section className="process-section process-section--assessment">
               <div className="section-head section-head--process">

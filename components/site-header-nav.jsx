@@ -1,14 +1,22 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { SiteNavSearch } from "./site-nav-search";
+import { SiteVisasMegaMenu } from "./site-visas-mega-menu";
+
+const HOME_SECTION_IDS = new Set(["home", "quiz", "pathways", "services", "stories"]);
+
+/** Collapsed into desktop mega menu when `enableVisaMega` is true. */
+const VISA_HUB_PATHS = new Set(["/skilled-migration", "/partner-visa-australia", "/student-visa-australia"]);
 
 /**
  * Primary navigation for marketing pages (SiteShell): hamburger + drawer on small
  * viewports, horizontal nav from 921px up.
  */
-export function SiteHeaderNav({ navLinks, currentPath }) {
+export function SiteHeaderNav({ navLinks, currentPath, enableVisaMega = false, enableSiteSearch = true }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [currentHash, setCurrentHash] = useState("");
   const menuToggleRef = useRef(null);
   const navRef = useRef(null);
 
@@ -42,9 +50,54 @@ export function SiteHeaderNav({ navLinks, currentPath }) {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [menuOpen]);
 
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const syncHash = () => setCurrentHash(window.location.hash || "");
+    syncHash();
+    window.addEventListener("hashchange", syncHash);
+    return () => window.removeEventListener("hashchange", syncHash);
+  }, []);
+
   function closeMenu() {
     setMenuOpen(false);
     menuToggleRef.current?.focus?.();
+  }
+
+  function normalizeNavHref(href) {
+    if (!href) return href;
+    if (href.startsWith("/#")) return href;
+    if (href.startsWith("#")) return `/${href}`;
+    const sectionCandidate = href.startsWith("/") ? href.slice(1) : href;
+    if (HOME_SECTION_IDS.has(sectionCandidate)) return `/#${sectionCandidate}`;
+    return href;
+  }
+
+  function isActiveNavHref(href) {
+    if (!href.startsWith("/#")) return currentPath === href;
+    if (currentPath !== "/") return false;
+    const hash = `#${href.split("#")[1] || ""}`;
+    if (hash === "#home") return currentHash === "" || currentHash === "#home";
+    return currentHash === hash;
+  }
+
+  function handleNavClick(event, href) {
+    closeMenu();
+    if (typeof window === "undefined") return;
+    if (!href.startsWith("/#")) {
+      window.scrollTo({ top: 0, behavior: "auto" });
+      return;
+    }
+
+    const sectionId = href.split("#")[1];
+    if (!sectionId) return;
+    if (window.location.pathname !== "/") return;
+
+    const target = document.getElementById(sectionId);
+    if (!target) return;
+    event.preventDefault();
+    window.history.replaceState(null, "", href);
+    window.dispatchEvent(new CustomEvent("minrosh-hashnav"));
+    setCurrentHash(`#${sectionId}`);
   }
 
   return (
@@ -68,6 +121,7 @@ export function SiteHeaderNav({ navLinks, currentPath }) {
       >
         <span />
         <span />
+        <span />
       </button>
       {menuOpen ? (
         <button
@@ -84,26 +138,66 @@ export function SiteHeaderNav({ navLinks, currentPath }) {
         aria-label="Primary"
       >
         <div className="site-nav__group site-nav__group--main">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={`site-nav__link ${currentPath === link.href ? "is-active" : ""}`}
-              aria-current={currentPath === link.href ? "page" : undefined}
-              onClick={closeMenu}
-            >
-              {link.label}
-            </Link>
-          ))}
+          {navLinks.map((link) => {
+            const normalizedHref = normalizeNavHref(link.href);
+            const isActive = isActiveNavHref(normalizedHref);
+            const isVisaHub = VISA_HUB_PATHS.has(normalizedHref);
+            const collapseDesktop = enableVisaMega && isVisaHub;
+            return (
+              <Fragment key={link.href}>
+                <Link
+                  href={normalizedHref}
+                  scroll={!normalizedHref.startsWith("/#")}
+                  className={`site-nav__link px-3 py-2 rounded-md transition-all duration-300 font-semibold ${
+                    collapseDesktop ? "site-nav__link--visa-hub-collapsed-desktop " : ""
+                  }${
+                    isActive
+                      ? "is-active bg-brand-rose/10 text-brand-rose"
+                      : "text-brand-plum/80 hover:bg-brand-cream hover:text-brand-plum"
+                  }`}
+                  aria-current={isActive ? "page" : undefined}
+                  onClick={(event) => handleNavClick(event, normalizedHref)}
+                >
+                  {link.label}
+                </Link>
+                {enableVisaMega && normalizedHref === "/#home" ? (
+                  <div className="site-nav__mega-host">
+                    <SiteVisasMegaMenu />
+                  </div>
+                ) : null}
+              </Fragment>
+            );
+          })}
         </div>
-        <div className="site-nav__group site-nav__group--actions">
-          <Link href="/book-consultation" className="btn btn-primary site-nav__cta" onClick={closeMenu}>
+        <div className="site-nav__group site-nav__group--actions gap-3">
+          {enableSiteSearch ? (
+            <div className="site-nav__search-host">
+              <SiteNavSearch />
+            </div>
+          ) : null}
+          {/* 💎 PREMIUM UPGRADE: Added shadow, scale on hover, and a subtle ring glow */}
+          <Link
+            href="/book-consultation"
+            scroll
+            className="btn btn-primary site-nav__cta shadow-md hover:shadow-lg hover:-translate-y-0.5 hover:ring-2 hover:ring-brand-gold/50 transition-all duration-300 bg-brand-rose"
+            onClick={(event) => handleNavClick(event, "/book-consultation")}
+          >
             Book Consultation
           </Link>
-          <Link href="/assessment" className="btn btn-ghost site-nav__cta-secondary site-nav__cta" onClick={closeMenu}>
+          <Link
+            href="/assessment"
+            scroll
+            className="btn btn-ghost site-nav__cta-secondary site-nav__cta hover:bg-brand-cream hover:text-brand-plum transition-colors duration-300"
+            onClick={(event) => handleNavClick(event, "/assessment")}
+          >
             Free assessment
           </Link>
-          <Link href="/tools" className="btn btn-ghost site-nav__cta-secondary site-nav__cta" onClick={closeMenu}>
+          <Link
+            href="/tools"
+            scroll
+            className="btn btn-ghost site-nav__cta-secondary site-nav__cta site-nav__cta-tertiary hover:bg-brand-cream hover:text-brand-plum transition-colors duration-300"
+            onClick={(event) => handleNavClick(event, "/tools")}
+          >
             Tools
           </Link>
         </div>

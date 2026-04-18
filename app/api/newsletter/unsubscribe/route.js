@@ -1,29 +1,33 @@
 import { unsubscribeNewsletterByToken } from "@/lib/newsletter";
 import { rateLimitAllow } from "@/lib/security/rate-limit";
 import { getClientIp } from "@/lib/security/request-ip";
+import { API_ERROR_CODES, apiFail, apiOk, requestContextFromRequest } from "@/lib/api/response";
 
 export async function POST(request) {
+  const context = requestContextFromRequest(request);
   const ip = getClientIp(request);
   if (!rateLimitAllow(`newsletter-unsub:${ip}`, { windowMs: 15 * 60 * 1000, max: 30 })) {
-    return Response.json({ error: "Too many requests. Try again later." }, { status: 429 });
+    return apiFail({ code: API_ERROR_CODES.RATE_LIMITED, message: "Too many requests. Try again later.", status: 429 }, context);
   }
 
   let body;
   try {
     body = await request.json();
   } catch {
-    return Response.json({ error: "Invalid JSON." }, { status: 400 });
+    return apiFail({ code: API_ERROR_CODES.VALIDATION_FAILED, message: "Invalid JSON.", status: 400 }, context);
   }
   const token = String(body?.token || "").trim();
   const result = unsubscribeNewsletterByToken(token);
   if (!result.ok) {
-    return Response.json({ error: result.error || "Could not unsubscribe." }, { status: 400 });
+    return apiFail(
+      { code: API_ERROR_CODES.VALIDATION_FAILED, message: result.error || "Could not unsubscribe.", status: 400 },
+      context
+    );
   }
-  return Response.json({
-    ok: true,
+  return apiOk({
     already: Boolean(result.already),
     message: result.already ? "This address is already unsubscribed." : "You have been unsubscribed from marketing emails.",
-  });
+  }, context);
 }
 
 export async function GET(request) {

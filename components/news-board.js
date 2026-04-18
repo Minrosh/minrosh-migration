@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import Link from "next/link";
+import { minRoshGuideHref } from "@/lib/news-display";
 
 const filters = [
   { label: "All", values: ["all"] },
@@ -10,6 +10,36 @@ const filters = [
   { label: "UK", values: ["uk", "united kingdom"] },
   { label: "New Zealand", values: ["new zealand"] },
 ];
+
+/** Normalize href from JSON; use a real `<a>` so links work inside horizontal scroll + hash home tab. */
+function guideHref(raw) {
+  const s = String(raw || "").trim();
+  if (!s) return null;
+  if (/^https?:\/\//i.test(s)) return { href: s, external: true };
+  if (/^(mailto:|tel:)/i.test(s)) return { href: s, external: false };
+  const path = s.startsWith("/") || s.startsWith("#") ? s : `/${s.replace(/^\/+/, "")}`;
+  return { href: path, external: false };
+}
+
+function stopCarouselCapture(e) {
+  e.stopPropagation();
+}
+
+function NewsGuideLink({ item, index }) {
+  const g = guideHref(minRoshGuideHref(item, index));
+  if (!g) return null;
+  return (
+    <a
+      href={g.href}
+      className="news-card__link"
+      {...(g.external ? { target: "_blank", rel: "noreferrer" } : {})}
+      onPointerDown={stopCarouselCapture}
+      onMouseDown={stopCarouselCapture}
+    >
+      Read MinRosh guide
+    </a>
+  );
+}
 
 export function NewsBoard({
   initialNews = [],
@@ -35,7 +65,7 @@ export function NewsBoard({
 
   const newsArticles = filteredItems.map((item, idx) => (
     <article
-      key={`${item.date}-${item.title}-${idx}`}
+      key={item.id || `${item.date}-${item.title}-${idx}`}
       className={`news-card bento-hover${carousel ? " news-card--carousel" : ""}`}
     >
       <div className="news-card__meta">
@@ -45,13 +75,16 @@ export function NewsBoard({
       <h3>{item.title}</h3>
       <p>{item.summary}</p>
       <div className="news-card__actions">
-        {item.href ? (
-          <Link href={item.href} className="news-card__link">
-            Read MinRosh guide
-          </Link>
-        ) : null}
+        <NewsGuideLink item={item} index={idx} />
         {item.sourceUrl ? (
-          <a href={item.sourceUrl} className="news-card__link" target="_blank" rel="noreferrer">
+          <a
+            href={item.sourceUrl}
+            className="news-card__link"
+            target="_blank"
+            rel="noreferrer noopener"
+            onPointerDown={stopCarouselCapture}
+            onMouseDown={stopCarouselCapture}
+          >
             Official source
           </a>
         ) : null}

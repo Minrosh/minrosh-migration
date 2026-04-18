@@ -22,9 +22,11 @@ export function NewsletterForm({ onSubscribed }) {
           company: hpRef.current?.value || "",
         }),
       });
-      const data = await response.json();
-      if (!response.ok || !data.ok) {
-        throw new Error(data.error || "Could not subscribe right now.");
+      const payload = await response.json();
+      const data = payload?.data && typeof payload.data === "object" ? payload.data : payload;
+      const errorMessage = payload?.error?.message || payload?.error || data?.error;
+      if (!response.ok || !(payload?.ok ?? data?.ok)) {
+        throw new Error(errorMessage || "Could not subscribe right now.");
       }
 
       if (!data.exists) {

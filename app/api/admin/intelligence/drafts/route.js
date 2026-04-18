@@ -1,5 +1,7 @@
 import { adminJsonUnauthorized, requireAdminWrite, verifyAdminRequest } from "@/lib/admin/auth-route";
 import { appendAudit } from "@/lib/admin/audit";
+import { AUDIT_ACTIONS } from "@/lib/admin/audit-actions";
+import { API_ERROR_CODES, apiFail, apiOk, requestContextFromRequest } from "@/lib/api/response";
 import { getClientIp } from "@/lib/security/request-ip";
 import { readIntelligenceDrafts, updateDraftStatus } from "@/lib/intelligence/store";
 import { publishDraftToNewsStore } from "@/lib/intelligence/publish";
@@ -8,27 +10,47 @@ import { applyFaqSuggestionsFromDraft } from "@/lib/intelligence/faq";
 import { queueFacebookPostFromDraft } from "@/lib/intelligence/facebook";
 import { queueNewsletterFromDraft } from "@/lib/intelligence/channels";
 import { appendPublishHistory } from "@/lib/intelligence/publish-history";
+import { revalidateNewsArticlePath, revalidateNewsBoardPaths } from "@/lib/news-data";
 
-export async function GET() {
-  if (!(await verifyAdminRequest())) return adminJsonUnauthorized();
+const DRAFT_STATUS_AUDIT_ACTIONS = {
+  approved: AUDIT_ACTIONS.INTEL_DRAFT_APPROVED,
+  pending: AUDIT_ACTIONS.INTEL_DRAFT_PENDING,
+  rejected: AUDIT_ACTIONS.INTEL_DRAFT_REJECTED,
+};
+
+export async function GET(request) {
+  const context = requestContextFromRequest(request);
+  if (!(await verifyAdminRequest())) return adminJsonUnauthorized(request);
   const store = readIntelligenceDrafts();
-  return Response.json({ drafts: Array.isArray(store.drafts) ? store.drafts : [] });
+  return apiOk({ drafts: Array.isArray(store.drafts) ? store.drafts : [] }, context);
 }
 
 export async function PATCH(request) {
+  const context = requestContextFromRequest(request);
   const denied = await requireAdminWrite(request);
   if (denied) return denied;
   let body;
   try {
     body = await request.json();
   } catch {
-    return Response.json({ error: "Invalid JSON" }, { status: 400 });
+    return apiFail({ code: API_ERROR_CODES.VALIDATION_FAILED, message: "Invalid JSON", status: 400 }, context);
   }
   const id = String(body.id || "").trim();
   const status = String(body.status || "").trim();
-  if (!id) return Response.json({ error: "id required" }, { status: 400 });
+  if (!id) return apiFail({ code: API_ERROR_CODES.VALIDATION_FAILED, message: "id required", status: 400 }, context);
   if (!["pending", "approved", "rejected"].includes(status)) {
-    return Response.json({ error: "Invalid status" }, { status: 400 });
+    return apiFail({ code: API_ERROR_CODES.VALIDATION_FAILED, message: "Invalid status", status: 400 }, context);
+  }
+  if (status === "approved" && body.sourcesVerified !== true) {
+    return apiFail(
+      {
+        code: API_ERROR_CODES.VALIDATION_FAILED,
+        message:
+          "Human verification required: confirm you have checked official sources (checkbox) before approving this draft.",
+        status: 400,
+      },
+      context
+    );
   }
   const previous = readIntelligenceDrafts().drafts?.find((d) => d.id === id) || null;
   const draft = updateDraftStatus({
@@ -37,7 +59,7 @@ export async function PATCH(request) {
     moderationNote: body.moderationNote,
     edits: body.edits,
   });
-  if (!draft) return Response.json({ error: "Draft not found" }, { status: 404 });
+  if (!draft) return apiFail({ code: API_ERROR_CODES.NOT_FOUND, message: "Draft not found", status: 404 }, context);
   let publishedNews = null;
   let faqPatches = [];
   let facebookPost = null;
@@ -46,12 +68,14 @@ export async function PATCH(request) {
   if (status === "approved") {
     const grounding = evaluateDraftGrounding(draft);
     if (!grounding.ok) {
-      return Response.json(
+      return apiFail(
         {
-          error: "Grounding verification failed. Draft cannot be approved.",
-          grounding,
+          code: API_ERROR_CODES.CONFLICT,
+          message: "Grounding verification failed. Draft cannot be approved.",
+          status: 409,
+          details: { grounding },
         },
-        { status: 409 }
+        context
       );
     }
     publishedNews = publishDraftToNewsStore(draft);
@@ -79,12 +103,17 @@ export async function PATCH(request) {
         newsletterChannelItemId: newsletterQueueItem?.id || "",
         publishHistoryId: publishHistoryEntry?.id || "",
         groundingApprovedAt: new Date().toISOString(),
+        sourcesVerifiedAt: new Date().toISOString(),
+        sourcesVerifiedIp: getClientIp(request),
       },
     });
+    revalidateNewsBoardPaths();
+    if (publishedNews?.slug) revalidateNewsArticlePath(publishedNews.slug);
   }
-  appendAudit(`intel_draft_${status}`, id, {
+  appendAudit(DRAFT_STATUS_AUDIT_ACTIONS[status], id, {
     ip: getClientIp(request),
     route: "PATCH /api/admin/intelligence/drafts",
+    requestId: context.requestId,
     meta: {
       fromStatus: previous?.status || "unknown",
       toStatus: status,
@@ -98,12 +127,12 @@ export async function PATCH(request) {
       newsletterChannelItemId: newsletterQueueItem?.id || "",
     },
   });
-  return Response.json({
+  return apiOk({
     draft,
     publishedNews,
     faqPatches,
     facebookPost,
     newsletterQueueItem,
     publishHistoryEntry,
-  });
+  }, context);
 }

@@ -11,7 +11,7 @@ export const metadata = buildMetadata({
   title: pageData.metaTitle,
   description: pageData.metaDescription,
   path: pageData.path,
-  keywords: ["Partner Visa Australia", "Partner visa agent", "Spouse visa Australia"],
+  keywords: pageData.keywords,
 });
 
 export default function PartnerVisaPage() {
@@ -32,10 +32,18 @@ export default function PartnerVisaPage() {
           { href: "/", label: "Home" },
           { href: pageData.path, label: "Partner Visa" },
         ]}
+        officialResources={pageData.officialResources ?? []}
+        currentPath={pageData.path}
         sections={pageData.sections}
         faq={pageData.faq}
         related={[
           ...pageData.relatedGuides,
+          { href: "/partner-visa-820-801-guide", title: "820/801 onshore partner guide" },
+          { href: "/partner-visa-309-100-guide", title: "309/100 offshore partner guide" },
+          {
+            href: "/visa-refusal-help-australia-and-aat-migration-appeal-guide",
+            title: "Visa refusal help and AAT migration appeal guide",
+          },
           { href: "/contact", title: "Book a consultation" },
         ]}
       />

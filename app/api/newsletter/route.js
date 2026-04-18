@@ -2,11 +2,13 @@ import { saveNewsletterEntry, sendNewsletterWelcomeEmail } from "../../../lib/ne
 import { parseNewsletterSubmission, getMaxNewsletterBodyBytes } from "../../../lib/validation/newsletter-schema";
 import { rateLimitAllow } from "../../../lib/security/rate-limit";
 import { getClientIp } from "../../../lib/security/request-ip";
+import { API_ERROR_CODES, apiFail, apiOk, requestContextFromRequest } from "@/lib/api/response";
 
 export async function POST(request) {
+  const context = requestContextFromRequest(request);
   const ip = getClientIp(request);
   if (!rateLimitAllow(`newsletter:${ip}`, { windowMs: 15 * 60 * 1000, max: 15 })) {
-    return Response.json({ error: "Too many requests. Try again later." }, { status: 429 });
+    return apiFail({ code: API_ERROR_CODES.RATE_LIMITED, message: "Too many requests. Try again later.", status: 429 }, context);
   }
 
   const maxBytes = getMaxNewsletterBodyBytes();
@@ -14,7 +16,7 @@ export async function POST(request) {
   if (cl) {
     const n = Number(cl);
     if (Number.isFinite(n) && n > maxBytes) {
-      return Response.json({ error: "Request too large." }, { status: 413 });
+      return apiFail({ code: API_ERROR_CODES.VALIDATION_FAILED, message: "Request too large.", status: 413 }, context);
     }
   }
 
@@ -22,27 +24,27 @@ export async function POST(request) {
   try {
     rawText = await request.text();
   } catch {
-    return Response.json({ error: "Invalid request." }, { status: 400 });
+    return apiFail({ code: API_ERROR_CODES.VALIDATION_FAILED, message: "Invalid request.", status: 400 }, context);
   }
   if (Buffer.byteLength(rawText, "utf8") > maxBytes) {
-    return Response.json({ error: "Request too large." }, { status: 413 });
+    return apiFail({ code: API_ERROR_CODES.VALIDATION_FAILED, message: "Request too large.", status: 413 }, context);
   }
 
   let body;
   try {
     body = JSON.parse(rawText);
   } catch {
-    return Response.json({ error: "Invalid JSON body." }, { status: 400 });
+    return apiFail({ code: API_ERROR_CODES.VALIDATION_FAILED, message: "Invalid JSON body.", status: 400 }, context);
   }
 
   const parsed = parseNewsletterSubmission(body);
   if (!parsed.ok) {
-    return Response.json({ error: parsed.error }, { status: 400 });
+    return apiFail({ code: API_ERROR_CODES.VALIDATION_FAILED, message: parsed.error, status: 400 }, context);
   }
 
   const result = saveNewsletterEntry(parsed.email, { marketingConsent: parsed.marketingConsent });
   if (result.error) {
-    return Response.json({ error: result.error }, { status: 400 });
+    return apiFail({ code: API_ERROR_CODES.VALIDATION_FAILED, message: result.error, status: 400 }, context);
   }
 
   let emailSent = false;
@@ -59,8 +61,7 @@ export async function POST(request) {
     }
   }
 
-  return Response.json({
-    ok: true,
+  return apiOk({
     exists: result.exists || false,
     emailSent,
     emailReason,
@@ -69,5 +70,5 @@ export async function POST(request) {
       : result.exists
         ? "This email is already subscribed."
         : "Thanks for subscribing. You will receive migration and visa updates by email.",
-  });
+  }, context);
 }

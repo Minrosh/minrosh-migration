@@ -2,7 +2,7 @@ import Link from "next/link";
 import siteDataStatic from "../../data/site.json";
 import seoPages from "../../data/seo-pages.json";
 import { PublicFileImg } from "../../components/public-file-img";
-import newsData from "../../data/news.json";
+import { getNewsData } from "../../lib/news-data";
 import { NewsBoard } from "../../components/news-board";
 import { SiteShell } from "../../components/site-shell";
 import { StructuredData } from "../../components/structured-data";
@@ -18,9 +18,13 @@ export const metadata = buildMetadata({
   keywords: pageData.keywords,
 });
 
+export const revalidate = 60;
+
 export default function UpdatesPage() {
   const siteData = getHomeSiteData(siteDataStatic);
+  const newsData = getNewsData();
   const latestGuides = [
+    seoPages.guidePages.australianVisasOfficialSources,
     seoPages.guidePages.visaFeesGuide,
     seoPages.guidePages.processingTimesGuide,
     seoPages.guidePages.documentChecklistGuide,
@@ -59,6 +63,35 @@ export default function UpdatesPage() {
               />
             </div>
           </div>
+        </section>
+
+        {(pageData.officialResources ?? []).length ? (
+          <section className="official-resources" aria-label="Official government sources">
+            <h2>Verify Australian visa subclasses on Home Affairs</h2>
+            <ul>
+              {(pageData.officialResources ?? []).map((item) => (
+                <li key={item.href}>
+                  <a href={item.href} target="_blank" rel="noreferrer">
+                    {item.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
+
+        <section className="content-section bento-hover immigration-news-cta-strip">
+          <h2>Immigration newsroom</h2>
+          <p>
+            Open the full list of MinRosh notes on policy changes — each item has its own page with context and a
+            button to the official announcement.
+          </p>
+          <p>
+            <Link href="/immigration-news" className="content-links__item immigration-news-cta-strip__link">
+              <strong>Browse all immigration news</strong>
+              <span>Open news hub</span>
+            </Link>
+          </p>
         </section>
 
         <section className="content-section bento-hover">

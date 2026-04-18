@@ -248,13 +248,17 @@ function parseChatResponse(rawText, response) {
     };
   }
 
-  const reply = data?.choices?.[0]?.message?.content?.trim();
+  const envelopeData = data?.data && typeof data.data === "object" ? data.data : data;
+  const reply = envelopeData?.choices?.[0]?.message?.content?.trim();
   if (reply) return { ok: true, reply };
 
   const err = data?.error;
+  const code = data?.error?.code || data?.code;
   const serverMsg =
-    typeof err === "string" ? err : err?.message || data?.message || `Request failed (${response.status})`;
-  return { ok: false, kind: "api", code: data?.code, message: serverMsg };
+    typeof err === "string"
+      ? err
+      : err?.message || envelopeData?.error || data?.message || `Request failed (${response.status})`;
+  return { ok: false, kind: "api", code, message: serverMsg };
 }
 
 export function AIConcierge({ siteData }) {

@@ -27,24 +27,24 @@
   "consultationHoursNote": "Consultations are usually scheduled during business hours (AEST). We confirm your appointment by email or phone after you enquire.",
   "processSectionLead": "Each step is designed to reduce guesswork: from your first assessment through a clear view of options, a direct conversation, and structured next actions you can follow with confidence.",
   "hero": {
-    "eyebrow": "Registered migration agent Brisbane",
-    "title": "Registered Migration Agent in Brisbane for Skilled, Student, and Family Visa Help.",
-    "description": "Looking for a reliable migration agent in Brisbane? MinRosh Migration provides clear, structured guidance for skilled migration, student visas, partner visas, employer-sponsored pathways, and other Australian visa options — including many skilled clients planning a move from Sri Lanka.",
-    "primaryCta": "Start Eligibility Quiz",
+    "eyebrow": "Migration Agent in Australia",
+    "title": "Turn Visa Complexity Into a Clear Pathway",
+    "description": "Structured guidance for skilled, student, partner, and employer-sponsored visas — with clear eligibility direction, document-ready preparation, and practical next steps. We point you to the Department of Home Affairs visa listing and Visa Finder so you can verify subclasses and charges on official pages, not forum summaries alone.",
+    "primaryCta": "Start Your Pathway",
     "secondaryCta": "Book Consultation"
   },
   "stats": [
     {
-      "value": "MinRosh",
-      "label": "Registered migration guidance with structured next steps — not generic offshore call-centre advice"
+      "value": "Registered Migration Guidance",
+      "label": "Direct case-led support with practical sequencing, not generic template advice."
     },
     {
-      "value": "4 hubs",
-      "label": "Australia, New Zealand, Canada, and the United Kingdom destination support"
+      "value": "4 Destination Pathways",
+      "label": "Compare Australia, New Zealand, Canada, and UK routes before you commit."
     },
     {
-      "value": "Navigator + quiz",
-      "label": "Smart tools that turn your situation into a clearer pathway recommendation"
+      "value": "Smart Navigator Assessment",
+      "label": "A guided question flow that points you to the most relevant next action."
     }
   ],
   "about": {
@@ -147,6 +147,16 @@
         "Visitor visa eligibility guidance",
         "Document review and application support",
         "Clear advice on common refusal risks"
+      ]
+    },
+    {
+      "title": "Visa list & official sources",
+      "href": "/australian-visas-official-sources",
+      "summary": "A readable hub on how to use the Department of Home Affairs visa catalogue and Visa Finder alongside MinRosh pathway pages — built for longer reading and safer verification before you lodge.",
+      "highlights": [
+        "Links to the official visa listing, Visa Finder, and ImmiAccount context",
+        "Maps visit, study, work, and family streams to MinRosh service pages",
+        "Plain-language sequencing tips without copying government tables"
       ]
     }
   ],
@@ -263,6 +273,18 @@
     {
       "question": "How do I get a PR visa in Queensland as a nurse in 2026?",
       "answer": "As a nurse you would usually start by confirming your occupation and skills assessment pathway (often through ANMAC or the relevant nursing authority), meeting English requirements, and checking whether you will pursue employer-sponsored options (Skills in Demand / permanent routes where eligible) or points-tested skilled visas (189, 190, or 491). Many Sri Lankan-trained nurses map to Australian nursing occupations when registration and assessment align — but you must verify your own pathway against current lists and AHPRA requirements. Queensland runs its own state and regional nomination programs with lists and rules that change over time. Read the current Queensland migration program material and the Department of Home Affairs visa pages for subclasses 190 and 491, then map health and character requirements before you lodge."
+    },
+    {
+      "question": "Where is the official list of Australian visas?",
+      "answer": "The Department of Home Affairs publishes the visa listing at immi.homeaffairs.gov.au under Getting a visa. It is the authoritative catalogue of subclasses. Use it to open the page for the visa you are considering, then read criteria, charges, and forms there — summaries on blogs or social media can go out of date quickly."
+    },
+    {
+      "question": "What is the Department of Home Affairs Visa Finder?",
+      "answer": "Visa Finder is an official tool that helps you explore visa options by answering questions about your situation. It is useful for early orientation, but it does not replace reading the legal criteria for the specific subclass you intend to apply for. Always cross-check results on the visa listing and the subclass page before lodging."
+    },
+    {
+      "question": "How can I spend more time understanding visas before I book?",
+      "answer": "Start with the Department of Home Affairs visa listing and Visa Finder, then read MinRosh guides such as the official sources hub, skilled points guide, student requirements guide, and document checklist. When you are ready for sequencing and evidence review tailored to your facts, use the free assessment or book a consultation."
     }
   ]
 }

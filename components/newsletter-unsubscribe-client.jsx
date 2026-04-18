@@ -15,9 +15,11 @@ export function NewsletterUnsubscribeClient() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token: token.trim() }),
       });
-      const data = await res.json().catch(() => ({}));
+      const payload = await res.json().catch(() => ({}));
+      const data = payload?.data && typeof payload.data === "object" ? payload.data : payload;
+      const errorMessage = payload?.error?.message || payload?.error || data?.error;
       if (!res.ok) {
-        setStatus({ type: "error", message: data.error || "Could not process request." });
+        setStatus({ type: "error", message: errorMessage || "Could not process request." });
         return;
       }
       setStatus({ type: "success", message: data.message || "Unsubscribed." });

@@ -72,6 +72,27 @@ const sections = [
       "Official legislative and code-of-conduct links are published across legal pages",
     ],
   },
+  {
+    title: "How we use the Department of Home Affairs visa catalogue",
+    body:
+      "Australian visas are organised by subclass on immi.homeaffairs.gov.au. MinRosh explains strategy and evidence in plain language, but eligibility, fees, and forms are always confirmed on the official listing and each visa page. See also our hub on using the visa listing and Visa Finder alongside MinRosh guides.",
+    bullets: [
+      "Cross-check subclass criteria whenever policy dates or your circumstances change",
+      "Use Visa Finder for early orientation, then read the specific subclass you intend to pursue",
+      "Prefer primary sources over social media summaries when stakes are high",
+    ],
+  },
+];
+
+const aboutOfficialResources = [
+  {
+    label: "Department of Home Affairs — visa listing",
+    href: "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing",
+  },
+  {
+    label: "Department of Home Affairs — Visa Finder",
+    href: "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-finder",
+  },
 ];
 
 export default function AboutPage() {
@@ -86,13 +107,16 @@ export default function AboutPage() {
       <ContentPage
         eyebrow="About MinRosh"
         title="Structured migration guidance designed to feel clearer from the first conversation"
-        intro="MinRosh Migration supports clients in Brisbane and across Australia with practical migration and education guidance built around calm communication, good preparation, and sensible next-step planning."
+        intro="MinRosh Migration supports clients in Brisbane and across Australia with practical migration and education guidance built around calm communication, good preparation, and sensible next-step planning. We routinely anchor discussions to the Department of Home Affairs visa listing so clients know where authoritative criteria live."
         breadcrumbs={[
           { href: "/", label: "Home" },
           { href: "/about", label: "About" },
         ]}
+        officialResources={aboutOfficialResources}
+        currentPath="/about"
         sections={sections}
         related={[
+          { href: "/australian-visas-official-sources", title: "Australian visas official sources hub" },
           { href: "/assessment", title: "Free Assessment" },
           { href: "/updates", title: "Official Updates Hub" },
           { href: "/contact", title: "Contact MinRosh" },

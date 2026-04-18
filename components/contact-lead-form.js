@@ -39,6 +39,9 @@ function validateLeadForm(form, mode) {
       errors.preferredTime = "Please choose a preferred time.";
     }
   }
+  if (!form.privacyPolicyAccepted) {
+    errors.privacyPolicyAccepted = "Please confirm you have read the Privacy Policy before submitting.";
+  }
   return errors;
 }
 
@@ -54,6 +57,7 @@ const initialForm = {
   consultationDurationMins: "45",
   timeZone: "Australia/Brisbane",
   message: "",
+  privacyPolicyAccepted: false,
 };
 
 export function ContactLeadForm({ className = "", mode = "general" }) {
@@ -62,7 +66,24 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
   const [quizSummaryLine, setQuizSummaryLine] = useState("");
   const [state, setState] = useState({ status: "idle", message: "" });
   const [fieldErrors, setFieldErrors] = useState({});
+  const [currentStep, setCurrentStep] = useState(0);
+  const [mobileStepper, setMobileStepper] = useState(false);
   const hpRef = useRef(null);
+
+  const stepFieldGroups =
+    mode === "consultation"
+      ? [
+          ["firstName", "lastName", "email", "phone"],
+          ["preferredCountry", "mainNeed", "preferredDate", "preferredTime", "consultationDurationMins", "timeZone"],
+          ["message", "privacyPolicyAccepted"],
+        ]
+      : [
+          ["firstName", "lastName", "email", "phone"],
+          ["preferredCountry", "mainNeed"],
+          ["message", "privacyPolicyAccepted"],
+        ];
+
+  const visibleFields = mobileStepper ? new Set(stepFieldGroups[currentStep] || []) : null;
 
   useEffect(() => {
     setQuizSummaryLine(readNavigatorQuizSummaryLine());
@@ -79,6 +100,23 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
       message: `Pathway map prefill:\nFrom city: ${fromCity || "Sri Lanka"}\nGoal: ${pathwayGoal || "Australia pathway"}\n\n${current.message}`.trim(),
     }));
   }, [searchParams, mode]);
+
+  useEffect(() => {
+    if (typeof window === "undefined" || typeof window.matchMedia !== "function") return;
+    const query = window.matchMedia("(max-width: 720px)");
+    const sync = () => setMobileStepper(query.matches);
+    sync();
+    if (typeof query.addEventListener === "function") {
+      query.addEventListener("change", sync);
+      return () => query.removeEventListener("change", sync);
+    }
+    query.addListener(sync);
+    return () => query.removeListener(sync);
+  }, []);
+
+  useEffect(() => {
+    setCurrentStep(0);
+  }, [mode, mobileStepper]);
 
   useEffect(() => {
     function handleNavigatorSummary(event) {
@@ -110,15 +148,28 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
   }, []);
 
   function handleChange(event) {
-    const { name, value } = event.target;
-    setForm((current) => ({ ...current, [name]: value }));
+    const { name, value, type, checked } = event.target;
+    setForm((current) => ({
+      ...current,
+      [name]: type === "checkbox" ? checked : value,
+    }));
   }
 
   async function handleSubmit(event) {
     event.preventDefault();
+    if (mobileStepper && currentStep < stepFieldGroups.length - 1) {
+      setCurrentStep((prev) => Math.min(stepFieldGroups.length - 1, prev + 1));
+      return;
+    }
     const errors = validateLeadForm(form, mode);
+    const errorEntries = Object.entries(errors);
     setFieldErrors(errors);
-    if (Object.keys(errors).length > 0) {
+    if (errorEntries.length > 0) {
+      if (mobileStepper) {
+        const firstErrorField = errorEntries[0][0];
+        const stepIndex = stepFieldGroups.findIndex((group) => group.includes(firstErrorField));
+        if (stepIndex >= 0) setCurrentStep(stepIndex);
+      }
       trackEvent("contact_form_validation_error", { form_mode: mode, fields: Object.keys(errors).join(",") });
       return;
     }
@@ -136,13 +187,16 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
         headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify({
           ...form,
+          privacyPolicyAccepted: Boolean(form.privacyPolicyAccepted),
           company: hpRef.current?.value || "",
           quizSummary: quizSummaryLine,
         }),
       });
-      const data = await response.json();
-      if (!response.ok || !data.ok) {
-        throw new Error(data.error || "Could not submit enquiry.");
+      const payload = await response.json();
+      const data = payload?.data && typeof payload.data === "object" ? payload.data : payload;
+      const errorMessage = payload?.error?.message || payload?.error || data?.error;
+      if (!response.ok || !(payload?.ok ?? data?.ok)) {
+        throw new Error(errorMessage || "Could not submit enquiry.");
       }
       setState({
         status: "success",
@@ -177,8 +231,28 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
 
   return (
     <form className={`contact-form bento-hover ${className}`.trim()} onSubmit={handleSubmit}>
+      <p className="form-security-note">
+        Submissions use HTTPS in transit. See our{" "}
+        <a href="/privacy-policy" className="text-primary underline">
+          Privacy Policy
+        </a>{" "}
+        for how we handle personal information.
+      </p>
+      {mobileStepper ? (
+        <div className="contact-form__stepper" aria-live="polite">
+          <p className="contact-form__stepper-label">
+            Step {currentStep + 1} of {stepFieldGroups.length}
+          </p>
+          <div className="contact-form__stepper-progress" aria-hidden="true">
+            <span
+              className="contact-form__stepper-progress-bar"
+              style={{ width: `${((currentStep + 1) / stepFieldGroups.length) * 100}%` }}
+            />
+          </div>
+        </div>
+      ) : null}
       <div className="contact-grid">
-        <label className={fieldErrors.firstName ? "has-error" : ""}>
+        <label className={fieldErrors.firstName ? "has-error" : ""} hidden={mobileStepper && !visibleFields?.has("firstName")}>
           <span>First name</span>
           <input
             name="firstName"
@@ -195,7 +269,7 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
             </span>
           ) : null}
         </label>
-        <label>
+        <label hidden={mobileStepper && !visibleFields?.has("lastName")}>
           <span>Last name</span>
           <input
             name="lastName"
@@ -204,7 +278,7 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
             onChange={handleChange}
           />
         </label>
-        <label className={fieldErrors.email ? "has-error" : ""}>
+        <label className={fieldErrors.email ? "has-error" : ""} hidden={mobileStepper && !visibleFields?.has("email")}>
           <span>Email</span>
           <input
             type="email"
@@ -222,7 +296,7 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
             </span>
           ) : null}
         </label>
-        <label className={fieldErrors.phone ? "has-error" : ""}>
+        <label className={fieldErrors.phone ? "has-error" : ""} hidden={mobileStepper && !visibleFields?.has("phone")}>
           <span>Phone</span>
           <input
             name="phone"
@@ -239,7 +313,7 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
             </span>
           ) : null}
         </label>
-        <label>
+        <label hidden={mobileStepper && !visibleFields?.has("preferredCountry")}>
           <span>Preferred country</span>
           <select name="preferredCountry" value={form.preferredCountry} onChange={handleChange}>
             <option>Australia</option>
@@ -248,7 +322,7 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
             <option>United Kingdom</option>
           </select>
         </label>
-        <label>
+        <label hidden={mobileStepper && !visibleFields?.has("mainNeed")}>
           <span>Main need</span>
           <select name="mainNeed" value={form.mainNeed} onChange={handleChange}>
             <option>Skilled Migration</option>
@@ -262,7 +336,10 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
         </label>
         {mode === "consultation" ? (
           <>
-            <label className={fieldErrors.preferredDate ? "has-error" : ""}>
+            <label
+              className={fieldErrors.preferredDate ? "has-error" : ""}
+              hidden={mobileStepper && !visibleFields?.has("preferredDate")}
+            >
               <span>Preferred date</span>
               <input
                 type="date"
@@ -279,7 +356,10 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
                 </span>
               ) : null}
             </label>
-            <label className={fieldErrors.preferredTime ? "has-error" : ""}>
+            <label
+              className={fieldErrors.preferredTime ? "has-error" : ""}
+              hidden={mobileStepper && !visibleFields?.has("preferredTime")}
+            >
               <span>Preferred time</span>
               <input
                 type="time"
@@ -296,7 +376,7 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
                 </span>
               ) : null}
             </label>
-            <label>
+            <label hidden={mobileStepper && !visibleFields?.has("consultationDurationMins")}>
               <span>Consultation length</span>
               <select
                 name="consultationDurationMins"
@@ -308,7 +388,7 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
                 <option value="60">60 minutes</option>
               </select>
             </label>
-            <label>
+            <label hidden={mobileStepper && !visibleFields?.has("timeZone")}>
               <span>Time zone</span>
               <select name="timeZone" value={form.timeZone} onChange={handleChange}>
                 <option value="Australia/Brisbane">Australia/Brisbane (AEST)</option>
@@ -318,7 +398,10 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
             </label>
           </>
         ) : null}
-        <label className={`contact-grid__full${fieldErrors.message ? " has-error" : ""}`}>
+        <label
+          className={`contact-grid__full${fieldErrors.message ? " has-error" : ""}`}
+          hidden={mobileStepper && !visibleFields?.has("message")}
+        >
           <span>Your enquiry</span>
           <textarea
             name="message"
@@ -340,6 +423,31 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
           )}
         </label>
       </div>
+      <label
+        className={`contact-grid__full flex items-start gap-2 text-sm${fieldErrors.privacyPolicyAccepted ? " has-error" : ""}`}
+        hidden={mobileStepper && !visibleFields?.has("privacyPolicyAccepted")}
+      >
+        <input
+          type="checkbox"
+          name="privacyPolicyAccepted"
+          checked={Boolean(form.privacyPolicyAccepted)}
+          onChange={handleChange}
+          className="mt-1"
+          aria-invalid={fieldErrors.privacyPolicyAccepted ? "true" : undefined}
+        />
+        <span>
+          I have read the{" "}
+          <a href="/privacy-policy" className="text-primary underline">
+            Privacy Policy
+          </a>{" "}
+          and agree you may use my details to respond to this enquiry.
+        </span>
+      </label>
+      {fieldErrors.privacyPolicyAccepted ? (
+        <p className="field-error contact-grid__full" role="alert">
+          {fieldErrors.privacyPolicyAccepted}
+        </p>
+      ) : null}
       <input
         ref={hpRef}
         type="text"
@@ -351,8 +459,34 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
         style={{ position: "absolute", left: "-9999px", width: 1, height: 1, overflow: "hidden" }}
       />
       <button type="submit" className="btn btn-primary" disabled={state.status === "loading"}>
-        {state.status === "loading" ? "Sending..." : "Submit enquiry"}
+        {state.status === "loading"
+          ? "Sending..."
+          : mobileStepper && currentStep < stepFieldGroups.length - 1
+            ? "Continue"
+            : "Submit enquiry"}
       </button>
+      {mobileStepper ? (
+        <div className="contact-form__step-actions">
+          <button
+            type="button"
+            className="btn btn-ghost"
+            onClick={() => setCurrentStep((prev) => Math.max(0, prev - 1))}
+            disabled={currentStep === 0 || state.status === "loading"}
+          >
+            Back
+          </button>
+          {currentStep < stepFieldGroups.length - 1 ? (
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={() => setCurrentStep((prev) => Math.min(stepFieldGroups.length - 1, prev + 1))}
+              disabled={state.status === "loading"}
+            >
+              Next step
+            </button>
+          ) : null}
+        </div>
+      ) : null}
       {state.message ? (
         <p className={`form-feedback is-${state.status}`} role="status" aria-live="polite">
           {state.message}

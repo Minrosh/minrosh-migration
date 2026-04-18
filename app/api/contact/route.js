@@ -8,11 +8,15 @@ import { enqueueNurtureLead } from "../../../lib/nurture-sequences";
 import { appendLeadToSheet } from "../../../lib/google-sheets-crm";
 import { createLead } from "../../../lib/crm/leads-service";
 import { runAutomationRules } from "../../../lib/crm/automation-runner";
+import { findOrCreateCustomerByIdentity } from "../../../lib/admin/customers-service";
+import { dualWriteEnquiryToSupabase } from "@/lib/supabase/enquiries-dual-write";
+import { API_ERROR_CODES, apiFail, apiOk, requestContextFromRequest } from "@/lib/api/response";
 
 export async function POST(request) {
+  const context = requestContextFromRequest(request);
   const ip = getClientIp(request);
   if (!rateLimitAllow(`contact:${ip}`, { windowMs: 15 * 60 * 1000, max: 10 })) {
-    return Response.json({ error: "Too many requests. Try again later." }, { status: 429 });
+    return apiFail({ code: API_ERROR_CODES.RATE_LIMITED, message: "Too many requests. Try again later.", status: 429 }, context);
   }
 
   const maxBytes = getMaxContactBodyBytes();
@@ -20,7 +24,7 @@ export async function POST(request) {
   if (cl) {
     const n = Number(cl);
     if (Number.isFinite(n) && n > maxBytes) {
-      return Response.json({ error: "Request too large." }, { status: 413 });
+      return apiFail({ code: API_ERROR_CODES.VALIDATION_FAILED, message: "Request too large.", status: 413 }, context);
     }
   }
 
@@ -28,23 +32,40 @@ export async function POST(request) {
   try {
     rawText = await request.text();
   } catch {
-    return Response.json({ error: "Invalid request." }, { status: 400 });
+    return apiFail({ code: API_ERROR_CODES.VALIDATION_FAILED, message: "Invalid request.", status: 400 }, context);
   }
   if (Buffer.byteLength(rawText, "utf8") > maxBytes) {
-    return Response.json({ error: "Request too large." }, { status: 413 });
+    return apiFail({ code: API_ERROR_CODES.VALIDATION_FAILED, message: "Request too large.", status: 413 }, context);
   }
 
   let body;
   try {
     body = JSON.parse(rawText);
   } catch {
-    return Response.json({ error: "Invalid JSON body." }, { status: 400 });
+    return apiFail({ code: API_ERROR_CODES.VALIDATION_FAILED, message: "Invalid JSON body.", status: 400 }, context);
   }
 
   const validated = parseContactSubmission(body);
   if (!validated.ok) {
-    return Response.json({ error: validated.error }, { status: 400 });
+    return apiFail({ code: API_ERROR_CODES.VALIDATION_FAILED, message: validated.error, status: 400 }, context);
   }
+
+  if (String(process.env.REQUIRE_PRIVACY_CONSENT_ON_CONTACT || "").toLowerCase() === "true") {
+    if (validated.value.privacyPolicyAccepted !== true) {
+      return apiFail(
+        { code: API_ERROR_CODES.VALIDATION_FAILED, message: "Please confirm you have read and accept the privacy policy before submitting.", status: 400 },
+        context
+      );
+    }
+  }
+
+  const policyVersion = String(process.env.PRIVACY_POLICY_VERSION || "").trim();
+  const privacyConsentLog = {
+    recordedAt: new Date().toISOString(),
+    clientIp: ip,
+    policyVersion: policyVersion || null,
+    clientConfirmed: validated.value.privacyPolicyAccepted === true,
+  };
 
   let leadDrive = { created: false };
   try {
@@ -55,14 +76,35 @@ export async function POST(request) {
   } catch {
     leadDrive = { created: false, reason: "drive_error" };
   }
+  const enquiryCore = { ...validated.value };
+  delete enquiryCore.privacyPolicyAccepted;
   const enquiryRecord = {
-    ...validated.value,
+    ...enquiryCore,
+    privacyConsentLog,
     leadDriveFolderId: leadDrive.created ? leadDrive.folderId : "",
     leadDriveFolderUrl: leadDrive.created ? leadDrive.folderUrl : "",
   };
   saveEnquiry(enquiryRecord);
   try {
+    await dualWriteEnquiryToSupabase(enquiryRecord);
+  } catch {
+    /* Supabase dual-write is best-effort */
+  }
+  try {
+    let customerId = "";
+    try {
+      const found = findOrCreateCustomerByIdentity({
+        name: `${enquiryRecord.firstName} ${enquiryRecord.lastName}`.trim(),
+        email: enquiryRecord.email,
+        phone: enquiryRecord.phone,
+        source: "website_contact_form",
+      });
+      customerId = String(found?.customer?.id || "").trim();
+    } catch {
+      customerId = "";
+    }
     const lead = createLead({
+      customerId: customerId || undefined,
       enquiryId: enquiryRecord.id,
       source: "website_contact",
       firstName: enquiryRecord.firstName,
@@ -117,8 +159,7 @@ export async function POST(request) {
 
   try {
     const mailResult = await sendContactEmails(enquiryRecord);
-    return Response.json({
-      ok: true,
+    return apiOk({
       id: enquiryRecord.id,
       internalSent: mailResult.internalSent,
       thankYouSent: mailResult.thankYouSent,
@@ -133,10 +174,9 @@ export async function POST(request) {
         mailResult.reason === "smtp_not_configured"
           ? "Enquiry saved, but SMTP is not configured yet."
           : calendarWarning,
-    });
+    }, context);
   } catch {
-    return Response.json({
-      ok: true,
+    return apiOk({
       id: enquiryRecord.id,
       internalSent: false,
       thankYouSent: false,
@@ -147,6 +187,6 @@ export async function POST(request) {
       leadDriveFolderId: enquiryRecord.leadDriveFolderId || undefined,
       leadDriveFolderUrl: enquiryRecord.leadDriveFolderUrl || undefined,
       warning: "Enquiry saved, but email delivery could not be completed. We will still review your message.",
-    });
+    }, context);
   }
 }

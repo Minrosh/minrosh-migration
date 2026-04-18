@@ -11,7 +11,8 @@ export default function ReportsPage() {
   useEffect(() => {
     fetch("/api/admin/reports/summary")
       .then((r) => r.json())
-      .then((d) => {
+      .then((payload) => {
+        const d = payload?.data && typeof payload.data === "object" ? payload.data : payload;
         setSummary(d);
         setLoading(false);
       })

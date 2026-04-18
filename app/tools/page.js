@@ -17,6 +17,12 @@ export const metadata = buildMetadata({
 
 const toolCards = [
   {
+    href: "/australian-visas-official-sources",
+    title: "Visa list & official sources hub",
+    body: "How to use the Department of Home Affairs visa listing and Visa Finder with MinRosh pathway pages — without mistaking summaries for law.",
+    cta: "Read hub",
+  },
+  {
     href: "/assessment",
     title: "Free assessment",
     body: "Structured pathway intake before a consultation — clarify goals, timing, and the strongest next step.",
@@ -84,8 +90,8 @@ export default function ToolsPage() {
               <h1>Explore, assess, then book with confidence</h1>
               <p>
                 Interactive tools and deep guides are grouped here so high-traffic marketing pages stay
-                stable. Start with education and assessments; book a consultation when you need tailored
-                sequencing for your circumstances.
+                stable. Start with the official-sources hub or a free assessment; book a consultation when you
+                need tailored sequencing for your circumstances.
               </p>
               <p className="content-hero__note">
                 Nothing here replaces official Department of Home Affairs rules or personalised registered

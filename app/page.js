@@ -1,43 +1,60 @@
 import siteDataStatic from "../data/site.json";
-import newsData from "../data/news.json";
+import { getNewsData } from "../lib/news-data";
 import { HomeTabServer } from "../components/home/home-tab-server";
-import { PortalPage } from "../components/portal-page";
-import { SiteFooter } from "../components/site-footer";
+import { HomePageContent } from "../components/home-page-content";
+import { SiteShell } from "../components/site-shell";
 import { StructuredData } from "../components/structured-data";
 import { buildMetadata, faqJsonLd } from "../lib/seo";
-import { getFooterStats } from "../lib/site-stats";
 import { getHomeSiteData } from "../lib/home-site-data";
 
 export const revalidate = 60;
 
-export const metadata = buildMetadata({
-  title: "Migration Agent Brisbane | Registered Visa Help Australia | MinRosh Migration",
+const homeMetadataBase = buildMetadata({
+  title: "Migration Agent Australia | Skilled, Partner & Student Visa Help | MinRosh",
   description:
-    "Looking for a registered migration agent in Brisbane? MinRosh Migration provides expert guidance for skilled migration, partner visas, student visas, employer-sponsored pathways, and other Australian visa options.",
+    "Get registered migration guidance for skilled, partner, student, and employer-sponsored visas. Compare pathways, reduce refusal risk, and book a consultation.",
   path: "/",
   keywords: [
+    "Australian migration agent",
+    "Migration agent Australia",
     "Migration agent Brisbane",
+    "Skilled migration Australia",
+    "Partner visa Australia",
+    "Student visa Australia",
+    "Employer sponsored visa Australia",
     "Registered migration agent Australia",
-    "Visa consultant Brisbane",
-    "Australian migration services",
-    "Immigration agent Australia",
     "Migration Sri Lanka to Australia",
-    "Australian PR from Sri Lanka",
+    "Australian PR pathways",
+    "Visa lodgement preparation",
   ],
 });
 
+/** Homepage OG/Twitter dimensions aligned to 1200×630 best practice (asset may be larger). */
+export const metadata = {
+  ...homeMetadataBase,
+  openGraph: {
+    ...homeMetadataBase.openGraph,
+    images: (homeMetadataBase.openGraph?.images || []).map((img) => ({
+      ...img,
+      width: 1200,
+      height: 630,
+    })),
+  },
+};
+
 export default function HomePage() {
   const siteData = getHomeSiteData(siteDataStatic);
-  const footerStats = getFooterStats();
+  const newsData = getNewsData();
 
   return (
     <>
       <StructuredData data={faqJsonLd(siteData.faq)} />
-      <PortalPage
-        siteData={siteData}
-        homeTab={<HomeTabServer siteData={siteData} newsData={newsData} />}
-        footer={<SiteFooter siteData={siteData} initialStats={footerStats} />}
-      />
+      <SiteShell siteData={siteData} currentPath="/">
+        <HomePageContent
+          siteData={siteData}
+          homeTab={<HomeTabServer siteData={siteData} newsData={newsData} />}
+        />
+      </SiteShell>
     </>
   );
 }
