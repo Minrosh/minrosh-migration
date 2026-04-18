@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Run on the Ubuntu server from your project root (e.g. ~/minrosh-migration).
-# Prerequisites: Node 20+, PM2, git, and .env with ADMIN_SESSION_SECRET (required), ADMIN_PASSWORD or bcrypt auth, SMTP_*, etc.
+# Prerequisites: Node >= 20.19 (see .nvmrc), PM2, git, and .env with ADMIN_SESSION_SECRET (required), ADMIN_PASSWORD or bcrypt auth, SMTP_*, etc.
 #
 # Prefer one command (pull/build/PM2 + log flush) so pasted lines are not concatenated:
 #   cd ~/minrosh-migration && ./deploy-server.sh
@@ -63,6 +63,27 @@ if ! grep -qE '^GOOGLE_FORM_WEBHOOK_SECRET=.' "$ROOT/.env"; then
 fi
 if ! grep -qE '^INTELLIGENCE_CRON_SECRET=.' "$ROOT/.env"; then
   echo "WARNING: INTELLIGENCE_CRON_SECRET unset or empty — POST /api/cron/intelligence-scan will reject; daily digest cron cannot run until set (see scripts/intelligence-daily-cron.sh)."
+fi
+
+# After git pull, .nvmrc is present: prefer project Node (>=20.19 clears npm EBADENGINE for some deps).
+export NVM_DIR="${NVM_DIR:-$HOME/.nvm}"
+if [[ -s "$NVM_DIR/nvm.sh" ]] && [[ -f "$ROOT/.nvmrc" ]]; then
+  # shellcheck disable=SC1091
+  source "$NVM_DIR/nvm.sh"
+  nvm install
+  nvm use
+  # Prepend the real nvm version bin (do not rely on `nvm which current` when an IDE injects another `node` first on PATH).
+  _nvm_ver="$(sed '/^#/d;/^[[:space:]]*$/d' "$ROOT/.nvmrc" | head -1 | tr -d "[:space:]")"
+  _nvm_bin="$NVM_DIR/versions/node/v${_nvm_ver}/bin"
+  if [[ -x "$_nvm_bin/node" ]]; then
+    export PATH="$_nvm_bin:$PATH"
+  fi
+  unset _nvm_ver _nvm_bin
+  hash -r 2>/dev/null || true
+fi
+echo "==> deploy: Node $(node -v) ($(command -v node))"
+if ! node -e "const [a,b]=process.versions.node.split('.').map(Number);process.exit(a>20||(a===20&&b>=19)?0:1)" 2>/dev/null; then
+  echo "WARNING: Node is below 20.19 — install nvm + use .nvmrc, or upgrade system Node (see package.json engines)."
 fi
 
 echo "==> Install & build"

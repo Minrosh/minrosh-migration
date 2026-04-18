@@ -2,6 +2,9 @@
   "name": "minrosh-migration-next",
   "version": "2.0.0",
   "private": true,
+  "engines": {
+    "node": ">=20.19.0"
+  },
   "scripts": {
     "dev": "next dev",
     "generate:brochure": "node scripts/generate-brochure.mjs",

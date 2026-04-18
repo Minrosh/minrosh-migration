@@ -225,7 +225,7 @@ Cron route `app/api/cron/upload-retention/route.js` calls `lib/admin/upload-rete
 
 **Production build:** `output: "standalone"`; `serverExternalPackages` includes heavy native-ish deps (`tesseract.js`, `@resvg/resvg-js`).
 
-**Deploy:** `scripts/deploy-ubuntu.sh` — `npm ci`, `npm run build`, checks for `.env` and session-related vars, PM2-oriented workflow (see script comments). **Gotcha documented in repo:** a stray `package-lock.json` in `$HOME` can confuse Next tracing root — script warns about this.
+**Deploy:** `scripts/deploy-ubuntu.sh` — sources **nvm** when present, installs the version in **`.nvmrc`** (Node **≥ 20.19**; avoids `npm` `EBADENGINE` warnings from some dependencies), prepends that version’s `bin` to `PATH`, then runs `npm ci`, `npm run build`, checks for `.env` and session-related vars, and a PM2-oriented workflow (see script comments). **Gotcha documented in repo:** a stray `package-lock.json` in `$HOME` can confuse Next tracing root — script warns about this.
 
 ---
 
