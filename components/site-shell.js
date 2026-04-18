@@ -40,7 +40,7 @@ export function SiteShell({
     <div className="portal-shell">
       <SitePublicStickyHeader
         backdropModifier={backdropModifier}
-        className="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-brand-plum/10 shadow-sm transition-all duration-300"
+        className="site-header--marketing"
       >
         <SiteHeaderMetaRow siteData={siteData} />
         <div className="site-header__inner">

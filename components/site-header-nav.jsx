@@ -148,7 +148,7 @@ export function SiteHeaderNav({ navLinks, currentPath, enableVisaMega = false, e
                 <Link
                   href={normalizedHref}
                   scroll={!normalizedHref.startsWith("/#")}
-                  className={`site-nav__link px-3 py-2 rounded-md transition-all duration-300 font-semibold ${
+                  className={`site-nav__link site-nav__link--header ${
                     collapseDesktop ? "site-nav__link--visa-hub-collapsed-desktop " : ""
                   }${
                     isActive
@@ -169,37 +169,30 @@ export function SiteHeaderNav({ navLinks, currentPath, enableVisaMega = false, e
             );
           })}
         </div>
-        <div className="site-nav__group site-nav__group--actions gap-3">
+        <div className="site-nav__toolbar">
           {enableSiteSearch ? (
             <div className="site-nav__search-host">
               <SiteNavSearch />
             </div>
           ) : null}
-          {/* 💎 PREMIUM UPGRADE: Added shadow, scale on hover, and a subtle ring glow */}
-          <Link
-            href="/book-consultation"
-            scroll
-            className="btn btn-primary site-nav__cta shadow-md hover:shadow-lg hover:-translate-y-0.5 hover:ring-2 hover:ring-brand-gold/50 transition-all duration-300 bg-brand-rose"
-            onClick={(event) => handleNavClick(event, "/book-consultation")}
-          >
-            Book Consultation
-          </Link>
-          <Link
-            href="/assessment"
-            scroll
-            className="btn btn-ghost site-nav__cta-secondary site-nav__cta hover:bg-brand-cream hover:text-brand-plum transition-colors duration-300"
-            onClick={(event) => handleNavClick(event, "/assessment")}
-          >
-            Free assessment
-          </Link>
-          <Link
-            href="/tools"
-            scroll
-            className="btn btn-ghost site-nav__cta-secondary site-nav__cta site-nav__cta-tertiary hover:bg-brand-cream hover:text-brand-plum transition-colors duration-300"
-            onClick={(event) => handleNavClick(event, "/tools")}
-          >
-            Tools
-          </Link>
+          <div className="site-nav__cta-cluster">
+            <Link
+              href="/book-consultation"
+              scroll
+              className="btn btn-primary site-nav__cta site-nav__cta--primary"
+              onClick={(event) => handleNavClick(event, "/book-consultation")}
+            >
+              Book consultation
+            </Link>
+            <Link
+              href="/assessment"
+              scroll
+              className="btn btn-ghost site-nav__cta site-nav__cta--secondary"
+              onClick={(event) => handleNavClick(event, "/assessment")}
+            >
+              Free assessment
+            </Link>
+          </div>
         </div>
       </nav>
     </>
