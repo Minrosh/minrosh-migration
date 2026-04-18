@@ -15,9 +15,11 @@ export default defineConfig({
   },
   projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
   webServer: {
-    command: "PORT=4173 npm run start",
+    // Match production (ecosystem.config.js): cwd = .next/standalone, node server.js
+    command:
+      "bash -lc 'cd .next/standalone && PORT=4173 HOSTNAME=127.0.0.1 node server.js'",
     url: baseURL,
-    /** Local dev: reuse an already-running `next start` on :3000. CI: always start fresh. */
+    /** Local dev: reuse an already-running server on :4173. CI: always start fresh. */
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,
   },
