@@ -24,6 +24,10 @@ Do this for high-traffic or recently changed pages (home, key hubs, new guides).
 2. Enter the full URL (example: `https://minroshmigration.com.au/`).
 3. Wait for the test result, then click **Request indexing** (quota applies; use for important URLs).
 
+### Homepage after layout or header changes
+
+Google may still show an older cached render snippet for `/` even when the live site is updated. After **material** changes to the home layout, sticky header, hero, or above-the-fold content, it is worth using **URL Inspection** on the homepage and clicking **Request indexing** once (optional; subject to Search Console quota). This does not guarantee immediate SERP updates, but it nudges recrawl of that URL.
+
 **Suggested priority list (edit to match your launch):**
 
 - `https://minroshmigration.com.au/`

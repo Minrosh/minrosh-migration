@@ -477,7 +477,7 @@ a {
 .site-header__meta-destination-link:hover,
 .site-header__meta-destination-link:focus-visible {
   color: var(--brand-rose);
-  border-bottom-color: rgba(139, 61, 106, 0.35);
+  border-bottom-color: rgba(139, 61, 106, 0.22);
 }
 
 .site-header__meta-contact {
@@ -494,12 +494,16 @@ a {
   color: var(--ink);
   text-decoration: none;
   white-space: nowrap;
+  border-bottom: 1px solid transparent;
+  padding-bottom: 1px;
+  transition: color 0.2s ease, border-color 0.2s ease;
 }
 
 .site-header__meta-contact-link:hover,
 .site-header__meta-contact-link:focus-visible {
   color: var(--brand-rose);
-  text-decoration: underline;
+  text-decoration: none;
+  border-bottom-color: rgba(139, 61, 106, 0.22);
 }
 
 .site-header__meta-social {
@@ -770,15 +774,16 @@ a.brand:focus-visible {
 .site-nav__link::after {
   content: "";
   position: absolute;
-  left: 20%;
-  right: 20%;
-  bottom: 0;
-  height: 2px;
+  left: 22%;
+  right: 22%;
+  bottom: 1px;
+  height: 1px;
   border-radius: 999px;
-  background: var(--brand-gold);
+  background: rgba(202, 166, 77, 0.55);
   transform: scaleX(0);
   transform-origin: left;
-  transition: transform 0.22s ease;
+  transition: transform 0.22s ease, opacity 0.22s ease;
+  opacity: 0.85;
 }
 
 .site-nav__link:hover,
@@ -796,9 +801,8 @@ a.brand:focus-visible {
   color: var(--brand-rose);
 }
 
-.site-nav__link.is-active::after,
-.site-nav__link:hover::after,
-.site-nav__link:focus-visible::after {
+/* Underline cue only for the current page — hover/focus rely on colour + focus ring */
+.site-nav__link.is-active::after {
   transform: scaleX(1);
 }
 
@@ -5918,7 +5922,7 @@ body.ai-concierge-panel-open .mobile-sticky-quiz-cta {
 
   .site-nav__group--main .site-nav__link {
     flex-shrink: 0;
-    border-bottom: 2px solid transparent;
+    border-bottom: 1px solid transparent;
     transition:
       color 0.2s ease,
       border-color 0.2s ease,
@@ -5926,12 +5930,12 @@ body.ai-concierge-panel-open .mobile-sticky-quiz-cta {
   }
 
   .site-nav__group--main .site-nav__link.is-active {
-    border-bottom-color: var(--brand-gold);
+    border-bottom-color: rgba(202, 166, 77, 0.75);
   }
 
   .site-nav__group--main .site-nav__link:hover:not(.is-active),
   .site-nav__group--main .site-nav__link:focus-visible:not(.is-active) {
-    border-bottom-color: rgba(202, 166, 77, 0.45);
+    border-bottom-color: transparent;
   }
 
   .site-nav__link--visa-hub-collapsed-desktop {

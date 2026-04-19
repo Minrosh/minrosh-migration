@@ -192,9 +192,26 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
           quizSummary: quizSummaryLine,
         }),
       });
-      const payload = await response.json();
+      const rawText = await response.text();
+      let payload;
+      try {
+        payload = rawText ? JSON.parse(rawText) : {};
+      } catch {
+        setState({
+          status: "error",
+          message:
+            response.status >= 500
+              ? "The server returned an unexpected reply (not JSON). Please try again shortly, or phone or email us."
+              : "We could not read the server response. Please refresh the page and try again, or contact us directly.",
+        });
+        return;
+      }
       const data = payload?.data && typeof payload.data === "object" ? payload.data : payload;
-      const errorMessage = payload?.error?.message || payload?.error || data?.error;
+      const err = payload?.error;
+      const errorMessage =
+        (typeof err === "object" && err != null && typeof err.message === "string" ? err.message : null) ||
+        (typeof err === "string" ? err : null) ||
+        (typeof data?.error === "string" ? data.error : null);
       if (!response.ok || !(payload?.ok ?? data?.ok)) {
         throw new Error(errorMessage || "Could not submit enquiry.");
       }
