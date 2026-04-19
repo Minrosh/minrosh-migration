@@ -1,10 +1,11 @@
 import Link from "next/link";
 import Image from "next/image";
 import { CountryCoverage } from "../country-coverage";
+import { HomeDiscoverStrip } from "./home-discover-strip";
 import { HomeHeroBento } from "./home-hero-bento";
 import { NewsBoard } from "../news-board";
 import { SmartNavigator } from "../smart-navigator";
-import { PathwayMapPanel } from "./pathway-map-panel";
+import { PathwayMapDisclosure } from "./pathway-map-disclosure";
 import { GoogleReviewsPanel } from "./google-reviews-panel";
 import { PathwaySequenceAnimated } from "./pathway-sequence-animated";
 
@@ -48,6 +49,8 @@ export function HomeTabServer({ siteData, newsData }) {
     <section className="tab-panel is-active editorial-home bg-brand-cream/35 text-brand-plum">
       <HomeHeroBento siteData={siteData} trustNote={trustNote} />
 
+      <HomeDiscoverStrip />
+
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <p className="mb-4 text-center text-sm text-brand-plum/80">
           New:{" "}
@@ -56,6 +59,11 @@ export function HomeTabServer({ siteData, newsData }) {
           </Link>{" "}
           (visa listing, Visa Finder, and how they connect to MinRosh pathway pages).
         </p>
+      </div>
+      <div
+        id="smart-navigator"
+        className="mx-auto max-w-7xl scroll-mt-[calc(var(--site-header-chrome-height)+12px)] px-4 sm:px-6"
+      >
         <SmartNavigator
           title="Answer a few questions and get a more useful pathway recommendation"
           description="Our assessment weighs your destination, goal, timing, how much support you want, and how far along your pathway already is — then suggests the most relevant next page to read or action to take."
@@ -87,6 +95,41 @@ export function HomeTabServer({ siteData, newsData }) {
           <p className="mb-4 inline-block rounded-full border border-brand-rose/25 bg-brand-rose/10 px-4 py-1.5 text-sm font-bold uppercase tracking-wider text-brand-rose backdrop-blur-sm">
             How we help
           </p>
+          <nav
+            className="mb-6 flex flex-wrap items-center justify-center gap-2"
+            aria-label="Filter pathways by topic"
+          >
+            <Link
+              href="/#services"
+              className="rounded-full border border-brand-plum/15 bg-white px-3 py-1.5 text-xs font-bold uppercase tracking-wide text-brand-plum/80 shadow-sm transition hover:border-brand-rose/35 hover:text-brand-rose"
+            >
+              All pathways
+            </Link>
+            <Link
+              href="/skilled-migration"
+              className="rounded-full border border-transparent bg-brand-plum/5 px-3 py-1.5 text-xs font-semibold text-brand-plum/70 transition hover:bg-brand-cream hover:text-brand-plum"
+            >
+              Skilled
+            </Link>
+            <Link
+              href="/partner-visa-australia"
+              className="rounded-full border border-transparent bg-brand-plum/5 px-3 py-1.5 text-xs font-semibold text-brand-plum/70 transition hover:bg-brand-cream hover:text-brand-plum"
+            >
+              Partner
+            </Link>
+            <Link
+              href="/student-visa-australia"
+              className="rounded-full border border-transparent bg-brand-plum/5 px-3 py-1.5 text-xs font-semibold text-brand-plum/70 transition hover:bg-brand-cream hover:text-brand-plum"
+            >
+              Student
+            </Link>
+            <Link
+              href="/visitor-visas"
+              className="rounded-full border border-transparent bg-brand-plum/5 px-3 py-1.5 text-xs font-semibold text-brand-plum/70 transition hover:bg-brand-cream hover:text-brand-plum"
+            >
+              Visitor
+            </Link>
+          </nav>
           <h2 className="mb-4 text-balance text-[2rem] font-extrabold leading-tight tracking-tight text-brand-plum md:text-4xl lg:text-5xl">
             Structured pathways across your main visa goals
           </h2>
@@ -101,6 +144,8 @@ export function HomeTabServer({ siteData, newsData }) {
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
           {siteData.services.slice(0, 3).map((service, index) => {
             const highlight = visualHighlights[index] ?? visualHighlights[0];
+            const offerBadges = ["Popular", "Guided", "Verified planning"];
+            const badge = offerBadges[index] ?? "Featured";
             return (
               <article
                 key={service.title}
@@ -108,7 +153,7 @@ export function HomeTabServer({ siteData, newsData }) {
               >
                 <Link
                   href={service.href}
-                  className="flex h-full min-h-0 flex-col rounded-3xl no-underline focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold focus-visible:ring-offset-2 focus-visible:ring-offset-brand-cream"
+                  className="relative z-0 flex h-full min-h-0 flex-col rounded-3xl no-underline focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold focus-visible:ring-offset-2 focus-visible:ring-offset-brand-cream"
                 >
                   <div className="relative h-56 shrink-0 overflow-hidden bg-brand-cream">
                     <Image
@@ -138,25 +183,28 @@ export function HomeTabServer({ siteData, newsData }) {
                     </div>
                   </div>
                 </Link>
+                <span
+                  className="pointer-events-none absolute right-4 top-4 z-10 inline-flex max-w-[calc(100%-2rem)] rounded-full bg-brand-rose px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white shadow-md"
+                  aria-hidden
+                >
+                  {badge}
+                </span>
               </article>
             );
           })}
         </div>
       </section>
 
-      <div className="mx-4 my-10 max-w-7xl rounded-[2rem] border border-brand-plum/10 bg-white/90 p-4 shadow-inner sm:mx-6 sm:p-6 xl:mx-auto">
-        <PathwayMapPanel />
+      <div className="mx-4 my-10 max-w-7xl sm:mx-6 xl:mx-auto">
+        <PathwayMapDisclosure />
       </div>
 
-      <article className="mx-auto max-w-4xl px-4 py-10 text-center text-brand-plum/75 sm:px-6 md:py-14">
+      <article className="mx-auto max-w-4xl px-4 py-10 text-center text-brand-plum/75 sm:px-6 md:py-12">
         <h2 className="sr-only">Comprehensive Australian Migration Expertise</h2>
-        <p className="mb-4 font-medium leading-relaxed">
-          MinRosh Migration is a trusted Migration Agent in Australia. We specialize in navigating the complexities of the Department of Home Affairs, offering end-to-end guidance for{" "}
-          <strong className="font-bold text-brand-plum">Skilled Migration, Partner Visas, Student Pathways</strong>, and{" "}
-          <strong className="font-bold text-brand-plum">Employer-Sponsored Programs</strong>.
-        </p>
         <p className="font-medium leading-relaxed">
-          Whether you are aiming to study in Australia, sponsor a workforce, or secure a pathway to Permanent Residency (PR), our structured approach mitigates application risks. We empower candidates with realistic 2026 Skills in Demand (SID) insights to optimize their success metrics.
+          MinRosh Migration provides registered migration guidance for Home Affairs pathways —{" "}
+          <strong className="font-bold text-brand-plum">skilled, partner, student, and employer-sponsored</strong> — with
+          structured planning, realistic timelines, and consultation when you are ready to move forward.
         </p>
       </article>
 

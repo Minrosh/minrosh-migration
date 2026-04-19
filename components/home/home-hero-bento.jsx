@@ -17,6 +17,9 @@ export function HomeHeroBento({ siteData, trustNote }) {
     "Structured next steps",
   ];
 
+  const lead = siteData.hero.lead ?? siteData.hero.description ?? "";
+  const bullets = Array.isArray(siteData.hero.bullets) ? siteData.hero.bullets : null;
+
   const fadeUp = (delay = 0) =>
     reduceMotion
       ? {}
@@ -28,7 +31,7 @@ export function HomeHeroBento({ siteData, trustNote }) {
 
   return (
     <section
-      className="relative overflow-hidden border-b border-brand-plum/10 bg-gradient-to-b from-brand-cream via-white to-zinc-50 px-4 py-6 sm:px-6 md:py-8"
+      className="relative overflow-hidden border-b border-brand-plum/10 bg-gradient-to-b from-brand-cream via-white to-zinc-50 px-4 py-5 sm:px-6 md:py-8"
       aria-labelledby="home-hero-heading"
     >
       {/* Premium mesh: brand warmth + subtle indigo depth (light theme) */}
@@ -41,42 +44,65 @@ export function HomeHeroBento({ siteData, trustNote }) {
         aria-hidden
       />
 
-      <div className="relative z-[1] mx-auto grid w-full max-w-7xl grid-cols-1 gap-4 md:gap-5 lg:grid-cols-12">
-        <motion.div className="flex flex-col gap-3 lg:col-span-6" {...fadeUp(0)}>
-          <div className="rounded-3xl border border-white/70 bg-white/85 p-5 shadow-xl shadow-brand-plum/10 backdrop-blur-xl sm:p-6 md:p-7">
-            <p className="mb-2 inline-flex items-center rounded-full border border-brand-rose/25 bg-brand-rose/10 px-3 py-1 text-xs font-bold uppercase tracking-widest text-brand-rose">
+      <div className="relative z-[1] mx-auto grid w-full max-w-7xl grid-cols-1 gap-5 md:gap-6 lg:grid-cols-12">
+        <motion.div className="flex flex-col gap-4 lg:col-span-6" {...fadeUp(0)}>
+          <div className="rounded-3xl border border-white/70 bg-white/85 p-5 shadow-xl shadow-brand-plum/10 backdrop-blur-xl sm:p-7 md:p-8">
+            <p className="mb-3 inline-flex items-center rounded-full border border-brand-rose/25 bg-brand-rose/10 px-3 py-1 text-xs font-bold uppercase tracking-widest text-brand-rose">
               {siteData.hero.eyebrow}
             </p>
             <h1
               id="home-hero-heading"
-              className="text-balance text-[1.65rem] font-extrabold leading-[1.12] tracking-tight text-brand-plum sm:text-4xl lg:text-[2.8rem]"
+              className="text-balance text-[1.9rem] font-extrabold leading-[1.1] tracking-tight text-brand-plum sm:text-[2.35rem] md:text-5xl lg:text-[3.05rem]"
             >
               {siteData.hero.title}
             </h1>
-            <p className="mt-4 max-w-xl text-pretty text-base leading-relaxed text-brand-plum/80 sm:text-lg">
-              {siteData.hero.description}
-            </p>
+            {lead ? (
+              <p className="mt-5 max-w-xl text-pretty text-base font-medium leading-relaxed text-brand-plum/85 sm:text-lg">
+                {lead}
+              </p>
+            ) : null}
+            {bullets?.length ? (
+              <ul className="mt-4 max-w-xl list-disc space-y-2.5 pl-5 text-base leading-relaxed text-brand-plum/80 sm:text-[1.05rem]">
+                {bullets.map((item) => (
+                  <li key={item} className="pl-0.5">
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            ) : null}
 
-            <div className="sticky bottom-3 z-10 mt-6 flex flex-col gap-3 rounded-2xl bg-white/95 p-2 shadow-lg shadow-brand-plum/10 backdrop-blur sm:static sm:bg-transparent sm:p-0 sm:shadow-none sm:backdrop-blur-0 sm:flex-row sm:flex-wrap">
+            <div className="sticky bottom-3 z-10 mt-6 flex flex-col gap-3 rounded-2xl bg-white/95 p-3 shadow-lg shadow-brand-plum/10 backdrop-blur sm:static sm:mt-8 sm:bg-transparent sm:p-0 sm:shadow-none sm:backdrop-blur-0">
               <Link
                 href="/#quiz"
-                className="inline-flex min-h-[48px] w-full items-center justify-center rounded-xl bg-orange-500 px-6 py-3.5 text-center text-sm font-semibold text-white no-underline shadow-md shadow-orange-500/20 outline-none ring-offset-2 ring-offset-white transition hover:scale-[1.01] hover:bg-orange-400 hover:no-underline focus-visible:ring-2 focus-visible:ring-orange-300 sm:w-auto sm:min-w-[200px]"
+                className="home-hero-primary-cta inline-flex min-h-[52px] w-full items-center justify-center rounded-xl px-8 py-4 text-center text-base font-bold no-underline outline-none ring-offset-2 ring-offset-white transition hover:no-underline focus-visible:ring-2 focus-visible:ring-orange-400 sm:w-auto sm:min-w-[240px]"
               >
                 {siteData.hero.primaryCta}
               </Link>
-              <Link
-                href="/book-consultation"
-                className="inline-flex min-h-[48px] w-full items-center justify-center rounded-xl border border-brand-rose/35 bg-white px-6 py-3.5 text-center text-sm font-semibold text-brand-plum no-underline shadow-sm outline-none ring-offset-2 ring-offset-white transition hover:scale-[1.01] hover:bg-brand-cream hover:no-underline focus-visible:ring-2 focus-visible:ring-brand-rose/50 sm:w-auto"
-              >
-                {siteData.hero.secondaryCta}
-              </Link>
+              <p className="text-center text-sm text-brand-plum/70 sm:text-left">
+                <span className="mr-1.5 font-medium text-brand-plum/80">Next step:</span>
+                <Link
+                  href="/book-consultation"
+                  className="font-semibold text-brand-rose underline decoration-brand-rose/40 underline-offset-4 transition hover:text-brand-plum hover:decoration-brand-plum/40"
+                >
+                  {siteData.hero.secondaryCta}
+                </Link>
+                <span className="mx-2 text-brand-plum/35" aria-hidden>
+                  ·
+                </span>
+                <Link
+                  href="/assessment"
+                  className="font-semibold text-brand-rose underline decoration-brand-rose/40 underline-offset-4 transition hover:text-brand-plum hover:decoration-brand-plum/40"
+                >
+                  Free assessment
+                </Link>
+              </p>
             </div>
 
-            <ul className="mt-4 flex flex-wrap gap-2 text-xs font-semibold text-brand-plum/75" aria-label="Why choose MinRosh">
+            <ul className="mt-6 flex flex-wrap gap-2.5 text-sm font-semibold text-brand-plum/75" aria-label="Why choose MinRosh">
               {heroProofItems.map((item) => (
                 <li
                   key={item}
-                  className="inline-flex items-center gap-1 rounded-full border border-brand-plum/10 bg-brand-cream/60 px-3 py-1.5"
+                  className="inline-flex items-center gap-1.5 rounded-full border border-brand-plum/10 bg-brand-cream/60 px-3.5 py-2"
                 >
                   <span className="text-brand-rose" aria-hidden>
                     ✓
@@ -86,40 +112,41 @@ export function HomeHeroBento({ siteData, trustNote }) {
               ))}
             </ul>
 
-            <p className="mt-5 border-l-[3px] border-brand-rose/35 pl-3 text-sm leading-relaxed text-brand-plum/70">
+            <p className="mt-6 border-l-[3px] border-brand-rose/35 pl-4 text-base leading-relaxed text-brand-plum/70">
               {trustNote}
             </p>
           </div>
 
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-5">
             {siteData.stats.map((stat) => (
               <article
                 key={stat.label}
-                className="rounded-2xl border border-brand-plum/10 bg-white/90 p-4 shadow-md shadow-brand-plum/5 outline-none backdrop-blur-md transition duration-300 hover:scale-[1.02] hover:border-brand-gold/40 hover:shadow-lg focus-within:ring-2 focus-within:ring-brand-rose/40"
+                className="rounded-2xl border border-brand-plum/10 bg-white/90 p-5 shadow-md shadow-brand-plum/5 outline-none backdrop-blur-md transition duration-300 hover:scale-[1.02] hover:border-brand-gold/40 hover:shadow-lg focus-within:ring-2 focus-within:ring-brand-rose/40"
                 aria-label={`${stat.label}: ${stat.value}`}
               >
                 <p className="text-base font-bold tracking-tight text-brand-plum">{stat.value}</p>
-                <p className="mt-2 text-xs leading-relaxed text-brand-plum/65">{stat.label}</p>
+                <p className="mt-3 text-sm leading-relaxed text-brand-plum/65">{stat.label}</p>
               </article>
             ))}
           </div>
         </motion.div>
 
         <motion.div className="grid gap-4 lg:col-span-6 lg:grid-rows-[minmax(0,1fr)_auto]" {...fadeUp(0.08)}>
-          <div className="relative min-h-[260px] overflow-hidden rounded-3xl border border-brand-plum/10 bg-zinc-100 shadow-2xl shadow-brand-plum/15 sm:min-h-[300px] lg:min-h-[320px]">
+          <div className="relative min-h-[260px] overflow-hidden rounded-3xl border border-brand-plum/10 bg-zinc-100 shadow-2xl shadow-brand-plum/15 sm:min-h-[300px] lg:min-h-[340px]">
             <Image
               src="/images/hero-sydney-real.jpg"
               alt="Sydney Harbour — Australian migration journeys"
               fill
               priority
-              sizes="(max-width: 1024px) 100vw, 42vw"
+              quality={92}
+              sizes="(max-width: 1024px) 96vw, (max-width: 1536px) 50vw, 720px"
               className="object-cover object-center"
             />
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-brand-plum/25 via-transparent to-transparent" aria-hidden />
           </div>
-          <div className="rounded-3xl border border-brand-plum/20 bg-brand-plum p-5 text-brand-cream shadow-lg sm:p-6">
+          <div className="rounded-3xl border border-brand-plum/20 bg-brand-plum p-5 text-brand-cream shadow-lg sm:p-6 md:p-7">
             <p className="text-sm font-semibold text-brand-gold">Clarity-first visa planning</p>
-            <p className="mt-2 text-sm leading-relaxed text-brand-cream/90">
+            <p className="mt-2 text-base leading-relaxed text-brand-cream/90">
               Structured eligibility reviews, document-ready coaching, and lodgement support — built for confidence and momentum.
             </p>
           </div>
