@@ -29,7 +29,13 @@
   "hero": {
     "eyebrow": "Migration Agent in Australia",
     "title": "Turn Visa Complexity Into a Clear Pathway",
-    "description": "Structured guidance for skilled, student, partner, and employer-sponsored visas — with clear eligibility direction, document-ready preparation, and practical next steps. We point you to the Department of Home Affairs visa listing and Visa Finder so you can verify subclasses and charges on official pages, not forum summaries alone.",
+    "lead": "Structured guidance for skilled, student, partner, and employer-sponsored visas — with clear sequencing before you lodge.",
+    "bullets": [
+      "Eligibility direction so you know what to prepare next (tests, skills assessment, relationship evidence).",
+      "Document-ready coaching aligned to Department of Home Affairs expectations.",
+      "Official visa listing and Visa Finder highlighted for every subclass and charge check — not forum summaries alone.",
+      "Practical next steps toward consultation or self-service, at the pace that suits you."
+    ],
     "primaryCta": "Start Your Pathway",
     "secondaryCta": "Book Consultation"
   },

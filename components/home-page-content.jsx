@@ -29,8 +29,14 @@ export function HomePageContent({ siteData, homeTab }) {
       const tab = tabFromHash(h);
       setActiveTab(tab);
       if (typeof window === "undefined") return;
-      const id = tab === "home" ? "home" : tab;
+      const rawId = h.replace(/^#/, "");
+      const anchorEl = rawId ? document.getElementById(rawId) : null;
       window.requestAnimationFrame(() => {
+        if (rawId && anchorEl && !TAB_IDS.has(rawId)) {
+          anchorEl.scrollIntoView({ behavior: "smooth", block: "start" });
+          return;
+        }
+        const id = tab === "home" ? "home" : tab;
         document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
       });
     }

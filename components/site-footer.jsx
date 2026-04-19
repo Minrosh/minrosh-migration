@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { FOOTER_SERVICE_LINKS } from "../lib/public-indexable-routes";
 import { SiteFooterInteractive } from "./site-footer-interactive";
+import { SiteHeaderMetaRow } from "./site-header-meta-row";
 
 const serviceLinks = FOOTER_SERVICE_LINKS;
 
@@ -23,6 +24,9 @@ const legalLinks = [
 export function SiteFooter({ siteData, initialStats }) {
   return (
     <footer className="site-footer site-footer--rich">
+      <div className="site-footer__utility-strip">
+        <SiteHeaderMetaRow siteData={siteData} />
+      </div>
       <div className="site-footer__inner site-footer__inner--rich">
         <SiteFooterInteractive siteData={siteData} initialStats={initialStats}>
           <>

@@ -17,6 +17,13 @@ function newCspNonce() {
  * Nonce is forwarded on the request (`x-csp-nonce`) so `app/layout.js` can pass it to `<Script nonce>`.
  */
 export async function middleware(request) {
+  const host = request.headers.get("host") || "";
+  if (host === "www.minroshmigration.com.au") {
+    const url = request.nextUrl.clone();
+    url.hostname = "minroshmigration.com.au";
+    return NextResponse.redirect(url, 308);
+  }
+
   const { pathname } = request.nextUrl;
   const nonce = newCspNonce();
   const requestId = getOrCreateRequestId(request);

@@ -22,6 +22,12 @@ const nextConfig = {
   async redirects() {
     return [
       {
+        source: "/:path*",
+        has: [{ type: "host", value: "www.minroshmigration.com.au" }],
+        destination: "https://minroshmigration.com.au/:path*",
+        permanent: true,
+      },
+      {
         source: "/migration-from-sri-lanka",
         destination: "/migration-sri-lanka-to-australia",
         permanent: true,

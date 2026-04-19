@@ -2,7 +2,6 @@
 
 import { Fragment, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { SiteNavSearch } from "./site-nav-search";
 import { SiteVisasMegaMenu } from "./site-visas-mega-menu";
 
 const HOME_SECTION_IDS = new Set(["home", "quiz", "pathways", "services", "stories"]);
@@ -14,7 +13,7 @@ const VISA_HUB_PATHS = new Set(["/skilled-migration", "/partner-visa-australia",
  * Primary navigation for marketing pages (SiteShell): hamburger + drawer on small
  * viewports, horizontal nav from 921px up.
  */
-export function SiteHeaderNav({ navLinks, currentPath, enableVisaMega = false, enableSiteSearch = true }) {
+export function SiteHeaderNav({ navLinks, currentPath, enableVisaMega = false }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [currentHash, setCurrentHash] = useState("");
   const menuToggleRef = useRef(null);
@@ -170,11 +169,6 @@ export function SiteHeaderNav({ navLinks, currentPath, enableVisaMega = false, e
           })}
         </div>
         <div className="site-nav__toolbar">
-          {enableSiteSearch ? (
-            <div className="site-nav__search-host">
-              <SiteNavSearch />
-            </div>
-          ) : null}
           <div className="site-nav__cta-cluster">
             <Link
               href="/book-consultation"
@@ -183,14 +177,6 @@ export function SiteHeaderNav({ navLinks, currentPath, enableVisaMega = false, e
               onClick={(event) => handleNavClick(event, "/book-consultation")}
             >
               Book consultation
-            </Link>
-            <Link
-              href="/assessment"
-              scroll
-              className="btn btn-ghost site-nav__cta site-nav__cta--secondary"
-              onClick={(event) => handleNavClick(event, "/assessment")}
-            >
-              Free assessment
             </Link>
           </div>
         </div>

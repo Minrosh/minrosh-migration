@@ -1,9 +1,7 @@
 import Link from "next/link";
 import { PublicFileImg } from "./public-file-img";
 import { SiteFooter } from "./site-footer";
-import { SiteHeaderMetaRow } from "./site-header-meta-row";
 import { SiteHeaderNav } from "./site-header-nav";
-import { SiteHeaderTrustRow } from "./site-header-trust-row";
 import { SitePublicStickyHeader } from "./site-public-sticky-header";
 import { SiteHeaderMobileUtilities } from "./site-header-mobile-utilities";
 import { getFooterStats } from "../lib/site-stats";
@@ -42,7 +40,6 @@ export function SiteShell({
         backdropModifier={backdropModifier}
         className="site-header--marketing"
       >
-        <SiteHeaderMetaRow siteData={siteData} />
         <div className="site-header__inner">
           <Link
             href={brandHref}
@@ -68,10 +65,8 @@ export function SiteShell({
             navLinks={navLinks}
             currentPath={currentPath}
             enableVisaMega={!destinationContext}
-            enableSiteSearch
           />
         </div>
-        <SiteHeaderTrustRow brand={siteData.brand} />
         <SiteHeaderMobileUtilities siteData={siteData} />
       </SitePublicStickyHeader>
 
