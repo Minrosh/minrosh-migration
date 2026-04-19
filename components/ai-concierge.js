@@ -244,8 +244,18 @@ function parseChatResponse(rawText, response) {
       ok: false,
       kind: "parse",
       message:
-        "The assistant returned an unreadable response. Check that GEMINI_API_KEY is set in .env, run npm run build, and pm2 restart — or try again shortly.",
+        "We could not read the assistant’s reply (temporary network or format issue). Please try again, or use WhatsApp or Book above.",
     };
+  }
+
+  if (data && data.ok === false && data.error) {
+    const err = data.error;
+    const code = typeof err === "object" ? err.code : undefined;
+    const msg =
+      typeof err === "string"
+        ? err
+        : err?.message || "The assistant is temporarily unavailable. Please try again shortly.";
+    return { ok: false, kind: "api", code, message: msg };
   }
 
   const envelopeData = data?.data && typeof data.data === "object" ? data.data : data;
@@ -294,6 +304,20 @@ export function AIConcierge({ siteData }) {
     if (!open) return;
     scrollLogToEnd();
   }, [messages, loading, open, scrollLogToEnd]);
+
+  /** Lets CSS hide bottom fixed CTAs and tighten panel height so messages are not covered. */
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+    const cls = "ai-concierge-panel-open";
+    if (open) {
+      document.body.classList.add(cls);
+    } else {
+      document.body.classList.remove(cls);
+    }
+    return () => {
+      document.body.classList.remove(cls);
+    };
+  }, [open]);
 
   function setSoftNotice(text, tone = "info") {
     setNotice(text ? { text, tone } : { text: "", tone: "info" });
@@ -360,7 +384,9 @@ export function AIConcierge({ siteData }) {
       setSoftNotice(
         parsed.kind === "parse"
           ? parsed.message
-          : "Live AI was unavailable, so this is fixed guidance on our site—not a model reply.",
+          : parsed.message && parsed.kind === "api"
+            ? parsed.message
+            : "Live assistant was unavailable just now — below is general guidance from our site, not an AI reply. Try again or use Book / WhatsApp.",
         "soft"
       );
     } catch (err) {
@@ -398,30 +424,32 @@ export function AIConcierge({ siteData }) {
           <div className="ai-concierge__head">
             <div>
               <strong>AI Concierge</strong>
-              <span>Guidance only — not legal or migration advice</span>
+              <span>General information — not formal migration advice</span>
             </div>
             <button type="button" onClick={() => setOpen(false)} aria-label="Close AI Concierge">
               ×
             </button>
           </div>
 
-          <div className="ai-concierge__trust" role="note">
-            <p>
-              Replies are general orientation only. Decisions about visas require verification against
-              current official rules and often a conversation with a registered migration agent.
-            </p>
-            <div className="ai-concierge__trust-actions">
-              <Link href="/book-consultation" className="ai-concierge__trust-link">
-                Book consultation
-              </Link>
-              <Link href="/contact" className="ai-concierge__trust-link">
-                Contact the team
-              </Link>
-              <a className="ai-concierge__trust-link" href={waFloat} target="_blank" rel="noreferrer">
-                WhatsApp
-              </a>
-            </div>
+          <div className="ai-concierge__cta-row" aria-label="Quick actions">
+            <Link href="/book-consultation" className="ai-concierge__cta-chip">
+              Book
+            </Link>
+            <Link href="/contact" className="ai-concierge__cta-chip">
+              Contact
+            </Link>
+            <a className="ai-concierge__cta-chip" href={waFloat} target="_blank" rel="noreferrer">
+              WhatsApp
+            </a>
           </div>
+
+          <details className="ai-concierge__legal">
+            <summary>About this assistant</summary>
+            <p className="ai-concierge__legal-text">
+              Replies are orientation only. Visa decisions need current official rules and often a
+              registered migration agent.
+            </p>
+          </details>
 
           <details ref={suggestionsRef} className="ai-concierge__suggestions">
             <summary>Suggested questions</summary>
@@ -471,10 +499,10 @@ export function AIConcierge({ siteData }) {
 
           <form className="ai-concierge__form" onSubmit={handleSubmit}>
             <textarea
-              rows={2}
+              rows={1}
               value={input}
               onChange={(event) => setInput(event.target.value)}
-              placeholder="Type your question…"
+              placeholder="Ask your question…"
             />
             <button type="submit" className="btn btn-primary" disabled={loading}>
               {loading ? "Sending…" : "Send"}
