@@ -16,7 +16,7 @@ export function HomeHeroBento({ siteData, trustNote }) {
     "4 destination pathways",
     "Structured next steps",
   ];
-  const reassuranceItems = ["Trusted by applicants across Australia & Sri Lanka", "Private & secure process", "Brisbane-based support"];
+  const trustLine = "Trusted by applicants across Australia and overseas • Private & secure • Brisbane-based support";
 
   const lead = siteData.hero.lead ?? siteData.hero.description ?? "";
   const bullets = Array.isArray(siteData.hero.bullets) ? siteData.hero.bullets : null;
@@ -87,25 +87,10 @@ export function HomeHeroBento({ siteData, trustNote }) {
                 >
                   {siteData.hero.secondaryCta}
                 </Link>
-                <span className="mx-2 text-brand-plum/35" aria-hidden>
-                  ·
-                </span>
-                <Link
-                  href="/assessment"
-                  className="font-semibold text-brand-rose underline decoration-brand-rose/40 underline-offset-4 transition hover:text-brand-plum hover:decoration-brand-plum/40"
-                >
-                  Free assessment
-                </Link>
               </p>
             </div>
 
-            <ul className="mt-4 flex flex-wrap gap-2 text-xs font-semibold text-brand-plum/80" aria-label="Trust signals">
-              {reassuranceItems.map((item) => (
-                <li key={item} className="rounded-full border border-brand-plum/10 bg-white/80 px-3 py-1.5">
-                  {item}
-                </li>
-              ))}
-            </ul>
+            <p className="home-trust-line mt-4">{trustLine}</p>
 
             <ul className="mt-6 flex flex-wrap gap-2.5 text-sm font-semibold text-brand-plum/75" aria-label="Why choose MinRosh">
               {heroProofItems.map((item) => (

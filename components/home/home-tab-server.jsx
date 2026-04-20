@@ -459,6 +459,9 @@ export function HomeTabServer({ siteData, newsData }) {
               Book Consultation
             </Link>
           </div>
+          <p className="home-trust-line home-final-cta__trust">
+            Trusted by applicants across Australia and overseas • Private & secure • Brisbane-based support
+          </p>
         </div>
       </section>
 
