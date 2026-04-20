@@ -62,15 +62,17 @@ export default function AssessmentPage() {
           <div className="content-hero__grid">
             <div className="content-hero__copy">
               <p className="section-label">Free Assessment</p>
-              <h1>Start with a clearer assessment before you commit to the next step</h1>
+              <h1>Find your best visa pathway in minutes</h1>
               <p>
-                This page is designed as a conversion-first assessment entry point. It helps clients
-                understand whether they should start with the 2026 points wizard, the Smart
-                Navigator, or a direct consultation based on how clear their pathway already is.
+                Answer a few focused questions and get a clearer direction based on your goals, timing,
+                and pathway intent before you commit to the wrong process.
+              </p>
+              <p className="content-hero__note">
+                Trusted by applicants across Australia and overseas • Private & secure • Brisbane-based support
               </p>
               <div className="content-aside-card__actions">
                 <Link href="/#quiz" className="btn btn-primary">
-                  Open 2026 Points Wizard
+                  Start Free Assessment
                 </Link>
                 <Link href="/book-consultation" className="btn btn-ghost">
                   Book Consultation

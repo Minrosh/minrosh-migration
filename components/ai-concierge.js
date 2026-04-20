@@ -117,7 +117,7 @@ const initialSuggestedPrompts = [
   "Skilled migration options",
   "Student visa planning",
   "Partner visa first steps",
-  "Fastest next step (urgent)",
+  "Start Free Assessment",
 ];
 
 const contextualPrompts = {
@@ -283,7 +283,7 @@ export function AIConcierge({ siteData }) {
       id: "welcome",
       role: "assistant",
       content:
-        "Ask about skilled migration, student or partner visas, or education planning. I give practical next steps—not legal advice.",
+        "Ask about skilled, student, or partner pathways. I provide general guidance only and help you choose the next step: Start Free Assessment or Book Consultation.",
     },
   ]);
   const [input, setInput] = useState("");
@@ -432,6 +432,9 @@ export function AIConcierge({ siteData }) {
           </div>
 
           <div className="ai-concierge__cta-row" aria-label="Quick actions">
+            <Link href="/assessment" className="ai-concierge__cta-chip">
+              Start Free Assessment
+            </Link>
             <Link href="/book-consultation" className="ai-concierge__cta-chip">
               Book
             </Link>
