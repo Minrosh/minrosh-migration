@@ -23,7 +23,7 @@
     "routes:verify": "node scripts/verify-route-parity.mjs",
     "reindex:verify": "node scripts/reindex-verify.mjs",
     "audit:production": "npm audit --production",
-    "verify:ci": "npm run lint && npm run test:unit && npm run build && CI=true npm run test:e2e && npm run audit:production",
+    "verify:ci": "npm run lint && npm run test:unit && npm run build && npm run routes:verify && CI=true npm run test:e2e && npm run audit:production",
     "check": "npm run build && npm run test:unit && npm run test:contact && npm run audit:production"
   },
   "dependencies": {
