@@ -16,6 +16,33 @@ const countryBannerLinks = [
   { label: "United Kingdom", href: "/destinations/united-kingdom" },
 ];
 
+const pathwaySummaryCards = [
+  {
+    title: "Skilled Migration",
+    href: "/skilled-migration",
+    benefit: "Points strategy and nomination-ready planning.",
+    icon: "🧭",
+  },
+  {
+    title: "Partner Visa",
+    href: "/partner-visa-australia",
+    benefit: "Relationship evidence and step-by-step sequencing.",
+    icon: "🤝",
+  },
+  {
+    title: "Student Visa",
+    href: "/student-visa-australia",
+    benefit: "Study pathway clarity with long-term planning.",
+    icon: "🎓",
+  },
+  {
+    title: "Employer Sponsored",
+    href: "/employer-sponsored-visas",
+    benefit: "Employer-backed options when direct PR is harder.",
+    icon: "🏢",
+  },
+];
+
 /** Home visual strip: raster marketing assets under `/public/images`. */
 const visualHighlights = [
   {
@@ -38,18 +65,130 @@ const visualHighlights = [
   },
 ];
 
+const quickServiceCards = [
+  {
+    title: "Points & Strategy",
+    href: "/skilled-migration",
+    summary: "Check points competitiveness and nomination direction before committing.",
+  },
+  {
+    title: "Visa Application Support",
+    href: "/book-consultation",
+    summary: "Get a structured case conversation before major lodging decisions.",
+  },
+  {
+    title: "Document Preparation",
+    href: "/australia-visa-document-checklist-guide",
+    summary: "Build cleaner evidence sets for fewer avoidable delays.",
+  },
+  {
+    title: "Appeals / Complex Cases",
+    href: "/visa-refusal-help-australia-and-aat-migration-appeal-guide",
+    summary: "Understand realistic options when timelines or refusals add pressure.",
+  },
+];
+
 /**
  * Server-rendered home tab: static sections + small client children (navigator, coverage, news).
  */
 export function HomeTabServer({ siteData, newsData }) {
   const trustNote =
     "Registered Migration Agent support with structured planning across Australia and key destination pathways.";
+  const spotlightStory = siteData.successStories?.[0];
 
   return (
     <section className="tab-panel is-active editorial-home bg-brand-cream/35 text-brand-plum">
       <HomeHeroBento siteData={siteData} trustNote={trustNote} />
 
       <HomeDiscoverStrip />
+
+      <section
+        className="home-pathway-selector mx-auto mt-5 w-full max-w-7xl px-4 sm:px-6"
+        aria-labelledby="home-pathway-selector-heading"
+      >
+        <div className="home-pathway-selector__head">
+          <p className="section-label">Find your best pathway faster</p>
+          <h2 id="home-pathway-selector-heading">Start with your visa goal, then explore full guidance below</h2>
+          <p>
+            Choose your likely direction first. Every detailed service section remains available further down this page.
+          </p>
+        </div>
+        <div className="home-pathway-selector__grid">
+          {pathwaySummaryCards.map((item) => (
+            <Link key={item.href} href={item.href} className="home-pathway-selector__card bento-hover">
+              <span className="home-pathway-selector__icon" aria-hidden>
+                {item.icon}
+              </span>
+              <h3>{item.title}</h3>
+              <p>{item.benefit}</p>
+            </Link>
+          ))}
+        </div>
+        <p className="home-pathway-selector__not-sure">
+          Not sure which pathway fits best?{" "}
+          <Link href="/#quiz" className="home-pathway-selector__inline-link">
+            Start Free Assessment
+          </Link>
+          .
+        </p>
+      </section>
+
+      <section className="home-how-it-works mx-auto mt-4 w-full max-w-7xl px-4 sm:px-6" aria-labelledby="home-how-it-works-heading">
+        <div className="home-how-it-works__head">
+          <p className="section-label">How it works</p>
+          <h2 id="home-how-it-works-heading">A clear next step in three simple stages</h2>
+          <p>
+            This summary helps you understand the flow quickly. Detailed pathway, service, and compliance guidance remains
+            fully available in the sections below.
+          </p>
+        </div>
+        <ol className="home-how-it-works__list">
+          {siteData.processSteps.slice(0, 3).map((step, idx) => (
+            <li key={step.title} className="home-how-it-works__item bento-hover">
+              <span className="home-how-it-works__num" aria-hidden>
+                {idx + 1}
+              </span>
+              <h3>{step.title}</h3>
+              <p>{step.description}</p>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      <section className="home-trust-proof mx-auto mt-4 w-full max-w-7xl px-4 sm:px-6" aria-labelledby="home-trust-proof-heading">
+        <div className="home-trust-proof__head">
+          <p className="section-label">Trust and proof</p>
+          <h2 id="home-trust-proof-heading">Confidence before you commit to the next step</h2>
+          <p>
+            Quick proof points first. Full service explanations, compliance messaging, and detailed guidance continue below.
+          </p>
+        </div>
+        <div className="home-trust-proof__grid">
+          {siteData.stats.slice(0, 3).map((stat) => (
+            <article key={stat.label} className="home-trust-proof__card bento-hover">
+              <p className="home-trust-proof__value">{stat.value}</p>
+              <p className="home-trust-proof__label">{stat.label}</p>
+            </article>
+          ))}
+        </div>
+        {spotlightStory ? (
+          <article className="home-trust-proof__story bento-hover" aria-label="Featured client outcome">
+            <p className="home-trust-proof__story-title">Featured client outcome</p>
+            <blockquote>{spotlightStory.quote}</blockquote>
+            <p className="home-trust-proof__story-meta">
+              {spotlightStory.name} · {spotlightStory.location} · {spotlightStory.visa}
+            </p>
+            <p className="home-trust-proof__story-outcome">
+              {spotlightStory.outcome} ({spotlightStory.timeline})
+            </p>
+          </article>
+        ) : null}
+        <p className="home-trust-proof__actions">
+          <Link href="/about">Read our full story</Link>
+          <span aria-hidden>·</span>
+          <Link href="/#stories">See more outcomes</Link>
+        </p>
+      </section>
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <p className="mb-4 text-center text-sm text-brand-plum/80">
@@ -60,17 +199,31 @@ export function HomeTabServer({ siteData, newsData }) {
           (visa listing, Visa Finder, and how they connect to MinRosh pathway pages).
         </p>
       </div>
-      <div
+      <section
         id="smart-navigator"
-        className="mx-auto max-w-7xl scroll-mt-[calc(var(--site-header-chrome-height)+12px)] px-4 sm:px-6"
+        className="home-navigator-feature mx-auto max-w-7xl scroll-mt-[calc(var(--site-header-chrome-height)+12px)] px-4 sm:px-6"
+        aria-labelledby="home-navigator-feature-heading"
       >
+        <div className="home-navigator-feature__intro">
+          <p className="section-label">Smart Pathway Navigator</p>
+          <h2 id="home-navigator-feature-heading">Not sure where to start? Let the navigator shortlist your next step</h2>
+          <p>
+            In under a minute, it narrows your likely direction using your destination, intent, timing, and support needs.
+            Detailed pathway pages and service sections remain available below.
+          </p>
+          <ul aria-label="Navigator benefits">
+            <li>Quick shortlist before deep reading</li>
+            <li>Lower confusion on first visit</li>
+            <li>Clear bridge to consultation when needed</li>
+          </ul>
+        </div>
         <SmartNavigator
           title="Answer a few questions and get a more useful pathway recommendation"
           description="Our assessment weighs your destination, goal, timing, how much support you want, and how far along your pathway already is — then suggests the most relevant next page to read or action to take."
           primaryLabel="Open recommended page"
           finalHref="/book-consultation"
         />
-      </div>
+      </section>
 
       <section
         className="country-banner editorial-section editorial-section--compact mx-4 mt-2 max-w-7xl sm:mx-6 xl:mx-auto"
@@ -91,6 +244,25 @@ export function HomeTabServer({ siteData, newsData }) {
         className="mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 md:py-14"
         aria-label="Core services and visual highlights"
       >
+        <section className="home-services-quick" aria-labelledby="home-services-quick-heading">
+          <div className="home-services-quick__head">
+            <p className="section-label">Services at a glance</p>
+            <h2 id="home-services-quick-heading">Pick the support type, then explore full details below</h2>
+            <p>These are quick summaries only. Full pathway and service guidance remains unchanged in the sections below.</p>
+          </div>
+          <div className="home-services-quick__grid">
+            {quickServiceCards.map((item) => (
+              <Link key={item.href} href={item.href} className="home-services-quick__card bento-hover">
+                <h3>{item.title}</h3>
+                <p>{item.summary}</p>
+                <span className="home-services-quick__linkline">
+                  Learn more <span aria-hidden>→</span>
+                </span>
+              </Link>
+            ))}
+          </div>
+        </section>
+
         <div className="mx-auto mb-12 max-w-3xl text-center">
           <p className="mb-4 inline-block rounded-full border border-brand-rose/25 bg-brand-rose/10 px-4 py-1.5 text-sm font-bold uppercase tracking-wider text-brand-rose backdrop-blur-sm">
             How we help
@@ -270,6 +442,25 @@ export function HomeTabServer({ siteData, newsData }) {
       <div className="mx-4 mb-10 max-w-7xl rounded-[2rem] border border-brand-plum/10 bg-white/90 p-4 shadow-inner sm:mx-6 sm:p-6 xl:mx-auto">
         <GoogleReviewsPanel carousel />
       </div>
+
+      <section className="home-final-cta mx-auto mb-8 w-full max-w-7xl px-4 sm:px-6" aria-labelledby="home-final-cta-heading">
+        <div className="home-final-cta__inner">
+          <p className="section-label">Ready when you are</p>
+          <h2 id="home-final-cta-heading">Start your migration journey with clarity today</h2>
+          <p>
+            Take the free assessment first, then book consultation when you want case-specific direction. All service pages
+            and detailed guidance remain available for deeper reading.
+          </p>
+          <div className="home-final-cta__actions">
+            <Link href="/#quiz" className="home-hero-primary-cta home-final-cta__primary">
+              Start Free Assessment
+            </Link>
+            <Link href="/book-consultation" className="home-final-cta__secondary">
+              Book Consultation
+            </Link>
+          </div>
+        </div>
+      </section>
 
       <section className="faq-section">
         <div className="section-head">
