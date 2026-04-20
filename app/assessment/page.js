@@ -5,6 +5,7 @@ import { ContactLeadForm } from "../../components/contact-lead-form";
 import { SiteShell } from "../../components/site-shell";
 import { SmartNavigator } from "../../components/smart-navigator";
 import { StructuredData } from "../../components/structured-data";
+import { TrackedLink } from "../../components/tracked-link";
 import { buildMetadata, breadcrumbJsonLd } from "../../lib/seo";
 
 export const metadata = buildMetadata({
@@ -71,12 +72,22 @@ export default function AssessmentPage() {
                 Trusted by applicants across Australia and overseas • Private & secure • Brisbane-based support
               </p>
               <div className="content-aside-card__actions">
-                <Link href="/#quiz" className="btn btn-primary">
+                <TrackedLink
+                  href="/#quiz"
+                  className="btn btn-primary"
+                  eventName="assessment_hero_start_click"
+                  eventParams={{ cta_label: "Start Free Assessment", source: "assessment_hero" }}
+                >
                   Start Free Assessment
-                </Link>
-                <Link href="/book-consultation" className="btn btn-ghost">
+                </TrackedLink>
+                <TrackedLink
+                  href="/book-consultation"
+                  className="btn btn-ghost"
+                  eventName="assessment_hero_book_click"
+                  eventParams={{ cta_label: "Book Consultation", source: "assessment_hero" }}
+                >
                   Book Consultation
-                </Link>
+                </TrackedLink>
               </div>
             </div>
             <div className="content-hero__media" aria-hidden="true">

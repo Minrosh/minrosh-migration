@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Fragment, useCallback, useEffect, useRef, useState } from "react";
+import { trackEvent } from "@/lib/client-analytics";
 import { buildWhatsAppUrl, WHATSAPP_LEAD_MESSAGE } from "@/lib/whatsapp-prefill";
 
 /** Inline **bold** segments (Gemini/OpenAI often emit this). */
@@ -291,6 +292,7 @@ export function AIConcierge({ siteData }) {
   const [notice, setNotice] = useState({ text: "", tone: "info" });
   const logRef = useRef(null);
   const suggestionsRef = useRef(null);
+  const hasTrackedOpenRef = useRef(false);
 
   const scrollLogToEnd = useCallback(() => {
     const el = logRef.current;
@@ -304,6 +306,18 @@ export function AIConcierge({ siteData }) {
     if (!open) return;
     scrollLogToEnd();
   }, [messages, loading, open, scrollLogToEnd]);
+
+  useEffect(() => {
+    if (!open) return;
+    const params = {
+      source: "floating_tools",
+      first_open_in_session: !hasTrackedOpenRef.current,
+    };
+    trackEvent("ai_concierge_open", params);
+    if (!hasTrackedOpenRef.current) {
+      hasTrackedOpenRef.current = true;
+    }
+  }, [open]);
 
   /** Lets CSS hide bottom fixed CTAs and tighten panel height so messages are not covered. */
   useEffect(() => {
@@ -333,6 +347,10 @@ export function AIConcierge({ siteData }) {
 
     const userMsg = { id: nextMessageId(), role: "user", content: trimmed };
     const nextMessages = [...messages, userMsg];
+    trackEvent("ai_concierge_message_submit", {
+      message_length: trimmed.length,
+      total_messages_before_submit: messages.length,
+    });
     setMessages(nextMessages);
     setInput("");
     setLoading(true);
@@ -432,16 +450,38 @@ export function AIConcierge({ siteData }) {
           </div>
 
           <div className="ai-concierge__cta-row" aria-label="Quick actions">
-            <Link href="/assessment" className="ai-concierge__cta-chip">
+            <Link
+              href="/assessment"
+              className="ai-concierge__cta-chip"
+              onClick={() =>
+                trackEvent("ai_concierge_cta_click", { cta_label: "Start Free Assessment", target_path: "/assessment" })
+              }
+            >
               Start Free Assessment
             </Link>
-            <Link href="/book-consultation" className="ai-concierge__cta-chip">
+            <Link
+              href="/book-consultation"
+              className="ai-concierge__cta-chip"
+              onClick={() =>
+                trackEvent("ai_concierge_cta_click", { cta_label: "Book", target_path: "/book-consultation" })
+              }
+            >
               Book
             </Link>
-            <Link href="/contact" className="ai-concierge__cta-chip">
+            <Link
+              href="/contact"
+              className="ai-concierge__cta-chip"
+              onClick={() => trackEvent("ai_concierge_cta_click", { cta_label: "Contact", target_path: "/contact" })}
+            >
               Contact
             </Link>
-            <a className="ai-concierge__cta-chip" href={waFloat} target="_blank" rel="noreferrer">
+            <a
+              className="ai-concierge__cta-chip"
+              href={waFloat}
+              target="_blank"
+              rel="noreferrer"
+              onClick={() => trackEvent("ai_concierge_cta_click", { cta_label: "WhatsApp", target_path: "external_whatsapp" })}
+            >
               WhatsApp
             </a>
           </div>
@@ -522,10 +562,22 @@ export function AIConcierge({ siteData }) {
           ) : null}
 
           <div className="ai-concierge__footer" aria-label="Quick links">
-            <Link href="/assessment" className="ai-concierge__footer-btn">
+            <Link
+              href="/assessment"
+              className="ai-concierge__footer-btn"
+              onClick={() =>
+                trackEvent("ai_concierge_cta_click", { cta_label: "Assessment Footer", target_path: "/assessment" })
+              }
+            >
               Assessment
             </Link>
-            <Link href="/book-consultation" className="ai-concierge__footer-btn">
+            <Link
+              href="/book-consultation"
+              className="ai-concierge__footer-btn"
+              onClick={() =>
+                trackEvent("ai_concierge_cta_click", { cta_label: "Book Footer", target_path: "/book-consultation" })
+              }
+            >
               Book
             </Link>
           </div>
@@ -539,6 +591,7 @@ export function AIConcierge({ siteData }) {
           target="_blank"
           rel="noreferrer"
           aria-label="Chat with MinRosh Migration on WhatsApp"
+          onClick={() => trackEvent("ai_concierge_cta_click", { cta_label: "WhatsApp Float", target_path: "external_whatsapp" })}
         >
           <svg viewBox="0 0 32 32" aria-hidden="true">
             <path
@@ -550,7 +603,10 @@ export function AIConcierge({ siteData }) {
         <button
           type="button"
           className="floating-tools__ai"
-          onClick={() => setOpen((current) => !current)}
+          onClick={() => {
+            trackEvent("ai_concierge_toggle_click", { opening: !open });
+            setOpen((current) => !current);
+          }}
           aria-expanded={open ? "true" : "false"}
         >
           AI Concierge
