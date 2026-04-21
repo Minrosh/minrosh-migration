@@ -51,10 +51,10 @@ export function HomePageContent({ siteData, homeTab }) {
   const pathwaysPanel = (
     <section
       id="pathways"
-      className={`tab-panel pathways-panel-dark bg-brand-plum text-white ${activeTab === "pathways" ? "is-active" : ""}`}
+      className={`tab-panel pathways-panel-dark bg-brand-plum pt-32 text-white ${activeTab === "pathways" ? "is-active" : ""}`}
       aria-hidden={activeTab !== "pathways"}
     >
-      <div className="pathways-z-layout mx-auto max-w-7xl px-4 py-16 md:py-24 lg:grid-cols-[2fr_3fr]">
+      <div className="pathways-z-layout mx-auto max-w-7xl px-4 py-12 md:py-24 lg:grid-cols-[2fr_3fr]">
         <div className="pathways-z-layout__copy pathways-z-layout__copy--sticky">
           <p className="section-label pathways-panel-dark__label">
             5-Step Pathway to <span className="text-brand-gold">PR</span>
@@ -128,7 +128,7 @@ export function HomePageContent({ siteData, homeTab }) {
   const servicesPanel = (
     <section
       id="services"
-      className={`tab-panel bg-white px-4 py-16 md:py-24 ${activeTab === "services" ? "is-active" : ""}`}
+      className={`tab-panel bg-white px-4 py-12 md:py-24 ${activeTab === "services" ? "is-active" : ""}`}
       aria-hidden={activeTab !== "services"}
     >
       <div className="panel-hero">

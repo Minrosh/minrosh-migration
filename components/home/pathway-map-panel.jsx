@@ -487,6 +487,21 @@ export function PathwayMapPanel() {
 
   const distanceKm = useMemo(() => haversineKm(resolvedOrigin, goal), [resolvedOrigin, goal]);
   const estFlightHours = useMemo(() => Math.max(9, Math.round(distanceKm / 850)), [distanceKm]);
+  const strategyCard = useMemo(() => {
+    if (pathwayIntent === "skilled") {
+      return { timeline: "6–12 months", difficulty: "Targeted", subclass: "189 / 190 / 491" };
+    }
+    if (pathwayIntent === "employer") {
+      return { timeline: "4–10 months", difficulty: "Medium", subclass: "482 / 186" };
+    }
+    if (pathwayIntent === "partner") {
+      return { timeline: "10–20 months", difficulty: "Medium", subclass: "820/801 or 309/100" };
+    }
+    if (pathwayIntent === "student") {
+      return { timeline: "2–8 months", difficulty: "Medium", subclass: "500" };
+    }
+    return { timeline: "6–18 months", difficulty: "High", subclass: "Depends on pathway" };
+  }, [pathwayIntent]);
 
   useEffect(() => {
     const root = sectionRef.current;
@@ -946,6 +961,24 @@ export function PathwayMapPanel() {
             Typical total flight duration: <strong>{estFlightHours} to {estFlightHours + 3} hours</strong>
           </p>
           <p>{goal.detail}</p>
+          <article className="pathway-map__probability-card" aria-label="Strategic probability guidance">
+            <p className="pathway-map__probability-eyebrow">Strategic probability card</p>
+            <h3>{goal.label}</h3>
+            <div className="pathway-map__probability-grid">
+              <div>
+                <span>Estimated timeline</span>
+                <strong>{strategyCard.timeline}</strong>
+              </div>
+              <div>
+                <span>Difficulty rating</span>
+                <strong>{strategyCard.difficulty}</strong>
+              </div>
+              <div>
+                <span>Primary subclass</span>
+                <strong>{strategyCard.subclass}</strong>
+              </div>
+            </div>
+          </article>
           <p className="pathway-map__not-sure">
             Not sure which pathway fits?{" "}
             <Link href="/#quiz" className="pathway-map__inline-link">
@@ -962,6 +995,15 @@ export function PathwayMapPanel() {
           </Link>
         </div>
         <div className="pathway-map__canvas bento-hover">
+          <svg className="pathway-map__world-bg" viewBox="0 0 1200 620" aria-hidden>
+            <g fill="none" stroke="rgba(61,36,50,0.14)" strokeWidth="1.6">
+              <path d="M110 180c40-40 105-72 170-78 75-7 132 11 170 37 36 24 84 33 132 28 56-7 96 7 129 38 34 32 80 42 137 32 71-13 116 2 159 35 35 27 78 34 135 24" />
+              <path d="M170 330c44-28 98-41 156-35 48 4 85 21 124 42 40 22 81 31 128 24 55-9 103-1 146 21 43 22 88 28 143 16 45-10 85-7 126 9" />
+              <path d="M220 460c39-20 84-28 126-23 54 7 90 28 132 46 44 19 93 22 144 9 52-13 94-12 136 3 43 15 87 17 140 6" />
+            </g>
+            <circle cx="880" cy="330" r="18" fill="rgba(202,166,77,0.45)" />
+            <circle cx="880" cy="330" r="34" fill="rgba(202,166,77,0.18)" />
+          </svg>
           {error ? (
             <p className="pathway-map__fallback">{error}</p>
           ) : !mapSectionInView ? (

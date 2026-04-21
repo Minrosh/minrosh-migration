@@ -50,22 +50,22 @@ const pathwaySummaryCards = [
 /** Home visual strip: raster marketing assets under `/public/images`. */
 const visualHighlights = [
   {
-    title: "Australia-wide perspective",
-    caption: "Local visibility with a calmer, more premium first impression.",
-    src: "/images/brisbane-skyline.jpg",
-    alt: "Stylized illustration of the Brisbane skyline and riverfront",
+    title: "Brisbane riverfront perspective",
+    caption: "Ground-level city storytelling that feels immediate and local.",
+    src: "/images/brisbane-riverwalk.png",
+    alt: "Brisbane riverwalk with skyline and bridge",
   },
   {
-    title: "Structured migration planning",
-    caption: "A smoother pathway from first review through to practical next steps.",
-    src: "/images/team-office-real.jpg",
-    alt: "Stylized illustration of colleagues collaborating at a table with laptops",
+    title: "Brisbane by night",
+    caption: "Premium destination mood with strong visual contrast.",
+    src: "/images/brisbane-nightlagoon.png",
+    alt: "Brisbane night city lights reflecting on water",
   },
   {
-    title: "Destination-focused support",
-    caption: "Stronger visual storytelling for Australia and wider migration goals.",
-    src: "/images/visual-strip-destinations.jpg",
-    alt: "Collage of destination imagery representing multi-country migration guidance",
+    title: "City-scale destination context",
+    caption: "Aerial framing to reinforce long-term migration outcomes.",
+    src: "/images/brisbane-aerial.png",
+    alt: "Aerial view of Brisbane skyline and river",
   },
 ];
 
@@ -302,7 +302,7 @@ export function HomeTabServer({ siteData, newsData }) {
         <HomeOurServicesTabs services={siteData.services} visualHighlights={visualHighlights} />
       </section>
 
-      <div className="mx-auto my-10 max-w-7xl px-4">
+      <div className="my-10 w-full">
         <PathwayMapDisclosure />
       </div>
 

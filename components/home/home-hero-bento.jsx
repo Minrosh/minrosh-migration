@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 
 const easeOut = [0.22, 1, 0.36, 1];
 
@@ -13,6 +13,8 @@ const easeOut = [0.22, 1, 0.36, 1];
 export function HomeHeroBento({ siteData }) {
   const reduceMotion = useReducedMotion();
   const lead = siteData.hero.lead ?? siteData.hero.description ?? "";
+  const { scrollY } = useScroll();
+  const parallaxY = useTransform(scrollY, [0, 900], [0, reduceMotion ? 0 : 90]);
 
   const fadeUp = (delay = 0) =>
     reduceMotion
@@ -25,18 +27,20 @@ export function HomeHeroBento({ siteData }) {
 
   return (
     <section
-      className="relative isolate min-h-[min(68vh,720px)] overflow-hidden border-b border-white/10 bg-brand-plum px-4 py-12 sm:px-6 sm:py-14 md:py-16"
+      className="relative isolate h-[85vh] min-h-[560px] overflow-hidden border-b border-white/10 bg-brand-plum"
       aria-labelledby="home-hero-heading"
     >
-      <Image
-        src="/images/hero-sydney-real.jpg"
-        alt=""
-        fill
-        priority
-        quality={92}
-        sizes="100vw"
-        className="object-cover object-center"
-      />
+      <motion.div className="absolute inset-0" style={{ y: parallaxY }}>
+        <Image
+          src="/images/brisbane-riverwalk.png"
+          alt="Brisbane riverwalk and city skyline"
+          fill
+          priority
+          quality={92}
+          sizes="100vw"
+          className="object-cover object-center"
+        />
+      </motion.div>
 
       {/* Strong plum wash for WCAG-friendly white type */}
       <div className="pointer-events-none absolute inset-0 bg-brand-plum/90" aria-hidden />
@@ -49,7 +53,7 @@ export function HomeHeroBento({ siteData }) {
         aria-hidden
       />
 
-      <div className="relative z-[1] mx-auto flex w-full max-w-7xl flex-col justify-end pb-4 md:min-h-[min(52vh,560px)] md:justify-center md:pb-8 lg:max-w-3xl lg:pb-10">
+      <div className="relative z-[1] mx-auto flex h-full w-full max-w-7xl flex-col justify-end px-4 pb-10 sm:px-6 md:justify-center md:pb-8 lg:max-w-3xl lg:px-0 lg:pb-10">
         <motion.div {...fadeUp(0)}>
           <p className="mb-4 inline-flex items-center rounded-full border border-white/35 bg-white/10 px-3 py-1 text-xs font-bold uppercase tracking-widest text-brand-cream">
             {siteData.hero.eyebrow}

@@ -115,41 +115,44 @@ export function HomeOurServicesTabs({ services, visualHighlights }) {
                 return (
                   <article
                     key={service.href}
-                    className="group relative flex h-full min-h-[420px] flex-col overflow-hidden rounded-3xl border border-white/70 bg-white/90 shadow-xl shadow-brand-plum/10 backdrop-blur-md transition duration-300 hover:-translate-y-1 hover:border-brand-gold/60 hover:shadow-2xl hover:shadow-brand-plum/20"
+                    className="group relative flex h-full min-h-[420px] flex-col overflow-hidden rounded-3xl border border-brand-plum/20 bg-brand-plum shadow-xl shadow-brand-plum/25 transition duration-300 hover:-translate-y-1 hover:border-brand-gold/60 hover:shadow-2xl hover:shadow-brand-plum/30"
                   >
                     <Link
                       href={service.href}
                       className="relative z-0 flex h-full min-h-0 flex-1 flex-col rounded-3xl no-underline focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold focus-visible:ring-offset-2 focus-visible:ring-offset-brand-cream"
                     >
-                      <div className="relative h-52 shrink-0 overflow-hidden bg-brand-cream">
-                        <span
-                          className="absolute left-4 top-4 z-10 flex h-12 w-12 items-center justify-center rounded-2xl bg-white/95 text-xl shadow-md transition duration-300 ease-out group-hover:scale-110"
-                          aria-hidden
-                        >
-                          {iconForHref(service.href)}
-                        </span>
+                      <div className="absolute inset-0 z-0 overflow-hidden">
                         <Image
                           src={highlight.src}
                           alt={highlight.alt}
                           width={1400}
                           height={1000}
                           sizes="(max-width: 768px) 100vw, 33vw"
-                          className="h-full w-full object-cover transition duration-500 ease-out group-hover:scale-105"
+                          className="h-full w-full object-cover blur-[2px] transition duration-500 ease-out group-hover:scale-105 group-hover:blur-0"
                         />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" aria-hidden />
+                      </div>
+                      <div className="relative h-52 shrink-0 overflow-hidden">
+                        <span
+                          className="absolute left-4 top-4 z-10 flex h-12 w-12 items-center justify-center rounded-2xl bg-white/95 text-xl shadow-md transition duration-300 ease-out group-hover:scale-110"
+                          aria-hidden
+                        >
+                          {iconForHref(service.href)}
+                        </span>
                       </div>
 
-                      <div className="flex min-h-0 flex-1 flex-col justify-between p-6 sm:p-7">
+                      <div className="relative z-10 flex min-h-0 flex-1 flex-col justify-between p-6 sm:p-7">
                         <div className="min-h-0 flex-1">
                           <p className="mb-2 text-xs font-bold uppercase tracking-wider text-brand-gold">{highlight.title}</p>
-                          <h3 className="mb-3 text-xl font-extrabold leading-snug tracking-tight text-brand-plum sm:text-2xl">
+                          <h3 className="mb-3 text-xl font-extrabold leading-snug tracking-tight text-white sm:text-2xl">
                             {service.title}
                           </h3>
-                          <p className="mb-4 rounded-r-lg border-l-2 border-brand-gold bg-brand-cream/60 py-1 pl-3 text-sm italic leading-relaxed text-brand-plum/60">
+                          <p className="mb-4 rounded-r-lg border-l-2 border-brand-gold bg-black/25 py-1 pl-3 text-sm italic leading-relaxed text-white/85">
                             &ldquo;{highlight.caption}&rdquo;
                           </p>
-                          <p className="text-[0.94rem] font-normal leading-relaxed text-brand-plum/65">{service.summary}</p>
+                          <p className="text-[0.94rem] font-normal leading-relaxed text-white/85">{service.summary}</p>
                         </div>
-                        <div className="mt-auto flex items-center pt-5 text-sm font-bold tracking-wide text-brand-rose transition group-hover:text-brand-plum">
+                        <div className="mt-auto flex items-center pt-5 text-sm font-bold tracking-wide text-brand-gold transition group-hover:text-white">
                           Learn more
                           <span className="ml-2 transition-transform duration-300 group-hover:translate-x-1" aria-hidden>
                             →

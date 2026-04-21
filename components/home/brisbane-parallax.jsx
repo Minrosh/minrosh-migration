@@ -1,7 +1,10 @@
 export function BrisbaneParallax() {
   return (
     <section className="brisbane-parallax relative h-[400px] overflow-hidden">
-      <div className="absolute inset-0 bg-cover bg-center bg-fixed z-0" style={{ backgroundImage: "url('/images/brisbane-skyline.jpg')" }} />
+      <div
+        className="absolute inset-0 z-0 bg-cover bg-center bg-fixed"
+        style={{ backgroundImage: "url('/images/brisbane-aerial.png')" }}
+      />
       <div className="absolute inset-0 bg-brand-plum/60 z-10" />
       <div className="relative z-20 mx-auto flex h-full max-w-7xl items-center justify-center px-4 text-center">
         <div>
