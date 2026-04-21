@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
+import { HomeEligibilityWizard } from "./home-eligibility-wizard";
 
 const easeOut = [0.22, 1, 0.36, 1];
 
@@ -131,6 +132,10 @@ export function HomeHeroBento({ siteData, trustNote }) {
             ))}
           </motion.div>
         </div>
+      </div>
+
+      <div className="home-hero-eligibility-anchor">
+        <HomeEligibilityWizard />
       </div>
     </section>
   );

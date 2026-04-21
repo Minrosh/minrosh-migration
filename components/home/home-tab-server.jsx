@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { CountryCoverage } from "../country-coverage";
-import { HomeDiscoverStrip } from "./home-discover-strip";
 import { HomeOurServicesTabs } from "./home-our-services-tabs";
 import { HomeHeroBento } from "./home-hero-bento";
 import { NewsBoard } from "../news-board";
@@ -114,10 +113,8 @@ export function HomeTabServer({ siteData, newsData }) {
     <section className="landing-home-ref tab-panel is-active editorial-home bg-brand-cream/35 text-brand-plum">
       <HomeHeroBento siteData={siteData} trustNote={trustNote} />
 
-      <HomeDiscoverStrip />
-
       <section
-        className="home-pathway-selector mx-auto mt-5 w-full max-w-7xl px-4 sm:px-6"
+        className="home-pathway-selector home-pathway-selector--below-wizard mx-auto mt-5 w-full max-w-7xl px-4 sm:px-6"
         aria-labelledby="home-pathway-selector-heading"
       >
         <div className="home-pathway-selector__head">
