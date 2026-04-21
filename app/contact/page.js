@@ -35,6 +35,7 @@ export default function ContactPage() {
           { name: "Contact", path: pageData.path },
         ])}
       />
+      <div className="marketing-visual-ref">
       <section className="content-page">
         <nav className="breadcrumbs" aria-label="Breadcrumb">
           <span>
@@ -51,6 +52,17 @@ export default function ContactPage() {
               <p className="section-label">Contact MinRosh Migration</p>
               <h1>{pageData.headline}</h1>
               <p>{pageData.intro}</p>
+              <div className="contact-quick-actions" aria-label="Quick contact actions">
+                <Link href="/assessment" className="btn btn-primary">
+                  Start Free Assessment
+                </Link>
+                <Link href="/book-consultation" className="btn btn-ghost">
+                  Book Consultation
+                </Link>
+              </div>
+              <p className="contact-trust-line">
+                Trusted by applicants across Australia and overseas • Private and secure enquiry handling • Brisbane-based support
+              </p>
               <ul className="feature-list">
                 <li>Clear next-step guidance based on your current profile and timing</li>
                 <li>Support for skilled, student, partner, and complex case pathways</li>
@@ -140,9 +152,14 @@ export default function ContactPage() {
             <AgentRegistrationStrip brand={siteData.brand} />
             <QuickEnquiryForm />
             <ContactLeadForm />
+            <p className="contact-privacy-note">
+              Privacy note: we use your details to respond to this enquiry and coordinate follow-up support. You can review data handling terms in our{" "}
+              <Link href="/privacy-policy">Privacy Policy</Link>.
+            </p>
           </div>
         </div>
       </section>
+      </div>
     </SiteShell>
   );
 }

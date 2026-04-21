@@ -570,8 +570,8 @@
         "482 visa Australia"
       ],
       "eyebrow": "Employer-Sponsored Visas",
-      "headline": "Employer-sponsored visa guidance with realistic worker-side planning",
-      "intro": "If you are exploring employer sponsorship, timing and role-fit matter as much as eligibility. MinRosh helps you assess whether sponsorship is realistic, what to prepare first, and how it compares with other visa pathways.",
+      "headline": "Employer-sponsored visas in Australia - clear worker-side strategy before you commit",
+      "intro": "Employer sponsorship can be powerful when role fit, eligibility, and timing are aligned. MinRosh helps you assess whether sponsorship is realistic for your profile, what evidence to prioritise first, and when to compare sponsored pathways against skilled alternatives.",
       "alertBanner": {
         "title": "TSMIT and Skills in Demand (SID)",
         "body": "The Temporary Skilled Migration Income Threshold (TSMIT) is updated over time (including typical indexation from 1 July each financial year). Sponsored roles must meet the threshold and Skills in Demand settings that apply when the nomination is assessed \u2014 figures in blog posts or forums go out of date quickly. Always confirm the current TSMIT, occupation list, and stream (Specialist / Core / Essential) on the Department of Home Affairs website before you rely on any number.",
@@ -593,6 +593,15 @@
         }
       ],
       "sections": [
+        {
+          "title": "Employer sponsorship in one clear view",
+          "body": "Treat employer sponsorship as a sequence, not a single job offer. First confirm worker-side readiness, then check role and occupation alignment, then evaluate nomination and visa timing against current Home Affairs settings.",
+          "bullets": [
+            "Check whether your profile and role alignment are strong before relying on sponsorship",
+            "Map sponsorship against alternative pathways so you avoid one-path dependency",
+            "Verify subclass settings, TSMIT, and stream details on official Home Affairs sources before major decisions"
+          ]
+        },
         {
           "title": "How employer-sponsored visas usually work",
           "body": "Employer-sponsored pathways can be relevant where a skilled independent route is not the strongest immediate option or where a business is willing to support the applicant. In practice, these pathways often depend on occupation fit, sponsorship readiness, work history, and whether the role and employer context align properly.",

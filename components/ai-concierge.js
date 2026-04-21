@@ -290,6 +290,14 @@ export function AIConcierge({ siteData }) {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [notice, setNotice] = useState({ text: "", tone: "info" });
+  const [leadCaptureOpen, setLeadCaptureOpen] = useState(false);
+  const [leadCaptureState, setLeadCaptureState] = useState({ status: "idle", message: "" });
+  const [leadCaptureForm, setLeadCaptureForm] = useState({
+    firstName: "",
+    email: "",
+    phone: "",
+    privacyPolicyAccepted: false,
+  });
   const logRef = useRef(null);
   const suggestionsRef = useRef(null);
   const hasTrackedOpenRef = useRef(false);
@@ -318,6 +326,14 @@ export function AIConcierge({ siteData }) {
       hasTrackedOpenRef.current = true;
     }
   }, [open]);
+
+  useEffect(() => {
+    const userTurns = messages.filter((m) => m.role === "user").length;
+    if (userTurns >= 2 && !leadCaptureOpen) {
+      setLeadCaptureOpen(true);
+      trackEvent("ai_concierge_lead_capture_prompt_shown", { user_turns: userTurns });
+    }
+  }, [messages, leadCaptureOpen]);
 
   /** Lets CSS hide bottom fixed CTAs and tighten panel height so messages are not covered. */
   useEffect(() => {
@@ -427,6 +443,83 @@ export function AIConcierge({ siteData }) {
   function handleSubmit(event) {
     event.preventDefault();
     sendMessage(input);
+  }
+
+  function handleLeadCaptureChange(event) {
+    const { name, value, type, checked } = event.target;
+    setLeadCaptureForm((current) => ({
+      ...current,
+      [name]: type === "checkbox" ? checked : value,
+    }));
+  }
+
+  async function handleLeadCaptureSubmit(event) {
+    event.preventDefault();
+    const firstName = String(leadCaptureForm.firstName || "").trim();
+    const email = String(leadCaptureForm.email || "").trim();
+    if (!firstName || !email || !leadCaptureForm.privacyPolicyAccepted) {
+      setLeadCaptureState({
+        status: "error",
+        message: "Please add name, email, and accept the privacy note.",
+      });
+      return;
+    }
+    setLeadCaptureState({ status: "loading", message: "" });
+    trackEvent("ai_concierge_lead_capture_submit_attempt", { has_phone: Boolean(String(leadCaptureForm.phone || "").trim()) });
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          firstName,
+          email,
+          phone: String(leadCaptureForm.phone || "").trim(),
+          preferredCountry: "Australia",
+          mainNeed: "General Enquiry",
+          message:
+            "Lead capture from AI Concierge: user requested a personalised assessment follow-up.",
+          privacyPolicyAccepted: true,
+        }),
+      });
+      const rawText = await response.text();
+      let payload = {};
+      try {
+        payload = rawText ? JSON.parse(rawText) : {};
+      } catch {
+        throw new Error(
+          response.ok
+            ? "Could not read the server response. Please try again or use Contact."
+            : "Could not submit details right now. Please try again or use Contact."
+        );
+      }
+      const ok = response.ok && (payload?.ok ?? payload?.data?.ok ?? true);
+      if (!ok) {
+        const msg =
+          payload?.error?.message ||
+          (typeof payload?.error === "string" ? payload.error : null) ||
+          "Could not submit details.";
+        throw new Error(msg);
+      }
+      setLeadCaptureState({
+        status: "success",
+        message: "Thanks — we received your details. Next step: Start Free Assessment or Book Consultation.",
+      });
+      trackEvent("ai_concierge_lead_capture_submit_success");
+      setLeadCaptureForm({
+        firstName: "",
+        email: "",
+        phone: "",
+        privacyPolicyAccepted: false,
+      });
+    } catch (error) {
+      setLeadCaptureState({
+        status: "error",
+        message: String(error?.message || "Could not submit details right now."),
+      });
+      trackEvent("ai_concierge_lead_capture_submit_error", {
+        error_message: String(error?.message || "unknown_error").slice(0, 120),
+      });
+    }
   }
 
   const dynamicPrompts = suggestedPromptsFromMessages(messages);
@@ -551,6 +644,61 @@ export function AIConcierge({ siteData }) {
               {loading ? "Sending…" : "Send"}
             </button>
           </form>
+
+          {leadCaptureOpen ? (
+            <section className="ai-concierge__lead-capture" aria-label="Optional personalised assessment details">
+              <p className="ai-concierge__lead-capture-title">Want a personalised assessment follow-up?</p>
+              <form onSubmit={handleLeadCaptureSubmit} className="ai-concierge__lead-capture-form">
+                <input
+                  name="firstName"
+                  value={leadCaptureForm.firstName}
+                  onChange={handleLeadCaptureChange}
+                  placeholder="First name"
+                  autoComplete="given-name"
+                  required
+                />
+                <input
+                  type="email"
+                  name="email"
+                  value={leadCaptureForm.email}
+                  onChange={handleLeadCaptureChange}
+                  placeholder="Email"
+                  autoComplete="email"
+                  required
+                />
+                <input
+                  name="phone"
+                  value={leadCaptureForm.phone}
+                  onChange={handleLeadCaptureChange}
+                  placeholder="Phone (optional)"
+                  autoComplete="tel"
+                />
+                <label className="ai-concierge__lead-capture-consent">
+                  <input
+                    type="checkbox"
+                    name="privacyPolicyAccepted"
+                    checked={Boolean(leadCaptureForm.privacyPolicyAccepted)}
+                    onChange={handleLeadCaptureChange}
+                    required
+                  />
+                  <span>
+                    I agree to follow-up contact per the <Link href="/privacy-policy">Privacy Policy</Link>.
+                  </span>
+                </label>
+                <button type="submit" className="btn btn-ghost" disabled={leadCaptureState.status === "loading"}>
+                  {leadCaptureState.status === "loading" ? "Submitting..." : "Send details"}
+                </button>
+              </form>
+              {leadCaptureState.message ? (
+                <p
+                  className={`ai-concierge__lead-capture-note ai-concierge__lead-capture-note--${leadCaptureState.status}`}
+                  role="status"
+                >
+                  {leadCaptureState.message}
+                </p>
+              ) : null}
+            </section>
+          ) : null}
 
           {notice.text ? (
             <p

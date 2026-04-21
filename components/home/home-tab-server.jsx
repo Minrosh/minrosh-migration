@@ -97,7 +97,7 @@ export function HomeTabServer({ siteData, newsData }) {
   const spotlightStory = siteData.successStories?.[0];
 
   return (
-    <section className="tab-panel is-active editorial-home bg-brand-cream/35 text-brand-plum">
+    <section className="landing-home-ref tab-panel is-active editorial-home bg-brand-cream/35 text-brand-plum">
       <HomeHeroBento siteData={siteData} trustNote={trustNote} />
 
       <HomeDiscoverStrip />
@@ -114,13 +114,14 @@ export function HomeTabServer({ siteData, newsData }) {
           </p>
         </div>
         <div className="home-pathway-selector__grid">
-          {pathwaySummaryCards.map((item) => (
+          {pathwaySummaryCards.map((item, idx) => (
             <Link key={item.href} href={item.href} className="home-pathway-selector__card bento-hover">
-              <span className="home-pathway-selector__icon" aria-hidden>
-                {item.icon}
+              <span className="home-pathway-selector__num" aria-hidden>
+                {String(idx + 1).padStart(2, "0")}
               </span>
               <h3>{item.title}</h3>
               <p>{item.benefit}</p>
+              <span className="home-pathway-selector__learn">Learn more</span>
             </Link>
           ))}
         </div>
@@ -133,7 +134,11 @@ export function HomeTabServer({ siteData, newsData }) {
         </p>
       </section>
 
-      <section className="home-how-it-works mx-auto mt-4 w-full max-w-7xl px-4 sm:px-6" aria-labelledby="home-how-it-works-heading">
+      <section
+        id="how-it-works"
+        className="home-how-it-works mx-auto mt-4 w-full max-w-7xl scroll-mt-[calc(var(--site-header-chrome-height)+12px)] px-4 sm:px-6"
+        aria-labelledby="home-how-it-works-heading"
+      >
         <div className="home-how-it-works__head">
           <p className="section-label">How it works</p>
           <h2 id="home-how-it-works-heading">A clear next step in three simple stages</h2>

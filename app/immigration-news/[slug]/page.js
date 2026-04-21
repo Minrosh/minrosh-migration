@@ -45,6 +45,7 @@ export default async function ImmigrationNewsArticlePage({ params }) {
           { name: article.title, path },
         ])}
       />
+      <div className="marketing-visual-ref">
       <article className="content-page immigration-news-article">
         <nav className="breadcrumbs" aria-label="Breadcrumb">
           <span>
@@ -96,7 +97,33 @@ export default async function ImmigrationNewsArticlePage({ params }) {
             requirements on the official source before you act.
           </p>
         </aside>
+        <section className="immigration-news-related bento-hover" aria-label="Related migration pages">
+          <h2>Next pages for practical action</h2>
+          <div className="content-links">
+            <Link href="/assessment" className="content-links__item">
+              <strong>Start Free Assessment</strong>
+              <span>Get pathway direction first</span>
+            </Link>
+            <Link href="/book-consultation" className="content-links__item">
+              <strong>Book Consultation</strong>
+              <span>Discuss your case with structured guidance</span>
+            </Link>
+            <Link href="/skilled-migration" className="content-links__item">
+              <strong>Skilled Migration</strong>
+              <span>Read the full service page</span>
+            </Link>
+            <Link href="/partner-visa-australia" className="content-links__item">
+              <strong>Partner Visa Australia</strong>
+              <span>Review pathways and evidence planning</span>
+            </Link>
+            <Link href="/student-visa-australia" className="content-links__item">
+              <strong>Student Visa Australia</strong>
+              <span>Check requirements and planning flow</span>
+            </Link>
+          </div>
+        </section>
       </article>
+      </div>
     </SiteShell>
   );
 }
