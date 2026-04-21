@@ -1,7 +1,12 @@
 import Link from "next/link";
+import Image from "next/image";
 import { CountryCoverage } from "../country-coverage";
-import { HomeOurServicesTabs } from "./home-our-services-tabs";
+import { BrisbaneParallax } from "./brisbane-parallax";
+import { HomeDiscoverStrip } from "./home-discover-strip";
+import { HomeEligibilityWizard } from "./home-eligibility-wizard";
 import { HomeHeroBento } from "./home-hero-bento";
+import { HomeOurServicesTabs } from "./home-our-services-tabs";
+import { TrustProofStrip } from "./trust-proof-strip";
 import { NewsBoard } from "../news-board";
 import { SmartNavigator } from "../smart-navigator";
 import { PathwayMapDisclosure } from "./pathway-map-disclosure";
@@ -91,101 +96,110 @@ const quickServiceCards = [
  * Server-rendered home tab: static sections + small client children (navigator, coverage, news).
  */
 export function HomeTabServer({ siteData, newsData }) {
-  const trustNote =
-    "Registered Migration Agent support with structured planning across Australia and key destination pathways.";
   const spotlightStory = siteData.successStories?.[0];
 
-  const generalHrefOrder = [
-    "/skilled-migration",
-    "/partner-visa-australia",
-    "/visitor-visas",
-    "/australian-visas-official-sources",
-  ];
-  const generalOrdered = generalHrefOrder
-    .map((h) => siteData.services.find((s) => s.href === h))
-    .filter(Boolean);
-  const generalFeaturedServices = generalOrdered.slice(0, 3);
-  const officialExtraService = generalOrdered[3] ?? null;
-  const educationServices = siteData.services.filter((s) => s.href === "/student-visa-australia");
-  const corporateServices = siteData.services.filter((s) => s.href === "/employer-sponsored-visas");
-
   return (
-    <section className="landing-home-ref tab-panel is-active editorial-home bg-brand-cream/35 text-brand-plum">
-      <HomeHeroBento siteData={siteData} trustNote={trustNote} />
+    <section className="tab-panel is-active editorial-home landing-home-ref bg-white text-brand-plum">
+      <HomeHeroBento siteData={siteData} />
+
+      <div className="home-hero-eligibility-anchor">
+        <HomeEligibilityWizard />
+      </div>
+
+      <TrustProofStrip siteData={siteData} />
+
+      <BrisbaneParallax />
+
+      <HomeDiscoverStrip />
 
       <section
-        className="home-pathway-selector home-pathway-selector--below-wizard mx-auto mt-5 w-full max-w-7xl px-4 sm:px-6"
+        className="home-pathway-selector home-pathway-selector--z-pattern home-pathway-selector--below-wizard mx-auto mt-5 w-full max-w-7xl border-t border-brand-plum/10 bg-white px-4 pt-8"
         aria-labelledby="home-pathway-selector-heading"
       >
-        <div className="home-pathway-selector__head">
-          <p className="section-label">Find your best pathway faster</p>
-          <h2 id="home-pathway-selector-heading">Start with your visa goal, then explore full guidance below</h2>
-          <p>
-            Choose your likely direction first. Every detailed service section remains available further down this page.
-          </p>
+        <div className="home-pathway-selector__layout-z">
+          <div className="order-2 min-w-0 lg:order-1">
+            <div className="home-pathway-selector__head home-pathway-selector__head--leading">
+              <p className="section-label">Find your best pathway faster</p>
+              <h2 id="home-pathway-selector-heading">
+                Start with your visa <span className="text-brand-gold">goal</span>, then explore full guidance below
+              </h2>
+              <p className="home-prose-calm">
+                Choose your likely direction first. Every detailed service section remains available further down this page.
+              </p>
+            </div>
+            <div className="home-pathway-selector__grid">
+              {pathwaySummaryCards.map((item) => (
+                <Link key={item.href} href={item.href} className="home-pathway-selector__card bento-hover">
+                  <span className="home-pathway-selector__icon" aria-hidden>
+                    {item.icon}
+                  </span>
+                  <h3>{item.title}</h3>
+                  <p>{item.benefit}</p>
+                </Link>
+              ))}
+            </div>
+            <p className="home-pathway-selector__not-sure home-pathway-selector__not-sure--leading">
+              Not sure which pathway fits best?{" "}
+              <Link href="/#quiz" className="home-pathway-selector__inline-link">
+                Start Free Assessment
+              </Link>
+              .
+            </p>
+          </div>
+          <div className="home-pathway-selector__figure relative order-1 min-h-[200px] lg:order-2 lg:min-h-[280px]">
+            <Image
+              src="/images/visual-strip-destinations.jpg"
+              alt="Collage of destination imagery representing multi-country migration guidance"
+              fill
+              className="object-cover object-center"
+              sizes="(max-width: 1024px) 100vw, 36vw"
+            />
+          </div>
         </div>
-        <div className="home-pathway-selector__grid">
-          {pathwaySummaryCards.map((item, idx) => (
-            <Link key={item.href} href={item.href} className="home-pathway-selector__card bento-hover">
-              <span className="home-pathway-selector__num" aria-hidden>
-                {String(idx + 1).padStart(2, "0")}
-              </span>
-              <h3>{item.title}</h3>
-              <p>{item.benefit}</p>
-              <span className="home-pathway-selector__learn">Learn more</span>
-            </Link>
-          ))}
-        </div>
-        <p className="home-pathway-selector__not-sure">
-          Not sure which pathway fits best?{" "}
-          <Link href="/#quiz" className="home-pathway-selector__inline-link">
-            Start Free Assessment
-          </Link>
-          .
-        </p>
       </section>
+
+      <div className="w-full border-t border-brand-plum/10 bg-brand-plum text-brand-cream">
+        <section
+          className="home-how-it-works home-how-it-works--on-dark mx-auto w-full max-w-7xl px-4 py-16 md:py-24"
+          aria-labelledby="home-how-it-works-heading"
+        >
+          <div className="home-how-it-works__head">
+            <p className="section-label">How it works</p>
+            <h2 id="home-how-it-works-heading">
+              A clear next step in <span className="text-brand-gold">three</span> simple stages
+            </h2>
+            <p className="home-prose-calm">
+              This summary helps you understand the flow quickly. Detailed pathway, service, and compliance guidance
+              remains fully available in the sections below.
+            </p>
+          </div>
+          <ol className="home-how-it-works__list">
+            {siteData.processSteps.slice(0, 3).map((step, idx) => (
+              <li key={step.title} className="home-how-it-works__item bento-hover">
+                <span className="home-how-it-works__num" aria-hidden>
+                  {idx + 1}
+                </span>
+                <h3>{step.title}</h3>
+                <p>{step.description}</p>
+              </li>
+            ))}
+          </ol>
+        </section>
+      </div>
 
       <section
-        id="how-it-works"
-        className="home-how-it-works mx-auto mt-4 w-full max-w-7xl scroll-mt-[calc(var(--site-header-chrome-height)+12px)] px-4 sm:px-6"
-        aria-labelledby="home-how-it-works-heading"
+        className="home-trust-proof mx-auto mt-0 w-full max-w-7xl border-t border-brand-plum/10 bg-brand-cream/40 px-4 py-16 md:py-24"
+        aria-labelledby="home-trust-proof-heading"
       >
-        <div className="home-how-it-works__head">
-          <p className="section-label">How it works</p>
-          <h2 id="home-how-it-works-heading">A clear next step in three simple stages</h2>
-          <p>
-            This summary helps you understand the flow quickly. Detailed pathway, service, and compliance guidance remains
-            fully available in the sections below.
-          </p>
-        </div>
-        <ol className="home-how-it-works__list">
-          {siteData.processSteps.slice(0, 3).map((step, idx) => (
-            <li key={step.title} className="home-how-it-works__item bento-hover">
-              <span className="home-how-it-works__num" aria-hidden>
-                {idx + 1}
-              </span>
-              <h3>{step.title}</h3>
-              <p>{step.description}</p>
-            </li>
-          ))}
-        </ol>
-      </section>
-
-      <section className="home-trust-proof mx-auto mt-4 w-full max-w-7xl px-4 sm:px-6" aria-labelledby="home-trust-proof-heading">
         <div className="home-trust-proof__head">
           <p className="section-label">Trust and proof</p>
-          <h2 id="home-trust-proof-heading">Confidence before you commit to the next step</h2>
-          <p>
-            Quick proof points first. Full service explanations, compliance messaging, and detailed guidance continue below.
+          <h2 id="home-trust-proof-heading">
+            Confidence before you commit to the <span className="text-brand-gold">next step</span>
+          </h2>
+          <p className="home-prose-calm mx-auto max-w-2xl text-center">
+            A featured outcome below. Key numbers and credentials sit above in the summary strip — full service detail
+            continues further down the page.
           </p>
-        </div>
-        <div className="home-trust-proof__grid">
-          {siteData.stats.slice(0, 3).map((stat) => (
-            <article key={stat.label} className="home-trust-proof__card bento-hover">
-              <p className="home-trust-proof__value">{stat.value}</p>
-              <p className="home-trust-proof__label">{stat.label}</p>
-            </article>
-          ))}
         </div>
         {spotlightStory ? (
           <article className="home-trust-proof__story bento-hover" aria-label="Featured client outcome">
@@ -206,7 +220,7 @@ export function HomeTabServer({ siteData, newsData }) {
         </p>
       </section>
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+      <div className="mx-auto max-w-7xl px-4">
         <p className="mb-4 text-center text-sm text-brand-plum/80">
           New:{" "}
           <Link href="/australian-visas-official-sources" className="font-semibold underline-offset-2 hover:underline">
@@ -217,12 +231,14 @@ export function HomeTabServer({ siteData, newsData }) {
       </div>
       <section
         id="smart-navigator"
-        className="home-navigator-feature mx-auto max-w-7xl scroll-mt-[calc(var(--site-header-chrome-height)+12px)] px-4 sm:px-6"
+        className="home-navigator-feature mx-auto max-w-7xl scroll-mt-[calc(var(--site-header-chrome-height)+12px)] border-t border-brand-plum/10 bg-white px-4 py-16 md:py-24"
         aria-labelledby="home-navigator-feature-heading"
       >
         <div className="home-navigator-feature__intro">
           <p className="section-label">Smart Pathway Navigator</p>
-          <h2 id="home-navigator-feature-heading">Not sure where to start? Let the navigator shortlist your next step</h2>
+          <h2 id="home-navigator-feature-heading">
+            Not sure where to start? Let the <span className="text-brand-gold">navigator</span> shortlist your next step
+          </h2>
           <p>
             In under a minute, it narrows your likely direction using your destination, intent, timing, and support needs.
             Detailed pathway pages and service sections remain available below.
@@ -242,7 +258,7 @@ export function HomeTabServer({ siteData, newsData }) {
       </section>
 
       <section
-        className="country-banner editorial-section editorial-section--compact mx-4 mt-2 max-w-7xl sm:mx-6 xl:mx-auto"
+        className="country-banner editorial-section editorial-section--compact mx-auto mt-2 max-w-7xl px-4"
         aria-label="Countries MinRosh supports"
       >
         {countryBannerLinks.map((item) => (
@@ -252,27 +268,45 @@ export function HomeTabServer({ siteData, newsData }) {
         ))}
       </section>
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+      <div className="mx-auto max-w-7xl px-4">
         <CountryCoverage countries={siteData.countries} />
       </div>
 
-      <div className="mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 md:py-12" aria-label="Our services and visa categories">
-        <HomeOurServicesTabs
-          variant="home"
-          quickServiceCards={quickServiceCards}
-          visualHighlights={visualHighlights}
-          generalFeaturedServices={generalFeaturedServices}
-          officialExtraService={officialExtraService}
-          educationServices={educationServices}
-          corporateServices={corporateServices}
-        />
-      </div>
+      <section
+        className="mx-auto w-full max-w-7xl border-t border-brand-plum/10 bg-white px-4 py-16 md:py-24"
+        aria-label="Core services and visual highlights"
+      >
+        <section className="home-services-quick" aria-labelledby="home-services-quick-heading">
+          <div className="home-services-quick__head">
+            <p className="section-label">Services at a glance</p>
+            <h2 id="home-services-quick-heading">
+              Pick the support type, then explore full <span className="text-brand-gold">details</span> below
+            </h2>
+            <p className="home-prose-calm mx-auto max-w-2xl text-center">
+              These are quick summaries only. Full pathway and service guidance remains unchanged in the sections below.
+            </p>
+          </div>
+          <div className="home-services-quick__grid">
+            {quickServiceCards.map((item) => (
+              <Link key={item.href} href={item.href} className="home-services-quick__card bento-hover">
+                <h3>{item.title}</h3>
+                <p>{item.summary}</p>
+                <span className="home-services-quick__linkline">
+                  Learn more <span aria-hidden>→</span>
+                </span>
+              </Link>
+            ))}
+          </div>
+        </section>
 
-      <div className="mx-4 my-10 max-w-7xl sm:mx-6 xl:mx-auto">
+        <HomeOurServicesTabs services={siteData.services} visualHighlights={visualHighlights} />
+      </section>
+
+      <div className="mx-auto my-10 max-w-7xl px-4">
         <PathwayMapDisclosure />
       </div>
 
-      <article className="mx-auto max-w-4xl px-4 py-10 text-center text-brand-plum/75 sm:px-6 md:py-12">
+      <article className="mx-auto max-w-4xl px-4 py-16 md:py-24 text-center text-brand-plum/75">
         <h2 className="sr-only">Comprehensive Australian Migration Expertise</h2>
         <p className="font-medium leading-relaxed">
           MinRosh Migration provides registered migration guidance for Home Affairs pathways —{" "}
@@ -281,7 +315,7 @@ export function HomeTabServer({ siteData, newsData }) {
         </p>
       </article>
 
-      <section className="relative overflow-hidden px-4 py-10 sm:px-6 md:py-14">
+      <section className="relative overflow-hidden px-4 py-16 md:py-24">
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white via-brand-cream/50 to-white" aria-hidden />
         <div className="relative z-[1] mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-16">
           <div className="relative z-10 xl:pr-10">
@@ -289,7 +323,15 @@ export function HomeTabServer({ siteData, newsData }) {
               Why Choose MinRosh
             </p>
             <h2 className="mb-5 text-balance text-[2rem] font-extrabold leading-tight tracking-tight text-brand-plum md:text-4xl lg:text-5xl">
-              {siteData.about.title}
+              {siteData.about.title.includes("Brisbane") ? (
+                <>
+                  {siteData.about.title.split("Brisbane")[0]}
+                  <span className="text-brand-gold">Brisbane</span>
+                  {siteData.about.title.split("Brisbane")[1]}
+                </>
+              ) : (
+                siteData.about.title
+              )}
             </h2>
             <p className="mb-8 text-lg font-medium leading-relaxed text-brand-plum/75">{siteData.about.body}</p>
             <p className="mb-8 text-brand-plum/60">
@@ -336,18 +378,20 @@ export function HomeTabServer({ siteData, newsData }) {
         </div>
       </section>
 
-      <section className="news-section">
+      <section className="news-section border-t border-brand-plum/10 bg-white">
         <NewsBoard initialNews={newsData} limit={6} carousel />
       </section>
 
-      <div className="mx-4 mb-10 max-w-7xl rounded-[2rem] border border-brand-plum/10 bg-white/90 p-4 shadow-inner sm:mx-6 sm:p-6 xl:mx-auto">
+      <section className="mx-auto mb-10 max-w-7xl px-4">
         <GoogleReviewsPanel carousel />
-      </div>
+      </section>
 
-      <section className="home-final-cta mx-auto mb-8 w-full max-w-7xl px-4 sm:px-6" aria-labelledby="home-final-cta-heading">
+      <section className="home-final-cta mx-auto mb-8 w-full max-w-7xl px-4" aria-labelledby="home-final-cta-heading">
         <div className="home-final-cta__inner">
           <p className="section-label">Ready when you are</p>
-          <h2 id="home-final-cta-heading">Start your migration journey with clarity today</h2>
+          <h2 id="home-final-cta-heading">
+            Start your migration journey with <span className="text-brand-gold">clarity</span> today
+          </h2>
           <p>
             Take the free assessment first, then book consultation when you want case-specific direction. All service pages
             and detailed guidance remain available for deeper reading.
@@ -370,7 +414,9 @@ export function HomeTabServer({ siteData, newsData }) {
         <div className="section-head">
           <div>
             <p className="section-label">Frequently Asked Questions</p>
-            <h2>Answers to common Australian visa questions</h2>
+            <h2>
+              Answers to common Australian visa <span className="text-brand-gold">questions</span>
+            </h2>
           </div>
         </div>
         <div className="faq-accordion-list">

@@ -38,8 +38,7 @@ const LAST_QUESTION_STEP = 3;
 const RESULT_STEP = 4;
 
 /**
- * Merged “discover + eligibility” flow: one question per step, glass card,
- * overlaps hero / next section on desktop (see `.home-hero-eligibility-shell`).
+ * Glass eligibility card overlapping the dark hero and the light band below.
  */
 export function HomeEligibilityWizard() {
   const [step, setStep] = useState(0);
@@ -262,9 +261,7 @@ export function HomeEligibilityWizard() {
                 type="button"
                 className="home-eligibility-wizard__nav-btn home-eligibility-wizard__nav-btn--next"
                 onClick={goNext}
-                disabled={
-                  (step === 1 && !citizenship) || (step === 2 && !goal) || (step === 3 && !timing)
-                }
+                disabled={(step === 1 && !citizenship) || (step === 2 && !goal) || (step === 3 && !timing)}
               >
                 Continue
               </button>
