@@ -113,7 +113,7 @@ export function HomeTabServer({ siteData, newsData }) {
       <HomeDiscoverStrip />
 
       <section
-        className="home-pathway-selector home-pathway-selector--z-pattern home-pathway-selector--below-wizard mx-auto mt-5 w-full max-w-7xl border-t border-brand-plum/10 bg-white px-4 pt-8"
+        className="home-pathway-selector home-pathway-selector--z-pattern home-pathway-selector--below-wizard mx-auto mt-5 w-full max-w-7xl border-t border-brand-plum/10 bg-white px-6 pt-8"
         aria-labelledby="home-pathway-selector-heading"
       >
         <div className="home-pathway-selector__layout-z">
@@ -160,7 +160,7 @@ export function HomeTabServer({ siteData, newsData }) {
 
       <div className="w-full border-t border-brand-plum/10 bg-brand-plum text-brand-cream">
         <section
-          className="home-how-it-works home-how-it-works--on-dark mx-auto w-full max-w-7xl px-4 py-16 md:py-24"
+          className="home-how-it-works home-how-it-works--on-dark mx-auto w-full max-w-7xl px-6 py-16 md:py-24"
           aria-labelledby="home-how-it-works-heading"
         >
           <div className="home-how-it-works__head">
@@ -188,7 +188,7 @@ export function HomeTabServer({ siteData, newsData }) {
       </div>
 
       <section
-        className="home-trust-proof mx-auto mt-0 w-full max-w-7xl border-t border-brand-plum/10 bg-brand-cream/40 px-4 py-16 md:py-24"
+        className="home-trust-proof mx-auto mt-0 w-full max-w-7xl border-t border-brand-plum/10 bg-brand-cream/40 px-6 py-16 md:py-24"
         aria-labelledby="home-trust-proof-heading"
       >
         <div className="home-trust-proof__head">
@@ -220,7 +220,7 @@ export function HomeTabServer({ siteData, newsData }) {
         </p>
       </section>
 
-      <div className="mx-auto max-w-7xl px-4">
+      <div className="mx-auto max-w-7xl px-6">
         <p className="mb-4 text-center text-sm text-brand-plum/80">
           New:{" "}
           <Link href="/australian-visas-official-sources" className="font-semibold underline-offset-2 hover:underline">
@@ -231,7 +231,7 @@ export function HomeTabServer({ siteData, newsData }) {
       </div>
       <section
         id="smart-navigator"
-        className="home-navigator-feature mx-auto max-w-7xl scroll-mt-[calc(var(--site-header-chrome-height)+12px)] border-t border-brand-plum/10 bg-white px-4 py-16 md:py-24"
+        className="home-navigator-feature mx-auto max-w-7xl scroll-mt-[calc(var(--site-header-chrome-height)+12px)] border-t border-brand-plum/10 bg-white px-6 py-16 md:py-24"
         aria-labelledby="home-navigator-feature-heading"
       >
         <div className="home-navigator-feature__intro">
@@ -258,7 +258,7 @@ export function HomeTabServer({ siteData, newsData }) {
       </section>
 
       <section
-        className="country-banner editorial-section editorial-section--compact mx-auto mt-2 max-w-7xl px-4"
+        className="country-banner editorial-section editorial-section--compact mx-auto mt-2 max-w-7xl px-6"
         aria-label="Countries MinRosh supports"
       >
         {countryBannerLinks.map((item) => (
@@ -268,12 +268,12 @@ export function HomeTabServer({ siteData, newsData }) {
         ))}
       </section>
 
-      <div className="mx-auto max-w-7xl px-4">
+      <div className="mx-auto max-w-7xl px-6">
         <CountryCoverage countries={siteData.countries} />
       </div>
 
       <section
-        className="mx-auto w-full max-w-7xl border-t border-brand-plum/10 bg-white px-4 py-16 md:py-24"
+        className="mx-auto w-full max-w-7xl border-t border-brand-plum/10 bg-white px-6 py-16 md:py-24"
         aria-label="Core services and visual highlights"
       >
         <section className="home-services-quick" aria-labelledby="home-services-quick-heading">
@@ -306,7 +306,7 @@ export function HomeTabServer({ siteData, newsData }) {
         <PathwayMapDisclosure />
       </div>
 
-      <article className="mx-auto max-w-4xl px-4 py-16 md:py-24 text-center text-brand-plum/75">
+      <article className="mx-auto max-w-4xl px-6 py-16 md:py-24 text-center text-brand-plum/75">
         <h2 className="sr-only">Comprehensive Australian Migration Expertise</h2>
         <p className="font-medium leading-relaxed">
           MinRosh Migration provides registered migration guidance for Home Affairs pathways —{" "}
@@ -315,7 +315,7 @@ export function HomeTabServer({ siteData, newsData }) {
         </p>
       </article>
 
-      <section className="relative overflow-hidden px-4 py-16 md:py-24">
+      <section className="relative overflow-hidden px-6 py-16 md:py-24">
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white via-brand-cream/50 to-white" aria-hidden />
         <div className="relative z-[1] mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-16">
           <div className="relative z-10 xl:pr-10">
@@ -382,11 +382,11 @@ export function HomeTabServer({ siteData, newsData }) {
         <NewsBoard initialNews={newsData} limit={6} carousel />
       </section>
 
-      <section className="mx-auto mb-10 max-w-7xl px-4">
+      <section className="mx-auto mb-10 max-w-7xl px-6">
         <GoogleReviewsPanel carousel />
       </section>
 
-      <section className="home-final-cta mx-auto mb-8 w-full max-w-7xl px-4" aria-labelledby="home-final-cta-heading">
+      <section className="home-final-cta mx-auto mb-8 w-full max-w-7xl px-6" aria-labelledby="home-final-cta-heading">
         <div className="home-final-cta__inner">
           <p className="section-label">Ready when you are</p>
           <h2 id="home-final-cta-heading">

@@ -2,6 +2,7 @@
 
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import Link from "next/link";
+import destinations from "../../data/destinations.json";
 
 const FEATURED_ORIGINS = [
   { label: "Colombo, Sri Lanka", country: "Sri Lanka", lat: 6.9271, lng: 79.8612 },
@@ -423,6 +424,49 @@ const GOAL_PRESETS = [
   AUSTRALIA_UNIVERSITIES[8],
 ];
 
+const DESTINATION_SPOTS = [
+  { id: "australia", label: "Australia", x: "84%", y: "67%" },
+  { id: "canada", label: "Canada", x: "23%", y: "30%" },
+  { id: "united-kingdom", label: "United Kingdom", x: "48%", y: "31%" },
+  { id: "new-zealand", label: "New Zealand", x: "89%", y: "74%" },
+];
+
+const DESTINATION_STRATEGY = {
+  australia: {
+    timeline: "4-14 months",
+    difficulty: "Medium",
+    subclasses: [
+      { label: "Skilled Migration", href: "/skilled-migration" },
+      { label: "Student Visa", href: "/student-visa-australia" },
+      { label: "Partner Visa", href: "/partner-visa-australia" },
+    ],
+  },
+  canada: {
+    timeline: "6-18 months",
+    difficulty: "Medium-High",
+    subclasses: [
+      { label: "Canada Hub", href: "/destinations/canada" },
+      { label: "Compare Australia vs Canada", href: "/australia-vs-canada-migration-guide" },
+    ],
+  },
+  "united-kingdom": {
+    timeline: "3-12 months",
+    difficulty: "Medium",
+    subclasses: [
+      { label: "UK Hub", href: "/destinations/united-kingdom" },
+      { label: "Book Strategy Consultation", href: "/book-consultation" },
+    ],
+  },
+  "new-zealand": {
+    timeline: "4-12 months",
+    difficulty: "Medium",
+    subclasses: [
+      { label: "New Zealand Hub", href: "/destinations/new-zealand" },
+      { label: "Book Strategy Consultation", href: "/book-consultation" },
+    ],
+  },
+};
+
 export function PathwayMapPanel() {
   const fromListboxId = useId();
   const goalListboxId = useId();
@@ -440,6 +484,9 @@ export function PathwayMapPanel() {
   const [originSuggestions, setOriginSuggestions] = useState(FEATURED_ORIGINS);
   const [originLoading, setOriginLoading] = useState(false);
   const [originFetchError, setOriginFetchError] = useState("");
+  const [selectedDestination, setSelectedDestination] = useState("australia");
+  const [hoveredDestination, setHoveredDestination] = useState("");
+  const [sheetOpen, setSheetOpen] = useState(false);
   const mapRef = useRef(null);
   const mapNodeRef = useRef(null);
   const overlaysRef = useRef({ fromMarker: null, toMarker: null, line: null });
@@ -502,6 +549,9 @@ export function PathwayMapPanel() {
     }
     return { timeline: "6–18 months", difficulty: "High", subclass: "Depends on pathway" };
   }, [pathwayIntent]);
+  const destinationProfile = destinations[selectedDestination] || destinations.australia;
+  const selectedDestinationStrategy =
+    DESTINATION_STRATEGY[selectedDestination] || DESTINATION_STRATEGY.australia;
 
   useEffect(() => {
     const root = sectionRef.current;
@@ -756,12 +806,16 @@ export function PathwayMapPanel() {
   const consultHref = `/book-consultation?fromCity=${encodeURIComponent(resolvedOrigin.label)}&pathwayGoal=${encodeURIComponent(goal.label)}&pathwayFocus=${encodeURIComponent(pathwayIntent)}`;
 
   return (
-    <section ref={sectionRef} className="pathway-map editorial-section editorial-section--compact">
+    <section
+      ref={sectionRef}
+      className="pathway-map pathway-map--immersive editorial-section editorial-section--compact w-full bg-brand-plum py-12 text-brand-cream md:py-24"
+    >
+      <div className="mx-auto max-w-7xl px-6">
       <div className="section-head">
         <div>
-          <p className="section-label">Global Pathway Map</p>
-          <h2>Make your migration pathway feel real before you lodge.</h2>
-          <p className="pathway-map__lede">
+          <p className="section-label text-brand-gold">Global Pathway Map</p>
+          <h2 className="text-white">Make your migration pathway feel real before you lodge.</h2>
+          <p className="pathway-map__lede text-white/80">
             Orientation only: pick where you are today and an illustrative Australian destination. A registered
             migration agent still needs your full facts before any visa strategy.
           </p>
@@ -795,7 +849,7 @@ export function PathwayMapPanel() {
         </li>
       </ol>
 
-      <p className="pathway-map__disclaimer">
+      <p className="pathway-map__disclaimer text-white/70">
         Route distance and flight times are rough illustrations. City search uses{" "}
         <a href="https://nominatim.openstreetmap.org/" target="_blank" rel="noreferrer">
           OpenStreetMap Nominatim
@@ -816,6 +870,29 @@ export function PathwayMapPanel() {
             {item.label}
           </button>
         ))}
+      </div>
+      <div className="mt-5 flex flex-wrap gap-2">
+        {DESTINATION_SPOTS.map((spot) => {
+          const strategy = DESTINATION_STRATEGY[spot.id] || DESTINATION_STRATEGY.australia;
+          const active = selectedDestination === spot.id;
+          return (
+            <button
+              key={`chip-${spot.id}`}
+              type="button"
+              onClick={() => {
+                setSelectedDestination(spot.id);
+                setSheetOpen(true);
+              }}
+              className={`rounded-full border px-3 py-1.5 text-xs font-bold transition ${
+                active
+                  ? "border-brand-gold bg-brand-gold/20 text-brand-gold"
+                  : "border-white/25 bg-white/5 text-white/80 hover:border-brand-gold/70 hover:text-brand-gold"
+              }`}
+            >
+              {spot.label}: {strategy.difficulty} · {strategy.timeline}
+            </button>
+          );
+        })}
       </div>
 
       <div className="pathway-map__grid">
@@ -994,7 +1071,7 @@ export function PathwayMapPanel() {
             Book a consultation for this pathway
           </Link>
         </div>
-        <div className="pathway-map__canvas bento-hover">
+        <div className="pathway-map__canvas bento-hover bg-brand-plum/60">
           <svg className="pathway-map__world-bg" viewBox="0 0 1200 620" aria-hidden>
             <g fill="none" stroke="rgba(61,36,50,0.14)" strokeWidth="1.6">
               <path d="M110 180c40-40 105-72 170-78 75-7 132 11 170 37 36 24 84 33 132 28 56-7 96 7 129 38 34 32 80 42 137 32 71-13 116 2 159 35 35 27 78 34 135 24" />
@@ -1018,7 +1095,97 @@ export function PathwayMapPanel() {
           ) : (
             <div ref={mapNodeRef} className="pathway-map__map" />
           )}
+          <div className="pointer-events-none absolute inset-0">
+            {DESTINATION_SPOTS.map((spot) => {
+              const isActive = selectedDestination === spot.id || hoveredDestination === spot.id;
+              return (
+                <button
+                  key={spot.id}
+                  type="button"
+                  className={`pointer-events-auto absolute -translate-x-1/2 -translate-y-1/2 rounded-full border px-3 py-1 text-xs font-bold transition ${
+                    isActive
+                      ? "border-brand-gold bg-brand-gold text-brand-plum shadow-[0_0_24px_rgba(202,166,77,0.65)]"
+                      : "border-white/60 bg-brand-plum/70 text-white hover:border-brand-gold hover:text-brand-gold"
+                  }`}
+                  style={{ left: spot.x, top: spot.y }}
+                  onMouseEnter={() => setHoveredDestination(spot.id)}
+                  onMouseLeave={() => setHoveredDestination("")}
+                  onFocus={() => setHoveredDestination(spot.id)}
+                  onBlur={() => setHoveredDestination("")}
+                  onClick={() => {
+                    setSelectedDestination(spot.id);
+                    setSheetOpen(true);
+                  }}
+                >
+                  {spot.label}
+                </button>
+              );
+            })}
+          </div>
         </div>
+      </div>
+      <aside
+        className={`fixed right-0 top-0 z-50 h-full w-full max-w-md border-l border-brand-gold/35 bg-brand-plum p-6 text-brand-cream shadow-2xl transition-transform duration-300 ${
+          sheetOpen ? "translate-x-0" : "translate-x-full"
+        }`}
+        aria-hidden={!sheetOpen}
+      >
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.15em] text-brand-gold">Strategy Sheet</p>
+            <h3 className="mt-2 text-2xl font-extrabold text-white">{destinationProfile.name}</h3>
+          </div>
+          <button
+            type="button"
+            onClick={() => setSheetOpen(false)}
+            className="rounded-md border border-white/25 px-3 py-1 text-sm font-semibold text-white transition hover:border-brand-gold hover:text-brand-gold"
+          >
+            Close
+          </button>
+        </div>
+        <p className="mt-4 text-sm leading-relaxed text-white/80">{destinationProfile.intro}</p>
+        <div className="mt-6 grid grid-cols-2 gap-3">
+          <div className="rounded-xl border border-white/20 bg-white/5 p-3">
+            <p className="text-xs uppercase tracking-wide text-white/70">Difficulty rating</p>
+            <p className="mt-1 text-sm font-bold text-brand-gold">{selectedDestinationStrategy.difficulty}</p>
+          </div>
+          <div className="rounded-xl border border-white/20 bg-white/5 p-3">
+            <p className="text-xs uppercase tracking-wide text-white/70">Estimated timeline</p>
+            <p className="mt-1 text-sm font-bold text-brand-gold">{selectedDestinationStrategy.timeline}</p>
+          </div>
+        </div>
+        <p className="mt-6 text-sm font-semibold text-white">Official source</p>
+        {destinationProfile.officialLinks?.[0] ? (
+          <a
+            href={destinationProfile.officialLinks[0].href}
+            target="_blank"
+            rel="noreferrer"
+            className="mt-2 inline-block text-sm font-bold text-brand-gold underline decoration-brand-gold/50 underline-offset-4"
+          >
+            {destinationProfile.officialLinks[0].label}
+          </a>
+        ) : null}
+        <p className="mt-6 text-sm font-semibold text-white">Primary pathways</p>
+        <div className="mt-2 flex flex-wrap gap-2">
+          {selectedDestinationStrategy.subclasses?.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="rounded-full border border-white/25 bg-white/10 px-3 py-1 text-xs font-bold text-white transition hover:border-brand-gold hover:text-brand-gold"
+            >
+              {item.label}
+            </Link>
+          ))}
+        </div>
+      </aside>
+      {sheetOpen ? (
+        <button
+          type="button"
+          aria-label="Close strategy sheet overlay"
+          className="fixed inset-0 z-40 bg-black/40"
+          onClick={() => setSheetOpen(false)}
+        />
+      ) : null}
       </div>
     </section>
   );

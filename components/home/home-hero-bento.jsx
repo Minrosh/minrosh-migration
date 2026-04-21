@@ -27,7 +27,7 @@ export function HomeHeroBento({ siteData }) {
 
   return (
     <section
-      className="relative isolate h-[85vh] min-h-[560px] overflow-hidden border-b border-white/10 bg-brand-plum"
+      className="relative isolate h-[90vh] min-h-[560px] overflow-hidden border-b border-white/10 bg-brand-plum"
       aria-labelledby="home-hero-heading"
     >
       <motion.div className="absolute inset-0" style={{ y: parallaxY }}>

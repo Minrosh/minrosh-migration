@@ -12,6 +12,7 @@ import { buildMetadata, breadcrumbJsonLd } from "../../lib/seo";
 import Link from "next/link";
 import { PublicFileImg } from "../../components/public-file-img";
 import { SiteSocialIcons } from "../../components/site-social-icons";
+import { PageHeroStrip } from "../../components/ui/page-hero-strip";
 
 const pageData = seoPages.servicePages.contact;
 
@@ -36,6 +37,13 @@ export default function ContactPage() {
         ])}
       />
       <div className="marketing-visual-ref">
+      <PageHeroStrip
+        title={pageData.headline}
+        subtitle={pageData.intro}
+        eyebrow="Contact MinRosh Migration"
+        bgImage="/images/brisbane-nightlagoon.png"
+        bgAlt="Brisbane night skyline reflections"
+      />
       <section className="content-page">
         <nav className="breadcrumbs" aria-label="Breadcrumb">
           <span>
@@ -50,7 +58,7 @@ export default function ContactPage() {
           <div className="content-hero__grid">
             <div className="content-hero__copy">
               <p className="section-label">Contact MinRosh Migration</p>
-              <h1>{pageData.headline}</h1>
+              <h2>{pageData.headline}</h2>
               <p>{pageData.intro}</p>
               <div className="contact-quick-actions" aria-label="Quick contact actions">
                 <Link href="/assessment" className="btn btn-primary">

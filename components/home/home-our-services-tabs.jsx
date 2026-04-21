@@ -130,7 +130,7 @@ export function HomeOurServicesTabs({ services, visualHighlights }) {
                           sizes="(max-width: 768px) 100vw, 33vw"
                           className="h-full w-full object-cover blur-[2px] transition duration-500 ease-out group-hover:scale-105 group-hover:blur-0"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" aria-hidden />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/75 to-black/20" aria-hidden />
                       </div>
                       <div className="relative h-52 shrink-0 overflow-hidden">
                         <span
@@ -143,14 +143,16 @@ export function HomeOurServicesTabs({ services, visualHighlights }) {
 
                       <div className="relative z-10 flex min-h-0 flex-1 flex-col justify-between p-6 sm:p-7">
                         <div className="min-h-0 flex-1">
+                          <div className="rounded-2xl border border-white/15 bg-black/45 p-4 backdrop-blur-sm">
                           <p className="mb-2 text-xs font-bold uppercase tracking-wider text-brand-gold">{highlight.title}</p>
                           <h3 className="mb-3 text-xl font-extrabold leading-snug tracking-tight text-white sm:text-2xl">
                             {service.title}
                           </h3>
-                          <p className="mb-4 rounded-r-lg border-l-2 border-brand-gold bg-black/25 py-1 pl-3 text-sm italic leading-relaxed text-white/85">
+                          <p className="mb-4 rounded-r-lg border-l-2 border-brand-gold bg-black/35 py-1 pl-3 text-sm italic leading-relaxed text-white/90">
                             &ldquo;{highlight.caption}&rdquo;
                           </p>
-                          <p className="text-[0.94rem] font-normal leading-relaxed text-white/85">{service.summary}</p>
+                          <p className="text-[0.94rem] font-normal leading-relaxed text-white/90">{service.summary}</p>
+                          </div>
                         </div>
                         <div className="mt-auto flex items-center pt-5 text-sm font-bold tracking-wide text-brand-gold transition group-hover:text-white">
                           Learn more

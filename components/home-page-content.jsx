@@ -20,7 +20,6 @@ function tabFromHash(hash) {
  */
 export function HomePageContent({ siteData, homeTab }) {
   const [activeTab, setActiveTab] = useState("home");
-  const [selectedPathwayIndex, setSelectedPathwayIndex] = useState(0);
 
   useLayoutEffect(() => {
     function sync() {
@@ -54,72 +53,29 @@ export function HomePageContent({ siteData, homeTab }) {
       className={`tab-panel pathways-panel-dark bg-brand-plum pt-32 text-white ${activeTab === "pathways" ? "is-active" : ""}`}
       aria-hidden={activeTab !== "pathways"}
     >
-      <div className="pathways-z-layout mx-auto max-w-7xl px-4 py-12 md:py-24 lg:grid-cols-[2fr_3fr]">
-        <div className="pathways-z-layout__copy pathways-z-layout__copy--sticky">
-          <p className="section-label pathways-panel-dark__label">
-            5-Step Pathway to <span className="text-brand-gold">PR</span>
-          </p>
-          <h2>
-            A clearer journey from <span className="text-brand-gold">first review</span> to visa lodgement
-          </h2>
-          <p className="panel-hero__sub pathways-panel-dark__sub">
-            Select a step below to highlight it. Open “Read more” for longer on-page guidance (helpful for reading and
-            search engines).
-          </p>
-          <Link
-            href="/book-consultation"
-            className="pathways-z-layout__cta inline-flex items-center gap-2 rounded-full border border-brand-gold/55 bg-white/10 px-5 py-2.5 text-sm font-extrabold text-brand-gold transition hover:bg-white/15"
-          >
-            Learn more <span aria-hidden>→</span>
-          </Link>
-          <div className="current-step pathways-panel-dark__current mt-8">
-            <span>Highlighted pathway step</span>
-            <strong>{siteData.pathwaySteps[selectedPathwayIndex]?.title}</strong>
-            <p className="current-step__hint pathways-panel-dark__hint">
-              This summary tracks whichever timeline card you last selected — use the numbered boxes to compare stages.
-            </p>
-          </div>
+      <div className="mx-auto max-w-7xl px-6 py-12 md:py-24">
+        <p className="section-label text-brand-gold">Global pathways</p>
+        <h2 className="text-white">
+          Explore your migration direction with a <span className="text-brand-gold">quick strategic view</span>
+        </h2>
+        <p className="mt-4 max-w-3xl text-white/80">
+          Start with a quick dashboard preview on home, then jump to the full global pathways deep-dive for detailed country strategy, timelines, and official links.
+        </p>
+        <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-3">
+          {siteData.pathwaySteps.slice(0, 3).map((step) => (
+            <article key={step.title} className="rounded-2xl border border-white/20 bg-white/10 p-5 backdrop-blur-sm">
+              <h3 className="text-lg font-bold text-white">{step.title}</h3>
+              <p className="mt-2 text-sm text-white/80">{step.description}</p>
+            </article>
+          ))}
         </div>
-        <div className="pathways-z-layout__rail">
-          <div className="timeline pathways-panel-dark__timeline">
-            {siteData.pathwaySteps.map((step, index) => (
-              <article
-                key={step.title}
-                className={`timeline-step bento-hover ${index === selectedPathwayIndex ? "is-current" : ""}`}
-              >
-                <span className="timeline-step__bg-number" aria-hidden>
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-                <button
-                  type="button"
-                  className="timeline-step__hit"
-                  onClick={() => setSelectedPathwayIndex(index)}
-                  aria-current={index === selectedPathwayIndex ? "step" : undefined}
-                >
-                  <span className="timeline-step__number">{index + 1}</span>
-                  <span className="timeline-step__text">
-                    <span className="timeline-step__title">{step.title}</span>
-                    <span className="timeline-step__desc">{step.description}</span>
-                  </span>
-                </button>
-                {step.detail ? (
-                  <details className="timeline-step__details">
-                    <summary className="timeline-step__summary">Read more about this stage</summary>
-                    <div className="timeline-step__expanded">
-                      <p>{step.detail}</p>
-                      {step.officialHref ? (
-                        <p className="timeline-step__official">
-                          <a href={step.officialHref} target="_blank" rel="noreferrer">
-                            {step.officialLabel || "Official information"}
-                          </a>
-                        </p>
-                      ) : null}
-                    </div>
-                  </details>
-                ) : null}
-              </article>
-            ))}
-          </div>
+        <div className="mt-8 flex flex-wrap gap-3">
+          <Link href="/global-pathways" className="btn btn-primary">
+            View global strategy
+          </Link>
+          <Link href="/book-consultation" className="btn btn-ghost">
+            Book consultation
+          </Link>
         </div>
       </div>
     </section>
@@ -128,33 +84,61 @@ export function HomePageContent({ siteData, homeTab }) {
   const servicesPanel = (
     <section
       id="services"
-      className={`tab-panel bg-white px-4 py-12 md:py-24 ${activeTab === "services" ? "is-active" : ""}`}
+      className={`tab-panel bg-white py-12 md:py-24 ${activeTab === "services" ? "is-active" : ""}`}
       aria-hidden={activeTab !== "services"}
     >
-      <div className="panel-hero">
-        <div>
+      <div className="mx-auto max-w-7xl px-6">
+        <div className="panel-hero">
+          <div>
           <p className="section-label">Services</p>
           <h2>
-            Support shaped around real migration <span className="text-brand-gold">decisions</span>
+            Choose a pathway category, then <span className="text-brand-gold">explore the full guide</span>
           </h2>
+          <p className="mt-4 max-w-3xl">
+            High-level overview on home. Full subclass detail, evidence planning, and process guidance now live on dedicated pages.
+          </p>
+          </div>
         </div>
-      </div>
-      <div className="services-layout">
-        {siteData.services.map((service) => (
-          <Link key={service.title} href={service.href} className="service-block bento-hover service-block__link">
-            <span className="service-block__eyebrow">Specialist Pathway</span>
-            <h3>{service.title}</h3>
-            <p>{service.summary}</p>
-            <ul className="feature-list">
-              {service.highlights.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-            <span className="service-block__linkline">
-              Learn more <span aria-hidden="true">→</span>
-            </span>
+        <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-3">
+          {[
+            {
+              title: "Skilled",
+              href: "/visa-services#skilled",
+              image: "/images/brisbane-aerial.png",
+            },
+            {
+              title: "Family",
+              href: "/visa-services#family",
+              image: "/images/brisbane-riverwalk.png",
+            },
+            {
+              title: "Employer",
+              href: "/visa-services#employer",
+              image: "/images/brisbane-nightlagoon.png",
+            },
+          ].map((panel) => (
+            <Link
+              key={panel.title}
+              href={panel.href}
+              className="group relative min-h-[420px] overflow-hidden rounded-3xl border border-white/30"
+              style={{ backgroundImage: `url(${panel.image})`, backgroundSize: "cover", backgroundPosition: "center" }}
+            >
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent transition group-hover:from-black/90" />
+              <div className="absolute inset-x-0 bottom-0 z-10 p-6">
+                <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-gold">Visa category</p>
+                <h3 className="mt-2 text-3xl font-extrabold text-white">{panel.title}</h3>
+                <p className="mt-3 text-sm font-bold text-white/90">
+                  Explore <span aria-hidden>→</span>
+                </p>
+              </div>
+            </Link>
+          ))}
+        </div>
+        <div className="mt-8">
+          <Link href="/visa-services" className="btn btn-primary">
+            View all visa services
           </Link>
-        ))}
+        </div>
       </div>
     </section>
   );

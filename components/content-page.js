@@ -2,6 +2,8 @@ import Link from "next/link";
 import { PublicFileImg } from "./public-file-img";
 import { GlossaryParagraph } from "./glossary-paragraph";
 import { personalizedCtaForPath, recommendedLinksForPath } from "../lib/content-personalization";
+import { PageHeroStrip } from "./ui/page-hero-strip";
+import siteData from "../data/site.json";
 
 /** Stable in-page anchors for section titles (deduped with index). */
 export function sectionAnchorId(title, index) {
@@ -51,9 +53,14 @@ export function ContentPage({
     tocEntries.push({ id: "page-faq", label: "FAQ" });
   }
   const showToc = tocEntries.length >= 2;
+  const isVisaGuidePage =
+    /\/australia-visa-|\/student-visa-australia-requirements|\/skilled-migration-australia-points-guide|\/partner-visa-.*guide|\/visa-refusal-help-/.test(
+      resolvedPath
+    );
 
   return (
     <article className="content-page">
+      <PageHeroStrip title={title} subtitle={intro} eyebrow={eyebrow} bgImage={heroImage.src} bgAlt={heroImage.alt} />
       {breadcrumbs.length ? (
         <nav className="breadcrumbs" aria-label="Breadcrumb">
           {breadcrumbs.map((item, index) => (
@@ -69,7 +76,7 @@ export function ContentPage({
         <div className="content-hero__grid">
           <div className="content-hero__copy">
             <p className="section-label">{eyebrow}</p>
-            <h1>{title}</h1>
+            <h2>{title}</h2>
             <GlossaryParagraph text={intro} />
             {alertBanner ? (
               <div className="content-alert-banner" role="note">
@@ -189,6 +196,23 @@ export function ContentPage({
             </nav>
           ) : null}
           {asideTools ? <div className="content-page__aside-tools">{asideTools}</div> : null}
+          {isVisaGuidePage ? (
+            <div className="content-aside-card bento-hover">
+              <p className="section-label">Quick actions</p>
+              <h3>Need faster direction?</h3>
+              <div className="content-aside-card__actions">
+                <Link href="/#quiz" className="btn btn-ghost">
+                  Check your eligibility
+                </Link>
+                <Link href="/book-consultation" className="btn btn-primary">
+                  Book consultation
+                </Link>
+                <a href={`tel:${String(siteData.brand.phone || "").replace(/\s+/g, "")}`} className="content-aside-card__text-link">
+                  Call now: {siteData.brand.phone}
+                </a>
+              </div>
+            </div>
+          ) : null}
           <div className="content-aside-card bento-hover">
             <p className="section-label">Next steps</p>
             <h3>{ctaTitle || personalizedCta.title}</h3>
