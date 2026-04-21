@@ -1,7 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import { useLayoutEffect, useState } from "react";
+import { HomeOurServicesTabs } from "./home/home-our-services-tabs";
 import { ContactChatPanel } from "./home/contact-chat-panel";
 import { QuizWizardPanel } from "./home/quiz-wizard-panel";
 import { QuizResultSkeleton } from "./home/quiz-result-skeleton";
@@ -117,28 +117,8 @@ export function HomePageContent({ siteData, homeTab }) {
       className={`tab-panel ${activeTab === "services" ? "is-active" : ""}`}
       aria-hidden={activeTab !== "services"}
     >
-      <div className="panel-hero">
-        <div>
-          <p className="section-label">Services</p>
-          <h2>Support shaped around real migration decisions</h2>
-        </div>
-      </div>
-      <div className="services-layout">
-        {siteData.services.map((service) => (
-          <Link key={service.title} href={service.href} className="service-block bento-hover service-block__link">
-            <span className="service-block__eyebrow">Specialist Pathway</span>
-            <h3>{service.title}</h3>
-            <p>{service.summary}</p>
-            <ul className="feature-list">
-              {service.highlights.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-            <span className="service-block__linkline">
-              Learn more <span aria-hidden="true">→</span>
-            </span>
-          </Link>
-        ))}
+      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-10">
+        <HomeOurServicesTabs variant="servicesTab" allServicesForServicesTab={siteData.services} />
       </div>
     </section>
   );
