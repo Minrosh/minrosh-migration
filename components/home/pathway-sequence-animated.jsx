@@ -103,15 +103,21 @@ export function PathwaySequenceAnimated() {
 
                 {isGrant ? (
                   <div
-                    className={`flex-1 bg-gradient-to-r from-brand-plum to-brand-rose p-4 sm:p-5 rounded-2xl shadow-2xl text-white border border-brand-gold/50 transition-transform duration-500 ${
+                    className={`flex-1 p-4 sm:p-5 rounded-2xl shadow-2xl text-white border transition-transform duration-500 ${
                       grantPulse ? "scale-105" : "scale-100"
                     }`}
+                    style={{
+                      background: "linear-gradient(135deg, var(--brand-plum) 0%, var(--brand-rose) 100%)",
+                      borderColor: "rgba(202, 166, 77, 0.55)",
+                    }}
                   >
                     <div className="flex items-center justify-between">
-                      <h4 className="text-lg sm:text-xl font-bold text-brand-gold">{step.title}</h4>
+                      <h4 className="text-lg sm:text-xl font-bold" style={{ color: "var(--brand-gold)" }}>
+                        {step.title}
+                      </h4>
                       <span className="bg-white/20 px-3 py-1 rounded-full text-xs font-bold tracking-wider">Success</span>
                     </div>
-                    <p className="text-brand-cream mt-1 opacity-90 text-sm">{step.description}</p>
+                    <p className="mt-1 text-sm text-white/95">{step.description}</p>
                   </div>
                 ) : (
                   <div className="flex-1 bg-white p-4 sm:p-5 rounded-2xl shadow-xl border border-slate-100">
