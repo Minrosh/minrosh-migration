@@ -3,7 +3,6 @@ import { ContentPage } from "../../components/content-page";
 import { SiteShell } from "../../components/site-shell";
 import { StructuredData } from "../../components/structured-data";
 import { buildMetadata, breadcrumbJsonLd } from "../../lib/seo";
-import Link from "next/link";
 
 export const metadata = buildMetadata({
   title: "About MinRosh Migration | Brisbane Migration Guidance",
@@ -105,35 +104,6 @@ export default function AboutPage() {
           { name: "About", path: "/about" },
         ])}
       />
-      <div className="marketing-visual-ref">
-      <section className="about-glance-band" aria-label="MinRosh at a glance">
-        <div className="about-glance-band__head">
-          <p className="section-label">At a glance</p>
-          <h2>Structured guidance built for clarity, confidence, and action</h2>
-        </div>
-        <div className="about-glance-band__grid">
-          <article className="about-glance-band__card">
-            <h3>Who we help</h3>
-            <p>Skilled, student, partner, and complex-pathway applicants needing clearer sequencing.</p>
-          </article>
-          <article className="about-glance-band__card">
-            <h3>How we work</h3>
-            <p>Summary-first planning, practical next steps, and official-source verification before key moves.</p>
-          </article>
-          <article className="about-glance-band__card">
-            <h3>What to do next</h3>
-            <p>Start with a free assessment for direction, then book consultation when urgency or complexity is high.</p>
-          </article>
-        </div>
-        <div className="about-glance-band__actions">
-          <Link href="/assessment" className="btn btn-primary">
-            Start Free Assessment
-          </Link>
-          <Link href="/book-consultation" className="btn btn-ghost">
-            Book Consultation
-          </Link>
-        </div>
-      </section>
       <ContentPage
         eyebrow="About MinRosh"
         title="Structured migration guidance designed to feel clearer from the first conversation"
@@ -152,7 +122,6 @@ export default function AboutPage() {
           { href: "/contact", title: "Contact MinRosh" },
         ]}
       />
-      </div>
     </SiteShell>
   );
 }

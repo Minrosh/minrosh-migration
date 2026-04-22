@@ -1,0 +1,77 @@
+{
+  "australia": {
+    "title": "First fourteen days on the ground",
+    "subtitle": "A humane sequence for skilled movers—your visa conditions and employer timing may reorder tasks.",
+    "footnote": "Not legal advice. Confirm every step on official sites and with your migration planner.",
+    "milestones": [
+      { "dayRange": "Day 1", "title": "Land, data, and sleep", "body": "Buy a prepaid SIM or eSIM, screenshot your visa grant, and prioritise rest before big decisions. Note the local emergency number (000).", "tone": "violet" },
+      { "dayRange": "Day 2–3", "title": "Basecamp address", "body": "Short-term stay or lease—collect mail you can use for bank and service sign-ups. Photograph metre readings if renting.", "tone": "rose" },
+      { "dayRange": "Day 4–5", "title": "Tax file number (TFN)", "body": "Apply online through the ATO with passport details. Keep the confirmation email in a dedicated folder.", "tone": "amber" },
+      { "dayRange": "Day 6–7", "title": "Banking & cash flow", "body": "Book a branch slot if needed. Ask what proof-of-address bundle your bank accepts while you are still in temporary housing.", "tone": "emerald" },
+      { "dayRange": "Day 8–9", "title": "Medicare or interim cover", "body": "Eligibility depends on visa subclass. Until Medicare is active, avoid gaps in cover that could affect care or travel.", "tone": "sky" },
+      { "dayRange": "Day 10–11", "title": "Transport & ID rhythm", "body": "Tap card for city transit; if driving, confirm how long your overseas licence remains valid in your state.", "tone": "rose" },
+      { "dayRange": "Day 12–13", "title": "Phone, internet, utilities", "body": "NBN appointments can lag—book early. Compare plans using your actual address, not a hotel postcode.", "tone": "amber" },
+      { "dayRange": "Day 14", "title": "Reflect and calendar the month ahead", "body": "Super choice, tax withholding, and any employer onboarding—map appointments so you are not stacking stress in one week.", "tone": "violet" }
+    ]
+  },
+  "new-zealand": {
+    "title": "First fourteen days in Aotearoa",
+    "subtitle": "Wind, rain, and compact cities—front-load connectivity and warmth.",
+    "footnote": "Illustrative order only. Follow INZ conditions for your visa.",
+    "milestones": [
+      { "dayRange": "Day 1", "title": "Arrive warm and dry", "body": "Layer clothing; buy a local SIM; save photos of your visa label or eVisa details.", "tone": "sky" },
+      { "dayRange": "Day 2–3", "title": "IRD number path", "body": "Employers need an IRD for payroll. Gather address evidence even if you are in temporary accommodation.", "tone": "rose" },
+      { "dayRange": "Day 4–5", "title": "Bank account", "body": "Compare migrant-friendly onboarding; ask how international transfers will display on statements.", "tone": "amber" },
+      { "dayRange": "Day 6–7", "title": "Transport habits", "body": "AT Hop, Snapper, or regional cards—pick the right city card and register it online.", "tone": "emerald" },
+      { "dayRange": "Day 8–9", "title": "Driving rules", "body": "Check conversion timelines for your overseas licence; rural roads reward patience.", "tone": "violet" },
+      { "dayRange": "Day 10–11", "title": "Rent bond & flat norms", "body": "Flatting interviews move quickly—have references PDF-ready in phone storage.", "tone": "rose" },
+      { "dayRange": "Day 12–13", "title": "Healthcare navigation", "body": "Register with a GP practice if eligible; understand what is not covered while you settle.", "tone": "sky" },
+      { "dayRange": "Day 14", "title": "Community hooks", "body": "Sports clubs, library cards, and volunteer shifts are low-pressure ways to build a network.", "tone": "amber" }
+    ]
+  },
+  "canada": {
+    "title": "First fourteen days in Canada",
+    "subtitle": "Winter readiness and provincial paperwork differ by city—treat this as a compass, not a checklist stamped in stone.",
+    "footnote": "Provincial health and licensing rules vary. Verify for your province.",
+    "milestones": [
+      { "dayRange": "Day 1", "title": "Layer zero", "body": "Winter jacket, toque, gloves—buy locally if your luggage was light. Load offline maps for transit dead zones.", "tone": "sky" },
+      { "dayRange": "Day 2–3", "title": "SIN queue strategy", "body": "Service Canada appointments or walk-ins—bring passport and permit showing work or study rights.", "tone": "rose" },
+      { "dayRange": "Day 4–5", "title": "Bank + debit first", "body": "Credit history may start from zero—ask about newcomer programs and secured card ladders.", "tone": "amber" },
+      { "dayRange": "Day 6–7", "title": "Provincial health card", "body": "Waiting periods exist in some provinces—keep private cover until you understand the gap.", "tone": "emerald" },
+      { "dayRange": "Day 8–9", "title": "Transit pass rhythm", "body": "PRESTO, Compass, Opus—name the local card and auto-load to avoid fines.", "tone": "violet" },
+      { "dayRange": "Day 10–11", "title": "Phone plan reality", "body": "Compare cold-weather battery drain on commutes; unlimited data tempts but check throttling.", "tone": "rose" },
+      { "dayRange": "Day 12–13", "title": "Winter commute dry run", "body": "Walk the route to work or campus once in daylight and once after dark.", "tone": "sky" },
+      { "dayRange": "Day 14", "title": "Month-two preview", "body": "Tax forms, winter tires fund, and any professional licence transfers—book consults before slots vanish.", "tone": "amber" }
+    ]
+  },
+  "united-kingdom": {
+    "title": "First fourteen days in the UK",
+    "subtitle": "Compact distances, dense admin—keep PDFs synced across phone and laptop.",
+    "footnote": "Immigration rules differ by route—confirm share codes and conditions on GOV.UK.",
+    "milestones": [
+      { "dayRange": "Day 1", "title": "Oyster, railcard, feet", "body": "Tap in/out religiously; max fare caps sting. Save your tenancy or hotel invoice immediately.", "tone": "violet" },
+      { "dayRange": "Day 2–3", "title": "NI number appointment", "body": "Book the earliest interview you can; payroll may still begin in parallel depending on employer.", "tone": "rose" },
+      { "dayRange": "Day 4–5", "title": "Bank account marathon", "body": "Proof-of-address stacks vary—university letters, council tax, or utility bills each unlock different banks.", "tone": "amber" },
+      { "dayRange": "Day 6–7", "title": "GP catchment", "body": "Register near your postcode; some surgeries cap new patients—call a shortlist.", "tone": "emerald" },
+      { "dayRange": "Day 8–9", "title": "Council tax band sanity", "body": "Understand who pays if you flatshare; keep the reference number for future lettings.", "tone": "sky" },
+      { "dayRange": "Day 10–11", "title": "SIM vs contract", "body": "Rolling monthly SIMs reduce commitment while you hunt stable housing.", "tone": "rose" },
+      { "dayRange": "Day 12–13", "title": "Right to rent / work codes", "body": "Practice generating share codes before landlord or HR meetings.", "tone": "violet" },
+      { "dayRange": "Day 14", "title": "Culture cadence", "body": "Markets, parks, and local libraries are cheap resets when paperwork fatigue hits.", "tone": "amber" }
+    ]
+  },
+  "student-australia": {
+    "title": "First fourteen days as a new student",
+    "subtitle": "Orientation, compliance, and social oxygen—pace yourself around contact hours.",
+    "footnote": "Always follow your institution’s orientation pack and your visa conditions.",
+    "milestones": [
+      { "dayRange": "Day 1", "title": "Airport → housing handover", "body": "Photograph the room condition report; test Wi-Fi; save campus security numbers.", "tone": "rose" },
+      { "dayRange": "Day 2–3", "title": "Campus card & email", "body": "Activate student email, LMS logins, and printing credits before week-one deadlines pile up.", "tone": "violet" },
+      { "dayRange": "Day 4–5", "title": "OSHC card on phone", "body": "Add policy numbers to wallet apps; know which clinics direct-bill your insurer.", "tone": "emerald" },
+      { "dayRange": "Day 6–7", "title": "Bank + TFN thread", "body": "Many students open accounts during orientation fairs—compare fee waivers before you sign.", "tone": "amber" },
+      { "dayRange": "Day 8–9", "title": "Concession transport", "body": "Order student concession proofs; learn peak vs off-peak fares for your commute pattern.", "tone": "sky" },
+      { "dayRange": "Day 10–11", "title": "Casual job recon", "body": "Walk nearby retail strips with CV PDF ready; note which venues hire continuously vs seasonally.", "tone": "rose" },
+      { "dayRange": "Day 12–13", "title": "Study cohort rituals", "body": "Join one society that is not career-related—creative balance prevents burnout.", "tone": "violet" },
+      { "dayRange": "Day 14", "title": "Assignment runway", "body": "Export your semester calendar including mid-session breaks; block deep-work slots early.", "tone": "amber" }
+    ]
+  }
+}

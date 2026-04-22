@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Fragment, useCallback, useEffect, useRef, useState } from "react";
-import { trackEvent } from "@/lib/client-analytics";
 import { buildWhatsAppUrl, WHATSAPP_LEAD_MESSAGE } from "@/lib/whatsapp-prefill";
 
 /** Inline **bold** segments (Gemini/OpenAI often emit this). */
@@ -118,7 +117,7 @@ const initialSuggestedPrompts = [
   "Skilled migration options",
   "Student visa planning",
   "Partner visa first steps",
-  "Start Free Assessment",
+  "Fastest next step (urgent)",
 ];
 
 const contextualPrompts = {
@@ -284,23 +283,14 @@ export function AIConcierge({ siteData }) {
       id: "welcome",
       role: "assistant",
       content:
-        "Ask about skilled, student, or partner pathways. I provide general guidance only and help you choose the next step: Start Free Assessment or Book Consultation.",
+        "Ask about skilled migration, student or partner visas, or education planning. I give practical next steps—not legal advice.",
     },
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [notice, setNotice] = useState({ text: "", tone: "info" });
-  const [leadCaptureOpen, setLeadCaptureOpen] = useState(false);
-  const [leadCaptureState, setLeadCaptureState] = useState({ status: "idle", message: "" });
-  const [leadCaptureForm, setLeadCaptureForm] = useState({
-    firstName: "",
-    email: "",
-    phone: "",
-    privacyPolicyAccepted: false,
-  });
   const logRef = useRef(null);
   const suggestionsRef = useRef(null);
-  const hasTrackedOpenRef = useRef(false);
 
   const scrollLogToEnd = useCallback(() => {
     const el = logRef.current;
@@ -314,26 +304,6 @@ export function AIConcierge({ siteData }) {
     if (!open) return;
     scrollLogToEnd();
   }, [messages, loading, open, scrollLogToEnd]);
-
-  useEffect(() => {
-    if (!open) return;
-    const params = {
-      source: "floating_tools",
-      first_open_in_session: !hasTrackedOpenRef.current,
-    };
-    trackEvent("ai_concierge_open", params);
-    if (!hasTrackedOpenRef.current) {
-      hasTrackedOpenRef.current = true;
-    }
-  }, [open]);
-
-  useEffect(() => {
-    const userTurns = messages.filter((m) => m.role === "user").length;
-    if (userTurns >= 2 && !leadCaptureOpen) {
-      setLeadCaptureOpen(true);
-      trackEvent("ai_concierge_lead_capture_prompt_shown", { user_turns: userTurns });
-    }
-  }, [messages, leadCaptureOpen]);
 
   /** Lets CSS hide bottom fixed CTAs and tighten panel height so messages are not covered. */
   useEffect(() => {
@@ -363,10 +333,6 @@ export function AIConcierge({ siteData }) {
 
     const userMsg = { id: nextMessageId(), role: "user", content: trimmed };
     const nextMessages = [...messages, userMsg];
-    trackEvent("ai_concierge_message_submit", {
-      message_length: trimmed.length,
-      total_messages_before_submit: messages.length,
-    });
     setMessages(nextMessages);
     setInput("");
     setLoading(true);
@@ -445,83 +411,6 @@ export function AIConcierge({ siteData }) {
     sendMessage(input);
   }
 
-  function handleLeadCaptureChange(event) {
-    const { name, value, type, checked } = event.target;
-    setLeadCaptureForm((current) => ({
-      ...current,
-      [name]: type === "checkbox" ? checked : value,
-    }));
-  }
-
-  async function handleLeadCaptureSubmit(event) {
-    event.preventDefault();
-    const firstName = String(leadCaptureForm.firstName || "").trim();
-    const email = String(leadCaptureForm.email || "").trim();
-    if (!firstName || !email || !leadCaptureForm.privacyPolicyAccepted) {
-      setLeadCaptureState({
-        status: "error",
-        message: "Please add name, email, and accept the privacy note.",
-      });
-      return;
-    }
-    setLeadCaptureState({ status: "loading", message: "" });
-    trackEvent("ai_concierge_lead_capture_submit_attempt", { has_phone: Boolean(String(leadCaptureForm.phone || "").trim()) });
-    try {
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({
-          firstName,
-          email,
-          phone: String(leadCaptureForm.phone || "").trim(),
-          preferredCountry: "Australia",
-          mainNeed: "General Enquiry",
-          message:
-            "Lead capture from AI Concierge: user requested a personalised assessment follow-up.",
-          privacyPolicyAccepted: true,
-        }),
-      });
-      const rawText = await response.text();
-      let payload = {};
-      try {
-        payload = rawText ? JSON.parse(rawText) : {};
-      } catch {
-        throw new Error(
-          response.ok
-            ? "Could not read the server response. Please try again or use Contact."
-            : "Could not submit details right now. Please try again or use Contact."
-        );
-      }
-      const ok = response.ok && (payload?.ok ?? payload?.data?.ok ?? true);
-      if (!ok) {
-        const msg =
-          payload?.error?.message ||
-          (typeof payload?.error === "string" ? payload.error : null) ||
-          "Could not submit details.";
-        throw new Error(msg);
-      }
-      setLeadCaptureState({
-        status: "success",
-        message: "Thanks — we received your details. Next step: Start Free Assessment or Book Consultation.",
-      });
-      trackEvent("ai_concierge_lead_capture_submit_success");
-      setLeadCaptureForm({
-        firstName: "",
-        email: "",
-        phone: "",
-        privacyPolicyAccepted: false,
-      });
-    } catch (error) {
-      setLeadCaptureState({
-        status: "error",
-        message: String(error?.message || "Could not submit details right now."),
-      });
-      trackEvent("ai_concierge_lead_capture_submit_error", {
-        error_message: String(error?.message || "unknown_error").slice(0, 120),
-      });
-    }
-  }
-
   const dynamicPrompts = suggestedPromptsFromMessages(messages);
 
   if (pathname?.startsWith("/admin") || pathname?.startsWith("/upload")) {
@@ -534,47 +423,22 @@ export function AIConcierge({ siteData }) {
         <div className="ai-concierge">
           <div className="ai-concierge__head">
             <div>
-              <strong>AI Concierge</strong>
+              <strong>Ask MinRosh</strong>
               <span>General information — not formal migration advice</span>
             </div>
-            <button type="button" onClick={() => setOpen(false)} aria-label="Close AI Concierge">
+            <button type="button" onClick={() => setOpen(false)} aria-label="Close Ask MinRosh">
               ×
             </button>
           </div>
 
           <div className="ai-concierge__cta-row" aria-label="Quick actions">
-            <Link
-              href="/assessment"
-              className="ai-concierge__cta-chip"
-              onClick={() =>
-                trackEvent("ai_concierge_cta_click", { cta_label: "Start Free Assessment", target_path: "/assessment" })
-              }
-            >
-              Start Free Assessment
-            </Link>
-            <Link
-              href="/book-consultation"
-              className="ai-concierge__cta-chip"
-              onClick={() =>
-                trackEvent("ai_concierge_cta_click", { cta_label: "Book", target_path: "/book-consultation" })
-              }
-            >
+            <Link href="/book-consultation" className="ai-concierge__cta-chip">
               Book
             </Link>
-            <Link
-              href="/contact"
-              className="ai-concierge__cta-chip"
-              onClick={() => trackEvent("ai_concierge_cta_click", { cta_label: "Contact", target_path: "/contact" })}
-            >
+            <Link href="/contact" className="ai-concierge__cta-chip">
               Contact
             </Link>
-            <a
-              className="ai-concierge__cta-chip"
-              href={waFloat}
-              target="_blank"
-              rel="noreferrer"
-              onClick={() => trackEvent("ai_concierge_cta_click", { cta_label: "WhatsApp", target_path: "external_whatsapp" })}
-            >
+            <a className="ai-concierge__cta-chip" href={waFloat} target="_blank" rel="noreferrer">
               WhatsApp
             </a>
           </div>
@@ -645,61 +509,6 @@ export function AIConcierge({ siteData }) {
             </button>
           </form>
 
-          {leadCaptureOpen ? (
-            <section className="ai-concierge__lead-capture" aria-label="Optional personalised assessment details">
-              <p className="ai-concierge__lead-capture-title">Want a personalised assessment follow-up?</p>
-              <form onSubmit={handleLeadCaptureSubmit} className="ai-concierge__lead-capture-form">
-                <input
-                  name="firstName"
-                  value={leadCaptureForm.firstName}
-                  onChange={handleLeadCaptureChange}
-                  placeholder="First name"
-                  autoComplete="given-name"
-                  required
-                />
-                <input
-                  type="email"
-                  name="email"
-                  value={leadCaptureForm.email}
-                  onChange={handleLeadCaptureChange}
-                  placeholder="Email"
-                  autoComplete="email"
-                  required
-                />
-                <input
-                  name="phone"
-                  value={leadCaptureForm.phone}
-                  onChange={handleLeadCaptureChange}
-                  placeholder="Phone (optional)"
-                  autoComplete="tel"
-                />
-                <label className="ai-concierge__lead-capture-consent">
-                  <input
-                    type="checkbox"
-                    name="privacyPolicyAccepted"
-                    checked={Boolean(leadCaptureForm.privacyPolicyAccepted)}
-                    onChange={handleLeadCaptureChange}
-                    required
-                  />
-                  <span>
-                    I agree to follow-up contact per the <Link href="/privacy-policy">Privacy Policy</Link>.
-                  </span>
-                </label>
-                <button type="submit" className="btn btn-ghost" disabled={leadCaptureState.status === "loading"}>
-                  {leadCaptureState.status === "loading" ? "Submitting..." : "Send details"}
-                </button>
-              </form>
-              {leadCaptureState.message ? (
-                <p
-                  className={`ai-concierge__lead-capture-note ai-concierge__lead-capture-note--${leadCaptureState.status}`}
-                  role="status"
-                >
-                  {leadCaptureState.message}
-                </p>
-              ) : null}
-            </section>
-          ) : null}
-
           {notice.text ? (
             <p
               className={`ai-concierge__notice${notice.tone === "soft" ? " ai-concierge__notice--soft" : ""}`}
@@ -710,22 +519,10 @@ export function AIConcierge({ siteData }) {
           ) : null}
 
           <div className="ai-concierge__footer" aria-label="Quick links">
-            <Link
-              href="/assessment"
-              className="ai-concierge__footer-btn"
-              onClick={() =>
-                trackEvent("ai_concierge_cta_click", { cta_label: "Assessment Footer", target_path: "/assessment" })
-              }
-            >
+            <Link href="/assessment" className="ai-concierge__footer-btn">
               Assessment
             </Link>
-            <Link
-              href="/book-consultation"
-              className="ai-concierge__footer-btn"
-              onClick={() =>
-                trackEvent("ai_concierge_cta_click", { cta_label: "Book Footer", target_path: "/book-consultation" })
-              }
-            >
+            <Link href="/book-consultation" className="ai-concierge__footer-btn">
               Book
             </Link>
           </div>
@@ -739,7 +536,6 @@ export function AIConcierge({ siteData }) {
           target="_blank"
           rel="noreferrer"
           aria-label="Chat with MinRosh Migration on WhatsApp"
-          onClick={() => trackEvent("ai_concierge_cta_click", { cta_label: "WhatsApp Float", target_path: "external_whatsapp" })}
         >
           <svg viewBox="0 0 32 32" aria-hidden="true">
             <path
@@ -751,13 +547,10 @@ export function AIConcierge({ siteData }) {
         <button
           type="button"
           className="floating-tools__ai"
-          onClick={() => {
-            trackEvent("ai_concierge_toggle_click", { opening: !open });
-            setOpen((current) => !current);
-          }}
+          onClick={() => setOpen((current) => !current)}
           aria-expanded={open ? "true" : "false"}
         >
-          AI Concierge
+          Ask MinRosh
         </button>
       </div>
     </div>

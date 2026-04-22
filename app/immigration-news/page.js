@@ -1,4 +1,5 @@
 import siteDataStatic from "../../data/site.json";
+import { BreadcrumbsNav } from "../../components/breadcrumbs-nav";
 import { SiteShell } from "../../components/site-shell";
 import { StructuredData } from "../../components/structured-data";
 import { ImmigrationNewsHub } from "../../components/immigration-news/immigration-news-hub";
@@ -29,6 +30,13 @@ export default function ImmigrationNewsHubPage() {
         ])}
       />
       <section className="content-page immigration-news-page">
+        <BreadcrumbsNav
+          currentPath="/immigration-news"
+          items={[
+            { label: "Home", href: "/" },
+            { label: "Immigration news", href: "/immigration-news" },
+          ]}
+        />
         <ImmigrationNewsHub items={items} />
       </section>
     </SiteShell>

@@ -112,8 +112,6 @@ flowchart TB
 
 **Global chrome:** Public marketing pages use `components/site-shell.js` for a consistent sticky header and footer. The homepage (`app/page.js`) renders `components/home-page-content.jsx` inside that shell; primary nav can deep-link to in-page sections via hashes (for example `/#quiz`, `/#pathways`). Contact shortcuts in the header come from `components/site-header-meta-row.jsx` (email, phone, destination hub links, and social icons on wide viewports; mobile uses `SiteHeaderMobileUtilities`).
 
-**Scoped marketing styling:** In `app/globals.css`, the home tab root uses `.landing-home-ref` (full-bleed hero, pathway tiles, accent CTAs). About, Contact, Book consultation, and individual Immigration news articles wrap their main content in `.marketing-visual-ref` so display-serif headings and warm primary buttons match that same visual system without affecting `app/admin/` styles.
-
 **Notable public features (non-exhaustive):**
 
 - Contact and brochure flows (`app/api/contact`, related `lib/contact.js`).
@@ -121,7 +119,7 @@ flowchart TB
 - Optional `**/api/chat**` — AI concierge (Gemini/OpenAI per env).
 - Client document upload via tokenized routes under `app/api/upload/*`.
 - Customer **portal** APIs under `app/api/portal/*` (profile, invoices, payment method as applicable).
-- `**/api/cron/*`** — scheduled jobs (nurture emails, CRM automation, invoice recurring/reminders/sync, intelligence scan, Facebook publish) protected by shared secrets in headers or query params (see `.env.example`). Nurture currently runs as a conversion scaffold (instant + Day 1 + Day 3).
+- `**/api/cron/*`** — scheduled jobs (nurture emails, CRM automation, invoice recurring/reminders/sync, intelligence scan, Facebook publish) protected by shared secrets in headers or query params (see `.env.example`).
 
 ---
 

@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { useState } from "react";
 
 const PATHWAY_PILLS = [
   { label: "Skilled", href: "/skilled-migration" },
@@ -20,6 +23,22 @@ const TRUST_CHIPS = [
  * elevated “search” card — adapted for migration pathways (not travel booking).
  */
 export function HomeDiscoverStrip() {
+  const [navigatorQuery, setNavigatorQuery] = useState("");
+
+  function openSmartNavigator(event) {
+    event.preventDefault();
+    const encoded = navigatorQuery.trim() ? `?q=${encodeURIComponent(navigatorQuery.trim())}` : "";
+    const targetHref = `/${encoded}#smart-navigator`;
+    if (window.location.pathname !== "/") {
+      window.location.href = targetHref;
+      return;
+    }
+    window.history.replaceState(null, "", targetHref);
+    window.dispatchEvent(new CustomEvent("minrosh-hashnav"));
+    const target = document.getElementById("smart-navigator");
+    target?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
   return (
     <section
       className="relative isolate overflow-hidden border-b border-brand-plum/8 bg-gradient-to-b from-white via-zinc-50/80 to-brand-cream/50 px-4 py-10 sm:px-6 md:py-14"
@@ -38,10 +57,6 @@ export function HomeDiscoverStrip() {
           >
             Discover your clearest next step
           </h2>
-          <p className="mt-4 text-pretty text-base leading-relaxed text-brand-plum/75 sm:text-lg">
-            Browse visa topics the way a travel hub surfaces flights and stays — then match your situation with the Smart
-            Navigator or book a consultation.
-          </p>
         </div>
 
         <nav className="mt-8 flex flex-wrap justify-center gap-2 md:mt-10" aria-label="Popular visa topics">
@@ -83,18 +98,31 @@ export function HomeDiscoverStrip() {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35M11 18a7 7 0 100-14 7 7 0 000 14z" />
                   </svg>
                 </span>
-                <p className="text-left text-sm leading-snug text-brand-plum/70">
-                  <span className="font-semibold text-brand-plum">Try:</span>{" "}
-                  <span className="italic">&ldquo;Skilled visa after study in Australia&rdquo;</span> or{" "}
-                  <span className="italic">&ldquo;Partner onshore with a previous refusal&rdquo;</span>
-                </p>
+                <label className="flex w-full flex-col text-left">
+                  <span className="text-xs font-semibold uppercase tracking-wide text-brand-plum/65">Try this intent</span>
+                  <input
+                    type="text"
+                    value={navigatorQuery}
+                    onChange={(event) => setNavigatorQuery(event.target.value)}
+                    className="mt-1 w-full border-0 bg-transparent p-0 text-sm leading-snug text-brand-plum/75 placeholder:text-brand-plum/45 focus:outline-none"
+                    placeholder='e.g. "Skilled visa after study in Australia"'
+                    aria-label="Type your migration scenario"
+                  />
+                </label>
               </div>
               <div className="flex shrink-0 flex-col gap-2 sm:w-auto sm:flex-row">
                 <Link
                   href="/#smart-navigator"
+                  onClick={openSmartNavigator}
                   className="inline-flex min-h-[48px] items-center justify-center rounded-xl bg-orange-500 px-5 py-3 text-center text-sm font-semibold text-white no-underline shadow-md shadow-orange-500/25 outline-none ring-offset-2 ring-offset-white transition hover:bg-orange-400 hover:no-underline focus-visible:ring-2 focus-visible:ring-orange-300"
                 >
                   Run Smart Navigator
+                </Link>
+                <Link
+                  href="/assessment"
+                  className="inline-flex min-h-[48px] items-center justify-center rounded-xl border border-brand-gold/30 bg-brand-gold/10 px-5 py-3 text-center text-sm font-semibold text-brand-plum no-underline outline-none ring-offset-2 ring-offset-white transition hover:border-brand-gold/45 hover:bg-brand-gold/20 focus-visible:ring-2 focus-visible:ring-brand-gold/40"
+                >
+                  Start your pathway
                 </Link>
                 <Link
                   href="/book-consultation"

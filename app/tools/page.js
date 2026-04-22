@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { BreadcrumbsNav } from "../../components/breadcrumbs-nav";
 import siteDataStatic from "../../data/site.json";
 import { getHomeSiteData } from "../../lib/home-site-data";
 import { SiteShell } from "../../components/site-shell";
@@ -73,15 +74,13 @@ export default function ToolsPage() {
       />
 
       <article className="content-page">
-        <nav className="breadcrumbs" aria-label="Breadcrumb">
-          <span>
-            <Link href="/">Home</Link>
-          </span>
-          <span className="breadcrumbs__sep">/</span>
-          <span>
-            <Link href={path}>Tools</Link>
-          </span>
-        </nav>
+        <BreadcrumbsNav
+          currentPath={path}
+          items={[
+            { label: "Home", href: "/" },
+            { label: "Tools", href: path },
+          ]}
+        />
 
         <section className="content-hero">
           <div className="content-hero__grid">

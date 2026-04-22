@@ -7,6 +7,9 @@ import { SiteShell } from "../../../components/site-shell";
 import { StructuredData } from "../../../components/structured-data";
 import { buildMetadata, breadcrumbJsonLd } from "../../../lib/seo";
 import { destinationHeaderBackdrop } from "../../../lib/destination-nav";
+import { getLifestyleGuide } from "../../../lib/lifestyle-guides";
+import { getFirst14Days, getTransportGuide } from "../../../lib/experience-data";
+import { LifestyleExperienceBlock } from "../../../components/lifestyle/lifestyle-experience-block";
 
 export function generateStaticParams() {
   return Object.keys(destinations).map((slug) => ({ slug }));
@@ -35,6 +38,9 @@ export default async function DestinationPage({ params }) {
   if (!page) notFound();
 
   const path = `/destinations/${slug}`;
+  const lifestyleGuide = getLifestyleGuide(slug);
+  const first14 = getFirst14Days(slug);
+  const transport = getTransportGuide(slug);
 
   return (
     <SiteShell
@@ -61,6 +67,13 @@ export default async function DestinationPage({ params }) {
         sections={page.sections}
         related={page.relatedSiteLinks}
         asideTools={slug === "australia" ? <HubAustraliaAside /> : null}
+        mainLead={
+          <LifestyleExperienceBlock
+            guide={lifestyleGuide}
+            first14={first14}
+            transport={transport}
+          />
+        }
         heroImage={{
           src: "/images/team-office-real.jpg",
           alt: "Professional office environment for migration planning discussions",

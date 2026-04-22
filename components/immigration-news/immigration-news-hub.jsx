@@ -35,18 +35,25 @@ export function ImmigrationNewsHub({ items }) {
         </p>
       </div>
 
-      <div className="immigration-news-hub__filters">
+      <div className="immigration-news-hub__filters" role="toolbar" aria-label="Filter news by region">
         {filters.map((f) => (
           <button
             key={f.label}
             type="button"
             className={`news-filter ${activeFilter === f.label ? "is-active" : ""}`}
+            aria-pressed={activeFilter === f.label}
             onClick={() => setActiveFilter(f.label)}
           >
             {f.label}
           </button>
         ))}
       </div>
+
+      {filtered.length === 0 ? (
+        <p className="news-board__empty" role="status">
+          No articles match this filter. Choose <strong>All</strong> to see every note.
+        </p>
+      ) : null}
 
       <ul className="immigration-news-hub__grid">
         {filtered.map((item) => {
@@ -76,7 +83,7 @@ export function ImmigrationNewsHub({ items }) {
                     </a>
                   ) : null}
                 </div>
-                {item.source ? <p className="immigration-news-hub__card-source">Source label: {item.source}</p> : null}
+                {item.source ? <p className="immigration-news-hub__card-source">Official body: {item.source}</p> : null}
               </article>
             </li>
           );

@@ -1,11 +1,11 @@
 import Link from "next/link";
+import { BreadcrumbsNav } from "../../components/breadcrumbs-nav";
 import { PublicFileImg } from "../../components/public-file-img";
 import siteData from "../../data/site.json";
 import { ContactLeadForm } from "../../components/contact-lead-form";
 import { SiteShell } from "../../components/site-shell";
 import { SmartNavigator } from "../../components/smart-navigator";
 import { StructuredData } from "../../components/structured-data";
-import { TrackedLink } from "../../components/tracked-link";
 import { buildMetadata, breadcrumbJsonLd } from "../../lib/seo";
 
 export const metadata = buildMetadata({
@@ -49,45 +49,31 @@ export default function AssessmentPage() {
       />
 
       <section className="content-page">
-        <nav className="breadcrumbs" aria-label="Breadcrumb">
-          <span>
-            <Link href="/">Home</Link>
-          </span>
-          <span className="breadcrumbs__sep">/</span>
-          <span>
-            <Link href="/assessment">Assessment</Link>
-          </span>
-        </nav>
+        <BreadcrumbsNav
+          currentPath="/assessment"
+          items={[
+            { label: "Home", href: "/" },
+            { label: "Assessment", href: "/assessment" },
+          ]}
+        />
 
         <section className="content-hero">
           <div className="content-hero__grid">
             <div className="content-hero__copy">
               <p className="section-label">Free Assessment</p>
-              <h1>Find your best visa pathway in minutes</h1>
+              <h1>Start with a clearer assessment before you commit to the next step</h1>
               <p>
-                Answer a few focused questions and get a clearer direction based on your goals, timing,
-                and pathway intent before you commit to the wrong process.
-              </p>
-              <p className="content-hero__note">
-                Trusted by applicants across Australia and overseas • Private & secure • Brisbane-based support
+                This page is designed as a conversion-first assessment entry point. It helps clients
+                understand whether they should start with the 2026 points wizard, the Smart
+                Navigator, or a direct consultation based on how clear their pathway already is.
               </p>
               <div className="content-aside-card__actions">
-                <TrackedLink
-                  href="/#quiz"
-                  className="btn btn-primary"
-                  eventName="assessment_hero_start_click"
-                  eventParams={{ cta_label: "Start Free Assessment", source: "assessment_hero" }}
-                >
-                  Start Free Assessment
-                </TrackedLink>
-                <TrackedLink
-                  href="/book-consultation"
-                  className="btn btn-ghost"
-                  eventName="assessment_hero_book_click"
-                  eventParams={{ cta_label: "Book Consultation", source: "assessment_hero" }}
-                >
+                <Link href="/#quiz" className="btn btn-primary">
+                  Open 2026 Points Wizard
+                </Link>
+                <Link href="/book-consultation" className="btn btn-ghost">
                   Book Consultation
-                </TrackedLink>
+                </Link>
               </div>
             </div>
             <div className="content-hero__media" aria-hidden="true">

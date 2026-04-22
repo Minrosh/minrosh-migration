@@ -52,10 +52,10 @@ export const metadata = {
     type: "website",
     images: [
       {
-        url: "/images/brisbane-riverwalk.png",
+        url: "/images/hero-sydney-real.jpg",
         width: 1800,
         height: 1200,
-        alt: "Brisbane riverwalk with skyline and bridge",
+        alt: "Sydney Harbour with ferries on the water and the Opera House",
       },
     ],
   },
@@ -64,7 +64,7 @@ export const metadata = {
     title: "Migration Agent Brisbane | MinRosh Migration",
     description:
       "Expert visa help in Brisbane for skilled migration, partner visas, student visas, and employer-sponsored pathways.",
-    images: ["/images/brisbane-riverwalk.png"],
+    images: ["/images/hero-sydney-real.jpg"],
   },
   robots: {
     index: true,
@@ -86,7 +86,7 @@ export default async function RootLayout({ children }) {
 
   return (
     <html lang="en-AU">
-      <body className={`${inter.variable} ${playfair.variable}`}>
+      <body className={`${inter.variable} ${playfair.variable} immersive-theme`}>
         <ScrollRestorer />
         <PWARegister />
         <GoogleAnalytics nonce={nonce} />

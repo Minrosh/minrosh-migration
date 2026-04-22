@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import siteDataStatic from "../../../data/site.json";
+import { BreadcrumbsNav } from "../../../components/breadcrumbs-nav";
 import { SiteShell } from "../../../components/site-shell";
 import { StructuredData } from "../../../components/structured-data";
 import { NewsArticleProse } from "../../../components/immigration-news/news-article-prose";
@@ -10,6 +11,12 @@ import { NEWS_PUBLIC_BASE } from "../../../lib/news-store";
 import { buildMetadata, breadcrumbJsonLd } from "../../../lib/seo";
 
 export const revalidate = 60;
+
+function breadcrumbArticleLabel(title) {
+  const t = String(title || "").trim();
+  if (t.length <= 58) return t;
+  return `${t.slice(0, 57)}…`;
+}
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
@@ -45,19 +52,15 @@ export default async function ImmigrationNewsArticlePage({ params }) {
           { name: article.title, path },
         ])}
       />
-      <div className="marketing-visual-ref">
       <article className="content-page immigration-news-article">
-        <nav className="breadcrumbs" aria-label="Breadcrumb">
-          <span>
-            <Link href="/">Home</Link>
-          </span>
-          <span className="breadcrumbs__sep">/</span>
-          <span>
-            <Link href="/immigration-news">Immigration news</Link>
-          </span>
-          <span className="breadcrumbs__sep">/</span>
-          <span>{article.date}</span>
-        </nav>
+        <BreadcrumbsNav
+          currentPath={path}
+          items={[
+            { label: "Home", href: "/" },
+            { label: "Immigration news", href: NEWS_PUBLIC_BASE },
+            { label: breadcrumbArticleLabel(article.title), current: true },
+          ]}
+        />
 
         <header className="immigration-news-article__hero">
           <p className="section-label">{article.country}</p>
@@ -97,33 +100,7 @@ export default async function ImmigrationNewsArticlePage({ params }) {
             requirements on the official source before you act.
           </p>
         </aside>
-        <section className="immigration-news-related bento-hover" aria-label="Related migration pages">
-          <h2>Next pages for practical action</h2>
-          <div className="content-links">
-            <Link href="/assessment" className="content-links__item">
-              <strong>Start Free Assessment</strong>
-              <span>Get pathway direction first</span>
-            </Link>
-            <Link href="/book-consultation" className="content-links__item">
-              <strong>Book Consultation</strong>
-              <span>Discuss your case with structured guidance</span>
-            </Link>
-            <Link href="/skilled-migration" className="content-links__item">
-              <strong>Skilled Migration</strong>
-              <span>Read the full service page</span>
-            </Link>
-            <Link href="/partner-visa-australia" className="content-links__item">
-              <strong>Partner Visa Australia</strong>
-              <span>Review pathways and evidence planning</span>
-            </Link>
-            <Link href="/student-visa-australia" className="content-links__item">
-              <strong>Student Visa Australia</strong>
-              <span>Check requirements and planning flow</span>
-            </Link>
-          </div>
-        </section>
       </article>
-      </div>
     </SiteShell>
   );
 }

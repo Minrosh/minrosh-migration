@@ -5,10 +5,18 @@ import { buildContentSecurityPolicy } from "./lib/csp/build-csp-header";
 import { getOrCreateRequestId, REQUEST_ID_HEADER } from "./lib/observability/request-id";
 
 function newCspNonce() {
+  const bytesToBase64 = (bytes) => {
+    if (typeof btoa === "function") {
+      let binary = "";
+      for (let i = 0; i < bytes.length; i += 1) binary += String.fromCharCode(bytes[i]);
+      return btoa(binary);
+    }
+    return Array.from(bytes, (b) => b.toString(16).padStart(2, "0")).join("");
+  };
   try {
-    return Buffer.from(globalThis.crypto.randomUUID()).toString("base64");
+    return bytesToBase64(globalThis.crypto.getRandomValues(new Uint8Array(16)));
   } catch {
-    return Buffer.from(globalThis.crypto.getRandomValues(new Uint8Array(16))).toString("base64");
+    return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`;
   }
 }
 
@@ -49,7 +57,16 @@ export async function middleware(request) {
     pathname.startsWith("/admin/") ||
     pathname.startsWith("/api/admin/");
 
+  const isLocalhost = host.startsWith("localhost:") || host.startsWith("127.0.0.1:");
+  const localAdminBypass =
+    !production &&
+    (isLocalhost || String(process.env.ADMIN_BYPASS_LOCAL || "").toLowerCase() === "true");
+
   if (!isAdminApp) {
+    return continueRequest();
+  }
+
+  if (localAdminBypass) {
     return continueRequest();
   }
 

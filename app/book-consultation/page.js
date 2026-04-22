@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { BreadcrumbsNav } from "../../components/breadcrumbs-nav";
 import siteDataStatic from "../../data/site.json";
 import { getHomeSiteData } from "../../lib/home-site-data";
 import seoPages from "../../data/seo-pages.json";
@@ -28,33 +28,19 @@ export default function BookConsultationPage() {
           { name: "Book Consultation", path: pageData.path },
         ])}
       />
-      <div className="marketing-visual-ref">
       <section className="content-page">
-        <nav className="breadcrumbs" aria-label="Breadcrumb">
-          <span>
-            <Link href="/">Home</Link>
-          </span>
-          <span className="breadcrumbs__sep">/</span>
-          <span>
-            <Link href={pageData.path}>Book Consultation</Link>
-          </span>
-        </nav>
+        <BreadcrumbsNav
+          currentPath={pageData.path}
+          items={[
+            { label: "Home", href: "/" },
+            { label: "Book consultation", href: pageData.path },
+          ]}
+        />
 
         <section className="content-hero">
           <p className="section-label">Book Consultation</p>
           <h1>{pageData.headline}</h1>
           <p>{pageData.intro}</p>
-          <div className="consultation-quick-actions">
-            <Link href="/assessment" className="btn btn-primary">
-              Start Free Assessment
-            </Link>
-            <Link href="/contact" className="btn btn-ghost">
-              Contact us first
-            </Link>
-          </div>
-          <p className="consultation-trust-line">
-            Clear expectations before booking • Practical next-step guidance • Privacy-first handling
-          </p>
           {siteData.consultationHoursNote ? (
             <p className="content-hero__note">{siteData.consultationHoursNote}</p>
           ) : null}
@@ -141,23 +127,6 @@ export default function BookConsultationPage() {
                 </p>
               </div>
             </details>
-            <section className="consultation-steps-band bento-hover" aria-label="What happens after booking">
-              <h2>What happens after you submit</h2>
-              <div className="consultation-steps-band__grid">
-                <article className="consultation-steps-band__card">
-                  <h3>1. Intake review</h3>
-                  <p>We review your enquiry details and pathway context.</p>
-                </article>
-                <article className="consultation-steps-band__card">
-                  <h3>2. Practical strategy call</h3>
-                  <p>You receive a focused consultation tied to your real profile and timing.</p>
-                </article>
-                <article className="consultation-steps-band__card">
-                  <h3>3. Next-step clarity</h3>
-                  <p>We outline priority actions so you can move forward with less uncertainty.</p>
-                </article>
-              </div>
-            </section>
           </div>
 
           <div className="content-page__aside contact-form-column">
@@ -166,7 +135,6 @@ export default function BookConsultationPage() {
           </div>
         </div>
       </section>
-      </div>
     </SiteShell>
   );
 }

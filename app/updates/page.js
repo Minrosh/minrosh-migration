@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { BreadcrumbsNav } from "../../components/breadcrumbs-nav";
 import siteDataStatic from "../../data/site.json";
 import seoPages from "../../data/seo-pages.json";
 import { PublicFileImg } from "../../components/public-file-img";
@@ -40,13 +41,13 @@ export default function UpdatesPage() {
         ])}
       />
       <section className="content-page">
-        <nav className="breadcrumbs" aria-label="Breadcrumb">
-          <span>
-            <Link href="/">Home</Link>
-          </span>
-          <span className="breadcrumbs__sep">/</span>
-          <span>Visa Updates</span>
-        </nav>
+        <BreadcrumbsNav
+          currentPath={pageData.path}
+          items={[
+            { label: "Home", href: "/" },
+            { label: "Visa updates", href: pageData.path },
+          ]}
+        />
         <section className="content-hero">
           <div className="content-hero__grid">
             <div className="content-hero__copy">

@@ -2,19 +2,18 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 
 const easeOut = [0.22, 1, 0.36, 1];
 
 /**
- * Focus-first hero: deep brand canvas, one headline, one primary CTA.
- * Stats and proof chips live in {@link TrustProofStrip}.
+ * Bento-style hero: light MinRosh surfaces with one deep plum accent card for contrast.
  */
-export function HomeHeroBento({ siteData }) {
+export function HomeHeroBento({ siteData, trustNote }) {
   const reduceMotion = useReducedMotion();
+
   const lead = siteData.hero.lead ?? siteData.hero.description ?? "";
-  const { scrollY } = useScroll();
-  const parallaxY = useTransform(scrollY, [0, 900], [0, reduceMotion ? 0 : 90]);
+  const bullets = Array.isArray(siteData.hero.bullets) ? siteData.hero.bullets : null;
 
   const fadeUp = (delay = 0) =>
     reduceMotion
@@ -27,56 +26,97 @@ export function HomeHeroBento({ siteData }) {
 
   return (
     <section
-      className="relative isolate h-[90vh] min-h-[560px] overflow-hidden border-b border-white/10 bg-brand-plum"
+      className="relative overflow-hidden border-b border-brand-plum/10 bg-gradient-to-b from-brand-cream via-white to-zinc-50 px-4 py-10 sm:px-6 md:py-14 lg:py-16"
       aria-labelledby="home-hero-heading"
     >
-      <motion.div className="absolute inset-0" style={{ y: parallaxY }}>
-        <Image
-          src="/images/brisbane-riverwalk.png"
-          alt="Brisbane riverwalk and city skyline"
-          fill
-          priority
-          quality={92}
-          sizes="100vw"
-          className="object-cover object-center"
-        />
-      </motion.div>
-
-      {/* Strong plum wash for WCAG-friendly white type */}
-      <div className="pointer-events-none absolute inset-0 bg-brand-plum/90" aria-hidden />
+      {/* Premium mesh: brand warmth + subtle indigo depth (light theme) */}
       <div
-        className="pointer-events-none absolute inset-0 bg-gradient-to-b from-brand-plum/80 via-transparent to-brand-plum/70"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_120%_80%_at_0%_-20%,rgba(155,74,108,0.14),transparent_50%),radial-gradient(ellipse_100%_70%_at_100%_0%,rgba(79,70,229,0.12),transparent_45%),radial-gradient(ellipse_80%_60%_at_50%_100%,rgba(202,166,77,0.12),transparent_55%)]"
         aria-hidden
       />
       <div
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.05),transparent_72%)]"
+        className="pointer-events-none absolute inset-0 bg-[linear-gradient(115deg,rgba(17,24,39,0)_0%,rgba(17,24,39,0.06)_45%,rgba(17,24,39,0)_78%)]"
         aria-hidden
       />
 
-      <div className="relative z-[1] mx-auto flex h-full w-full max-w-7xl flex-col justify-end px-4 pb-10 sm:px-6 md:justify-center md:pb-8 lg:max-w-3xl lg:px-0 lg:pb-10">
-        <motion.div {...fadeUp(0)}>
-          <p className="mb-4 inline-flex items-center rounded-full border border-white/35 bg-white/10 px-3 py-1 text-xs font-bold uppercase tracking-widest text-brand-cream">
-            {siteData.hero.eyebrow}
-          </p>
-          <h1
-            id="home-hero-heading"
-            className="text-balance text-[2.1rem] font-extrabold leading-[1.15] tracking-tight text-white sm:text-[2.6rem] md:text-[2.85rem] lg:text-[3.25rem]"
-          >
-            {siteData.hero.title}
-          </h1>
-          {lead ? (
-            <p className="mt-6 max-w-2xl text-pretty text-sm font-normal leading-relaxed text-white/80 sm:text-base">
-              {lead}
+      <div className="relative z-[1] mx-auto grid w-full max-w-7xl grid-cols-1 gap-6 md:gap-8 lg:grid-cols-12">
+        <motion.div className="flex flex-col gap-6 lg:col-span-6" {...fadeUp(0)}>
+          <div className="rounded-3xl border border-white/70 bg-white/85 p-6 shadow-lux-lg backdrop-blur-xl transition-all duration-500 ease-out hover:-translate-y-0.5 hover:shadow-[0_24px_70px_rgba(61,36,50,0.12)] sm:p-8 md:p-10">
+            <p className="mb-3 inline-flex items-center rounded-full border border-brand-rose/25 bg-brand-rose/10 px-3 py-1 text-xs font-bold uppercase tracking-widest text-brand-rose">
+              {siteData.hero.eyebrow}
             </p>
-          ) : null}
-
-          <div className="mt-10">
-            <Link
-              href="/#quiz"
-              className="home-hero-primary-cta inline-flex min-h-[52px] w-full items-center justify-center rounded-xl px-8 py-4 text-center text-base font-bold no-underline outline-none ring-offset-2 ring-offset-brand-plum transition hover:no-underline focus-visible:ring-2 focus-visible:ring-orange-400 sm:w-auto sm:min-w-[240px]"
+            <h1
+              id="home-hero-heading"
+              className="text-balance text-[1.9rem] font-extrabold leading-[1.08] tracking-[-0.02em] text-brand-plum sm:text-[2.35rem] md:text-5xl lg:text-[3.05rem]"
             >
-              Start Free Assessment
-            </Link>
+              {siteData.hero.title}
+            </h1>
+            {lead ? (
+              <p className="mt-6 max-w-xl text-pretty text-base font-medium leading-relaxed text-brand-plum/70 sm:text-lg">
+                {lead}
+              </p>
+            ) : null}
+            {bullets?.length ? (
+              <ul className="mt-4 max-w-xl list-disc space-y-2.5 pl-5 text-base leading-relaxed text-brand-plum/80 sm:text-[1.05rem]">
+                {bullets.map((item) => (
+                  <li key={item} className="pl-0.5">
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            ) : null}
+
+            <div className="sticky bottom-3 z-10 mt-6 flex flex-col gap-3 rounded-2xl bg-white/95 p-3 shadow-lg shadow-brand-plum/10 backdrop-blur sm:static sm:mt-8 sm:bg-transparent sm:p-0 sm:shadow-none sm:backdrop-blur-0">
+              <Link
+                href="/#quiz"
+                className="home-hero-primary-cta inline-flex min-h-[52px] w-full items-center justify-center rounded-xl px-8 py-4 text-center text-base font-bold no-underline outline-none ring-offset-2 ring-offset-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-lg hover:no-underline focus-visible:ring-2 focus-visible:ring-brand-rose/60 focus-visible:ring-offset-2 sm:w-auto sm:min-w-[240px]"
+              >
+                {siteData.hero.primaryCta}
+              </Link>
+              <p className="text-center text-sm text-brand-plum/70 sm:text-left">
+                <span className="mr-1.5 font-medium text-brand-plum/80">Next step:</span>
+                <Link
+                  href="/book-consultation"
+                  className="font-semibold text-brand-rose underline decoration-brand-rose/40 underline-offset-4 transition hover:text-brand-plum hover:decoration-brand-plum/40"
+                >
+                  {siteData.hero.secondaryCta}
+                </Link>
+                <span className="mx-2 text-brand-plum/35" aria-hidden>
+                  ·
+                </span>
+                <Link
+                  href="/assessment"
+                  className="font-semibold text-brand-rose underline decoration-brand-rose/40 underline-offset-4 transition hover:text-brand-plum hover:decoration-brand-plum/40"
+                >
+                  Free assessment
+                </Link>
+              </p>
+            </div>
+
+            <p className="mt-6 border-l-[3px] border-brand-rose/35 pl-4 text-base leading-relaxed text-brand-plum/70">
+              {trustNote}
+            </p>
+          </div>
+        </motion.div>
+
+        <motion.div className="grid gap-6 lg:col-span-6 lg:grid-rows-[minmax(0,1fr)_auto]" {...fadeUp(0.08)}>
+          <div className="relative min-h-[260px] overflow-hidden rounded-3xl border border-brand-plum/10 bg-zinc-100 shadow-lux-lg transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-[0_24px_70px_rgba(61,36,50,0.14)] sm:min-h-[300px] lg:min-h-[340px]">
+            <motion.div
+              className="absolute inset-0"
+              animate={reduceMotion ? undefined : { scale: [1.02, 1.08, 1.02], x: [0, -8, 0] }}
+              transition={reduceMotion ? undefined : { duration: 18, repeat: Infinity, ease: "easeInOut" }}
+            >
+              <Image
+                src="/images/hero-sydney-real.jpg"
+                alt="Sydney Harbour — Australian migration journeys"
+                fill
+                priority
+                quality={92}
+                sizes="(max-width: 1024px) 96vw, (max-width: 1536px) 50vw, 720px"
+                className="object-cover object-center"
+              />
+            </motion.div>
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-brand-plum/25 via-transparent to-transparent" aria-hidden />
           </div>
         </motion.div>
       </div>

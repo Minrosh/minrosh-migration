@@ -4,6 +4,9 @@ import { ContentPage } from "../../components/content-page";
 import { SiteShell } from "../../components/site-shell";
 import { StructuredData } from "../../components/structured-data";
 import { buildMetadata, breadcrumbJsonLd } from "../../lib/seo";
+import { getLifestyleGuide } from "../../lib/lifestyle-guides";
+import { getTransportGuide } from "../../lib/experience-data";
+import { LifestyleExperienceBlock } from "../../components/lifestyle/lifestyle-experience-block";
 
 export const metadata = buildMetadata({
   title: "Global Pathways | Australia, Canada, UK and New Zealand",
@@ -33,6 +36,9 @@ const officialResources = ["australia", "canada", "united-kingdom", "new-zealand
   .filter(Boolean);
 
 export default function GlobalPathwaysPage() {
+  const lifestyleGuide = getLifestyleGuide("global-pathways");
+  const transport = getTransportGuide("global-pathways");
+
   return (
     <SiteShell siteData={siteData} currentPath="/global-pathways">
       <StructuredData
@@ -50,6 +56,7 @@ export default function GlobalPathwaysPage() {
           { href: "/global-pathways", label: "Global pathways" },
         ]}
         officialResources={officialResources}
+        mainLead={<LifestyleExperienceBlock guide={lifestyleGuide} transport={transport} />}
         sections={destinationSections()}
         currentPath="/global-pathways"
         related={[

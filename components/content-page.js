@@ -1,9 +1,10 @@
 import Link from "next/link";
+import { BreadcrumbsNav } from "./breadcrumbs-nav";
 import { PublicFileImg } from "./public-file-img";
 import { GlossaryParagraph } from "./glossary-paragraph";
+import { MotionReveal, MotionStagger, MotionItem } from "./ui/motion-wrapper";
+import { PathwayInfographics } from "./ui/pathway-infographics";
 import { personalizedCtaForPath, recommendedLinksForPath } from "../lib/content-personalization";
-import { PageHeroStrip } from "./ui/page-hero-strip";
-import siteData from "../data/site.json";
 
 /** Stable in-page anchors for section titles (deduped with index). */
 export function sectionAnchorId(title, index) {
@@ -34,6 +35,8 @@ export function ContentPage({
   ctaBody = "",
   /** Optional tools/widgets in the aside (e.g. TSMIT calculator). */
   asideTools = null,
+  /** Optional rich block after official sources (e.g. lifestyle experience). */
+  mainLead = null,
 }) {
   const resolvedPath = currentPath || breadcrumbs[breadcrumbs.length - 1]?.href || "";
   const personalizedCta = personalizedCtaForPath(resolvedPath);
@@ -53,30 +56,21 @@ export function ContentPage({
     tocEntries.push({ id: "page-faq", label: "FAQ" });
   }
   const showToc = tocEntries.length >= 2;
-  const isVisaGuidePage =
-    /\/australia-visa-|\/student-visa-australia-requirements|\/skilled-migration-australia-points-guide|\/partner-visa-.*guide|\/visa-refusal-help-/.test(
-      resolvedPath
-    );
 
   return (
     <article className="content-page">
-      <PageHeroStrip title={title} subtitle={intro} eyebrow={eyebrow} bgImage={heroImage.src} bgAlt={heroImage.alt} />
       {breadcrumbs.length ? (
-        <nav className="breadcrumbs" aria-label="Breadcrumb">
-          {breadcrumbs.map((item, index) => (
-            <span key={item.href}>
-              {index > 0 ? <span className="breadcrumbs__sep">/</span> : null}
-              <Link href={item.href}>{item.label}</Link>
-            </span>
-          ))}
-        </nav>
+        <BreadcrumbsNav
+          currentPath={resolvedPath}
+          items={breadcrumbs.map((item) => ({ label: item.label, href: item.href }))}
+        />
       ) : null}
 
-      <section className="content-hero">
+      <MotionReveal as="section" className="content-hero">
         <div className="content-hero__grid">
           <div className="content-hero__copy">
             <p className="section-label">{eyebrow}</p>
-            <h2>{title}</h2>
+            <h1>{title}</h1>
             <GlossaryParagraph text={intro} />
             {alertBanner ? (
               <div className="content-alert-banner" role="note">
@@ -96,7 +90,7 @@ export function ContentPage({
             <PublicFileImg src={heroImage.src} alt={heroImage.alt} width={1600} height={900} />
           </div>
         </div>
-      </section>
+      </MotionReveal>
 
       <div className="content-page__grid">
         <div className="content-page__main">
@@ -128,8 +122,13 @@ export function ContentPage({
             </section>
           ) : null}
 
+          {mainLead}
+
+          <PathwayInfographics sections={sections} />
+          <MotionStagger>
           {sections.map((section, index) => (
-            <div key={`${section.title}-${index}`} id={sectionAnchorId(section.title, index)} className="content-section-anchor">
+            <MotionItem key={`${section.title}-${index}`}>
+            <div id={sectionAnchorId(section.title, index)} className="content-section-anchor">
               {index > 0 || officialResources.length ? (
                 <hr className="content-divider" aria-hidden="true" />
               ) : null}
@@ -151,7 +150,9 @@ export function ContentPage({
                 </div>
               </details>
             </div>
+            </MotionItem>
           ))}
+          </MotionStagger>
 
           {faq.length ? (
             <>
@@ -196,23 +197,6 @@ export function ContentPage({
             </nav>
           ) : null}
           {asideTools ? <div className="content-page__aside-tools">{asideTools}</div> : null}
-          {isVisaGuidePage ? (
-            <div className="content-aside-card bento-hover">
-              <p className="section-label">Quick actions</p>
-              <h3>Need faster direction?</h3>
-              <div className="content-aside-card__actions">
-                <Link href="/#quiz" className="btn btn-ghost">
-                  Check your eligibility
-                </Link>
-                <Link href="/book-consultation" className="btn btn-primary">
-                  Book consultation
-                </Link>
-                <a href={`tel:${String(siteData.brand.phone || "").replace(/\s+/g, "")}`} className="content-aside-card__text-link">
-                  Call now: {siteData.brand.phone}
-                </a>
-              </div>
-            </div>
-          ) : null}
           <div className="content-aside-card bento-hover">
             <p className="section-label">Next steps</p>
             <h3>{ctaTitle || personalizedCta.title}</h3>

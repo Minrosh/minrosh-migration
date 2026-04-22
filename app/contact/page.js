@@ -10,9 +10,9 @@ import { SiteShell } from "../../components/site-shell";
 import { StructuredData } from "../../components/structured-data";
 import { buildMetadata, breadcrumbJsonLd } from "../../lib/seo";
 import Link from "next/link";
+import { BreadcrumbsNav } from "../../components/breadcrumbs-nav";
 import { PublicFileImg } from "../../components/public-file-img";
 import { SiteSocialIcons } from "../../components/site-social-icons";
-import { PageHeroStrip } from "../../components/ui/page-hero-strip";
 
 const pageData = seoPages.servicePages.contact;
 
@@ -36,41 +36,20 @@ export default function ContactPage() {
           { name: "Contact", path: pageData.path },
         ])}
       />
-      <div className="marketing-visual-ref">
-      <PageHeroStrip
-        title={pageData.headline}
-        subtitle={pageData.intro}
-        eyebrow="Contact MinRosh Migration"
-        bgImage="/images/brisbane-nightlagoon.png"
-        bgAlt="Brisbane night skyline reflections"
-      />
       <section className="content-page">
-        <nav className="breadcrumbs" aria-label="Breadcrumb">
-          <span>
-            <Link href="/">Home</Link>
-          </span>
-          <span className="breadcrumbs__sep">/</span>
-          <span>
-            <Link href={pageData.path}>Contact</Link>
-          </span>
-        </nav>
+        <BreadcrumbsNav
+          currentPath={pageData.path}
+          items={[
+            { label: "Home", href: "/" },
+            { label: "Contact", href: pageData.path },
+          ]}
+        />
         <section className="content-hero">
           <div className="content-hero__grid">
             <div className="content-hero__copy">
               <p className="section-label">Contact MinRosh Migration</p>
-              <h2>{pageData.headline}</h2>
+              <h1>{pageData.headline}</h1>
               <p>{pageData.intro}</p>
-              <div className="contact-quick-actions" aria-label="Quick contact actions">
-                <Link href="/assessment" className="btn btn-primary">
-                  Start Free Assessment
-                </Link>
-                <Link href="/book-consultation" className="btn btn-ghost">
-                  Book Consultation
-                </Link>
-              </div>
-              <p className="contact-trust-line">
-                Trusted by applicants across Australia and overseas • Private and secure enquiry handling • Brisbane-based support
-              </p>
               <ul className="feature-list">
                 <li>Clear next-step guidance based on your current profile and timing</li>
                 <li>Support for skilled, student, partner, and complex case pathways</li>
@@ -160,14 +139,9 @@ export default function ContactPage() {
             <AgentRegistrationStrip brand={siteData.brand} />
             <QuickEnquiryForm />
             <ContactLeadForm />
-            <p className="contact-privacy-note">
-              Privacy note: we use your details to respond to this enquiry and coordinate follow-up support. You can review data handling terms in our{" "}
-              <Link href="/privacy-policy">Privacy Policy</Link>.
-            </p>
           </div>
         </div>
       </section>
-      </div>
     </SiteShell>
   );
 }

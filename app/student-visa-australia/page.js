@@ -4,6 +4,9 @@ import { ContentPage } from "../../components/content-page";
 import { SiteShell } from "../../components/site-shell";
 import { StructuredData } from "../../components/structured-data";
 import { buildMetadata, breadcrumbJsonLd, faqJsonLd } from "../../lib/seo";
+import { getLifestyleGuide } from "../../lib/lifestyle-guides";
+import { getFirst14Days, getStudentJobBoardAu, getTransportGuide } from "../../lib/experience-data";
+import { LifestyleExperienceBlock } from "../../components/lifestyle/lifestyle-experience-block";
 
 const pageData = seoPages.servicePages.studentVisa;
 
@@ -15,6 +18,11 @@ export const metadata = buildMetadata({
 });
 
 export default function StudentVisaPage() {
+  const lifestyleGuide = getLifestyleGuide("student-australia");
+  const first14 = getFirst14Days("student-australia");
+  const transport = getTransportGuide("australia");
+  const jobBoard = getStudentJobBoardAu();
+
   return (
     <SiteShell siteData={siteData} currentPath={pageData.path}>
       <StructuredData
@@ -34,6 +42,14 @@ export default function StudentVisaPage() {
         ]}
         officialResources={pageData.officialResources ?? []}
         currentPath={pageData.path}
+        mainLead={
+          <LifestyleExperienceBlock
+            guide={lifestyleGuide}
+            first14={first14}
+            transport={transport}
+            jobBoard={jobBoard}
+          />
+        }
         sections={pageData.sections}
         faq={pageData.faq}
         related={[

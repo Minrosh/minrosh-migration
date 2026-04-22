@@ -12,6 +12,15 @@ import {
   isDestinationSectionId,
 } from "../../../../lib/destination-nav";
 import { getDestinationSectionPage } from "../../../../lib/destination-section-content";
+import { getLifestyleGuide } from "../../../../lib/lifestyle-guides";
+import { getFirst14Days, getStudentJobBoardAu, getTransportGuide } from "../../../../lib/experience-data";
+import { LifestyleExperienceBlock } from "../../../../components/lifestyle/lifestyle-experience-block";
+
+function lifestyleGuideForSection(slug, section) {
+  if (section !== "student") return null;
+  if (slug === "australia") return getLifestyleGuide("student-australia");
+  return getLifestyleGuide(slug);
+}
 
 export function generateStaticParams() {
   return Object.keys(destinations).flatMap((slug) =>
@@ -49,6 +58,12 @@ export default async function DestinationSectionPage({ params }) {
   const hubPath = `/destinations/${slug}`;
   const path = `${hubPath}/${section}`;
   const sectionLabel = getDestinationSectionLabel(section);
+  const lifestyleGuide = lifestyleGuideForSection(slug, section);
+  const first14 =
+    section === "student" ? getFirst14Days(slug === "australia" ? "student-australia" : slug) : null;
+  const transport = section === "student" ? getTransportGuide(slug) : null;
+  const jobBoard =
+    section === "student" && slug === "australia" ? getStudentJobBoardAu() : null;
 
   const jsonLd = [
     breadcrumbJsonLd([
@@ -81,6 +96,14 @@ export default async function DestinationSectionPage({ params }) {
           { href: path, label: sectionLabel },
         ]}
         officialResources={data.officialResources ?? []}
+        mainLead={
+          <LifestyleExperienceBlock
+            guide={lifestyleGuide}
+            first14={first14}
+            transport={transport}
+            jobBoard={jobBoard}
+          />
+        }
         sections={data.sections ?? []}
         faq={data.faq ?? []}
         related={data.related ?? []}

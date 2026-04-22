@@ -68,6 +68,18 @@ export function HomeEligibilityWizard() {
     setTiming("");
   }, []);
 
+  const goToSmartNavigator = useCallback((event) => {
+    event.preventDefault();
+    const href = "/#smart-navigator";
+    if (window.location.pathname !== "/") {
+      window.location.href = href;
+      return;
+    }
+    window.history.replaceState(null, "", href);
+    window.dispatchEvent(new CustomEvent("minrosh-hashnav"));
+    document.getElementById("smart-navigator")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, []);
+
   return (
     <div className="home-eligibility-wizard" aria-labelledby="home-eligibility-wizard-title">
       <div className="home-eligibility-wizard__card">
@@ -116,7 +128,7 @@ export function HomeEligibilityWizard() {
                   <button type="button" className="home-eligibility-wizard__btn-primary" onClick={() => setStep(1)}>
                     Start eligibility check
                   </button>
-                  <Link href="/#smart-navigator" className="home-eligibility-wizard__btn-secondary">
+                  <Link href="/#smart-navigator" onClick={goToSmartNavigator} className="home-eligibility-wizard__btn-secondary">
                     Jump to Smart Navigator
                   </Link>
                 </div>
@@ -218,7 +230,11 @@ export function HomeEligibilityWizard() {
                   book when you want a case conversation.
                 </p>
                 <div className="home-eligibility-wizard__result-ctas">
-                  <Link href="/#smart-navigator" className="home-eligibility-wizard__cta home-eligibility-wizard__cta--primary">
+                  <Link
+                    href="/#smart-navigator"
+                    onClick={goToSmartNavigator}
+                    className="home-eligibility-wizard__cta home-eligibility-wizard__cta--primary"
+                  >
                     Run Smart Navigator
                   </Link>
                   <Link href="/#quiz" className="home-eligibility-wizard__cta home-eligibility-wizard__cta--ghost">

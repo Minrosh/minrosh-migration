@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import {
   buildNavigatorRecommendation,
   navigatorSteps,
@@ -15,8 +16,10 @@ export function SmartNavigator({
   primaryLabel = "Continue",
   finalHref = "/book-consultation",
 }) {
+  const searchParams = useSearchParams();
   const [stepIndex, setStepIndex] = useState(0);
   const [answers, setAnswers] = useState({});
+  const [intentHint, setIntentHint] = useState("");
 
   const currentStep = navigatorSteps[stepIndex];
   const progress = ((stepIndex + 1) / navigatorSteps.length) * 100;
@@ -25,6 +28,13 @@ export function SmartNavigator({
     () => (complete ? buildNavigatorRecommendation(answers) : null),
     [answers, complete]
   );
+
+  useEffect(() => {
+    const query = String(searchParams?.get("q") || "").trim();
+    if (!query) return;
+    setIntentHint(query);
+    setStepIndex((current) => (current === 0 ? 1 : current));
+  }, [searchParams]);
 
   useEffect(() => {
     if (!recommendation || typeof window === "undefined") {
@@ -56,6 +66,11 @@ export function SmartNavigator({
         </div>
         <p className="process-section__lead">{description}</p>
       </div>
+      {intentHint ? (
+        <p className="mt-2 rounded-xl border border-brand-rose/25 bg-brand-rose/10 px-3 py-2 text-sm text-brand-plum/80">
+          Using your typed intent: <strong>{intentHint}</strong>
+        </p>
+      ) : null}
 
       <div className="quiz-shell">
         <div className="rounded-[2rem] border border-white/60 bg-white/75 backdrop-blur-md shadow-xl p-3 sm:p-4">

@@ -1,0 +1,77 @@
+{
+  "eyebrow": "Work while you study (mock)",
+  "title": "Student job board — sample listings",
+  "lead": "Fictitious roles for layout and planning conversations only. Pay bands are illustrative, not offers or averages.",
+  "disclaimer": "Always follow your visa work conditions and institution workload expectations. This board does not list real employers.",
+  "filters": ["All", "Retail", "Hospitality", "Campus", "Delivery"],
+  "listings": [
+    {
+      "id": "l1",
+      "title": "Weekend checkout — large format grocer",
+      "employer": "Sample Retail Co.",
+      "tags": ["Retail"],
+      "hoursPerWeek": "12–16",
+      "payBand": "$24–27/hr illustrative",
+      "detail": "Early Saturday opens; closed-toe shoes mandatory. Roster drops fortnightly."
+    },
+    {
+      "id": "l2",
+      "title": "Evening floor — neighbourhood bistro",
+      "employer": "Sample Hospo Pty Ltd",
+      "tags": ["Hospitality"],
+      "hoursPerWeek": "15–22",
+      "payBand": "$26–31/hr illustrative + tips variable",
+      "detail": "Peak is Thu–Sat; good for conversation English practice, hard on assignment weeks."
+    },
+    {
+      "id": "l3",
+      "title": "Library shelver — campus casual pool",
+      "employer": "Sample University",
+      "tags": ["Campus"],
+      "hoursPerWeek": "8–12",
+      "payBand": "$31–35/hr illustrative",
+      "detail": "Quiet shifts around exams; hiring often opens week three of semester."
+    },
+    {
+      "id": "l4",
+      "title": "Bike delivery — metro inner ring",
+      "employer": "Sample Delivery Network",
+      "tags": ["Delivery"],
+      "hoursPerWeek": "10–18",
+      "payBand": "Per-drop + distance illustrative",
+      "detail": "Rain gear and phone mount essential; track kilometres for tax diary habit."
+    },
+    {
+      "id": "l5",
+      "title": "Pop-up events staff — stadium gigs",
+      "employer": "Sample Events Crew",
+      "tags": ["Hospitality"],
+      "hoursPerWeek": "0–25 (spiky)",
+      "payBand": "$28–34/hr illustrative",
+      "detail": "Irregular bursts around concerts—great for savings spikes, risky during assignment crunch."
+    },
+    {
+      "id": "l6",
+      "title": "Tech shop — sales assistant (evenings)",
+      "employer": "Sample Electronics",
+      "tags": ["Retail"],
+      "hoursPerWeek": "12–18",
+      "payBand": "$25–29/hr illustrative",
+      "detail": "Product training provided; KPIs for attachments—ask about quiet study days before signing."
+    }
+  ],
+  "sanityMeter": {
+    "title": "Hours vs study — sanity strip",
+    "workLabel": "Paid work hours / week (your scenario)",
+    "studyLabel": "Study load (contact hours + assignments) / week",
+    "workDefault": 14,
+    "studyDefault": 32,
+    "workMax": 38,
+    "studyMax": 55,
+    "zones": [
+      { "maxScore": 35, "label": "Sustainable band", "tone": "emerald", "hint": "Room for sleep, meals, and a social pulse." },
+      { "maxScore": 55, "label": "Tight but common", "tone": "amber", "hint": "Batch cooking, calendar blocks, and saying no to extra shifts protect grades." },
+      { "maxScore": 999, "label": "Burnout risk", "tone": "rose", "hint": "Shorten one axis—usually paid hours—before assessments stack." }
+    ]
+  }
+}

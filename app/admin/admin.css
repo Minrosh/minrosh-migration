@@ -32,4 +32,22 @@
   .admin-root *::after {
     box-sizing: border-box;
   }
+
+  .admin-root {
+    background:
+      radial-gradient(circle at 0% 0%, rgba(155, 74, 108, 0.14), transparent 30%),
+      radial-gradient(circle at 100% 10%, rgba(93, 63, 211, 0.1), transparent 28%),
+      linear-gradient(180deg, #fdfbfa 0%, #f7f1ec 100%);
+  }
+
+  .admin-root .bg-card {
+    background: rgba(255, 255, 255, 0.82) !important;
+    backdrop-filter: blur(12px);
+    border-color: hsl(var(--border) / 0.85) !important;
+    box-shadow: 0 12px 48px rgba(61, 36, 50, 0.08);
+  }
+
+  .admin-root .text-primary {
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
+  }
 }
