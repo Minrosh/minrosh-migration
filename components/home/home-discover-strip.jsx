@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const PATHWAY_PILLS = [
   { label: "Skilled", href: "/skilled-migration" },
@@ -24,19 +25,20 @@ const TRUST_CHIPS = [
  */
 export function HomeDiscoverStrip() {
   const [navigatorQuery, setNavigatorQuery] = useState("");
+  const router = useRouter();
 
   function openSmartNavigator(event) {
     event.preventDefault();
     const encoded = navigatorQuery.trim() ? `?q=${encodeURIComponent(navigatorQuery.trim())}` : "";
     const targetHref = `/${encoded}#smart-navigator`;
-    if (window.location.pathname !== "/") {
-      window.location.href = targetHref;
-      return;
-    }
-    window.history.replaceState(null, "", targetHref);
-    window.dispatchEvent(new CustomEvent("minrosh-hashnav"));
-    const target = document.getElementById("smart-navigator");
-    target?.scrollIntoView({ behavior: "smooth", block: "start" });
+    router.push(targetHref);
+    
+    // Fallback for smooth scroll if router.push doesn't jump immediately
+    setTimeout(() => {
+      window.dispatchEvent(new CustomEvent("minrosh-hashnav"));
+      const target = document.getElementById("smart-navigator");
+      target?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 50);
   }
 
   return (
