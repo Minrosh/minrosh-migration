@@ -33,6 +33,20 @@ function statusVariant(s) {
   return "warning";
 }
 
+async function parseJsonResponseSafe(response) {
+  const rawText = await response.text();
+  try {
+    return rawText ? JSON.parse(rawText) : {};
+  } catch {
+    return {};
+  }
+}
+
+function contextualError(operation, message, fallback) {
+  const detail = String(message || fallback || "Unexpected error").trim();
+  return `${operation}: ${detail}`;
+}
+
 export function CustomersPanel() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -40,6 +54,7 @@ export function CustomersPanel() {
   const [listTotal, setListTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [listBusy, setListBusy] = useState(false);
+  const [listError, setListError] = useState("");
   const [searchInput, setSearchInput] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [page, setPage] = useState(0);
@@ -50,6 +65,7 @@ export function CustomersPanel() {
   const [detailId, setDetailId] = useState(null);
   const [plainBootstrap, setPlainBootstrap] = useState(null);
   const [marketingConsentCreate, setMarketingConsentCreate] = useState(true);
+  const [createError, setCreateError] = useState("");
   const listFetchStartedRef = useRef(false);
 
   useEffect(() => {
@@ -76,6 +92,7 @@ export function CustomersPanel() {
     } else {
       setListBusy(true);
     }
+    setListError("");
     const params = new URLSearchParams({
       status: tab,
       limit: String(PAGE_SIZE),
@@ -83,15 +100,23 @@ export function CustomersPanel() {
     });
     if (debouncedSearch) params.set("q", debouncedSearch);
     fetch(`/api/admin/customers?${params.toString()}`)
-      .then((r) => r.json())
-      .then((payload) => {
+      .then(async (r) => ({ res: r, payload: await parseJsonResponseSafe(r) }))
+      .then(({ res, payload }) => {
         const d = payload?.data && typeof payload.data === "object" ? payload.data : payload;
+        const errorMessage = payload?.error?.message || payload?.error || d?.error;
+        if (!res.ok) {
+          setCustomers([]);
+          setListTotal(0);
+          setListError(contextualError("Load customers", errorMessage, "Could not load customers."));
+          return;
+        }
         setCustomers(d.customers || []);
         setListTotal(typeof d.total === "number" ? d.total : 0);
       })
       .catch(() => {
         setCustomers([]);
         setListTotal(0);
+        setListError(contextualError("Load customers", "", "Network error while loading customers."));
       })
       .finally(() => {
         setLoading(false);
@@ -158,22 +183,32 @@ export function CustomersPanel() {
 
   async function createCustomer(e) {
     e.preventDefault();
-    const res = await fetch("/api/admin/customers", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, status, marketingConsent: marketingConsentCreate }),
-    });
-    const payload = await res.json().catch(() => ({}));
-    const d = payload?.data && typeof payload.data === "object" ? payload.data : payload;
-    setName("");
-    setEmail("");
-    setStatus("prospective");
-    setMarketingConsentCreate(true);
-    if (d.customer?.id && d.magicUploadToken) {
-      setPlainBootstrap({ id: d.customer.id, token: d.magicUploadToken });
-      setDetailId(d.customer.id);
+    setCreateError("");
+    try {
+      const res = await fetch("/api/admin/customers", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, status, marketingConsent: marketingConsentCreate }),
+      });
+      const payload = await parseJsonResponseSafe(res);
+      const d = payload?.data && typeof payload.data === "object" ? payload.data : payload;
+      const errorMessage = payload?.error?.message || payload?.error || d?.error;
+      if (!res.ok) {
+        setCreateError(contextualError("Create customer", errorMessage, "Could not create customer."));
+        return;
+      }
+      setName("");
+      setEmail("");
+      setStatus("prospective");
+      setMarketingConsentCreate(true);
+      if (d.customer?.id && d.magicUploadToken) {
+        setPlainBootstrap({ id: d.customer.id, token: d.magicUploadToken });
+        setDetailId(d.customer.id);
+      }
+      load();
+    } catch {
+      setCreateError(contextualError("Create customer", "", "Network error while creating customer."));
     }
-    load();
   }
 
   if (loading) {
@@ -245,6 +280,7 @@ export function CustomersPanel() {
             </label>
             <Button type="submit">Create</Button>
           </form>
+          {createError ? <p className="mt-3 text-sm text-destructive">{createError}</p> : null}
         </CardContent>
       </Card>
 
@@ -281,6 +317,7 @@ export function CustomersPanel() {
           </div>
         </CardHeader>
         <CardContent className="space-y-4">
+          {listError ? <p className="text-sm text-destructive">{listError}</p> : null}
           <div className={`relative overflow-x-auto rounded-md border border-border ${listBusy ? "opacity-60" : ""}`}>
             <table className="w-full text-sm">
               <thead>

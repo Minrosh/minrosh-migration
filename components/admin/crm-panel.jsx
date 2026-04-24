@@ -24,6 +24,15 @@ function priorityBadgeVariant(band) {
   return "outline";
 }
 
+async function parseJsonResponseSafe(response) {
+  const rawText = await response.text();
+  try {
+    return rawText ? JSON.parse(rawText) : {};
+  } catch {
+    return {};
+  }
+}
+
 export function CrmPanel() {
   const [enquiries, setEnquiries] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -34,7 +43,7 @@ export function CrmPanel() {
 
   useEffect(() => {
     fetch("/api/admin/enquiries")
-      .then((r) => r.json())
+      .then((r) => parseJsonResponseSafe(r))
       .then((payload) => {
         const d = payload?.data && typeof payload.data === "object" ? payload.data : payload;
         setEnquiries(d.enquiries || []);
@@ -111,7 +120,7 @@ export function CrmPanel() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(requestPayload),
     });
-    let responsePayload = await res.json();
+    let responsePayload = await parseJsonResponseSafe(res);
     let d = responsePayload?.data && typeof responsePayload.data === "object" ? responsePayload.data : responsePayload;
     let details = responsePayload?.error?.details && typeof responsePayload.error.details === "object" ? responsePayload.error.details : d;
     if (res.status === 409 && details.needsBroadcastConfirmation) {
@@ -127,7 +136,7 @@ export function CrmPanel() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...requestPayload, broadcastConfirmed: true }),
       });
-      responsePayload = await res.json();
+      responsePayload = await parseJsonResponseSafe(res);
       d = responsePayload?.data && typeof responsePayload.data === "object" ? responsePayload.data : responsePayload;
       details = responsePayload?.error?.details && typeof responsePayload.error.details === "object" ? responsePayload.error.details : d;
     }

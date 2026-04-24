@@ -8,10 +8,6 @@ const nextConfig = {
   serverExternalPackages: ["tesseract.js", "@resvg/resvg-js"],
   // Avoid wrong root when a package-lock.json exists above the app (e.g. in $HOME).
   outputFileTracingRoot: path.join(__dirname),
-  // Reduces rare standalone misses of next/dist/server/web (fixes ./web/sandbox MODULE_NOT_FOUND).
-  outputFileTracingIncludes: {
-    "/**": ["./node_modules/next/dist/server/web/**/*"],
-  },
   output: "standalone",
   poweredByHeader: false,
   compress: true,

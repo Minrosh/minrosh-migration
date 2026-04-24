@@ -2,6 +2,15 @@
 
 import { useCallback, useEffect, useState } from "react";
 
+async function parseJsonResponseSafe(response) {
+  const rawText = await response.text();
+  try {
+    return rawText ? JSON.parse(rawText) : {};
+  } catch {
+    return {};
+  }
+}
+
 export function PublicUploadForm({ token }) {
   const [status, setStatus] = useState("");
   const [loading, setLoading] = useState(false);
@@ -14,7 +23,7 @@ export function PublicUploadForm({ token }) {
 
   const refreshDocuments = useCallback(async () => {
     const res = await fetch(`/api/upload/${token}`, { credentials: "include" });
-    const data = await res.json().catch(() => ({}));
+    const data = await parseJsonResponseSafe(res);
     if (res.status === 410) {
       setGate("expired");
       setStatus(data.error || "This link has expired.");
@@ -56,7 +65,7 @@ export function PublicUploadForm({ token }) {
         method: "POST",
         credentials: "include",
       });
-      const data = await res.json().catch(() => ({}));
+      const data = await parseJsonResponseSafe(res);
       if (!res.ok) {
         setStatus(data.error || "Could not send code.");
         setOtpBusy(false);
@@ -80,7 +89,7 @@ export function PublicUploadForm({ token }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ code: otpCode.replace(/\D/g, "") }),
       });
-      const data = await res.json().catch(() => ({}));
+      const data = await parseJsonResponseSafe(res);
       if (!res.ok) {
         setStatus(data.error || "Verification failed.");
         setOtpBusy(false);
@@ -108,7 +117,7 @@ export function PublicUploadForm({ token }) {
       const fd = new FormData();
       Array.from(list).forEach((file) => fd.append("files", file));
       const res = await fetch(`/api/upload/${token}`, { method: "POST", body: fd, credentials: "include" });
-      const data = await res.json().catch(() => ({}));
+      const data = await parseJsonResponseSafe(res);
       if (res.status === 401 || res.status === 403 || res.status === 410) {
         setStatus(data.error || "Upload blocked.");
         if (res.status === 410) setGate("expired");

@@ -102,9 +102,26 @@ export function ContactChatPanel({ siteData, isActive }) {
         headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify(payload),
       });
-      const payload = await response.json();
+      const rawText = await response.text();
+      let payload;
+      try {
+        payload = rawText ? JSON.parse(rawText) : {};
+      } catch {
+        setContactState({
+          status: "error",
+          message:
+            response.status >= 500
+              ? "The server returned an unexpected reply. Please try again shortly."
+              : "We could not read the server response. Please refresh and try again.",
+        });
+        return;
+      }
       const data = payload?.data && typeof payload.data === "object" ? payload.data : payload;
-      const errorMessage = payload?.error?.message || payload?.error || data?.error;
+      const err = payload?.error;
+      const errorMessage =
+        (typeof err === "object" && err != null && typeof err.message === "string" ? err.message : null) ||
+        (typeof err === "string" ? err : null) ||
+        (typeof data?.error === "string" ? data.error : null);
       if (!response.ok || !(payload?.ok ?? data?.ok)) throw new Error(errorMessage || "Could not submit enquiry.");
       setContactState({
         status: "success",

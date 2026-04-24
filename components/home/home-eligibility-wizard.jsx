@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { useCallback, useMemo, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import socialProofData from "../../data/home-eligibility-social-proof.json";
 
 const CITIZENSHIP_OPTIONS = [
   { id: "au", label: "Australia (citizen / PR)" },
@@ -52,6 +54,12 @@ export function HomeEligibilityWizard() {
     [citizenship]
   );
   const timingLabel = useMemo(() => TIMING_OPTIONS.find((t) => t.id === timing)?.label ?? "", [timing]);
+  const progressRaw = Math.round((Math.min(step, LAST_QUESTION_STEP) / LAST_QUESTION_STEP) * 100);
+  const progressPct = Math.min(100, 40 + progressRaw * 0.6);
+  const socialStats = Array.isArray(socialProofData?.stats) ? socialProofData.stats : [];
+  const milestones = Array.isArray(socialProofData?.milestones) ? socialProofData.milestones : [];
+  const momentumIndex = Math.min(Math.max(step - 1, 0), milestones.length - 1);
+  const momentumMilestone = momentumIndex >= 0 ? milestones[momentumIndex] : null;
 
   const goNext = useCallback(() => {
     setStep((s) => Math.min(s + 1, RESULT_STEP));
@@ -94,8 +102,19 @@ export function HomeEligibilityWizard() {
                 ? "No long forms — three quick choices, then we suggest the best next page or tool."
                 : step === RESULT_STEP
                   ? "General guidance only — confirm everything on official sources before you lodge."
-                  : `Question ${step} of ${LAST_QUESTION_STEP}`}
+                : `Question ${step} of ${LAST_QUESTION_STEP} - you are already 40% complete`}
             </p>
+            <div
+              aria-label="Eligibility progress"
+              className="mt-3 h-2 overflow-hidden rounded-full bg-brand-plum/10"
+            >
+              <motion.div
+                className="h-full rounded-full bg-gradient-to-r from-brand-rose to-brand-gold"
+                initial={{ width: 0 }}
+                animate={{ width: `${progressPct}%` }}
+                transition={{ duration: 0.35 }}
+              />
+            </div>
             {step > 0 && step <= LAST_QUESTION_STEP ? (
               <div className="home-eligibility-wizard__progress" aria-hidden>
                 {Array.from({ length: LAST_QUESTION_STEP }).map((_, i) => (
@@ -121,6 +140,24 @@ export function HomeEligibilityWizard() {
           </div>
 
           <div className="home-eligibility-wizard__body">
+            {socialStats.length ? (
+              <div className="mb-4 grid gap-2 sm:grid-cols-3" aria-label="Social proof signals">
+                {socialStats.map((item) => (
+                  <div key={item.id} className="rounded-xl border border-brand-plum/15 bg-white/80 px-3 py-2">
+                    <p className="text-sm font-semibold text-brand-plum">{item.value}</p>
+                    <p className="text-xs text-brand-ink/80">{item.label}</p>
+                  </div>
+                ))}
+              </div>
+            ) : null}
+            <AnimatePresence mode="wait">
+            <motion.div
+              key={`eligibility-step-${step}`}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2 }}
+            >
             {step === 0 ? (
               <div className="home-eligibility-wizard__step">
                 <p className="home-eligibility-wizard__question">What would you like to do first?</p>
@@ -247,6 +284,13 @@ export function HomeEligibilityWizard() {
                     Book consultation
                   </Link>
                 </div>
+                {momentumMilestone ? (
+                  <div className="rounded-xl border border-brand-rose/25 bg-brand-rose/5 p-3">
+                    <p className="text-xs font-semibold uppercase tracking-wide text-brand-plum">Endowed progress</p>
+                    <p className="mt-1 text-sm font-semibold text-brand-ink">{momentumMilestone.title}</p>
+                    <p className="mt-1 text-sm text-brand-ink/80">{momentumMilestone.description}</p>
+                  </div>
+                ) : null}
                 {goalMeta?.href ? (
                   <p className="home-eligibility-wizard__result-page">
                     <Link href={goalMeta.href} className="home-eligibility-wizard__link">
@@ -266,6 +310,8 @@ export function HomeEligibilityWizard() {
                 </button>
               </div>
             ) : null}
+            </motion.div>
+            </AnimatePresence>
           </div>
 
           {step > 0 && step < RESULT_STEP ? (

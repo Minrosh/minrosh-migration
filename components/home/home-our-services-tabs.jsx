@@ -3,24 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
-
-const TABS = [
-  { id: "all", label: "All pathways" },
-  { id: "skilled", label: "Skilled & work" },
-  { id: "life", label: "Study & family" },
-  { id: "resources", label: "Official sources" },
-];
-
-function serviceMatchesTab(href, tabId) {
-  if (tabId === "all") return true;
-  if (tabId === "skilled") return href.includes("skilled-migration") || href.includes("employer-sponsored");
-  if (tabId === "life")
-    return (
-      href.includes("student-visa") || href.includes("partner-visa") || href.includes("visitor-visas")
-    );
-  if (tabId === "resources") return href.includes("australian-visas-official");
-  return true;
-}
+import decisionSignals from "../../data/home-services-decision-signals.json";
 
 function iconForHref(href) {
   if (href.includes("skilled-migration")) return "🧭";
@@ -35,14 +18,16 @@ function iconForHref(href) {
  * Premium “switchboard” for home service cards: tab strip + stable-height panels.
  */
 export function HomeOurServicesTabs({ services, visualHighlights }) {
-  const [active, setActive] = useState("all");
+  const [expandedHref, setExpandedHref] = useState("");
 
-  const list = useMemo(
-    () => (Array.isArray(services) ? services.filter((s) => serviceMatchesTab(s.href, active)) : []),
-    [services, active]
-  );
+  const list = useMemo(() => (Array.isArray(services) ? services : []), [services]);
 
   const highlights = Array.isArray(visualHighlights) ? visualHighlights : [];
+  const confidenceStrip = Array.isArray(decisionSignals?.confidenceStrip) ? decisionSignals.confidenceStrip : [];
+  const disclosureStages = Array.isArray(decisionSignals?.disclosureStages) ? decisionSignals.disclosureStages : [];
+  const expandedIndex = list.findIndex((item) => item.href === expandedHref);
+  const stageIndex = expandedIndex >= 0 ? 2 : 0;
+  const activeStage = disclosureStages[stageIndex] || disclosureStages[0];
 
   return (
     <div className="home-our-services-tabs">
@@ -78,50 +63,45 @@ export function HomeOurServicesTabs({ services, visualHighlights }) {
         </div>
       </div>
 
-      <div className="home-our-services-tabs__tablist-wrap" role="tablist" aria-label="Filter services by topic">
-        {TABS.map((tab) => {
-          const isActive = active === tab.id;
-          return (
-            <button
-              key={tab.id}
-              type="button"
-              role="tab"
-              aria-selected={isActive}
-              id={`home-svc-tab-${tab.id}`}
-              aria-controls={`home-svc-panel-${tab.id}`}
-              className={`home-our-services-tabs__tab ${isActive ? "is-active" : ""}`}
-              onClick={() => setActive(tab.id)}
-            >
-              {tab.label}
-            </button>
-          );
-        })}
-      </div>
-
-      <div
-        className="home-our-services-tabs__panels"
-        role="tabpanel"
-        id={`home-svc-panel-${active}`}
-        aria-labelledby={`home-svc-tab-${active}`}
-      >
+      <div className="home-our-services-tabs__panels">
         <div className="home-our-services-tabs__panel-inner">
+          {confidenceStrip.length ? (
+            <div className="mb-4 grid gap-2 sm:grid-cols-3" aria-label="Service decision confidence signals">
+              {confidenceStrip.map((item) => (
+                <div
+                  key={item.id}
+                  className="rounded-2xl border border-brand-plum/15 bg-white/75 px-4 py-3 shadow-sm backdrop-blur"
+                >
+                  <p className="text-sm font-bold text-brand-plum">{item.value}</p>
+                  <p className="text-xs text-brand-ink/80">{item.label}</p>
+                </div>
+              ))}
+            </div>
+          ) : null}
+          {activeStage ? (
+            <div className="mb-5 rounded-2xl border border-brand-gold/30 bg-brand-gold/5 p-4">
+              <p className="text-xs font-semibold uppercase tracking-wide text-brand-plum">Progressive disclosure</p>
+              <p className="mt-1 text-sm font-semibold text-brand-ink">{activeStage.title}</p>
+              <p className="mt-1 text-sm text-brand-ink/80">{activeStage.description}</p>
+            </div>
+          ) : null}
           {list.length ? (
             <div className="home-our-services-tabs__grid">
               {list.map((service) => {
-                const idx = Math.max(0, services.findIndex((s) => s.href === service.href));
+                const idx = Math.max(0, list.findIndex((s) => s.href === service.href));
                 const mod = highlights.length ? idx % highlights.length : 0;
                 const highlight = highlights[mod] ?? highlights[0];
                 if (!highlight) return null;
                 return (
                   <article
                     key={service.href}
-                    className="group relative flex h-full min-h-[420px] flex-col overflow-hidden rounded-3xl border border-brand-plum/20 bg-brand-plum shadow-xl shadow-brand-plum/25 transition duration-300 hover:-translate-y-1 hover:border-brand-gold/60 hover:shadow-2xl hover:shadow-brand-plum/30"
+                    className="group relative flex h-full min-h-[420px] flex-col overflow-hidden rounded-3xl border border-white/30 bg-white/40 shadow-xl shadow-brand-plum/20 backdrop-blur-md transition duration-300 hover:-translate-y-1 hover:border-brand-gold/60 hover:shadow-2xl hover:shadow-brand-plum/30"
                   >
                     <Link
                       href={service.href}
                       className="relative z-0 flex h-full min-h-0 flex-1 flex-col rounded-3xl no-underline focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold focus-visible:ring-offset-2 focus-visible:ring-offset-brand-cream"
                     >
-                      <div className="absolute inset-0 z-0 overflow-hidden">
+                        <div className="absolute inset-0 z-0 overflow-hidden">
                         <Image
                           src={highlight.src}
                           alt={highlight.alt}
@@ -130,11 +110,11 @@ export function HomeOurServicesTabs({ services, visualHighlights }) {
                           sizes="(max-width: 768px) 100vw, 33vw"
                           className="h-full w-full object-cover blur-[2px] transition duration-500 ease-out group-hover:scale-105 group-hover:blur-0"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/75 to-black/20" aria-hidden />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/65 to-black/20" aria-hidden />
                       </div>
                       <div className="relative h-52 shrink-0 overflow-hidden">
                         <span
-                          className="absolute left-4 top-4 z-10 flex h-12 w-12 items-center justify-center rounded-2xl bg-white/95 text-xl shadow-md transition duration-300 ease-out group-hover:scale-110"
+                          className="absolute left-4 top-4 z-10 flex h-12 w-12 items-center justify-center rounded-2xl bg-white/95 text-xl shadow-md transition duration-300 ease-out group-hover:scale-110 group-hover:-translate-y-1"
                           aria-hidden
                         >
                           {iconForHref(service.href)}
@@ -143,7 +123,7 @@ export function HomeOurServicesTabs({ services, visualHighlights }) {
 
                       <div className="relative z-10 flex min-h-0 flex-1 flex-col justify-between p-6 sm:p-7">
                         <div className="min-h-0 flex-1">
-                          <div className="rounded-2xl border border-white/15 bg-black/45 p-4 backdrop-blur-sm">
+                          <div className="rounded-2xl border border-white/20 bg-black/40 p-4 backdrop-blur-sm">
                           <p className="mb-2 text-xs font-bold uppercase tracking-wider text-brand-gold">{highlight.title}</p>
                           <h3 className="mb-3 text-xl font-extrabold leading-snug tracking-tight text-white sm:text-2xl">
                             {service.title}
@@ -152,6 +132,23 @@ export function HomeOurServicesTabs({ services, visualHighlights }) {
                             &ldquo;{highlight.caption}&rdquo;
                           </p>
                           <p className="text-[0.94rem] font-normal leading-relaxed text-white/90">{service.summary}</p>
+                          <button
+                            type="button"
+                            className="mt-3 rounded-xl border border-white/20 bg-black/25 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-brand-gold transition hover:bg-black/40"
+                            onClick={(event) => {
+                              event.preventDefault();
+                              setExpandedHref((current) => (current === service.href ? "" : service.href));
+                            }}
+                          >
+                            {expandedHref === service.href ? "Hide deep details" : "Reveal deep details"}
+                          </button>
+                          {expandedHref === service.href ? (
+                            <ul className="mt-2 space-y-1 text-sm text-white/85">
+                              {service.highlights.slice(0, 4).map((item) => (
+                                <li key={item}>• {item}</li>
+                              ))}
+                            </ul>
+                          ) : null}
                           </div>
                         </div>
                         <div className="mt-auto flex items-center pt-5 text-sm font-bold tracking-wide text-brand-gold transition group-hover:text-white">

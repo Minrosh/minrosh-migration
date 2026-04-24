@@ -1,0 +1,51 @@
+{
+  "default": {
+    "nodes": [
+      { "id": "profile", "label": "Profile Snapshot", "x": 8, "y": 50, "tone": "rose" },
+      { "id": "evidence", "label": "Evidence Strategy", "x": 32, "y": 26, "tone": "plum" },
+      { "id": "lodgement", "label": "Lodgement Window", "x": 56, "y": 50, "tone": "gold" },
+      { "id": "settlement", "label": "Settlement Runway", "x": 82, "y": 32, "tone": "emerald" }
+    ],
+    "routes": [
+      {
+        "id": "balanced",
+        "label": "Balanced confidence route",
+        "eta": "4-7 months",
+        "certainty": 69,
+        "nodeIds": ["profile", "evidence", "lodgement", "settlement"]
+      },
+      {
+        "id": "speed",
+        "label": "Speed-first route",
+        "eta": "2-4 months",
+        "certainty": 58,
+        "nodeIds": ["profile", "lodgement", "settlement"]
+      }
+    ]
+  },
+  "australia": {
+    "nodes": [
+      { "id": "profile", "label": "Occupation + profile lock", "x": 7, "y": 54, "tone": "rose" },
+      { "id": "points", "label": "Points strategy", "x": 24, "y": 28, "tone": "plum" },
+      { "id": "eoi", "label": "EOI & nomination", "x": 44, "y": 50, "tone": "gold" },
+      { "id": "decision", "label": "Invitation / decision", "x": 65, "y": 30, "tone": "emerald" },
+      { "id": "arrival", "label": "Arrival execution", "x": 86, "y": 52, "tone": "sky" }
+    ],
+    "routes": [
+      {
+        "id": "pr",
+        "label": "PR momentum route",
+        "eta": "5-9 months",
+        "certainty": 76,
+        "nodeIds": ["profile", "points", "eoi", "decision", "arrival"]
+      },
+      {
+        "id": "partner",
+        "label": "Partner evidence route",
+        "eta": "4-8 months",
+        "certainty": 72,
+        "nodeIds": ["profile", "eoi", "decision", "arrival"]
+      }
+    ]
+  }
+}

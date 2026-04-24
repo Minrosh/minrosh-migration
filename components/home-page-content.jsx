@@ -1,11 +1,13 @@
 "use client";
 
-import Link from "next/link";
 import { useLayoutEffect, useState } from "react";
 import { ContactChatPanel } from "./home/contact-chat-panel";
+import { FuturePacingLab } from "./home/future-pacing-lab";
 import { QuizWizardPanel } from "./home/quiz-wizard-panel";
 import { QuizResultSkeleton } from "./home/quiz-result-skeleton";
+import { ServiceDecisionEngine } from "./home/service-decision-engine";
 import { StoriesCarouselPanel } from "./home/stories-carousel-panel";
+import futurePacingData from "../data/home-future-pacing.json";
 
 const TAB_IDS = new Set(["home", "quiz", "pathways", "services", "stories"]);
 
@@ -108,6 +110,7 @@ export function HomePageContent({ siteData, homeTab }) {
           </article>
         ))}
       </div>
+      <FuturePacingLab data={futurePacingData} />
     </section>
   );
 
@@ -120,26 +123,14 @@ export function HomePageContent({ siteData, homeTab }) {
       <div className="panel-hero">
         <div>
           <p className="section-label">Services</p>
-          <h2>Support shaped around real migration decisions</h2>
+          <h2>Get the right service without reading everything first</h2>
+          <p className="panel-hero__sub">
+            Choose your immediate intent and we prioritize the strongest service matches. Expand the full catalogue
+            only when you want deeper comparison.
+          </p>
         </div>
       </div>
-      <div className="services-layout">
-        {siteData.services.map((service) => (
-          <Link key={service.title} href={service.href} className="service-block bento-hover service-block__link">
-            <span className="service-block__eyebrow">Specialist Pathway</span>
-            <h3>{service.title}</h3>
-            <p>{service.summary}</p>
-            <ul className="feature-list">
-              {service.highlights.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-            <span className="service-block__linkline">
-              Learn more <span aria-hidden="true">→</span>
-            </span>
-          </Link>
-        ))}
-      </div>
+      <ServiceDecisionEngine services={siteData.services} />
     </section>
   );
 
@@ -166,7 +157,22 @@ export function HomePageContent({ siteData, homeTab }) {
       {pathwaysPanel}
       {servicesPanel}
 
-      <StoriesCarouselPanel siteData={siteData} isActive={activeTab === "stories"} />
+      <section
+        id="stories"
+        className={`tab-panel ${activeTab === "stories" ? "is-active" : ""}`}
+        aria-hidden={activeTab !== "stories"}
+      >
+        <div className="panel-hero">
+          <div>
+            <p className="section-label">Stories</p>
+            <h2>Browse outcomes that look like your profile</h2>
+            <p className="panel-hero__sub">
+              Filter by pathway type and timeline so social proof stays relevant to your decision stage.
+            </p>
+          </div>
+        </div>
+        <StoriesCarouselPanel siteData={siteData} isActive={activeTab === "stories"} wrapSection={false} />
+      </section>
     </div>
   );
 }

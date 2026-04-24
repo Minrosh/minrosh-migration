@@ -1,0 +1,27 @@
+{
+  "metrics": [
+    {
+      "id": "clarity",
+      "label": "Clarity",
+      "value": "94%",
+      "progress": 94
+    },
+    {
+      "id": "momentum",
+      "label": "Momentum",
+      "value": "79%",
+      "progress": 79
+    },
+    {
+      "id": "readiness",
+      "label": "Readiness",
+      "value": "71%",
+      "progress": 71
+    }
+  ],
+  "microProof": [
+    "Official-source aligned planning framework",
+    "Structured pathway shortlisting in minutes",
+    "Consultation-ready next steps with risk flags"
+  ]
+}

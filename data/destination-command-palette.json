@@ -1,0 +1,18 @@
+{
+  "defaultPrompts": [
+    "I want PR as fast as possible",
+    "I am exploring study pathways",
+    "I need partner visa clarity",
+    "I want official source links first"
+  ],
+  "intentHints": {
+    "skilled": "Points-tested and invitation-driven pathways",
+    "partner": "Relationship evidence and application sequencing",
+    "student": "Course fit, visa readiness, and post-study options",
+    "education": "Program and provider planning before visa steps",
+    "updates": "Policy and process changes that affect timing",
+    "faq": "Fast answers to common migration questions",
+    "about": "How MinRosh structures case support",
+    "contact": "Start an enquiry with your profile context"
+  }
+}

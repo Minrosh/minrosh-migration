@@ -6,6 +6,20 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
+async function parseJsonResponseSafe(response) {
+  const rawText = await response.text();
+  try {
+    return rawText ? JSON.parse(rawText) : {};
+  } catch {
+    return {};
+  }
+}
+
+function contextualError(operation, message, fallback) {
+  const detail = String(message || fallback || "Unexpected error").trim();
+  return `${operation}: ${detail}`;
+}
+
 function Icon({ children, className }) {
   return (
     <svg
@@ -230,6 +244,8 @@ export function AdminShell({ children }) {
   const router = useRouter();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [compactNav, setCompactNav] = useState(true);
+  const [passwordMessage, setPasswordMessage] = useState("");
+  const [passwordMessageType, setPasswordMessageType] = useState("info");
 
   async function logout() {
     await fetch("/api/admin/logout", { method: "POST" });
@@ -238,6 +254,8 @@ export function AdminShell({ children }) {
   }
 
   async function changePassword() {
+    setPasswordMessage("");
+    setPasswordMessageType("info");
     const currentPassword = prompt("Enter current admin password:");
     if (!currentPassword) return;
     const newPassword = prompt("Enter new admin password (min 8 chars):");
@@ -248,15 +266,24 @@ export function AdminShell({ children }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ currentPassword, newPassword }),
       });
-      const payload = await res.json().catch(() => ({}));
+      const payload = await parseJsonResponseSafe(res);
       const data = payload?.data && typeof payload.data === "object" ? payload.data : payload;
       if (!res.ok) {
-        alert(payload?.error?.message || payload?.error || data?.error || "Could not update password.");
+        setPasswordMessage(
+          contextualError(
+            "Change password",
+            payload?.error?.message || payload?.error || data?.error,
+            "Could not update password."
+          )
+        );
+        setPasswordMessageType("error");
         return;
       }
-      alert("Admin password updated successfully.");
+      setPasswordMessage("Change password: Admin password updated successfully.");
+      setPasswordMessageType("success");
     } catch {
-      alert("Network error while updating password.");
+      setPasswordMessage(contextualError("Change password", "", "Network error while updating password."));
+      setPasswordMessageType("error");
     }
   }
 
@@ -349,6 +376,16 @@ export function AdminShell({ children }) {
           })}
         </nav>
         <div className="border-t border-border p-3">
+          {passwordMessage ? (
+            <p
+              className={cn(
+                "mb-2 text-xs",
+                passwordMessageType === "error" ? "text-destructive" : "text-emerald-600"
+              )}
+            >
+              {passwordMessage}
+            </p>
+          ) : null}
           <Button
             variant="secondary"
             className="mb-2 w-full justify-start gap-2"

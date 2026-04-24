@@ -53,7 +53,15 @@ for (const name of rootNextFiles) {
   const dest = path.join(standalone, ".next", name);
   if (fs.existsSync(src) && fs.statSync(src).isFile()) {
     fs.mkdirSync(path.dirname(dest), { recursive: true });
-    fs.copyFileSync(src, dest);
+    try {
+      fs.copyFileSync(src, dest);
+    } catch (error) {
+      if (error?.code === "ENOENT") {
+        console.warn(`Skipping optional manifest copy (missing during deploy): ${name}`);
+        continue;
+      }
+      throw error;
+    }
   }
 }
 

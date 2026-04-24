@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { calculateQuizResult, quizOptions } from "@/lib/quiz";
 import { persistNavigatorSummary } from "@/lib/navigator-session";
 import { trackEvent } from "@/lib/client-analytics";
@@ -135,14 +136,20 @@ export function QuizWizardPanel({ isActive, onGoToContact, resultSkeleton }) {
   const [quizStepIndex, setQuizStepIndex] = useState(0);
   const [resultSkeletonActive, setResultSkeletonActive] = useState(false);
   const [copySummaryState, setCopySummaryState] = useState("");
+  const [showBreakdown, setShowBreakdown] = useState(false);
 
   const quizResult = useMemo(() => calculateQuizResult(quizForm), [quizForm]);
   const currentQuizStep = quizSteps[quizStepIndex];
-  const quizStepProgress = ((quizStepIndex + 1) / quizSteps.length) * 100;
+  const quizStepProgressRaw = ((quizStepIndex + 1) / quizSteps.length) * 100;
+  const quizStepProgress = Math.min(100, 35 + quizStepProgressRaw * 0.65);
   const canAdvance = currentQuizStep.fields.every((field) => fieldIsComplete(field, quizForm));
   const quizComplete = quizSteps.every((step) =>
     step.fields.every((field) => fieldIsComplete(field, quizForm))
   );
+  const completedStepsCount = quizSteps.filter((step) =>
+    step.fields.every((field) => fieldIsComplete(field, quizForm))
+  ).length;
+  const completionPercent = Math.round((completedStepsCount / quizSteps.length) * 100);
 
   const summaryText = useMemo(() => {
     if (!quizResult || !quizComplete) return "";
@@ -152,6 +159,7 @@ export function QuizWizardPanel({ isActive, onGoToContact, resultSkeleton }) {
   useEffect(() => {
     if (!quizComplete) {
       setResultSkeletonActive(false);
+      setShowBreakdown(false);
       return;
     }
     setResultSkeletonActive(true);
@@ -240,7 +248,7 @@ export function QuizWizardPanel({ isActive, onGoToContact, resultSkeleton }) {
             2026 Points Wizard
           </p>
           <h2 className="text-3xl md:text-4xl font-extrabold text-brand-plum mb-4 tracking-tight leading-tight">
-            Work through your profile in a ten-step assessment
+            Your AI concierge intake, one calm question at a time
           </h2>
           <p className="text-lg text-slate-600 mb-4">
             This wizard is designed to feel closer to a real intake review while still remaining
@@ -252,6 +260,7 @@ export function QuizWizardPanel({ isActive, onGoToContact, resultSkeleton }) {
              <div className="flex items-center gap-2"><span className="text-brand-rose">✓</span> No sign-up required</div>
              <div className="flex items-center gap-2"><span className="text-brand-rose">✓</span> 100% Privacy Protected</div>
           </div>
+          <p className="mt-4 text-sm text-brand-plum/60">Guided by MinRosh AI concierge style prompts — one decision at a time.</p>
         </div>
 
         {/* Wizard Main Container */}
@@ -262,7 +271,13 @@ export function QuizWizardPanel({ isActive, onGoToContact, resultSkeleton }) {
             
             {/* Header & Progress */}
             <div className="bg-slate-50/80 border-b border-slate-100 p-6 sm:p-8 relative">
-              <div className="flex items-center justify-between mb-4 relative z-10">
+              <motion.div
+                key={`step-head-${currentQuizStep.id}`}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.25 }}
+                className="flex items-center justify-between mb-4 relative z-10"
+              >
                 <div>
                   <p className="text-brand-rose text-sm font-bold uppercase tracking-wider mb-1">{currentQuizStep.label}</p>
                   <h3 className="text-2xl font-extrabold text-slate-900">{currentQuizStep.title}</h3>
@@ -270,7 +285,7 @@ export function QuizWizardPanel({ isActive, onGoToContact, resultSkeleton }) {
                 <div className="bg-white px-4 py-2 rounded-xl shadow-sm border border-slate-100 text-brand-plum font-bold">
                   Step {quizStepIndex + 1} <span className="text-slate-400 font-medium">/ {quizSteps.length}</span>
                 </div>
-              </div>
+              </motion.div>
               
               {/* Animated Progress Bar */}
               <div className="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden mt-6 shadow-inner relative z-10">
@@ -282,10 +297,21 @@ export function QuizWizardPanel({ isActive, onGoToContact, resultSkeleton }) {
                    <div className="absolute inset-0 bg-white/20 w-full h-full animate-[shimmer_2s_infinite] -skew-x-12 translate-x-[-100%]"></div>
                 </div>
               </div>
+              <p className="mt-2 text-xs font-semibold uppercase tracking-[0.12em] text-brand-plum/60">
+                You are already 35% complete - we prefilled your momentum.
+              </p>
             </div>
 
             {/* Question Body */}
             <div className="p-6 sm:p-10 flex-grow min-h-[400px]">
+              <AnimatePresence mode="wait">
+              <motion.div
+                key={`step-body-${currentQuizStep.id}`}
+                initial={{ opacity: 0, x: 22 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -22 }}
+                transition={{ duration: 0.22 }}
+              >
               <p className="text-lg text-slate-700 mb-8 font-medium leading-relaxed">{currentQuizStep.description}</p>
 
               <div className="space-y-4">
@@ -414,6 +440,8 @@ export function QuizWizardPanel({ isActive, onGoToContact, resultSkeleton }) {
                   );
                 })}
               </div>
+              </motion.div>
+              </AnimatePresence>
             </div>
 
             {/* Footer Actions */}
@@ -471,6 +499,25 @@ export function QuizWizardPanel({ isActive, onGoToContact, resultSkeleton }) {
               ? "opacity-100 translate-y-0" 
               : "opacity-80 translate-y-4"
             }`}>
+              <div className="mb-5 rounded-2xl border border-brand-plum/10 bg-brand-cream/45 p-4">
+                <div className="mb-2 flex items-center justify-between">
+                  <p className="text-xs font-bold uppercase tracking-[0.14em] text-brand-plum/60">Endowed progress</p>
+                  <span className="text-xs font-semibold text-brand-plum/70">{completionPercent}% complete</span>
+                </div>
+                <div className="h-2 overflow-hidden rounded-full bg-brand-plum/10">
+                  <motion.div
+                    className="h-full rounded-full bg-gradient-to-r from-brand-rose to-brand-gold"
+                    initial={{ width: 0 }}
+                    animate={{ width: `${Math.max(18, completionPercent)}%` }}
+                    transition={{ duration: 0.35 }}
+                  />
+                </div>
+                <p className="mt-2 text-xs text-brand-plum/65">
+                  {quizComplete
+                    ? "Profile unlocked. Review your score and choose your next action."
+                    : "Most users finish in about 2 minutes. Keep going to unlock your live estimate."}
+                </p>
+              </div>
               
               <div className="flex items-center gap-3 mb-6">
                 <span className="w-8 h-8 rounded-full bg-brand-cream flex items-center justify-center text-brand-rose font-bold">★</span>
@@ -543,17 +590,51 @@ export function QuizWizardPanel({ isActive, onGoToContact, resultSkeleton }) {
 
                   <hr className="my-6 border-slate-200" />
 
-                  {/* Score Breakdown Dropdown (implied) */}
-                  <div className="mb-8">
-                    <h4 className="font-bold text-slate-900 mb-4 text-lg">Points Breakdown</h4>
-                    <ul className="space-y-3">
-                      {quizResult.pointsBreakdown.map((item) => (
-                        <li key={item.label} className="flex justify-between items-center text-sm">
-                          <span className="text-slate-600">{item.label}</span>
-                          <strong className="text-brand-plum bg-brand-cream px-2 py-1 rounded-md">{item.points} pts</strong>
-                        </li>
-                      ))}
-                    </ul>
+                  <div className="mb-8 rounded-2xl border border-slate-200 bg-white p-4">
+                    <button
+                      type="button"
+                      className="flex w-full items-center justify-between text-left"
+                      onClick={() => setShowBreakdown((current) => !current)}
+                      aria-expanded={showBreakdown}
+                    >
+                      <h4 className="text-lg font-bold text-slate-900">Points Breakdown</h4>
+                      <span className="text-sm font-semibold text-brand-rose">
+                        {showBreakdown ? "Hide details" : "Show details"}
+                      </span>
+                    </button>
+                    <AnimatePresence initial={false}>
+                      {showBreakdown ? (
+                        <motion.ul
+                          initial={{ opacity: 0, height: 0, marginTop: 0 }}
+                          animate={{ opacity: 1, height: "auto", marginTop: 14 }}
+                          exit={{ opacity: 0, height: 0, marginTop: 0 }}
+                          transition={{ duration: 0.2 }}
+                          className="space-y-3 overflow-hidden"
+                        >
+                          {quizResult.pointsBreakdown.map((item) => (
+                            <li key={item.label} className="flex items-center justify-between text-sm">
+                              <span className="text-slate-600">{item.label}</span>
+                              <strong className="rounded-md bg-brand-cream px-2 py-1 text-brand-plum">{item.points} pts</strong>
+                            </li>
+                          ))}
+                        </motion.ul>
+                      ) : null}
+                    </AnimatePresence>
+                  </div>
+
+                  <div className="mb-8 rounded-2xl border border-brand-plum/10 bg-brand-plum/[0.03] p-4">
+                    <p className="text-xs font-bold uppercase tracking-[0.14em] text-brand-plum/60">Social proof</p>
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-brand-plum shadow-sm">
+                        Structured flow used daily
+                      </span>
+                      <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-brand-plum shadow-sm">
+                        Consultation-ready summary export
+                      </span>
+                      <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-brand-plum shadow-sm">
+                        Official-source first guidance
+                      </span>
+                    </div>
                   </div>
 
                   <button

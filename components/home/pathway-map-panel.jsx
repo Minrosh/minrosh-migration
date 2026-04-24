@@ -390,6 +390,24 @@ const PATHWAY_INTENTS = [
   { id: "employer", label: "Employer", hint: "Large employment centres" },
 ];
 
+const ROUTE_SCENARIOS = [
+  {
+    id: "student-pr",
+    label: "Student → PR",
+    nodes: ["Visa 500", "Graduate stage", "Skilled/nomination", "PR lodge"],
+  },
+  {
+    id: "skilled-direct",
+    label: "Skilled direct",
+    nodes: ["Skills assessment", "EOI", "Invitation", "Visa grant"],
+  },
+  {
+    id: "employer-pr",
+    label: "Employer → PR",
+    nodes: ["Sponsor role", "SID stream", "Work stage", "PR conversion"],
+  },
+];
+
 function universitiesForIntent(intentId) {
   if (intentId === "explore" || intentId === "student") return AUSTRALIA_UNIVERSITIES;
   const metro = /(Sydney|Melbourne|Brisbane|Perth|Adelaide|Canberra)/i;
@@ -433,6 +451,7 @@ export function PathwayMapPanel() {
   const [mapSectionInView, setMapSectionInView] = useState(false);
   const [fromOpen, setFromOpen] = useState(false);
   const [goalOpen, setGoalOpen] = useState(false);
+  const [scenarioId, setScenarioId] = useState(ROUTE_SCENARIOS[0].id);
   const [fromActiveIndex, setFromActiveIndex] = useState(-1);
   const [goalActiveIndex, setGoalActiveIndex] = useState(-1);
   const [ready, setReady] = useState(false);
@@ -634,7 +653,13 @@ export function PathwayMapPanel() {
           headers: { Accept: "application/json" },
         });
         if (!response.ok) throw new Error("city_search_failed");
-        const data = await response.json();
+        const rawText = await response.text();
+        let data = [];
+        try {
+          data = rawText ? JSON.parse(rawText) : [];
+        } catch {
+          throw new Error("city_search_failed");
+        }
         const cities = (Array.isArray(data) ? data : [])
           .map((item) => {
             const address = item.address || {};
@@ -739,6 +764,7 @@ export function PathwayMapPanel() {
   }
 
   const consultHref = `/book-consultation?fromCity=${encodeURIComponent(resolvedOrigin.label)}&pathwayGoal=${encodeURIComponent(goal.label)}&pathwayFocus=${encodeURIComponent(pathwayIntent)}`;
+  const activeScenario = ROUTE_SCENARIOS.find((item) => item.id === scenarioId) || ROUTE_SCENARIOS[0];
 
   return (
     <section ref={sectionRef} className="pathway-map editorial-section editorial-section--compact">
@@ -808,6 +834,36 @@ export function PathwayMapPanel() {
 
       <div className="pathway-map__grid">
         <div className="pathway-map__panel bento-hover">
+          <div className="rounded-2xl border border-brand-plum/10 bg-white p-4">
+            <p className="mb-2 text-xs font-semibold uppercase tracking-[0.12em] text-brand-rose">Future pacing route</p>
+            <div className="mb-3 flex flex-wrap gap-2">
+              {ROUTE_SCENARIOS.map((item) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  className={`rounded-full border px-3 py-1.5 text-xs font-semibold transition ${
+                    item.id === scenarioId
+                      ? "border-brand-rose bg-brand-rose text-white"
+                      : "border-brand-plum/20 bg-white text-brand-plum"
+                  }`}
+                  onMouseEnter={() => setScenarioId(item.id)}
+                  onFocus={() => setScenarioId(item.id)}
+                  onClick={() => setScenarioId(item.id)}
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
+            <div className="grid gap-2 md:grid-cols-2">
+              {activeScenario.nodes.map((node, index) => (
+                <div key={`${activeScenario.id}-${node}`} className="rounded-xl bg-brand-cream/50 px-3 py-2 text-sm text-brand-plum">
+                  <strong className="mr-2 text-brand-rose">{index + 1}.</strong>
+                  {node}
+                </div>
+              ))}
+            </div>
+          </div>
+
           <div className="pathway-map__presets" aria-label="Quick pick start cities">
             <span className="pathway-map__preset-label">Quick start</span>
             <div className="pathway-map__preset-chips">

@@ -7,6 +7,15 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { AdminTableSkeleton } from "@/components/admin/admin-table-skeleton";
 
+async function parseJsonResponseSafe(response) {
+  const rawText = await response.text();
+  try {
+    return rawText ? JSON.parse(rawText) : {};
+  } catch {
+    return {};
+  }
+}
+
 export default function AdminUsersPage() {
   const [me, setMe] = useState(null);
   const [users, setUsers] = useState([]);
@@ -19,18 +28,28 @@ export default function AdminUsersPage() {
 
   const load = useCallback(async () => {
     setLoading(true);
+    setMsg("");
     try {
-      const mePayload = await fetch("/api/admin/me").then((r) => r.json());
+      const meRes = await fetch("/api/admin/me");
+      const mePayload = await parseJsonResponseSafe(meRes);
       const m = mePayload?.data && typeof mePayload.data === "object" ? mePayload.data : mePayload;
+      const meError = mePayload?.error?.message || mePayload?.error || m?.error;
+      if (!meRes.ok) {
+        setUsers([]);
+        setMsg(meError || "Could not load current admin user.");
+        setLoading(false);
+        return;
+      }
       setMe(m);
       if (!m.isSuper) {
         setUsers([]);
         setLoading(false);
         return;
       }
-      const u = await fetch("/api/admin/users").then((r) => r.json());
-      if (!u.users) {
-        setMsg(u.error || "Could not load users");
+      const usersRes = await fetch("/api/admin/users");
+      const u = await parseJsonResponseSafe(usersRes);
+      if (!usersRes.ok || !u.users) {
+        setMsg(u?.error || "Could not load users");
         setUsers([]);
       } else {
         setUsers(u.users);
@@ -54,7 +73,7 @@ export default function AdminUsersPage() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password, role }),
     });
-    const data = await res.json().catch(() => ({}));
+    const data = await parseJsonResponseSafe(res);
     if (!res.ok) {
       setMsg(data.error || "Create failed");
       return;
@@ -77,7 +96,7 @@ export default function AdminUsersPage() {
     setMsg("");
     setVerificationLink("");
     const res = await fetch(`/api/admin/users/${encodeURIComponent(id)}/resend`, { method: "POST" });
-    const data = await res.json().catch(() => ({}));
+    const data = await parseJsonResponseSafe(res);
     if (!res.ok) {
       setMsg(data.error || "Resend failed");
       return;
@@ -94,7 +113,7 @@ export default function AdminUsersPage() {
     if (!confirm("Remove this admin user? They will no longer be able to sign in with that email.")) return;
     setMsg("");
     const res = await fetch(`/api/admin/users/${encodeURIComponent(id)}`, { method: "DELETE" });
-    const data = await res.json().catch(() => ({}));
+    const data = await parseJsonResponseSafe(res);
     if (!res.ok) {
       setMsg(data.error || "Delete failed");
       return;
@@ -110,7 +129,7 @@ export default function AdminUsersPage() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ role: nextRole }),
     });
-    const data = await res.json().catch(() => ({}));
+    const data = await parseJsonResponseSafe(res);
     if (!res.ok) {
       setMsg(data.error || "Update failed");
       return;

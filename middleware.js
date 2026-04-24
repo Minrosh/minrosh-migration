@@ -57,10 +57,32 @@ export async function middleware(request) {
     pathname.startsWith("/admin/") ||
     pathname.startsWith("/api/admin/");
 
+  const maintenanceMode = process.env.MAINTENANCE_MODE === "true";
+  const bypassToken = String(process.env.MAINTENANCE_BYPASS_TOKEN || "").trim();
+  const reqBypassToken =
+    request.nextUrl.searchParams.get("maintenance_bypass") ||
+    request.headers.get("x-maintenance-bypass") ||
+    request.cookies.get("maintenance_bypass")?.value ||
+    "";
+  const hasBypass = Boolean(bypassToken) && reqBypassToken === bypassToken;
+  const maintenanceBypassPath =
+    pathname === "/maintenance" ||
+    pathname.startsWith("/_next/") ||
+    pathname === "/favicon.ico" ||
+    pathname.startsWith("/api/") || // Includes /api/inngest and /api/webhooks/*
+    pathname.startsWith("/admin/");
+
   const isLocalhost = host.startsWith("localhost:") || host.startsWith("127.0.0.1:");
   const localAdminBypass =
     !production &&
     (isLocalhost || String(process.env.ADMIN_BYPASS_LOCAL || "").toLowerCase() === "true");
+
+  if (maintenanceMode && !maintenanceBypassPath && !hasBypass) {
+    const maintenanceUrl = request.nextUrl.clone();
+    maintenanceUrl.pathname = "/maintenance";
+    maintenanceUrl.search = "";
+    return withCsp(NextResponse.rewrite(maintenanceUrl, { request: { headers: requestHeaders } }));
+  }
 
   if (!isAdminApp) {
     return continueRequest();

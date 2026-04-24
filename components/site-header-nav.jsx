@@ -5,6 +5,12 @@ import Link from "next/link";
 import { SiteVisasMegaMenu } from "./site-visas-mega-menu";
 
 const HOME_SECTION_IDS = new Set(["home", "quiz", "pathways", "services", "stories"]);
+const HASH_PROGRESS = {
+  quiz: { step: 1, total: 4, label: "Profile started" },
+  pathways: { step: 2, total: 4, label: "Pathway matched" },
+  services: { step: 3, total: 4, label: "Service aligned" },
+  stories: { step: 4, total: 4, label: "Decision-ready" },
+};
 
 /** Collapsed into desktop mega menu when `enableVisaMega` is true. */
 const VISA_HUB_PATHS = new Set(["/skilled-migration", "/partner-visa-australia", "/student-visa-australia"]);
@@ -99,6 +105,9 @@ export function SiteHeaderNav({ navLinks, currentPath, enableVisaMega = false })
     setCurrentHash(`#${sectionId}`);
   }
 
+  const currentSection = (currentHash || "").replace(/^#/, "");
+  const navProgress = HASH_PROGRESS[currentSection] || null;
+
   return (
     <>
       <button
@@ -169,6 +178,17 @@ export function SiteHeaderNav({ navLinks, currentPath, enableVisaMega = false })
           })}
         </div>
         <div className="site-nav__toolbar">
+          {navProgress ? (
+            <div
+              className="hidden items-center gap-2 rounded-full border border-brand-rose/20 bg-brand-rose/10 px-3 py-1 text-xs font-semibold text-brand-plum md:inline-flex"
+              aria-live="polite"
+            >
+              <span className="text-brand-rose">
+                Step {navProgress.step}/{navProgress.total}
+              </span>
+              <span className="text-brand-plum/80">{navProgress.label}</span>
+            </div>
+          ) : null}
           <div className="site-nav__cta-cluster">
             <Link
               href="/book-consultation"

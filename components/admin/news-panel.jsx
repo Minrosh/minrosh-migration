@@ -17,6 +17,20 @@ const emptyForm = {
   slug: "",
 };
 
+async function parseJsonResponseSafe(response) {
+  const rawText = await response.text();
+  try {
+    return rawText ? JSON.parse(rawText) : {};
+  } catch {
+    return {};
+  }
+}
+
+function contextualError(operation, message, fallback) {
+  const detail = String(message || fallback || "Unexpected error").trim();
+  return `${operation}: ${detail}`;
+}
+
 export function NewsPanel() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -29,9 +43,16 @@ export function NewsPanel() {
     setLoading(true);
     try {
       const res = await fetch("/api/admin/news", { cache: "no-store" });
-      const payload = await res.json();
+      const payload = await parseJsonResponseSafe(res);
       const data = payload?.data && typeof payload.data === "object" ? payload.data : payload;
+      const errorMessage = payload?.error?.message || payload?.error || data?.error;
+      if (!res.ok) {
+        setItems([]);
+        setMessage(contextualError("Load news items", errorMessage, "Could not load news items."));
+        return;
+      }
       setItems(Array.isArray(data.items) ? data.items : []);
+      setMessage("");
     } finally {
       setLoading(false);
     }
@@ -58,12 +79,12 @@ export function NewsPanel() {
         slug: form.slug.trim(),
       }),
     });
-    const data = await res.json().catch(() => ({}));
+    const data = await parseJsonResponseSafe(res);
     const payload = data;
     const body = payload?.data && typeof payload.data === "object" ? payload.data : payload;
     const errorMessage = payload?.error?.message || payload?.error || body?.error;
     if (!res.ok) {
-      setMessage(errorMessage || "Save failed");
+      setMessage(contextualError("Create news item", errorMessage, "Save failed"));
       return;
     }
     setItems(Array.isArray(body.items) ? body.items : []);
@@ -93,12 +114,12 @@ export function NewsPanel() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id: editingId, ...editForm }),
     });
-    const data = await res.json().catch(() => ({}));
+    const data = await parseJsonResponseSafe(res);
     const payload = data;
     const body = payload?.data && typeof payload.data === "object" ? payload.data : payload;
     const errorMessage = payload?.error?.message || payload?.error || body?.error;
     if (!res.ok) {
-      setMessage(errorMessage || "Update failed");
+      setMessage(contextualError("Update news item", errorMessage, "Update failed"));
       return;
     }
     setItems(Array.isArray(body.items) ? body.items : []);
@@ -115,12 +136,12 @@ export function NewsPanel() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id }),
     });
-    const data = await res.json().catch(() => ({}));
+    const data = await parseJsonResponseSafe(res);
     const payload = data;
     const body = payload?.data && typeof payload.data === "object" ? payload.data : payload;
     const errorMessage = payload?.error?.message || payload?.error || body?.error;
     if (!res.ok) {
-      setMessage(errorMessage || "Delete failed");
+      setMessage(contextualError("Delete news item", errorMessage, "Delete failed"));
       return;
     }
     setItems(Array.isArray(body.items) ? body.items : []);

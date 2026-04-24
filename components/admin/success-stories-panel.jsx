@@ -16,21 +16,54 @@ const EMPTY_FORM = {
   timeline: "",
 };
 
+async function parseJsonResponseSafe(response) {
+  const rawText = await response.text();
+  try {
+    return rawText ? JSON.parse(rawText) : {};
+  } catch {
+    return {};
+  }
+}
+
+function contextualError(operation, message, fallback) {
+  const detail = String(message || fallback || "Unexpected error").trim();
+  return `${operation}: ${detail}`;
+}
+
 export function SuccessStoriesPanel() {
   const [stories, setStories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [form, setForm] = useState(EMPTY_FORM);
   const [editingIndex, setEditingIndex] = useState(null);
+  const [loadError, setLoadError] = useState("");
+  const [actionMessage, setActionMessage] = useState("");
+  const [actionMessageType, setActionMessageType] = useState("info");
 
   const load = useCallback(() => {
+    setLoadError("");
     fetch("/api/admin/success-stories")
-      .then((r) => r.json())
-      .then((payload) => {
+      .then(async (r) => ({ res: r, payload: await parseJsonResponseSafe(r) }))
+      .then(({ res, payload }) => {
         const d = payload?.data && typeof payload.data === "object" ? payload.data : payload;
+        const errorMessage = payload?.error?.message || payload?.error || d?.error;
+        if (!res.ok) {
+          setStories([]);
+          setLoadError(
+            contextualError("Load success stories", errorMessage, "Could not load success stories.")
+          );
+          setLoading(false);
+          return;
+        }
         setStories(d.stories || []);
         setLoading(false);
       })
-      .catch(() => setLoading(false));
+      .catch(() => {
+        setStories([]);
+        setLoadError(
+          contextualError("Load success stories", "", "Network error while loading success stories.")
+        );
+        setLoading(false);
+      });
   }, []);
 
   useEffect(() => {
@@ -54,23 +87,30 @@ export function SuccessStoriesPanel() {
       outcome: s.outcome ?? "",
       timeline: s.timeline ?? "",
     });
+    setActionMessage("");
+    setActionMessageType("info");
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   async function submitStory(e) {
     e.preventDefault();
+    setActionMessage("");
+    setActionMessageType("info");
     if (editingIndex !== null) {
       const res = await fetch("/api/admin/success-stories", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ index: editingIndex, ...form }),
       });
-      const data = await res.json().catch(() => ({}));
+      const data = await parseJsonResponseSafe(res);
       const payload = data;
       const body = payload?.data && typeof payload.data === "object" ? payload.data : payload;
       const errorMessage = payload?.error?.message || payload?.error || body?.error;
       if (!res.ok) {
-        window.alert(errorMessage || "Could not update story.");
+        setActionMessage(
+          contextualError("Update success story", errorMessage, "Could not update story.")
+        );
+        setActionMessageType("error");
         return;
       }
     } else {
@@ -80,17 +120,28 @@ export function SuccessStoriesPanel() {
         body: JSON.stringify(form),
       });
       if (!res.ok) {
-        const payload = await res.json().catch(() => ({}));
+        const payload = await parseJsonResponseSafe(res);
         const body = payload?.data && typeof payload.data === "object" ? payload.data : payload;
-        window.alert(payload?.error?.message || payload?.error || body?.error || "Could not save story.");
+        setActionMessage(
+          contextualError(
+            "Create success story",
+            payload?.error?.message || payload?.error || body?.error,
+            "Could not save story."
+          )
+        );
+        setActionMessageType("error");
         return;
       }
     }
     resetForm();
+    setActionMessage(editingIndex !== null ? "Update success story: Story saved." : "Create success story: Story saved.");
+    setActionMessageType("success");
     load();
   }
 
   async function removeAt(index) {
+    setActionMessage("");
+    setActionMessageType("info");
     if (!confirm("Remove this story?")) return;
     const res = await fetch("/api/admin/success-stories", {
       method: "POST",
@@ -98,12 +149,21 @@ export function SuccessStoriesPanel() {
       body: JSON.stringify({ action: "delete", index }),
     });
     if (!res.ok) {
-      const payload = await res.json().catch(() => ({}));
+      const payload = await parseJsonResponseSafe(res);
       const body = payload?.data && typeof payload.data === "object" ? payload.data : payload;
-      window.alert(payload?.error?.message || payload?.error || body?.error || "Could not remove story.");
+      setActionMessage(
+        contextualError(
+          "Delete success story",
+          payload?.error?.message || payload?.error || body?.error,
+          "Could not remove story."
+        )
+      );
+      setActionMessageType("error");
       return;
     }
     resetForm();
+    setActionMessage("Delete success story: Story removed.");
+    setActionMessageType("success");
     load();
   }
 
@@ -127,6 +187,12 @@ export function SuccessStoriesPanel() {
 
   return (
     <div className="space-y-8">
+      {loadError ? <p className="text-sm text-destructive">{loadError}</p> : null}
+      {actionMessage ? (
+        <p className={`text-sm ${actionMessageType === "error" ? "text-destructive" : "text-emerald-600"}`}>
+          {actionMessage}
+        </p>
+      ) : null}
       <Card>
         <CardHeader>
           <CardTitle>{isEditing ? "Edit story" : "Add story"}</CardTitle>

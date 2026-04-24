@@ -13,6 +13,42 @@ set -euo pipefail
 
 ROOT="${1:-$HOME/minrosh-migration}"
 cd "$ROOT"
+ENV_FILE="$ROOT/.env"
+
+set_env_value() {
+  local key="$1"
+  local value="$2"
+  if grep -q "^${key}=" "$ENV_FILE"; then
+    sed -i "s|^${key}=.*|${key}=${value}|" "$ENV_FILE"
+  else
+    printf "\n%s=%s\n" "$key" "$value" >> "$ENV_FILE"
+  fi
+}
+
+reload_runtime_for_env() {
+  echo "==> Reload runtime to apply env changes"
+  # PM2 restart --update-env can reuse persisted env and miss fresh .env merges from ecosystem.config.js.
+  # Always rebuild the process from ecosystem so MAINTENANCE_MODE changes are guaranteed.
+  pm2 delete minrosh-next || true
+  pm2 start ecosystem.config.js
+  pm2 save
+}
+
+disable_maintenance_mode() {
+  set_env_value "MAINTENANCE_MODE" "false"
+  reload_runtime_for_env
+  echo "==> Maintenance mode disabled"
+}
+
+on_deploy_error() {
+  trap - ERR
+  echo "==> Deploy failed; keeping maintenance mode enabled so visitors see service status"
+  set_env_value "MAINTENANCE_MODE" "true"
+  reload_runtime_for_env
+  echo "==> Maintenance mode remains enabled until a successful deploy clears it."
+}
+
+trap on_deploy_error ERR
 
 if [[ -f "$HOME/package-lock.json" ]] && [[ "$HOME" != "$ROOT" ]]; then
   echo "!!! WARNING: $HOME/package-lock.json exists."
@@ -31,10 +67,15 @@ else
   git pull --ff-only origin "$DEPLOY_GIT_BRANCH"
 fi
 
-if [[ ! -f "$ROOT/.env" ]]; then
+if [[ ! -f "$ENV_FILE" ]]; then
   echo "ERROR: $ROOT/.env is missing. Create it (see .env.example) before deploy."
   exit 1
 fi
+
+echo "==> Enable maintenance mode before upgrade"
+set_env_value "MAINTENANCE_MODE" "true"
+reload_runtime_for_env
+echo "==> Maintenance mode enabled"
 
 echo "==> Preflight secret checks (before install/build)"
 # Cookie HMAC requires ADMIN_SESSION_SECRET (never ADMIN_PASSWORD). Edge middleware cannot sign cookies without it.
@@ -90,6 +131,8 @@ echo "==> Install & build"
 npm ci
 # Fail fast if critical brand/hero assets are missing or placeholder-sized.
 node scripts/verify-required-assets.mjs
+echo "==> Clean previous Next build artifacts"
+rm -rf .next
 npm run build
 
 if [[ ! -f "$ROOT/.next/standalone/server.js" ]]; then
@@ -128,3 +171,5 @@ fi
 echo "==> Done. Keep SMTP_*, ADMIN_SESSION_SECRET, ADMIN_PASSWORD, etc. in $ROOT/.env — PM2 loads them from ecosystem.config.js."
 echo "==> After deploy: if forms show Server Action errors, hard-refresh the site (Ctrl+Shift+R) so the browser loads new /_next/static chunks."
 echo "==> SEO: submit/refresh sitemap + Request indexing for priority URLs in Google Search Console — docs/SEARCH-CONSOLE-REINDEX.md"
+disable_maintenance_mode
+trap - ERR

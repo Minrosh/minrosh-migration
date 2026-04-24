@@ -13,6 +13,20 @@ function statusVariant(s) {
   return "warning";
 }
 
+async function parseJsonResponseSafe(response) {
+  const rawText = await response.text();
+  try {
+    return rawText ? JSON.parse(rawText) : {};
+  } catch {
+    return {};
+  }
+}
+
+function contextualError(operation, message, fallback) {
+  const detail = String(message || fallback || "Unexpected error").trim();
+  return `${operation}: ${detail}`;
+}
+
 export function CustomerDetailDrawer({ customerId, open, onClose, onRefresh, bootstrapPlainToken }) {
   const [customer, setCustomer] = useState(null);
   const [loadError, setLoadError] = useState("");
@@ -43,19 +57,19 @@ export function CustomerDetailDrawer({ customerId, open, onClose, onRefresh, boo
     setLoadError("");
     try {
       const res = await fetch(`/api/admin/customers/${encodeURIComponent(customerId)}`);
-      const payload = await res.json().catch(() => ({}));
+      const payload = await parseJsonResponseSafe(res);
       const data = payload?.data && typeof payload.data === "object" ? payload.data : payload;
       const errorMessage = payload?.error?.message || payload?.error || data?.error;
       if (!res.ok) {
         setCustomer(null);
-        setLoadError(errorMessage || "Could not load customer.");
+        setLoadError(contextualError("Load customer", errorMessage, "Could not load customer."));
         setDetailLoading(false);
         return;
       }
       setCustomer(data.customer || null);
     } catch {
       setCustomer(null);
-      setLoadError("Network error");
+      setLoadError(contextualError("Load customer", "", "Network error"));
     }
     setDetailLoading(false);
   }, [customerId]);
@@ -102,7 +116,7 @@ export function CustomerDetailDrawer({ customerId, open, onClose, onRefresh, boo
     if (!open || !customerId || crmTab !== "timeline") return;
     setTimelineLoading(true);
     fetch(`/api/admin/interactions?customerId=${encodeURIComponent(customerId)}&limit=120`)
-      .then((r) => r.json())
+      .then((r) => parseJsonResponseSafe(r))
       .then((payload) => {
         const d = payload?.data && typeof payload.data === "object" ? payload.data : payload;
         setTimelineInteractions(d.interactions || []);
@@ -161,12 +175,12 @@ export function CustomerDetailDrawer({ customerId, open, onClose, onRefresh, boo
             .filter(Boolean),
         }),
       });
-      const data = await res.json().catch(() => ({}));
+      const data = await parseJsonResponseSafe(res);
       const payload = data;
       const body = payload?.data && typeof payload.data === "object" ? payload.data : payload;
       const errorMessage = payload?.error?.message || payload?.error || body?.error;
       if (!res.ok) {
-        setMessage(errorMessage || "Save failed");
+        setMessage(contextualError("Save profile", errorMessage, "Save failed"));
         setSaving(false);
         return;
       }
@@ -174,7 +188,7 @@ export function CustomerDetailDrawer({ customerId, open, onClose, onRefresh, boo
       await loadDetail();
       await onRefresh();
     } catch {
-      setMessage("Network error");
+      setMessage(contextualError("Save profile", "", "Network error"));
     }
     setSaving(false);
   }
@@ -190,12 +204,12 @@ export function CustomerDetailDrawer({ customerId, open, onClose, onRefresh, boo
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ action: "regenerateToken", id: customer.id }),
       });
-      const data = await res.json().catch(() => ({}));
+      const data = await parseJsonResponseSafe(res);
       const payload = data;
       const body = payload?.data && typeof payload.data === "object" ? payload.data : payload;
       const errorMessage = payload?.error?.message || payload?.error || body?.error;
       if (!res.ok) {
-        setMessage(errorMessage || "Could not regenerate");
+        setMessage(contextualError("Regenerate upload token", errorMessage, "Could not regenerate"));
         setSaving(false);
         return;
       }
@@ -208,7 +222,7 @@ export function CustomerDetailDrawer({ customerId, open, onClose, onRefresh, boo
       setMessage("New link generated — copy it below.");
       await onRefresh();
     } catch {
-      setMessage("Network error");
+      setMessage(contextualError("Regenerate upload token", "", "Network error"));
     }
     setSaving(false);
   }
@@ -216,12 +230,13 @@ export function CustomerDetailDrawer({ customerId, open, onClose, onRefresh, boo
   async function downloadDocumentsZip() {
     if (!customer) return;
     setZipLoading(true);
+    setMessage("");
     try {
       const res = await fetch(`/api/admin/customers/${customer.id}/documents-zip`);
       if (!res.ok) {
-        const err = await res.json().catch(() => ({}));
+        const err = await parseJsonResponseSafe(res);
         const errorMessage = err?.error?.message || err?.error;
-        alert(errorMessage || "Could not download ZIP");
+        setMessage(contextualError("Download documents ZIP", errorMessage, "Could not download ZIP"));
         setZipLoading(false);
         return;
       }
@@ -236,8 +251,9 @@ export function CustomerDetailDrawer({ customerId, open, onClose, onRefresh, boo
       a.download = filename;
       a.click();
       URL.revokeObjectURL(url);
+      setMessage("Download documents ZIP: Archive prepared.");
     } catch {
-      alert("Network error while downloading ZIP");
+      setMessage(contextualError("Download documents ZIP", "", "Network error while downloading ZIP"));
     }
     setZipLoading(false);
   }
@@ -251,9 +267,20 @@ export function CustomerDetailDrawer({ customerId, open, onClose, onRefresh, boo
     ) {
       return;
     }
-    await fetch(`/api/admin/customers?id=${encodeURIComponent(customer.id)}`, { method: "DELETE" });
-    onClose();
-    await onRefresh();
+    try {
+      const res = await fetch(`/api/admin/customers?id=${encodeURIComponent(customer.id)}`, { method: "DELETE" });
+      const payload = await parseJsonResponseSafe(res);
+      const body = payload?.data && typeof payload.data === "object" ? payload.data : payload;
+      const errorMessage = payload?.error?.message || payload?.error || body?.error;
+      if (!res.ok) {
+        setMessage(contextualError("Delete customer", errorMessage, "Could not delete customer."));
+        return;
+      }
+      onClose();
+      await onRefresh();
+    } catch {
+      setMessage(contextualError("Delete customer", "", "Network error while deleting customer."));
+    }
   }
 
   async function addTimelineNote() {
@@ -269,21 +296,23 @@ export function CustomerDetailDrawer({ customerId, open, onClose, onRefresh, boo
           body: noteText.trim(),
         }),
       });
-      const payload = await res.json().catch(() => ({}));
+      const payload = await parseJsonResponseSafe(res);
       if (!res.ok) {
-        setMessage("Could not add note");
+        const body = payload?.data && typeof payload.data === "object" ? payload.data : payload;
+        const errorMessage = payload?.error?.message || payload?.error || body?.error;
+        setMessage(contextualError("Add timeline note", errorMessage, "Could not add note"));
         setSaving(false);
         return;
       }
       setNoteText("");
       setCrmTab("timeline");
       const r = await fetch(`/api/admin/interactions?customerId=${encodeURIComponent(customer.id)}&limit=120`);
-      const p2 = await r.json();
+      const p2 = await parseJsonResponseSafe(r);
       const d2 = p2?.data && typeof p2.data === "object" ? p2.data : p2;
       setTimelineInteractions(d2.interactions || []);
       setMessage("Note added.");
     } catch {
-      setMessage("Network error");
+      setMessage(contextualError("Add timeline note", "", "Network error"));
     }
     setSaving(false);
   }
@@ -293,22 +322,30 @@ export function CustomerDetailDrawer({ customerId, open, onClose, onRefresh, boo
     setSheetBusy(true);
     try {
       const res = await fetch(`/api/admin/customers/${encodeURIComponent(customer.id)}/status-sheet-link`);
-      const data = await res.json().catch(() => ({}));
+      const data = await parseJsonResponseSafe(res);
       const payload = data;
       const body = payload?.data && typeof payload.data === "object" ? payload.data : payload;
       const errorMessage = payload?.error?.message || payload?.error || body?.error;
       if (!res.ok || !body.url) {
         if (res.status === 503) {
-          setMessage(errorMessage || "Status sheet integration is not ready yet.");
+          setMessage(
+            contextualError(
+              "Open status sheet row",
+              errorMessage,
+              "Status sheet integration is not ready yet."
+            )
+          );
         } else {
-          setMessage(errorMessage || "Could not locate matching sheet row.");
+          setMessage(
+            contextualError("Open status sheet row", errorMessage, "Could not locate matching sheet row.")
+          );
         }
         setSheetBusy(false);
         return;
       }
       window.open(body.url, "_blank", "noopener,noreferrer");
     } catch {
-      setMessage("Network error while opening sheet row.");
+      setMessage(contextualError("Open status sheet row", "", "Network error while opening sheet row."));
     }
     setSheetBusy(false);
   }

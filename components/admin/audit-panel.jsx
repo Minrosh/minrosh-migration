@@ -13,6 +13,20 @@ import { AdminTableSkeleton } from "@/components/admin/admin-table-skeleton";
 
 const columnHelper = createColumnHelper();
 
+async function parseJsonResponseSafe(response) {
+  const rawText = await response.text();
+  try {
+    return rawText ? JSON.parse(rawText) : {};
+  } catch {
+    return {};
+  }
+}
+
+function contextualError(operation, message, fallback) {
+  const detail = String(message || fallback || "Unexpected error").trim();
+  return `${operation}: ${detail}`;
+}
+
 /** Select value for rows with missing or blank `action` (must not collide with real action strings). */
 const FILTER_MISSING_ACTION = "__audit_missing_action__";
 
@@ -20,16 +34,31 @@ export function AuditPanel() {
   const [entries, setEntries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [actionFilter, setActionFilter] = useState("");
+  const [loadError, setLoadError] = useState("");
 
   useEffect(() => {
+    setLoadError("");
     fetch("/api/admin/audit")
-      .then((r) => r.json())
-      .then((payload) => {
+      .then(async (r) => ({ res: r, payload: await parseJsonResponseSafe(r) }))
+      .then(({ res, payload }) => {
         const d = payload?.data && typeof payload.data === "object" ? payload.data : payload;
+        const errorMessage = payload?.error?.message || payload?.error || d?.error;
+        if (!res.ok) {
+          setEntries([]);
+          setLoadError(contextualError("Load audit events", errorMessage, "Could not load audit events."));
+          setLoading(false);
+          return;
+        }
         setEntries(d.entries || []);
         setLoading(false);
       })
-      .catch(() => setLoading(false));
+      .catch(() => {
+        setEntries([]);
+        setLoadError(
+          contextualError("Load audit events", "", "Network error while loading audit events.")
+        );
+        setLoading(false);
+      });
   }, []);
 
   const columns = useMemo(
@@ -123,6 +152,7 @@ export function AuditPanel() {
         </div>
       </CardHeader>
       <CardContent className="overflow-x-auto">
+        {loadError ? <p className="mb-3 text-sm text-destructive">{loadError}</p> : null}
         <table className="w-full text-sm">
           <thead>
             {table.getHeaderGroups().map((hg) => (

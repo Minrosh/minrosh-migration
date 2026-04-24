@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
+import commandSignals from "../../data/home-hero-command-signals.json";
 
 const easeOut = [0.22, 1, 0.36, 1];
 
@@ -14,6 +15,9 @@ export function HomeHeroBento({ siteData, trustNote }) {
 
   const lead = siteData.hero.lead ?? siteData.hero.description ?? "";
   const bullets = Array.isArray(siteData.hero.bullets) ? siteData.hero.bullets : null;
+  const commandMetrics = Array.isArray(commandSignals?.metrics) ? commandSignals.metrics : [];
+  const microProof = Array.isArray(commandSignals?.microProof) ? commandSignals.microProof : [];
+  const readinessMetric = commandMetrics.find((item) => item.id === "readiness") || commandMetrics[2] || null;
 
   const fadeUp = (delay = 0) =>
     reduceMotion
@@ -117,6 +121,60 @@ export function HomeHeroBento({ siteData, trustNote }) {
               />
             </motion.div>
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-brand-plum/25 via-transparent to-transparent" aria-hidden />
+            <div className="absolute inset-x-3 bottom-3 z-[1] rounded-2xl border border-white/30 bg-white/18 p-3 text-white shadow-lg backdrop-blur-md sm:inset-x-4 sm:bottom-4 sm:p-4">
+              <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-white/80">Migration command deck</p>
+              {commandMetrics.length ? (
+                <div className="mt-2 grid grid-cols-3 gap-2">
+                  {commandMetrics.map((metric) => (
+                    <div key={metric.id} className="rounded-xl border border-white/20 bg-black/15 px-2 py-2">
+                      <p className="text-[10px] uppercase tracking-[0.12em] text-white/70">{metric.label}</p>
+                      <p className="mt-0.5 text-sm font-bold">{metric.value}</p>
+                    </div>
+                  ))}
+                </div>
+              ) : null}
+              <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-white/25">
+                <motion.div
+                  className="h-full rounded-full bg-gradient-to-r from-brand-gold via-[#ffd88a] to-white"
+                  initial={{ width: 0 }}
+                  animate={{ width: `${Number(readinessMetric?.progress || 68)}%` }}
+                  transition={{ duration: 0.7, ease: "easeOut" }}
+                />
+              </div>
+              <p className="mt-2 text-xs font-medium text-white/85">
+                Endowed progress: you begin with {readinessMetric?.value || "68%"} readiness by completing the first guided step.
+              </p>
+              {microProof.length ? (
+                <ul className="mt-2 space-y-1 text-[11px] text-white/80">
+                  {microProof.map((line) => (
+                    <li key={line} className="flex gap-1.5">
+                      <span className="mt-1 inline-block h-1 w-1 rounded-full bg-white/80" />
+                      <span>{line}</span>
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
+            </div>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-3">
+            <Link
+              href="/#quiz"
+              className="rounded-2xl border border-brand-plum/10 bg-white/90 px-4 py-3 text-sm font-semibold text-brand-plum shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+            >
+              Start with Quiz
+            </Link>
+            <Link
+              href="/#pathways"
+              className="rounded-2xl border border-brand-plum/10 bg-white/90 px-4 py-3 text-sm font-semibold text-brand-plum shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+            >
+              Explore Pathways
+            </Link>
+            <Link
+              href="/book-consultation"
+              className="rounded-2xl border border-brand-rose/20 bg-brand-rose/10 px-4 py-3 text-sm font-semibold text-brand-rose shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+            >
+              Reserve Strategy Call
+            </Link>
           </div>
         </motion.div>
       </div>

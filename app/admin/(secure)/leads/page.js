@@ -5,20 +5,41 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { AdminTableSkeleton } from "@/components/admin/admin-table-skeleton";
 
+async function parseJsonResponseSafe(response) {
+  const rawText = await response.text();
+  try {
+    return rawText ? JSON.parse(rawText) : {};
+  } catch {
+    return {};
+  }
+}
+
 export default function LeadsPage() {
   const [leads, setLeads] = useState([]);
   const [loading, setLoading] = useState(true);
   const [msg, setMsg] = useState("");
 
   useEffect(() => {
+    setMsg("");
     fetch("/api/admin/leads")
-      .then((r) => r.json())
-      .then((payload) => {
+      .then(async (r) => ({ res: r, payload: await parseJsonResponseSafe(r) }))
+      .then(({ res, payload }) => {
         const d = payload?.data && typeof payload.data === "object" ? payload.data : payload;
+        const errorMessage = payload?.error?.message || payload?.error || d?.error;
+        if (!res.ok) {
+          setLeads([]);
+          setMsg(errorMessage || "Could not load leads.");
+          setLoading(false);
+          return;
+        }
         setLeads(d.leads || []);
         setLoading(false);
       })
-      .catch(() => setLoading(false));
+      .catch(() => {
+        setLeads([]);
+        setMsg("Network error while loading leads.");
+        setLoading(false);
+      });
   }, []);
 
   async function convert(leadId) {
@@ -28,7 +49,7 @@ export default function LeadsPage() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ leadId }),
     });
-    const payload = await res.json().catch(() => ({}));
+    const payload = await parseJsonResponseSafe(res);
     const data = payload?.data && typeof payload.data === "object" ? payload.data : payload;
     const errorMessage = payload?.error?.message || payload?.error;
     if (!res.ok) {

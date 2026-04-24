@@ -4,9 +4,11 @@ import { getHomeSiteData } from "../../lib/home-site-data";
 import seoPages from "../../data/seo-pages.json";
 import { ContactLeadForm } from "../../components/contact-lead-form";
 import { AgentRegistrationStrip } from "../../components/agent-registration-strip";
+import { ContactCalmVisual } from "../../components/contact-calm-visual";
 import { SiteShell } from "../../components/site-shell";
 import { StructuredData } from "../../components/structured-data";
 import { buildMetadata, breadcrumbJsonLd } from "../../lib/seo";
+import readinessSignals from "../../data/book-consultation-readiness-signals.json";
 
 const pageData = seoPages.servicePages.bookConsultation;
 
@@ -19,6 +21,8 @@ export const metadata = buildMetadata({
 
 export default function BookConsultationPage() {
   const siteData = getHomeSiteData(siteDataStatic);
+  const signalChips = Array.isArray(readinessSignals?.signalChips) ? readinessSignals.signalChips : [];
+  const journeyRail = Array.isArray(readinessSignals?.journeyRail) ? readinessSignals.journeyRail : [];
 
   return (
     <SiteShell siteData={siteData} currentPath={pageData.path}>
@@ -39,8 +43,32 @@ export default function BookConsultationPage() {
 
         <section className="content-hero">
           <p className="section-label">Book Consultation</p>
-          <h1>{pageData.headline}</h1>
-          <p>{pageData.intro}</p>
+          <h1>Reserve your strategy session with confidence</h1>
+          <p>
+            A premium consultation flow designed to reduce guesswork and lock your highest-impact
+            next steps before you spend time on the wrong pathway.
+          </p>
+          <div className="mt-4 flex flex-wrap gap-2">
+            <span className="rounded-full border border-brand-plum/15 bg-white px-3 py-1 text-xs font-semibold text-brand-plum/75">
+              Endowed progress from the first step
+            </span>
+            <span className="rounded-full border border-brand-plum/15 bg-white px-3 py-1 text-xs font-semibold text-brand-plum/75">
+              Human-led strategy call
+            </span>
+            <span className="rounded-full border border-brand-plum/15 bg-white px-3 py-1 text-xs font-semibold text-brand-plum/75">
+              Official-source aligned
+            </span>
+          </div>
+          {signalChips.length ? (
+            <div className="mt-4 grid gap-2 sm:grid-cols-3">
+              {signalChips.map((item) => (
+                <div key={item.id} className="rounded-xl border border-brand-plum/15 bg-white px-3 py-2">
+                  <p className="text-sm font-bold text-brand-plum">{item.value}</p>
+                  <p className="text-xs text-brand-plum/70">{item.label}</p>
+                </div>
+              ))}
+            </div>
+          ) : null}
           {siteData.consultationHoursNote ? (
             <p className="content-hero__note">{siteData.consultationHoursNote}</p>
           ) : null}
@@ -65,75 +93,76 @@ export default function BookConsultationPage() {
           </section>
         ) : null}
 
-        <div className="content-page__grid">
-          <div className="content-page__main">
-            <details className="content-section content-accordion bento-hover" open>
+        <section className="grid gap-6 lg:grid-cols-[1fr_1.1fr] lg:items-start">
+          <div className="rounded-[2rem] border border-brand-plum/10 bg-white/90 p-5 shadow-lux md:p-7">
+            <ContactCalmVisual />
+            <div className="mt-5 rounded-2xl border border-brand-plum/10 bg-brand-cream/35 p-4">
+              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-plum/60">Consultation runway</p>
+              <div className="mt-3 h-2 overflow-hidden rounded-full bg-brand-plum/10">
+                <span className="block h-full w-[45%] rounded-full bg-gradient-to-r from-brand-rose to-brand-gold" />
+              </div>
+              <p className="mt-2 text-sm text-brand-plum/75">
+                You are already 45% complete once your core profile + timeframe are submitted.
+              </p>
+            </div>
+            {journeyRail.length ? (
+              <div className="mt-5 rounded-2xl border border-brand-plum/10 bg-white/80 p-4">
+                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-plum/60">
+                  Progressive disclosure roadmap
+                </p>
+                <ul className="mt-3 space-y-2 text-sm text-brand-plum/80">
+                  {journeyRail.map((step, index) => (
+                    <li key={step.id} className="flex gap-3">
+                      <span className="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand-plum text-xs font-bold text-white">
+                        {index + 1}
+                      </span>
+                      <span>
+                        <strong>{step.title}:</strong> {step.description}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
+
+            <details className="content-section content-accordion bento-hover mt-5" open>
               <summary className="content-accordion__summary">
-                <h2>Why book with us?</h2>
+                <h2>Why book now</h2>
               </summary>
               <div className="content-accordion__body">
-                <p>
-                  A consultation gives you a clearer view of your options before you spend time and
-                  money on the wrong pathway. We focus on practical strategy, likely next steps, and
-                  the issues that may affect your profile.
-                </p>
                 <ul className="feature-list">
-                  <li>Personalised visa strategy based on your situation</li>
-                  <li>Clear guidance on realistic migration pathways</li>
-                  <li>Early identification of common mistakes and weak points</li>
+                  <li>Cut decision noise and focus only on viable pathways</li>
+                  <li>Identify weak evidence areas before high-stakes applications</li>
+                  <li>Get a practical sequence for tests, documents, and timing</li>
+                </ul>
+              </div>
+            </details>
+
+            <details className="content-section content-accordion bento-hover">
+              <summary className="content-accordion__summary">
+                <h2>What your session includes</h2>
+              </summary>
+              <div className="content-accordion__body">
+                <ul className="feature-list">
+                  <li>One-to-one strategic review of your migration profile</li>
+                  <li>Confidence-rated pathway options with key trade-offs</li>
+                  <li>Immediate next actions you can execute within 14 days</li>
                   <li>
-                    Orientation using the official{" "}
-                    <a href="https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing">
-                      visa listing
-                    </a>{" "}
+                    Official reference mapping using{" "}
+                    <a href="https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing">visa listing</a>{" "}
                     and{" "}
-                    <a href="https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-finder">
-                      Visa Finder
-                    </a>{" "}
-                    before you lock in a plan
+                    <a href="https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-finder">Visa Finder</a>
                   </li>
                 </ul>
               </div>
             </details>
-
-            <details className="content-section content-accordion bento-hover">
-              <summary className="content-accordion__summary">
-                <h2>What you’ll get</h2>
-              </summary>
-              <div className="content-accordion__body">
-                <p>
-                  Consultations are designed to help you leave with clarity, not just more
-                  information. We help you understand the strongest pathway signals, the main
-                  documents or tests to prioritise, and the likely sequence of steps you should take
-                  next.
-                </p>
-                <ul className="feature-list">
-                  <li>One-on-one consultation tailored to your background</li>
-                  <li>Preliminary visa eligibility and pathway review</li>
-                  <li>Step-by-step action plan for your next move</li>
-                </ul>
-              </div>
-            </details>
-
-            <details className="content-section content-accordion bento-hover">
-              <summary className="content-accordion__summary">
-                <h2>Book your consultation today</h2>
-              </summary>
-              <div className="content-accordion__body">
-                <p>
-                  Fill in the form and our team will review your enquiry. If you already know the
-                  pathway you want to discuss, include that in your message so we can prepare the most
-                  relevant next-step guidance.
-                </p>
-              </div>
-            </details>
           </div>
 
-          <div className="content-page__aside contact-form-column">
+          <div className="contact-form-column rounded-[2rem] border border-brand-plum/10 bg-white/90 p-4 shadow-lux md:p-6">
             <AgentRegistrationStrip brand={siteData.brand} />
             <ContactLeadForm mode="consultation" />
           </div>
-        </div>
+        </section>
       </section>
     </SiteShell>
   );

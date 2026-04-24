@@ -1,0 +1,92 @@
+{
+  "default": {
+    "intents": [
+      {
+        "id": "secure-plan",
+        "label": "Secure a low-risk plan",
+        "tagline": "Clarity first, execution second",
+        "recommendedSection": "skilled",
+        "confidence": 68,
+        "timeHorizon": "3-6 months",
+        "why": [
+          "You remove guesswork before committing to tests and documents",
+          "You front-load risk checks and reduce avoidable rework"
+        ],
+        "milestones": ["Profile triage", "Evidence map", "Submission runway"]
+      },
+      {
+        "id": "fast-trajectory",
+        "label": "Move as fast as possible",
+        "tagline": "Speed with guardrails",
+        "recommendedSection": "updates",
+        "confidence": 62,
+        "timeHorizon": "1-3 months",
+        "why": [
+          "You monitor changing policy signals before locking critical decisions",
+          "You sequence the highest-impact actions in the first 14 days"
+        ],
+        "milestones": ["Signal check", "Priority actions", "Fast-lane review"]
+      }
+    ]
+  },
+  "australia": {
+    "intents": [
+      {
+        "id": "pr-path",
+        "label": "Build PR momentum",
+        "tagline": "Points, invitation probability, and pathway fit",
+        "recommendedSection": "skilled",
+        "confidence": 77,
+        "timeHorizon": "4-8 months",
+        "why": [
+          "You align occupation and points strategy before paying for wrong steps",
+          "You compare independent, state, and regional tracks with one decision lens"
+        ],
+        "milestones": ["Occupation lock", "Points strategy", "EOI timing map"]
+      },
+      {
+        "id": "partner-certainty",
+        "label": "De-risk a partner pathway",
+        "tagline": "Evidence confidence before lodgement",
+        "recommendedSection": "partner",
+        "confidence": 73,
+        "timeHorizon": "3-7 months",
+        "why": [
+          "You convert relationship history into a structured evidence narrative",
+          "You eliminate contradictions that cause avoidable delays"
+        ],
+        "milestones": ["Timeline proofing", "Evidence matrix", "Readiness review"]
+      },
+      {
+        "id": "study-to-opportunity",
+        "label": "Study now, keep options open",
+        "tagline": "Course choice with future optionality",
+        "recommendedSection": "student",
+        "confidence": 70,
+        "timeHorizon": "2-5 months",
+        "why": [
+          "You choose education pathways with realistic migration awareness",
+          "You avoid course decisions that weaken long-term flexibility"
+        ],
+        "milestones": ["Course fit scan", "Funds readiness", "Visa evidence set"]
+      }
+    ]
+  },
+  "canada": {
+    "intents": [
+      {
+        "id": "canada-plan",
+        "label": "Canada pathway confidence",
+        "tagline": "Decision clarity in a changing policy landscape",
+        "recommendedSection": "skilled",
+        "confidence": 64,
+        "timeHorizon": "4-9 months",
+        "why": [
+          "You prioritize verified eligibility over forum speculation",
+          "You create fallback pathways early to avoid dead ends"
+        ],
+        "milestones": ["Eligibility scan", "Document lane", "Decision checkpoint"]
+      }
+    ]
+  }
+}

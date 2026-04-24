@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Ubuntu server: pull, build, PM2 reload, flush logs (see scripts/update-server.sh).
+# Ubuntu server: pull, maintenance-mode toggle, build, PM2 reload, flush logs (see scripts/update-server.sh).
 # From repo root (avoids pasting long chained commands without &&):
 #   cd ~/minrosh-migration && ./deploy-server.sh
 

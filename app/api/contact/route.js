@@ -67,14 +67,22 @@ export async function POST(request) {
     clientConfirmed: validated.value.privacyPolicyAccepted === true,
   };
 
+  const processing = {
+    driveFolder: "not_attempted",
+    supabaseDualWrite: "not_attempted",
+    crmLeadCapture: "not_attempted",
+    sheetSync: "not_attempted",
+  };
   let leadDrive = { created: false };
   try {
     leadDrive = await createLeadDriveFolder({
       leadId: validated.value.id,
       name: `${validated.value.firstName} ${validated.value.lastName}`.trim(),
     });
+    processing.driveFolder = leadDrive.created ? "ok" : "skipped";
   } catch {
     leadDrive = { created: false, reason: "drive_error" };
+    processing.driveFolder = "failed";
   }
   const enquiryCore = { ...validated.value };
   delete enquiryCore.privacyPolicyAccepted;
@@ -87,8 +95,10 @@ export async function POST(request) {
   saveEnquiry(enquiryRecord);
   try {
     await dualWriteEnquiryToSupabase(enquiryRecord);
+    processing.supabaseDualWrite = "ok";
   } catch {
     /* Supabase dual-write is best-effort */
+    processing.supabaseDualWrite = "failed";
   }
   try {
     let customerId = "";
@@ -118,14 +128,18 @@ export async function POST(request) {
       consultationRequested: Boolean(enquiryRecord.preferredDate && enquiryRecord.preferredTime),
     });
     runAutomationRules({ trigger: "lead_created", payload: { customerId: lead.customerId } });
+    processing.crmLeadCapture = "ok";
   } catch {
     /* CRM lead capture is best-effort */
+    processing.crmLeadCapture = "failed";
   }
   enqueueNurtureLead(enquiryRecord);
   try {
     await appendLeadToSheet(enquiryRecord);
+    processing.sheetSync = "ok";
   } catch {
     // Sheets CRM sync is best-effort and should not block enquiries.
+    processing.sheetSync = "failed";
   }
   let calendarResult = { created: false };
   let availabilityResult = { available: true, checked: false };
@@ -170,6 +184,7 @@ export async function POST(request) {
       meetUrl: calendarResult.meetUrl || undefined,
       leadDriveFolderId: enquiryRecord.leadDriveFolderId || undefined,
       leadDriveFolderUrl: enquiryRecord.leadDriveFolderUrl || undefined,
+      processing,
       warning:
         mailResult.reason === "smtp_not_configured"
           ? "Enquiry saved, but SMTP is not configured yet."
@@ -186,6 +201,7 @@ export async function POST(request) {
       meetUrl: calendarResult.meetUrl || undefined,
       leadDriveFolderId: enquiryRecord.leadDriveFolderId || undefined,
       leadDriveFolderUrl: enquiryRecord.leadDriveFolderUrl || undefined,
+      processing,
       warning: "Enquiry saved, but email delivery could not be completed. We will still review your message.",
     }, context);
   }

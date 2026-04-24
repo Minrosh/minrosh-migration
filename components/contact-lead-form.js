@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
 import { useSearchParams } from "next/navigation";
 import {
   clearNavigatorSummarySession,
@@ -8,6 +9,8 @@ import {
   readNavigatorQuizSummaryLine,
 } from "@/lib/navigator-session";
 import { trackEvent } from "@/lib/client-analytics";
+import { retryAfterHint } from "@/lib/http/retry-after";
+import { REQUEST_ID_HEADER } from "@/lib/observability/request-id";
 
 function validateLeadForm(form, mode) {
   /** @type {Record<string, string>} */
@@ -59,6 +62,42 @@ const initialForm = {
   message: "",
   privacyPolicyAccepted: false,
 };
+
+function processingSummaryNote(processing) {
+  if (!processing || typeof processing !== "object") return "";
+  const labels = {
+    driveFolder: "Drive folder",
+    supabaseDualWrite: "Supabase sync",
+    crmLeadCapture: "CRM sync",
+    sheetSync: "Sheet sync",
+  };
+  const failed = Object.entries(processing)
+    .filter(([, status]) => status === "failed")
+    .map(([key]) => labels[key] || key);
+  return failed.length ? ` Background sync pending: ${failed.join(", ")}.` : "";
+}
+
+function mapContactErrorMessage(errorCode, fallbackMessage) {
+  if (errorCode === "RATE_LIMITED") {
+    return "Too many submissions in a short time. Please wait a few minutes and try again.";
+  }
+  if (errorCode === "VALIDATION_FAILED") {
+    return fallbackMessage || "Please review your details and submit again.";
+  }
+  if (errorCode === "AUTH_UNAUTHORIZED") {
+    return "Your session has expired. Please refresh the page and try again.";
+  }
+  if (errorCode === "AUTH_FORBIDDEN") {
+    return "This action is not allowed right now. Please contact support if you need help.";
+  }
+  if (errorCode === "CONFLICT") {
+    return fallbackMessage || "This request conflicts with recent activity. Please review and try again.";
+  }
+  if (errorCode === "INTERNAL_ERROR" || errorCode === "UPSTREAM_ERROR") {
+    return "We are having trouble completing your request right now. Please try again shortly.";
+  }
+  return fallbackMessage || "Could not submit enquiry.";
+}
 
 export function ContactLeadForm({ className = "", mode = "general" }) {
   const searchParams = useSearchParams();
@@ -154,12 +193,84 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
       ...current,
       [name]: type === "checkbox" ? checked : value,
     }));
+    setFieldErrors((current) => {
+      if (!current[name]) return current;
+      const next = { ...current };
+      delete next[name];
+      return next;
+    });
+    if (state.status === "error") {
+      setState((current) => ({ ...current, message: "" }));
+    }
+  }
+
+  function floatingField(label, name, inputEl, error, errorId) {
+    return (
+      <label className={error ? "has-error" : ""} hidden={mobileStepper && !visibleFields?.has(name)}>
+        <span className="sr-only">{label}</span>
+        <div className="relative">
+          {inputEl}
+          <span className="pointer-events-none absolute left-3 top-2 text-xs font-semibold uppercase tracking-[0.12em] text-brand-plum/60">
+            {label}
+          </span>
+        </div>
+        {error ? (
+          <span className="field-error" id={errorId} role="alert">
+            {error}
+          </span>
+        ) : null}
+      </label>
+    );
+  }
+
+  function stepErrorsFor(stepIndex) {
+    const allErrors = validateLeadForm(form, mode);
+    const fields = new Set(stepFieldGroups[stepIndex] || []);
+    return Object.fromEntries(Object.entries(allErrors).filter(([field]) => fields.has(field)));
+  }
+
+  function handleNextStep() {
+    const errors = stepErrorsFor(currentStep);
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors((current) => ({ ...current, ...errors }));
+      setState({
+        status: "error",
+        message: "Please complete the highlighted fields before continuing.",
+      });
+      const firstInvalidField = Object.keys(errors)[0];
+      if (firstInvalidField && typeof document !== "undefined") {
+        const el = document.querySelector(`[name="${firstInvalidField}"]`);
+        if (el && typeof el.focus === "function") {
+          el.focus();
+        }
+      }
+      return;
+    }
+    if (state.status === "error" && state.message) {
+      setState((current) => ({ ...current, message: "" }));
+    }
+    setCurrentStep((prev) => Math.min(stepFieldGroups.length - 1, prev + 1));
+  }
+
+  function focusFieldByName(fieldName) {
+    if (!fieldName || typeof document === "undefined") return;
+    const focusTarget = () => {
+      const el = document.querySelector(`[name="${fieldName}"]`);
+      if (el && typeof el.focus === "function") {
+        el.focus();
+      }
+    };
+    if (typeof window !== "undefined" && typeof window.requestAnimationFrame === "function") {
+      window.requestAnimationFrame(focusTarget);
+      return;
+    }
+    focusTarget();
   }
 
   async function handleSubmit(event) {
     event.preventDefault();
     if (mobileStepper && currentStep < stepFieldGroups.length - 1) {
-      setCurrentStep((prev) => Math.min(stepFieldGroups.length - 1, prev + 1));
+      handleNextStep();
       return;
     }
     const errors = validateLeadForm(form, mode);
@@ -171,10 +282,7 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
         const stepIndex = stepFieldGroups.findIndex((group) => group.includes(firstErrorField));
         if (stepIndex >= 0) setCurrentStep(stepIndex);
       }
-      window.requestAnimationFrame(() => {
-        const target = formRef.current?.querySelector(`[name="${firstErrorField}"]`);
-        target?.focus?.();
-      });
+      focusFieldByName(firstErrorField);
       trackEvent("contact_form_validation_error", { form_mode: mode, fields: Object.keys(errors).join(",") });
       return;
     }
@@ -202,29 +310,39 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
       try {
         payload = rawText ? JSON.parse(rawText) : {};
       } catch {
+        const requestId = String(response.headers.get(REQUEST_ID_HEADER) || "").trim();
+        const withRequestId = (message) =>
+          requestId ? `${message} (Ref: ${requestId})` : message;
         setState({
           status: "error",
           message:
             response.status >= 500
-              ? "The server returned an unexpected reply (not JSON). Please try again shortly, or phone or email us."
-              : "We could not read the server response. Please refresh the page and try again, or contact us directly.",
+              ? withRequestId("The server returned an unexpected reply (not JSON). Please try again shortly, or phone or email us.")
+              : withRequestId("We could not read the server response. Please refresh the page and try again, or contact us directly."),
         });
         return;
       }
       const data = payload?.data && typeof payload.data === "object" ? payload.data : payload;
       const err = payload?.error;
+      const requestId = typeof payload?.requestId === "string" ? payload.requestId.trim() : "";
+      const errorCode =
+        typeof err === "object" && err != null && typeof err.code === "string" ? err.code : "";
+      const retryHint = errorCode === "RATE_LIMITED" ? retryAfterHint(response.headers.get("retry-after")) : "";
       const errorMessage =
         (typeof err === "object" && err != null && typeof err.message === "string" ? err.message : null) ||
         (typeof err === "string" ? err : null) ||
         (typeof data?.error === "string" ? data.error : null);
+      const withRequestId = (message) =>
+        requestId ? `${message} (Ref: ${requestId})` : message;
       if (!response.ok || !(payload?.ok ?? data?.ok)) {
-        throw new Error(errorMessage || "Could not submit enquiry.");
+        throw new Error(withRequestId(`${mapContactErrorMessage(errorCode, errorMessage)}${retryHint}`));
       }
+      const syncNote = processingSummaryNote(data.processing);
       setState({
         status: "success",
         message: data.consultationBooked
-          ? `Consultation booked successfully.${data.meetUrl ? ` Meet link: ${data.meetUrl}` : ""}`
-          : data.warning || "Your enquiry has been received. We will review it and respond shortly.",
+          ? `Consultation booked successfully.${data.meetUrl ? ` Meet link: ${data.meetUrl}` : ""}${syncNote}`
+          : (data.warning || "Your enquiry has been received. We will review it and respond shortly.") + syncNote,
       });
       if (typeof window !== "undefined") {
         window.dispatchEvent(new Event("minrosh:enquiry-created"));
@@ -274,23 +392,22 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
         </div>
       ) : null}
       <div className="contact-grid">
-        <label className={fieldErrors.firstName ? "has-error" : ""} hidden={mobileStepper && !visibleFields?.has("firstName")}>
-          <span>First name</span>
+        {floatingField(
+          "First name",
+          "firstName",
           <input
             name="firstName"
             autoComplete="given-name"
             value={form.firstName}
             onChange={handleChange}
             required
+            className="pt-7"
             aria-invalid={fieldErrors.firstName ? "true" : undefined}
             aria-describedby={fieldErrors.firstName ? "err-firstName" : undefined}
-          />
-          {fieldErrors.firstName ? (
-            <span className="field-error" id="err-firstName" role="alert">
-              {fieldErrors.firstName}
-            </span>
-          ) : null}
-        </label>
+          />,
+          fieldErrors.firstName,
+          "err-firstName"
+        )}
         <label hidden={mobileStepper && !visibleFields?.has("lastName")}>
           <span>Last name</span>
           <input
@@ -300,8 +417,9 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
             onChange={handleChange}
           />
         </label>
-        <label className={fieldErrors.email ? "has-error" : ""} hidden={mobileStepper && !visibleFields?.has("email")}>
-          <span>Email</span>
+        {floatingField(
+          "Email",
+          "email",
           <input
             type="email"
             name="email"
@@ -309,15 +427,13 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
             value={form.email}
             onChange={handleChange}
             required
+            className="pt-7"
             aria-invalid={fieldErrors.email ? "true" : undefined}
             aria-describedby={fieldErrors.email ? "err-email" : undefined}
-          />
-          {fieldErrors.email ? (
-            <span className="field-error" id="err-email" role="alert">
-              {fieldErrors.email}
-            </span>
-          ) : null}
-        </label>
+          />,
+          fieldErrors.email,
+          "err-email"
+        )}
         <label className={fieldErrors.phone ? "has-error" : ""} hidden={mobileStepper && !visibleFields?.has("phone")}>
           <span>Phone</span>
           <input
@@ -456,6 +572,7 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
           onChange={handleChange}
           className="mt-1"
           aria-invalid={fieldErrors.privacyPolicyAccepted ? "true" : undefined}
+          aria-describedby={fieldErrors.privacyPolicyAccepted ? "err-privacyPolicyAccepted" : undefined}
         />
         <span>
           I have read the{" "}
@@ -466,7 +583,7 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
         </span>
       </label>
       {fieldErrors.privacyPolicyAccepted ? (
-        <p className="field-error contact-grid__full" role="alert">
+        <p className="field-error contact-grid__full" id="err-privacyPolicyAccepted" role="alert">
           {fieldErrors.privacyPolicyAccepted}
         </p>
       ) : null}
@@ -480,11 +597,23 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
         className="sr-only"
         style={{ position: "absolute", left: "-9999px", width: 1, height: 1, overflow: "hidden" }}
       />
-      {!mobileStepper || currentStep === stepFieldGroups.length - 1 ? (
-        <button type="submit" className="btn btn-primary" disabled={state.status === "loading"}>
-          {state.status === "loading" ? "Sending..." : "Submit enquiry"}
-        </button>
-      ) : null}
+      <motion.button
+        whileTap={{ scale: 0.98 }}
+        type="submit"
+        className="btn btn-primary inline-flex items-center justify-center gap-2"
+        disabled={state.status === "loading"}
+      >
+        {state.status === "loading"
+          ? (
+            <>
+              <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-white/60 border-t-white" aria-hidden />
+              Sending your plan...
+            </>
+          )
+          : mobileStepper && currentStep < stepFieldGroups.length - 1
+            ? "Continue"
+            : "Start your journey"}
+      </motion.button>
       {mobileStepper ? (
         <div className="contact-form__step-actions">
           <button
@@ -499,7 +628,7 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
             <button
               type="button"
               className="btn btn-primary"
-              onClick={() => setCurrentStep((prev) => Math.min(stepFieldGroups.length - 1, prev + 1))}
+              onClick={handleNextStep}
               disabled={state.status === "loading"}
             >
               Next step
@@ -508,7 +637,11 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
         </div>
       ) : null}
       {state.message ? (
-        <p className={`form-feedback is-${state.status}`} role="status" aria-live="polite">
+        <p
+          className={`form-feedback is-${state.status}`}
+          role={state.status === "error" ? "alert" : "status"}
+          aria-live={state.status === "error" ? "assertive" : "polite"}
+        >
           {state.message}
         </p>
       ) : null}

@@ -9,6 +9,15 @@ function enquiryLabel(e) {
   return name || e?.email || "Enquiry";
 }
 
+async function parseJsonResponseSafe(response) {
+  const rawText = await response.text();
+  try {
+    return rawText ? JSON.parse(rawText) : {};
+  } catch {
+    return {};
+  }
+}
+
 export function AdminDashboard() {
   const [stats, setStats] = useState(null);
   const [recentEnquiries, setRecentEnquiries] = useState([]);
@@ -29,10 +38,10 @@ export function AdminDashboard() {
           fetch("/api/admin/enquiries?limit=5&offset=0"),
           fetch("/api/admin/audit?limit=5&offset=0"),
         ]);
-        const statsP = await statsRes.json().catch(() => ({}));
+        const statsP = await parseJsonResponseSafe(statsRes);
         const statsD = statsP?.data && typeof statsP.data === "object" ? statsP.data : statsP;
-        const enqD = enqRes.ok ? await enqRes.json().catch(() => ({})) : {};
-        const audP = audRes.ok ? await audRes.json().catch(() => ({})) : {};
+        const enqD = enqRes.ok ? await parseJsonResponseSafe(enqRes) : {};
+        const audP = audRes.ok ? await parseJsonResponseSafe(audRes) : {};
         const audD = audP?.data && typeof audP.data === "object" ? audP.data : audP;
         if (cancelled) return;
         if (statsP?.error?.message || statsD.error) setErr(statsP?.error?.message || statsD.error);
@@ -44,7 +53,7 @@ export function AdminDashboard() {
       }
     })();
     fetch("/api/admin/integrations")
-      .then((r) => r.json())
+      .then((r) => parseJsonResponseSafe(r))
       .then((payload) => {
         const d = payload?.data && typeof payload.data === "object" ? payload.data : payload;
         if (!payload?.error && !d.error) setIntegrations(d);
@@ -62,7 +71,7 @@ export function AdminDashboard() {
     setTesting(true);
     try {
       const res = await fetch("/api/admin/integrations/test", { method: "POST" });
-      const payload = await res.json().catch(() => ({}));
+      const payload = await parseJsonResponseSafe(res);
       const data = payload?.data && typeof payload.data === "object" ? payload.data : payload;
       setIntegrationTest(data);
     } catch {
@@ -75,7 +84,7 @@ export function AdminDashboard() {
     setTestingDb(true);
     try {
       const res = await fetch("/api/admin/integrations/supabase");
-      const payload = await res.json().catch(() => ({}));
+      const payload = await parseJsonResponseSafe(res);
       const data = payload?.data && typeof payload.data === "object" ? payload.data : payload;
       setSupabaseTest(data);
     } catch {

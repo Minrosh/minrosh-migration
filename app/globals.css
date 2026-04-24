@@ -6326,6 +6326,21 @@ body.immersive-theme {
     background 0.2s ease;
 }
 
+.visas-mega__summary-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 20px;
+  padding: 0 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(74, 29, 66, 0.12);
+  background: rgba(255, 255, 255, 0.76);
+  color: var(--brand-plum);
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
 .visas-mega__summary:hover,
 .visas-mega__summary:focus-visible {
   color: var(--brand-rose);
@@ -6359,8 +6374,36 @@ body.immersive-theme {
   width: min(760px, calc(100vw - 48px));
   padding: 18px 18px 14px;
   border-radius: 16px;
-  border: 1px solid rgba(74, 29, 66, 0.12);
-  background: rgba(255, 253, 251, 0.98);
+  border: 1px solid rgba(74, 29, 66, 0.15);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 248, 242, 0.92)),
+    rgba(255, 253, 251, 0.97);
+  box-shadow: 0 20px 38px rgba(74, 29, 66, 0.12);
+  backdrop-filter: blur(8px);
+}
+
+.visas-mega__hero {
+  margin-bottom: 14px;
+  padding: 11px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(74, 29, 66, 0.09);
+  background: rgba(255, 255, 255, 0.68);
+}
+
+.visas-mega__hero-label {
+  margin: 0;
+  font-size: 0.64rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--brand-rose);
+}
+
+.visas-mega__hero-copy {
+  margin: 5px 0 0;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: var(--brand-plum);
 }
 
 .visas-mega__grid {
@@ -6376,12 +6419,28 @@ body.immersive-theme {
 }
 
 .visas-mega__column-title {
-  margin: 0 0 8px;
+  margin: 0 0 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
   font-size: 0.7rem;
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--muted);
+}
+
+.visas-mega__column-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: rgba(155, 74, 108, 0.12);
+  color: var(--brand-rose);
+  font-size: 0.62rem;
+  font-weight: 800;
 }
 
 .visas-mega__list {
@@ -6401,18 +6460,21 @@ body.immersive-theme {
   font-weight: 600;
   color: var(--brand-plum);
   text-decoration: none;
-  border-radius: 8px;
-  padding: 2px 4px;
-  margin: 0 -4px;
+  border-radius: 10px;
+  padding: 4px 7px;
+  margin: 0 -2px;
+  border: 1px solid transparent;
   transition:
     color 0.18s ease,
-    background 0.18s ease;
+    background 0.18s ease,
+    border-color 0.18s ease;
 }
 
 .visas-mega__link:hover,
 .visas-mega__link:focus-visible {
   color: var(--brand-rose);
   background: rgba(155, 74, 108, 0.08);
+  border-color: rgba(155, 74, 108, 0.18);
   outline: none;
 }
 
@@ -6430,6 +6492,14 @@ body.immersive-theme {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+}
+
+.visas-mega__footer-proof {
+  flex: 1 1 100%;
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--muted);
 }
 
 .visas-mega__footer-cta {

@@ -1,0 +1,36 @@
+{
+  "trustSignals": [
+    {
+      "id": "pathway-clarity",
+      "value": "4.8/5",
+      "label": "pathway clarity after navigator use"
+    },
+    {
+      "id": "decision-speed",
+      "value": "6 min",
+      "label": "average time to shortlist routes"
+    },
+    {
+      "id": "readiness",
+      "value": "89%",
+      "label": "continue to assessment or consultation"
+    }
+  ],
+  "intentShortcuts": [
+    {
+      "id": "fast-check",
+      "label": "I need a quick route check",
+      "href": "/assessment"
+    },
+    {
+      "id": "complex-case",
+      "label": "I have a refusal/complex case",
+      "href": "/visa-refusal-help-australia-and-aat-migration-appeal-guide"
+    },
+    {
+      "id": "ready-book",
+      "label": "I am ready to book strategy",
+      "href": "/book-consultation"
+    }
+  ]
+}

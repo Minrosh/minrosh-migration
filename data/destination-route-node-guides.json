@@ -1,0 +1,109 @@
+{
+  "default": {
+    "profile": {
+      "title": "Profile Snapshot",
+      "summary": "Lock your current facts before selecting a pathway.",
+      "risk": "Decisions based on assumptions create expensive rework later.",
+      "actions": [
+        "Capture your current visa status, timeline, and constraints",
+        "List your strongest pathway and one fallback option"
+      ],
+      "docLinks": [
+        { "label": "Free assessment", "href": "/assessment" },
+        { "label": "Official sources hub", "href": "/australian-visas-official-sources" }
+      ]
+    },
+    "evidence": {
+      "title": "Evidence Strategy",
+      "summary": "Build a practical evidence lane before committing to lodgement windows.",
+      "risk": "Weak evidence quality often delays or derails otherwise viable cases.",
+      "actions": [
+        "Prioritize documents that unlock multiple pathways",
+        "Resolve contradictions in names, dates, and employment history"
+      ],
+      "docLinks": [
+        { "label": "Document checklist guide", "href": "/australia-visa-document-checklist-guide" },
+        { "label": "Contact MinRosh", "href": "/contact" }
+      ]
+    },
+    "lodgement": {
+      "title": "Lodgement Window",
+      "summary": "Choose a timing window with confidence instead of rushing by guesswork.",
+      "risk": "Submitting early with missing signals can create preventable refusals.",
+      "actions": [
+        "Confirm mandatory readiness markers before paying charges",
+        "Stress-test your pathway against current policy updates"
+      ],
+      "docLinks": [
+        { "label": "Processing times guide", "href": "/australia-visa-processing-times-guide" },
+        { "label": "Immigration updates", "href": "/updates" }
+      ]
+    },
+    "settlement": {
+      "title": "Settlement Runway",
+      "summary": "Plan your first months early to reduce arrival anxiety.",
+      "risk": "No post-arrival runway can create avoidable pressure after grant.",
+      "actions": [
+        "Create your first 14-day execution checklist",
+        "Align housing, transport, and job actions before arrival"
+      ],
+      "docLinks": [
+        { "label": "Global pathways", "href": "/global-pathways" },
+        { "label": "Book consultation", "href": "/book-consultation" }
+      ]
+    },
+    "points": {
+      "title": "Points Strategy",
+      "summary": "Focus on the point levers that change invitation competitiveness.",
+      "risk": "Optimizing the wrong lever wastes money and time.",
+      "actions": [
+        "Identify your highest-impact point upgrade option",
+        "Sequence tests and assessments by return on effort"
+      ],
+      "docLinks": [
+        { "label": "Skilled points guide", "href": "/skilled-migration-australia-points-guide" },
+        { "label": "Skilled migration", "href": "/skilled-migration" }
+      ]
+    },
+    "eoi": {
+      "title": "EOI and Nomination",
+      "summary": "Treat EOI strategy as a dynamic system, not a one-time form.",
+      "risk": "Static EOI decisions can miss better nomination opportunities.",
+      "actions": [
+        "Compare independent, state, and regional lanes",
+        "Revisit your profile monthly while waiting for outcomes"
+      ],
+      "docLinks": [
+        { "label": "Destination routes", "href": "/destinations/australia/skilled" },
+        { "label": "Official sources hub", "href": "/australian-visas-official-sources" }
+      ]
+    },
+    "decision": {
+      "title": "Decision Stage",
+      "summary": "Prepare both approval and fallback scenarios to keep momentum.",
+      "risk": "Single-path planning increases emotional and timeline volatility.",
+      "actions": [
+        "Build a branch plan for best-case and delayed outcomes",
+        "Keep documents refreshed while waiting for final decisions"
+      ],
+      "docLinks": [
+        { "label": "Visa services", "href": "/visa-services" },
+        { "label": "Contact team", "href": "/contact" }
+      ]
+    },
+    "arrival": {
+      "title": "Arrival Execution",
+      "summary": "Translate approval into practical settlement milestones.",
+      "risk": "Lack of execution planning can burn early momentum.",
+      "actions": [
+        "Prioritize banking, healthcare, and housing setup tasks",
+        "Set week-one and month-one checkpoints"
+      ],
+      "docLinks": [
+        { "label": "Book consultation", "href": "/book-consultation" },
+        { "label": "Global pathways", "href": "/global-pathways" }
+      ]
+    }
+  },
+  "australia": {}
+}

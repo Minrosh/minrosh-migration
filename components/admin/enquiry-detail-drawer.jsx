@@ -18,6 +18,20 @@ function FieldBlock({ label, children }) {
   );
 }
 
+async function parseJsonResponseSafe(response) {
+  const rawText = await response.text();
+  try {
+    return rawText ? JSON.parse(rawText) : {};
+  } catch {
+    return {};
+  }
+}
+
+function contextualError(operation, message, fallback) {
+  const detail = String(message || fallback || "Unexpected error").trim();
+  return `${operation}: ${detail}`;
+}
+
 export function EnquiryDetailDrawer({ enquiry, open, onClose, onConverted }) {
   const [convertBusy, setConvertBusy] = useState(false);
   const [feedback, setFeedback] = useState("");
@@ -43,7 +57,9 @@ export function EnquiryDetailDrawer({ enquiry, open, onClose, onConverted }) {
     const name = enquiryFullName(enquiry) || "Prospective client";
     const email = String(enquiry.email || "").trim();
     if (!email) {
-      setFeedback("This enquiry has no email — add one before converting.");
+      setFeedback(
+        contextualError("Convert enquiry", "", "This enquiry has no email — add one before converting.")
+      );
       return;
     }
     setConvertBusy(true);
@@ -59,28 +75,45 @@ export function EnquiryDetailDrawer({ enquiry, open, onClose, onConverted }) {
           marketingConsent: true,
         }),
       });
-      const data = await res.json().catch(() => ({}));
+      const data = await parseJsonResponseSafe(res);
       const payload = data;
       const body = payload?.data && typeof payload.data === "object" ? payload.data : payload;
       const errorMessage = payload?.error?.message || payload?.error || body?.error || payload?.hint;
       if (!res.ok) {
-        setFeedback(errorMessage || "Could not create customer.");
+        setFeedback(contextualError("Convert enquiry", errorMessage, "Could not create customer."));
         setConvertBusy(false);
         return;
       }
       const customerId = body.customer?.id;
       const phone = String(enquiry.phone || "").trim();
+      let phoneSyncWarning = "";
       if (customerId && phone) {
-        await fetch("/api/admin/customers", {
+        const patchRes = await fetch("/api/admin/customers", {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ id: customerId, mobile: phone }),
-        }).catch(() => {});
+        }).catch(() => null);
+        if (patchRes) {
+          const patchPayload = await parseJsonResponseSafe(patchRes);
+          const patchBody =
+            patchPayload?.data && typeof patchPayload.data === "object" ? patchPayload.data : patchPayload;
+          const patchError =
+            patchPayload?.error?.message || patchPayload?.error || patchBody?.error || patchPayload?.hint;
+          if (!patchRes.ok) {
+            phoneSyncWarning = patchError || "Phone copy did not complete.";
+          }
+        } else {
+          phoneSyncWarning = "Phone copy did not complete.";
+        }
       }
-      setFeedback("Customer record created successfully.");
+      setFeedback(
+        phoneSyncWarning
+          ? `Customer record created successfully. ${contextualError("Convert enquiry", phoneSyncWarning)}`
+          : "Customer record created successfully."
+      );
       if (typeof onConverted === "function") await onConverted(body.customer);
     } catch {
-      setFeedback("Network error while creating customer.");
+      setFeedback(contextualError("Convert enquiry", "", "Network error while creating customer."));
     }
     setConvertBusy(false);
   }, [enquiry, onConverted]);

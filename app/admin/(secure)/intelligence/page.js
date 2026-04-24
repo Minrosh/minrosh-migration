@@ -19,6 +19,15 @@ function payloadError(payload, fallback) {
   return payload?.error?.message || payload?.error || fallback;
 }
 
+async function parseJsonResponseSafe(response) {
+  const rawText = await response.text();
+  try {
+    return rawText ? JSON.parse(rawText) : {};
+  } catch {
+    return {};
+  }
+}
+
 function SocialPostRow({ post }) {
   const [previewUrl, setPreviewUrl] = useState(null);
   const [loadingPreview, setLoadingPreview] = useState(false);
@@ -276,14 +285,25 @@ export default function AdminIntelligencePage() {
         fetch("/api/admin/intelligence/publish-history", { cache: "no-store" }),
         fetch("/api/admin/intelligence/facebook-posts", { cache: "no-store" }),
       ]);
-      const dJson = await dRes.json();
-      const aJson = await aRes.json();
-      const hJson = await hRes.json();
-      const fJson = await fRes.json().catch(() => ({}));
+      const [dJson, aJson, hJson, fJson] = await Promise.all([
+        parseJsonResponseSafe(dRes),
+        parseJsonResponseSafe(aRes),
+        parseJsonResponseSafe(hRes),
+        parseJsonResponseSafe(fRes),
+      ]);
       const d = unwrapPayload(dJson);
       const a = unwrapPayload(aJson);
       const h = unwrapPayload(hJson);
       const f = unwrapPayload(fJson);
+      if (!dRes.ok || !aRes.ok || !hRes.ok || !fRes.ok) {
+        const err =
+          payloadError(dJson) ||
+          payloadError(aJson) ||
+          payloadError(hJson) ||
+          payloadError(fJson) ||
+          "Could not load intelligence queue data.";
+        setMessage(err);
+      }
       setDrafts(Array.isArray(d.drafts) ? d.drafts : []);
       setAlerts(Array.isArray(a.alerts) ? a.alerts : []);
       setPublishHistory(Array.isArray(h.entries) ? h.entries : []);
@@ -302,7 +322,7 @@ export default function AdminIntelligencePage() {
     setMessage("");
     try {
       const response = await fetch("/api/admin/intelligence/run-scan", { method: "POST" });
-      const payload = await response.json();
+      const payload = await parseJsonResponseSafe(response);
       const data = unwrapPayload(payload);
       if (!response.ok) throw new Error(payloadError(payload, "Scan failed"));
       setMessage(`Scan complete: ${data.changed} changed source(s).`);
@@ -327,7 +347,7 @@ export default function AdminIntelligencePage() {
       }),
     });
     if (!response.ok) {
-      const payload = await response.json().catch(() => ({}));
+      const payload = await parseJsonResponseSafe(response);
       setMessage(payloadError(payload, "Could not update draft."));
       return;
     }
@@ -350,7 +370,7 @@ export default function AdminIntelligencePage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id: entryId }),
       });
-      const data = await response.json().catch(() => ({}));
+      const data = await parseJsonResponseSafe(response);
       const payload = data;
       if (!response.ok) {
         setMessage(payloadError(payload, "Rollback failed."));

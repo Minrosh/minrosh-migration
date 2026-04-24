@@ -1,0 +1,36 @@
+{
+  "trustSignals": [
+    {
+      "id": "response",
+      "value": "< 1 business day",
+      "label": "typical first response window"
+    },
+    {
+      "id": "clarity",
+      "value": "4.8/5",
+      "label": "clarity rating after first contact"
+    },
+    {
+      "id": "readiness",
+      "value": "88%",
+      "label": "continue to structured strategy steps"
+    }
+  ],
+  "progressiveDisclosure": [
+    {
+      "id": "context",
+      "title": "Step 1: Share context",
+      "description": "Tell us your goal, timing, and current visa situation."
+    },
+    {
+      "id": "triage",
+      "title": "Step 2: Pathway triage",
+      "description": "We map likely pathways and identify early risk flags."
+    },
+    {
+      "id": "next",
+      "title": "Step 3: Next actions",
+      "description": "You get a practical sequence for documents, timing, and consultation readiness."
+    }
+  ]
+}

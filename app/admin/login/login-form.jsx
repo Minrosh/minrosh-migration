@@ -7,6 +7,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
+async function parseJsonResponseSafe(response) {
+  const rawText = await response.text();
+  try {
+    return rawText ? JSON.parse(rawText) : {};
+  } catch {
+    return {};
+  }
+}
+
 export function AdminLoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -39,7 +48,7 @@ export function AdminLoginForm() {
           totp: totp.trim() || undefined,
         }),
       });
-      const payload = await res.json().catch(() => ({}));
+      const payload = await parseJsonResponseSafe(res);
       const data = payload?.data && typeof payload.data === "object" ? payload.data : payload;
       if (!res.ok) {
         const errorMessage = payload?.error?.message || payload?.error || data?.error || "Login failed";

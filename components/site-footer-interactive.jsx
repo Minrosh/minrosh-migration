@@ -19,7 +19,13 @@ export function SiteFooterInteractive({ siteData, initialStats, children }) {
       try {
         const response = await fetch("/api/stats", { cache: "no-store" });
         if (!response.ok) return;
-        const payload = await response.json();
+        const rawText = await response.text();
+        let payload;
+        try {
+          payload = rawText ? JSON.parse(rawText) : {};
+        } catch {
+          return;
+        }
         const data = payload?.data && typeof payload.data === "object" ? payload.data : payload;
         if (cancelled) return;
         setStats((current) => ({

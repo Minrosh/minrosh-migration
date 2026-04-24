@@ -19,6 +19,20 @@ import { InvoiceCustomerPicker, billToCountryForGst } from "@/components/admin/i
 
 const columnHelper = createColumnHelper();
 
+async function parseJsonResponseSafe(response) {
+  const rawText = await response.text();
+  try {
+    return rawText ? JSON.parse(rawText) : {};
+  } catch {
+    return {};
+  }
+}
+
+function contextualError(operation, message, fallback) {
+  const detail = String(message || fallback || "Unexpected error").trim();
+  return `${operation}: ${detail}`;
+}
+
 export function InvoicesPanel() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -71,14 +85,31 @@ export function InvoicesPanel() {
   const [editTerms, setEditTerms] = useState("");
   const [editDiscountDescription, setEditDiscountDescription] = useState("");
   const [paymentQrPreviewUrl, setPaymentQrPreviewUrl] = useState("");
+  const [actionError, setActionError] = useState("");
+  const [actionNotice, setActionNotice] = useState("");
+  const [actionNoticeTone, setActionNoticeTone] = useState("success");
 
   const load = useCallback(() => {
+    setActionError("");
     Promise.all([fetch("/api/admin/invoices"), fetch("/api/admin/customers?limit=500")])
       .then(async ([invRes, custRes]) => {
-        const invPayload = await invRes.json().catch(() => ({}));
-        const custPayload = await custRes.json().catch(() => ({}));
+        const invPayload = await parseJsonResponseSafe(invRes);
+        const custPayload = await parseJsonResponseSafe(custRes);
         const d = invPayload?.data && typeof invPayload.data === "object" ? invPayload.data : invPayload;
         const c = custPayload?.data && typeof custPayload.data === "object" ? custPayload.data : custPayload;
+        const invoicesError = invPayload?.error?.message || invPayload?.error || d?.error;
+        const customersError = custPayload?.error?.message || custPayload?.error || c?.error;
+        if (!invRes.ok || !custRes.ok) {
+          setActionError(
+            contextualError(
+              "Load invoices",
+              invoicesError || customersError,
+              "Could not load invoices panel data."
+            )
+          );
+          setLoading(false);
+          return;
+        }
         setInvoices(d.invoices || []);
         setTemplates(d.templates || []);
         setBankDetails(d.bankDetails || null);
@@ -87,7 +118,10 @@ export function InvoicesPanel() {
         setCustomers(c.customers || []);
         setLoading(false);
       })
-      .catch(() => setLoading(false));
+      .catch(() => {
+        setActionError(contextualError("Load invoices", "", "Network error while loading invoices panel data."));
+        setLoading(false);
+      });
   }, []);
 
   useEffect(() => {
@@ -181,6 +215,8 @@ export function InvoicesPanel() {
             className="h-8"
             disabled={row.original.status === "void"}
             onClick={async () => {
+              setActionError("");
+              setActionNotice("");
               const recipient =
                 prompt("Send invoice to email:", row.original.customerEmail || "") || row.original.customerEmail || "";
               if (!recipient) return;
@@ -189,15 +225,16 @@ export function InvoicesPanel() {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ action: "emailInvoice", id: row.original.id, to: recipient }),
               });
-              const data = await res.json().catch(() => ({}));
+              const data = await parseJsonResponseSafe(res);
               const payload = data;
               const body = payload?.data && typeof payload.data === "object" ? payload.data : payload;
               const errorMessage = payload?.error?.message || payload?.error || body?.error;
               if (!res.ok) {
-                alert(errorMessage || "Could not send invoice email.");
+                setActionError(contextualError("Email invoice", errorMessage, "Could not send invoice email."));
                 return;
               }
-              alert("Invoice email sent.");
+              setActionNotice("Email invoice: Invoice email sent.");
+              setActionNoticeTone("success");
             }}
           >
             Email PDF
@@ -249,12 +286,12 @@ export function InvoicesPanel() {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ action: "update", id: row.original.id, patch: { status: "void" } }),
               });
-              const data = await res.json().catch(() => ({}));
+              const data = await parseJsonResponseSafe(res);
               const payload = data;
               const body = payload?.data && typeof payload.data === "object" ? payload.data : payload;
               const errorMessage = payload?.error?.message || payload?.error || body?.error;
               if (!res.ok) {
-                window.alert(errorMessage || "Could not void invoice.");
+                setActionError(contextualError("Void invoice", errorMessage, "Could not void invoice."));
                 return;
               }
               load();
@@ -302,8 +339,10 @@ export function InvoicesPanel() {
 
   async function createInvoice(e) {
     e.preventDefault();
+    setActionError("");
+    setActionNotice("");
     if (!String(customerId || "").trim()) {
-      window.alert("Choose a CRM customer before creating an invoice.");
+      setActionError(contextualError("Create invoice", "", "Choose a CRM customer before creating an invoice."));
       return;
     }
     const normalizedLines = lineItems
@@ -334,17 +373,35 @@ export function InvoicesPanel() {
         status: "pending",
       }),
     });
-    const payload = await res.json().catch(() => ({}));
+    const payload = await parseJsonResponseSafe(res);
     const body = payload?.data && typeof payload.data === "object" ? payload.data : payload;
+    const errorMessage = payload?.error?.message || payload?.error || body?.error;
+    if (!res.ok) {
+      setActionError(contextualError("Create invoice", errorMessage, "Could not create invoice."));
+      return;
+    }
     if (res.ok && emailAfterCreate && body?.invoice?.id) {
+      let emailFailed = false;
       const recipient = String(invoiceEmailTo || "").trim() || String(body?.invoice?.customerEmail || "").trim();
       if (recipient) {
-        await fetch("/api/admin/invoices", {
+        const emailRes = await fetch("/api/admin/invoices", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ action: "emailInvoice", id: body.invoice.id, to: recipient }),
         });
+        if (!emailRes.ok) {
+          emailFailed = true;
+          setActionNotice(contextualError("Create invoice", "", "Invoice created, but email sending failed."));
+          setActionNoticeTone("warning");
+        }
       }
+      if (!emailFailed) {
+        setActionNotice("Create invoice: Invoice created successfully.");
+        setActionNoticeTone("success");
+      }
+    } else {
+      setActionNotice("Create invoice: Invoice created successfully.");
+      setActionNoticeTone("success");
     }
     setCustomerName("");
     setCustomerId("");
@@ -407,6 +464,7 @@ export function InvoicesPanel() {
   }
 
   async function saveQrModeSetting(nextMode) {
+    setActionError("");
     setQrModeSaving(true);
     const payload = {
       ...(bankDetails || {}),
@@ -417,16 +475,22 @@ export function InvoicesPanel() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ action: "setBankDetails", bankDetails: payload }),
     });
-    const data = await res.json().catch(() => ({}));
+    const data = await parseJsonResponseSafe(res);
     const payloadBody = data?.data && typeof data.data === "object" ? data.data : data;
+    const errorMessage = data?.error?.message || data?.error || payloadBody?.error;
     if (res.ok) {
       setBankDetails(payloadBody.bankDetails || payload);
       setInvoiceQrMode(String(payloadBody?.bankDetails?.qrMode || nextMode));
+      setActionNotice("Update QR mode: QR mode saved.");
+      setActionNoticeTone("success");
+    } else {
+      setActionError(contextualError("Update QR mode", errorMessage, "Could not save QR mode."));
     }
     setQrModeSaving(false);
   }
 
   async function saveCurrentAsTemplate() {
+    setActionError("");
     const normalizedLines = lineItems
       .map((l) => ({
         description: String(l.description || "").trim(),
@@ -459,10 +523,17 @@ export function InvoicesPanel() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ action: "upsertTemplate", template: payload }),
     });
-    const data = await res.json().catch(() => ({}));
+    const data = await parseJsonResponseSafe(res);
     const payloadBody = data?.data && typeof data.data === "object" ? data.data : data;
+    const errorMessage = data?.error?.message || data?.error || payloadBody?.error;
+    if (!res.ok) {
+      setActionError(contextualError("Save template", errorMessage, "Could not save template."));
+      return;
+    }
     setTemplates(Array.isArray(payloadBody.templates) ? payloadBody.templates : []);
     if (payloadBody?.template?.id) setSelectedTemplateId(payloadBody.template.id);
+    setActionNotice("Save template: Template saved.");
+    setActionNoticeTone("success");
   }
 
   function applyTemplate(templateId) {
@@ -571,22 +642,31 @@ export function InvoicesPanel() {
   }
 
   async function duplicateSelectedTemplate() {
+    setActionError("");
     if (!selectedTemplateId) return;
     const res = await fetch("/api/admin/invoices", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ action: "duplicateTemplate", id: selectedTemplateId }),
     });
-    const data = await res.json().catch(() => ({}));
+    const data = await parseJsonResponseSafe(res);
     const payload = data?.data && typeof data.data === "object" ? data.data : data;
+    const errorMessage = data?.error?.message || data?.error || payload?.error;
+    if (!res.ok) {
+      setActionError(contextualError("Duplicate template", errorMessage, "Could not duplicate template."));
+      return;
+    }
     if (Array.isArray(payload.templates)) setTemplates(payload.templates);
     if (payload?.template?.id) {
       setSelectedTemplateId(payload.template.id);
       applyTemplate(payload.template.id);
     }
+    setActionNotice("Duplicate template: Template duplicated.");
+    setActionNoticeTone("success");
   }
 
   async function deleteSelectedTemplate() {
+    setActionError("");
     if (!selectedTemplateId) return;
     const ok = confirm("Delete selected template? This will not delete already-created invoices.");
     if (!ok) return;
@@ -596,8 +676,13 @@ export function InvoicesPanel() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ action: "deleteTemplate", id: removedId }),
     });
-    const data = await res.json().catch(() => ({}));
+    const data = await parseJsonResponseSafe(res);
     const payload = data?.data && typeof data.data === "object" ? data.data : data;
+    const errorMessage = data?.error?.message || data?.error || payload?.error;
+    if (!res.ok) {
+      setActionError(contextualError("Delete template", errorMessage, "Could not delete template."));
+      return;
+    }
     if (Array.isArray(payload.templates)) {
       setTemplates(payload.templates);
       const nextDefault = payload.templates.find((t) => t.isDefault) || payload.templates[0];
@@ -607,6 +692,8 @@ export function InvoicesPanel() {
         setSelectedTemplateId("");
       }
     }
+    setActionNotice("Delete template: Template removed.");
+    setActionNoticeTone("success");
   }
 
   if (loading) {
@@ -627,6 +714,12 @@ export function InvoicesPanel() {
 
   return (
     <div className="space-y-8">
+      {actionError ? <p className="text-sm text-destructive">{actionError}</p> : null}
+      {actionNotice ? (
+        <p className={`text-sm ${actionNoticeTone === "warning" ? "text-amber-600" : "text-emerald-600"}`}>
+          {actionNotice}
+        </p>
+      ) : null}
       <div className="grid gap-6 xl:grid-cols-2">
         <Card>
           <CardHeader>

@@ -1,0 +1,36 @@
+{
+  "confidenceStrip": [
+    {
+      "id": "clarity",
+      "value": "4.9/5",
+      "label": "service-fit clarity score"
+    },
+    {
+      "id": "speed",
+      "value": "2-4 weeks",
+      "label": "typical action-plan setup"
+    },
+    {
+      "id": "proof",
+      "value": "92%",
+      "label": "users continue after first shortlist"
+    }
+  ],
+  "disclosureStages": [
+    {
+      "id": "overview",
+      "title": "Step 1: Compare service pathways",
+      "description": "Start with broad service differences and identify your likely route."
+    },
+    {
+      "id": "requirements",
+      "title": "Step 2: Unlock deep requirements",
+      "description": "Reveal details only after selecting a service to reduce decision overload."
+    },
+    {
+      "id": "next-action",
+      "title": "Step 3: Commit to next action",
+      "description": "Move directly to assessment or consultation with a prepared context."
+    }
+  ]
+}

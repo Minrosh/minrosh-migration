@@ -1,0 +1,41 @@
+{
+  "routeSignals": {
+    "student-pr": {
+      "confidence": "87%",
+      "momentum": "High",
+      "socialProof": "Most common pathway for first-time Australia planners."
+    },
+    "skilled-direct": {
+      "confidence": "91%",
+      "momentum": "High",
+      "socialProof": "Strong fit for applicants with verifiable occupation evidence."
+    },
+    "employer-pr": {
+      "confidence": "85%",
+      "momentum": "Moderate",
+      "socialProof": "Works best when sponsor readiness is validated early."
+    }
+  },
+  "progressMilestones": [
+    {
+      "threshold": 25,
+      "title": "Pathway direction confirmed",
+      "description": "You have enough clarity to avoid random trial-and-error."
+    },
+    {
+      "threshold": 50,
+      "title": "Evidence architecture in motion",
+      "description": "Your key documents now align with route-specific requirements."
+    },
+    {
+      "threshold": 75,
+      "title": "Lodgement readiness window",
+      "description": "Most high-impact risk checks are completed before submission."
+    },
+    {
+      "threshold": 100,
+      "title": "Submission-grade confidence",
+      "description": "Final review and timing checks position the case for smooth progression."
+    }
+  ]
+}

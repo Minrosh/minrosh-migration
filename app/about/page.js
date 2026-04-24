@@ -1,8 +1,11 @@
 import siteData from "../../data/site.json";
-import { ContentPage } from "../../components/content-page";
 import { SiteShell } from "../../components/site-shell";
 import { StructuredData } from "../../components/structured-data";
+import { BreadcrumbsNav } from "../../components/breadcrumbs-nav";
 import { buildMetadata, breadcrumbJsonLd } from "../../lib/seo";
+import { PublicFileImg } from "../../components/public-file-img";
+import { AboutTeamMagnetic } from "../../components/about-team-magnetic";
+import storySignals from "../../data/about-story-signals.json";
 
 export const metadata = buildMetadata({
   title: "About MinRosh Migration | Brisbane Migration Guidance",
@@ -16,86 +19,39 @@ export const metadata = buildMetadata({
   ],
 });
 
-const sections = [
+const timeline = [
   {
-    title: "Who we are",
-    body: siteData.about.body,
-    bullets: siteData.about.points,
+    year: "Step 01",
+    title: "Initial profile orientation",
+    body: "We map your situation against likely visa streams before you commit to expensive steps.",
   },
   {
-    title: "How MinRosh works",
-    body:
-      "MinRosh is designed around calm communication, practical sequencing, and clearer next steps. That means helping clients understand not only what pathway may fit, but what should happen first, what can wait, and where weak preparation may create risk.",
-    bullets: [
-      "Structured pathway reviews before major commitments",
-      "Education and migration planning that work together",
-      "Clear handoff from assessment to consultation to action",
-    ],
+    year: "Step 02",
+    title: "Strategy design and risk screening",
+    body: "Documentation, timing, and pathway viability are sequenced to avoid rework and uncertainty.",
   },
   {
-    title: "The countries we track",
-    body:
-      "While Australia is the main conversion focus of the site, MinRosh also keeps destination coverage across New Zealand, Canada, and the United Kingdom. That broader positioning helps clients who are still comparing major migration systems before committing to one path.",
-    bullets: [
-      "Australia-focused migration and education support",
-      "Comparative insight across NZ, Canada, and the UK",
-      "Official updates tracking through the updates hub",
-    ],
+    year: "Step 03",
+    title: "Evidence quality and lodgement readiness",
+    body: "We pressure-test consistency so your application narrative is clear before formal submission.",
   },
   {
-    title: "What clients can expect in the first engagement",
-    body:
-      "The first engagement focuses on clarity and sequence. We identify your strongest pathway signal, surface risk points early, and define what should happen now versus later so you avoid wasted effort.",
-    bullets: [
-      "Initial risk and readiness review",
-      "Priority document checklist with practical order",
-      "Recommended next appointment based on urgency",
-    ],
-  },
-  {
-    title: "How we keep communication practical",
-    body:
-      "MinRosh keeps communication plain-language and decision-focused. You receive guidance that helps you act, not long policy summaries that are difficult to apply.",
-    bullets: [
-      "Plain explanations with clear action steps",
-      "Progress updates tied to your active pathway",
-      "Consultation notes designed for follow-through",
-    ],
-  },
-  {
-    title: "Trust, registration, and standards",
-    body:
-      "MinRosh maintains a compliance-first approach supported by professional standards, clear conduct expectations, and official-source verification before clients commit to major decisions.",
-    bullets: [
-      `OMARA register reference: ${siteData.brand.marn}`,
-      siteData.brand.specialistAccreditationNote,
-      "Official legislative and code-of-conduct links are published across legal pages",
-    ],
-  },
-  {
-    title: "How we use the Department of Home Affairs visa catalogue",
-    body:
-      "Australian visas are organised by subclass on immi.homeaffairs.gov.au. MinRosh explains strategy and evidence in plain language, but eligibility, fees, and forms are always confirmed on the official listing and each visa page. See also our hub on using the visa listing and Visa Finder alongside MinRosh guides.",
-    bullets: [
-      "Cross-check subclass criteria whenever policy dates or your circumstances change",
-      "Use Visa Finder for early orientation, then read the specific subclass you intend to pursue",
-      "Prefer primary sources over social media summaries when stakes are high",
-    ],
+    year: "Step 04",
+    title: "Decision support and transition planning",
+    body: "After key milestones, we keep guidance practical with next actions, not policy noise.",
   },
 ];
 
-const aboutOfficialResources = [
-  {
-    label: "Department of Home Affairs — visa listing",
-    href: "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing",
-  },
-  {
-    label: "Department of Home Affairs — Visa Finder",
-    href: "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-finder",
-  },
+const team = [
+  { name: "Case Strategy Lead", focus: "Pathway sequencing and refusal-risk reduction", image: "/images/brisbane-skyline.jpg" },
+  { name: "Education Pathway Specialist", focus: "Study-to-career migration planning context", image: "/images/brisbane-skyline.jpg" },
+  { name: "Client Success Desk", focus: "Progress communication and action follow-through", image: "/images/brisbane-skyline.jpg" },
 ];
 
 export default function AboutPage() {
+  const trustSignals = Array.isArray(storySignals?.trustSignals) ? storySignals.trustSignals : [];
+  const timelineAmplifiers = Array.isArray(storySignals?.timelineAmplifiers) ? storySignals.timelineAmplifiers : [];
+
   return (
     <SiteShell siteData={siteData} currentPath="/about">
       <StructuredData
@@ -104,24 +60,74 @@ export default function AboutPage() {
           { name: "About", path: "/about" },
         ])}
       />
-      <ContentPage
-        eyebrow="About MinRosh"
-        title="Structured migration guidance designed to feel clearer from the first conversation"
-        intro="MinRosh Migration supports clients in Brisbane and across Australia with practical migration and education guidance built around calm communication, good preparation, and sensible next-step planning. We routinely anchor discussions to the Department of Home Affairs visa listing so clients know where authoritative criteria live."
-        breadcrumbs={[
-          { href: "/", label: "Home" },
-          { href: "/about", label: "About" },
-        ]}
-        officialResources={aboutOfficialResources}
-        currentPath="/about"
-        sections={sections}
-        related={[
-          { href: "/australian-visas-official-sources", title: "Australian visas official sources hub" },
-          { href: "/assessment", title: "Free Assessment" },
-          { href: "/updates", title: "Official Updates Hub" },
-          { href: "/contact", title: "Contact MinRosh" },
-        ]}
-      />
+      <article className="content-page">
+        <BreadcrumbsNav
+          currentPath="/about"
+          items={[
+            { label: "Home", href: "/" },
+            { label: "About", href: "/about" },
+          ]}
+        />
+        <section className="content-hero">
+          <div className="content-hero__grid">
+            <div className="content-hero__copy">
+              <p className="section-label">About MinRosh</p>
+              <h1>A migration story built around clarity, care, and confident decisions</h1>
+              <p>{siteData.about.body}</p>
+              <ul className="feature-list">
+                {siteData.about.points.map((point) => (
+                  <li key={point}>{point}</li>
+                ))}
+              </ul>
+              {trustSignals.length ? (
+                <div className="mt-4 grid gap-2 sm:grid-cols-3">
+                  {trustSignals.map((item) => (
+                    <div key={item.id} className="rounded-xl border border-brand-plum/15 bg-white px-3 py-2">
+                      <p className="text-sm font-bold text-brand-plum">{item.value}</p>
+                      <p className="text-xs text-brand-plum/70">{item.label}</p>
+                    </div>
+                  ))}
+                </div>
+              ) : null}
+            </div>
+            <div className="content-hero__media" aria-hidden="true">
+              <PublicFileImg src="/images/brisbane-skyline.jpg" alt="Brisbane skyline and riverfront" width={1600} height={900} />
+            </div>
+          </div>
+        </section>
+
+        <section className="content-section">
+          <p className="section-label">Story timeline</p>
+          <h2>How your journey unfolds with our team</h2>
+          <div className="timeline mt-6 space-y-4">
+            {timeline.map((item, idx) => (
+              <article key={item.title} className="rounded-2xl border border-brand-plum/10 bg-white/80 p-5 shadow-sm backdrop-blur-sm">
+                <div className="grid gap-3 md:grid-cols-[auto_1fr] md:items-center">
+                  <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-brand-plum text-sm font-bold text-white">
+                    {idx + 1}
+                  </span>
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.12em] text-brand-rose">{item.year}</p>
+                    <h3 className="text-lg font-bold text-brand-plum">{item.title}</h3>
+                    <p className="mt-1 text-sm text-brand-plum/70">{item.body}</p>
+                    {timelineAmplifiers[idx]?.proof ? (
+                      <p className="mt-2 rounded-xl border border-brand-rose/20 bg-brand-rose/5 px-3 py-2 text-xs font-medium text-brand-plum/80">
+                        Social proof: {timelineAmplifiers[idx].proof}
+                      </p>
+                    ) : null}
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="content-section">
+          <p className="section-label">Meet the team</p>
+          <h2>The human faces behind your migration plan</h2>
+          <AboutTeamMagnetic members={team} />
+        </section>
+      </article>
     </SiteShell>
   );
 }

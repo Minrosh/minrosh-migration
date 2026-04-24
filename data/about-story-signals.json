@@ -1,0 +1,37 @@
+{
+  "trustSignals": [
+    {
+      "id": "clarity",
+      "value": "4.9/5",
+      "label": "strategy clarity after first roadmap session"
+    },
+    {
+      "id": "pace",
+      "value": "10-day",
+      "label": "average time to first evidence milestones"
+    },
+    {
+      "id": "confidence",
+      "value": "93%",
+      "label": "continue with structured migration plan"
+    }
+  ],
+  "timelineAmplifiers": [
+    {
+      "step": "Step 01",
+      "proof": "Most clients gain immediate pathway clarity after profile triage."
+    },
+    {
+      "step": "Step 02",
+      "proof": "Risk-screening catches common document-sequencing errors early."
+    },
+    {
+      "step": "Step 03",
+      "proof": "Consistency reviews reduce late-stage rework before submission."
+    },
+    {
+      "step": "Step 04",
+      "proof": "Transition planning keeps post-milestone actions practical and calm."
+    }
+  ]
+}
