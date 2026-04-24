@@ -9,6 +9,7 @@ import {
   navigatorSummaryText,
 } from "../lib/navigator";
 import { persistNavigatorSummary } from "@/lib/navigator-session";
+import { trackEvent } from "@/lib/client-analytics";
 
 export function SmartNavigator({
   title = "Answer a few questions and get routed to the most relevant next step",
@@ -22,8 +23,8 @@ export function SmartNavigator({
   const [intentHint, setIntentHint] = useState("");
 
   const currentStep = navigatorSteps[stepIndex];
-  const progress = ((stepIndex + 1) / navigatorSteps.length) * 100;
-  const complete = navigatorSteps.every((step) => answers[step.id]);
+  const progress = ((stepIndex + 1) / (navigatorSteps.length + 1)) * 100;
+  const complete = navigatorSteps.every((step) => answers[step.id]) && Boolean(answers.email);
   const recommendation = useMemo(
     () => (complete ? buildNavigatorRecommendation(answers) : null),
     [answers, complete]
@@ -57,6 +58,18 @@ export function SmartNavigator({
     setAnswers((current) => ({ ...current, [currentStep.id]: value }));
   }
 
+  function handleEmailSubmit(e) {
+    e.preventDefault();
+    const email = new FormData(e.target).get("email");
+    if (email) {
+      const emailStr = String(email);
+      setAnswers((current) => ({ ...current, email: emailStr }));
+      trackEvent("ai_funnel_lead_captured", { email: emailStr, country: answers.country, goal: answers.goal });
+    }
+  }
+
+  const isEmailStep = stepIndex === navigatorSteps.length;
+
   return (
     <section className="navigator-section">
       <div className="section-head">
@@ -78,10 +91,10 @@ export function SmartNavigator({
           <div className="quiz-wizard__meta">
             <div>
               <p className="section-label">Step {stepIndex + 1}</p>
-              <h3>{currentStep.title}</h3>
+              <h3>{isEmailStep ? "Where should we send your pathway results?" : currentStep.title}</h3>
             </div>
             <span className="quiz-wizard__count">
-              {stepIndex + 1} / {navigatorSteps.length}
+              {stepIndex + 1} / {navigatorSteps.length + 1}
             </span>
           </div>
 
@@ -89,18 +102,37 @@ export function SmartNavigator({
             <span className="quiz-progress__bar" style={{ width: `${progress}%` }} />
           </div>
 
-          <div className="quiz-options">
-            {currentStep.options.map((option) => (
-              <button
-                key={option}
-                type="button"
-                className={`quiz-option ${answers[currentStep.id] === option ? "is-selected" : ""}`}
-                onClick={() => selectAnswer(option)}
-              >
-                {option}
-              </button>
-            ))}
-          </div>
+          {!isEmailStep ? (
+            <div className="quiz-options">
+              {currentStep.options.map((option) => (
+                <button
+                  key={option}
+                  type="button"
+                  className={`quiz-option ${answers[currentStep.id] === option ? "is-selected" : ""}`}
+                  onClick={() => selectAnswer(option)}
+                >
+                  {option}
+                </button>
+              ))}
+            </div>
+          ) : (
+            <form onSubmit={handleEmailSubmit} className="my-6">
+              <label className="block text-sm font-semibold text-brand-plum mb-2">
+                Your Email Address
+              </label>
+              <input
+                type="email"
+                name="email"
+                required
+                placeholder="you@example.com"
+                className="w-full rounded-xl border border-brand-plum/20 bg-white/50 px-4 py-3 text-brand-plum focus:border-brand-rose focus:outline-none focus:ring-1 focus:ring-brand-rose"
+                defaultValue={answers.email || ""}
+              />
+              <p className="text-xs text-brand-plum/60 mt-3">
+                We'll securely send you a copy of your personalised AI pathway analysis.
+              </p>
+            </form>
+          )}
 
           <div className="quiz-wizard__actions">
             <button
@@ -111,27 +143,32 @@ export function SmartNavigator({
             >
               Back
             </button>
-            {stepIndex < navigatorSteps.length - 1 ? (
+            {!isEmailStep ? (
               <button
                 type="button"
                 className="btn btn-primary"
                 onClick={() =>
-                  setStepIndex((current) => Math.min(current + 1, navigatorSteps.length - 1))
+                  setStepIndex((current) => current + 1)
                 }
                 disabled={!answers[currentStep.id]}
               >
                 Next
               </button>
+            ) : !complete ? (
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={() => {
+                  const form = document.querySelector('form');
+                  if (form) form.requestSubmit();
+                }}
+              >
+                See Results
+              </button>
             ) : (
               <Link
-                href={complete ? recommendation.href : finalHref}
-                className={`btn btn-primary ${!complete ? "is-disabled" : ""}`}
-                aria-disabled={!complete}
-                onClick={(event) => {
-                  if (!complete) {
-                    event.preventDefault();
-                  }
-                }}
+                href={recommendation?.href || finalHref}
+                className="btn btn-primary"
               >
                 {primaryLabel}
               </Link>

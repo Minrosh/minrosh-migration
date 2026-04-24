@@ -9,6 +9,8 @@ import { GoogleAnalytics } from "../components/google-analytics";
 import { businessJsonLd } from "../lib/seo";
 import { ScrollRestorer } from "../components/scroll-restorer";
 import { PWARegister } from "../components/pwa-register";
+import { StickyMobileCTA } from "../components/sticky-mobile-cta";
+import { ExitIntentPopup } from "../components/exit-intent-popup";
 
 const siteData = getHomeSiteData(siteDataStatic);
 
@@ -96,6 +98,8 @@ export default async function RootLayout({ children }) {
         <StructuredData data={businessJsonLd(siteData)} nonce={nonce} />
         {children}
         <AIConciergeLazy siteData={siteData} />
+        <StickyMobileCTA />
+        <ExitIntentPopup />
       </body>
     </html>
   );

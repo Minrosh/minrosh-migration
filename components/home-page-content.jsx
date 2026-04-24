@@ -7,6 +7,7 @@ import { QuizWizardPanel } from "./home/quiz-wizard-panel";
 import { QuizResultSkeleton } from "./home/quiz-result-skeleton";
 import { ServiceDecisionEngine } from "./home/service-decision-engine";
 import { StoriesCarouselPanel } from "./home/stories-carousel-panel";
+import { MidContentCTA } from "./mid-content-cta";
 import futurePacingData from "../data/home-future-pacing.json";
 
 const TAB_IDS = new Set(["home", "quiz", "pathways", "services", "stories"]);
@@ -110,6 +111,7 @@ export function HomePageContent({ siteData, homeTab }) {
           </article>
         ))}
       </div>
+      <MidContentCTA className="mt-8 mb-16 max-w-5xl mx-auto" />
       <FuturePacingLab data={futurePacingData} />
     </section>
   );
@@ -131,6 +133,7 @@ export function HomePageContent({ siteData, homeTab }) {
         </div>
       </div>
       <ServiceDecisionEngine services={siteData.services} />
+      <MidContentCTA className="mt-12 mb-8 max-w-5xl mx-auto" />
     </section>
   );
 
