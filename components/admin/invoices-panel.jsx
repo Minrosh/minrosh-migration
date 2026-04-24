@@ -856,6 +856,8 @@ export function InvoicesPanel() {
                   <img
                     src={issuerLogoPath || "/images/minrosh-logo.png"}
                     alt=""
+                    loading="lazy"
+                    decoding="async"
                     className="mb-3 h-16 w-auto rounded object-contain"
                     onError={(e) => {
                       e.currentTarget.style.display = "none";
@@ -936,7 +938,13 @@ export function InvoicesPanel() {
                   {paymentQrPreviewUrl ? (
                     <div className="mt-3 flex items-center gap-3 rounded border border-slate-200 bg-white p-2">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={paymentQrPreviewUrl} alt="Payment QR preview" className="h-16 w-16 rounded border border-slate-200" />
+                      <img
+                        src={paymentQrPreviewUrl}
+                        alt="Payment QR preview"
+                        loading="lazy"
+                        decoding="async"
+                        className="h-16 w-16 rounded border border-slate-200"
+                      />
                       <div>
                         <p className="text-[11px] font-semibold uppercase text-slate-600">Scan to pay fast</p>
                         <p className="text-[10px] text-slate-500">

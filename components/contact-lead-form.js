@@ -68,6 +68,7 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
   const [fieldErrors, setFieldErrors] = useState({});
   const [currentStep, setCurrentStep] = useState(0);
   const [mobileStepper, setMobileStepper] = useState(false);
+  const formRef = useRef(null);
   const hpRef = useRef(null);
 
   const stepFieldGroups =
@@ -165,11 +166,15 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
     const errorEntries = Object.entries(errors);
     setFieldErrors(errors);
     if (errorEntries.length > 0) {
+      const firstErrorField = errorEntries[0][0];
       if (mobileStepper) {
-        const firstErrorField = errorEntries[0][0];
         const stepIndex = stepFieldGroups.findIndex((group) => group.includes(firstErrorField));
         if (stepIndex >= 0) setCurrentStep(stepIndex);
       }
+      window.requestAnimationFrame(() => {
+        const target = formRef.current?.querySelector(`[name="${firstErrorField}"]`);
+        target?.focus?.();
+      });
       trackEvent("contact_form_validation_error", { form_mode: mode, fields: Object.keys(errors).join(",") });
       return;
     }
@@ -247,7 +252,7 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
   }
 
   return (
-    <form className={`contact-form bento-hover ${className}`.trim()} onSubmit={handleSubmit}>
+    <form ref={formRef} className={`contact-form bento-hover ${className}`.trim()} onSubmit={handleSubmit}>
       <p className="form-security-note">
         Submissions use HTTPS in transit. See our{" "}
         <a href="/privacy-policy" className="text-primary underline">
@@ -475,13 +480,11 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
         className="sr-only"
         style={{ position: "absolute", left: "-9999px", width: 1, height: 1, overflow: "hidden" }}
       />
-      <button type="submit" className="btn btn-primary" disabled={state.status === "loading"}>
-        {state.status === "loading"
-          ? "Sending..."
-          : mobileStepper && currentStep < stepFieldGroups.length - 1
-            ? "Continue"
-            : "Submit enquiry"}
-      </button>
+      {!mobileStepper || currentStep === stepFieldGroups.length - 1 ? (
+        <button type="submit" className="btn btn-primary" disabled={state.status === "loading"}>
+          {state.status === "loading" ? "Sending..." : "Submit enquiry"}
+        </button>
+      ) : null}
       {mobileStepper ? (
         <div className="contact-form__step-actions">
           <button

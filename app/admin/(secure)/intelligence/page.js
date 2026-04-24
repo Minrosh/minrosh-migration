@@ -104,6 +104,8 @@ function SocialPostRow({ post }) {
         <img
           src={previewUrl}
           alt=""
+          loading="lazy"
+          decoding="async"
           className="mt-3 w-full max-w-[220px] rounded border border-border object-cover shadow-sm"
           style={{ aspectRatio: "1080 / 1350" }}
         />

@@ -5,7 +5,8 @@ import { buildMetadata } from "../../lib/seo";
 
 export const metadata = buildMetadata({
   title: "Terms of Use | MinRosh Migration",
-  description: "Read the MinRosh Migration website terms of use.",
+  description:
+    "Read the MinRosh Migration website terms of use, including website content limits, online service access, and general information boundaries.",
   path: "/terms-of-use",
 });
 

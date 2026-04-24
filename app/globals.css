@@ -172,15 +172,15 @@ a {
 .home-hero-primary-cta,
 .home-hero-primary-cta:visited {
   color: #fff !important;
-  background-color: #ea580c;
-  background-image: linear-gradient(to bottom, #ff8a2e, #ea580c);
-  box-shadow: 0 10px 28px rgba(234, 88, 12, 0.35);
+  background-color: #9b4a6c;
+  background-image: linear-gradient(to bottom, #9b4a6c, #7d3857);
+  box-shadow: 0 10px 28px rgba(155, 74, 108, 0.28);
 }
 
 .home-hero-primary-cta:hover,
 .home-hero-primary-cta:focus-visible {
   color: #fff !important;
-  background-image: linear-gradient(to bottom, #ffa04d, #dc530f);
+  background-image: linear-gradient(to bottom, #7d3857, #3d2432);
 }
 
 .site-topbar {
@@ -937,21 +937,6 @@ a.brand:hover .brand__mark {
 
 .site-nav__backdrop {
   display: none;
-}
-
-.motion-fade-up {
-  opacity: 0;
-  transform: translate3d(0, 28px, 0);
-  transition:
-    opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
-  transition-delay: 0s;
-  will-change: opacity, transform;
-}
-
-.motion-fade-up--visible {
-  opacity: 1;
-  transform: translate3d(0, 0, 0);
 }
 
 .portal-main {
@@ -5190,6 +5175,10 @@ body.ai-concierge-panel-open .mobile-sticky-quiz-cta {
     z-index: 140;
   }
 
+  .site-nav:not(.is-open):not(.site-nav--static) {
+    display: none;
+  }
+
   .site-nav__group {
     width: 100%;
     flex-direction: column;
@@ -5987,11 +5976,6 @@ body.immersive-theme {
     animation: none;
   }
 
-  .motion-fade-up {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
 }
 
 .content-section-anchor {
