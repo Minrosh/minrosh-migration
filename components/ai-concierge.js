@@ -108,8 +108,11 @@ function AssistantMessageBody({ text }) {
   );
 }
 
+let messageCounter = 0;
+
 function nextMessageId() {
-  return `m-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
+  messageCounter += 1;
+  return `m-${messageCounter}`;
 }
 
 /** Shown before any user message; after chat starts, prompts update from last user text. */

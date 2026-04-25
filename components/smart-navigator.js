@@ -22,6 +22,7 @@ export function SmartNavigator({
   const [answers, setAnswers] = useState({});
   const [intentHint, setIntentHint] = useState("");
   const [dailyUsageCount, setDailyUsageCount] = useState(null);
+  const [progressWidth, setProgressWidth] = useState("0%");
 
   const currentStep = navigatorSteps[stepIndex];
   const progress = ((stepIndex + 1) / (navigatorSteps.length + 1)) * 100;
@@ -36,6 +37,10 @@ export function SmartNavigator({
     trackEvent("ai_navigator_started", { path: window.location.pathname });
     setDailyUsageCount(14);
   }, []);
+
+  useEffect(() => {
+    setProgressWidth(`${progress}%`);
+  }, [progress]);
 
   useEffect(() => {
     const query = String(searchParams?.get("q") || "").trim();
@@ -148,7 +153,7 @@ export function SmartNavigator({
           </div>
 
           <div className="quiz-progress" aria-hidden="true">
-            <span className="quiz-progress__bar" style={{ width: `${progress}%` }} />
+            <span className="quiz-progress__bar" style={{ width: progressWidth }} />
           </div>
 
           {!isEmailStep ? (

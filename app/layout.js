@@ -32,7 +32,7 @@ export const viewport = {
 export const metadata = {
   metadataBase: new URL("https://minroshmigration.com.au"),
   title: {
-    default: "MinRosh Migration",
+    default: "Migration Agent Brisbane | Skilled, Partner & Student Visa Help | MinRosh Migration",
     template: "%s | MinRosh Migration",
   },
   description:
