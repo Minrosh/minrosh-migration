@@ -4,13 +4,11 @@ import "./globals.css";
 import siteDataStatic from "../data/site.json";
 import { getHomeSiteData } from "../lib/home-site-data";
 import { StructuredData } from "../components/structured-data";
-import { AIConciergeLazy } from "../components/ai-concierge-lazy";
+import { GlobalClientWidgets } from "../components/global-client-widgets";
 import { GoogleAnalytics } from "../components/google-analytics";
 import { businessJsonLd } from "../lib/seo";
 import { ScrollRestorer } from "../components/scroll-restorer";
 import { PWARegister } from "../components/pwa-register";
-import { StickyMobileCTA } from "../components/sticky-mobile-cta";
-import { ExitIntentPopup } from "../components/exit-intent-popup";
 
 const siteData = getHomeSiteData(siteDataStatic);
 
@@ -85,6 +83,13 @@ export const metadata = {
 export default async function RootLayout({ children }) {
   const h = await headers();
   const nonce = String(h.get("x-csp-nonce") || "").trim();
+  const publicSiteData = {
+    ...siteData,
+    brand: {
+      ...siteData.brand,
+      email: "",
+    },
+  };
 
   return (
     <html lang="en-AU">
@@ -97,9 +102,7 @@ export default async function RootLayout({ children }) {
         </a>
         <StructuredData data={businessJsonLd(siteData)} nonce={nonce} />
         {children}
-        <AIConciergeLazy siteData={siteData} />
-        <StickyMobileCTA />
-        <ExitIntentPopup />
+        <GlobalClientWidgets siteData={publicSiteData} />
       </body>
     </html>
   );

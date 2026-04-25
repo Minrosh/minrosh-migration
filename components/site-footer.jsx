@@ -22,13 +22,15 @@ const legalLinks = [
 ];
 
 export function SiteFooter({ siteData, initialStats }) {
+  const publicBrand = { ...siteData.brand, email: "" };
+
   return (
     <footer className="site-footer site-footer--rich">
       <div className="site-footer__utility-strip">
         <SiteHeaderMetaRow siteData={siteData} />
       </div>
       <div className="site-footer__inner site-footer__inner--rich">
-        <SiteFooterInteractive siteData={siteData} initialStats={initialStats}>
+        <SiteFooterInteractive brand={publicBrand} initialStats={initialStats}>
           <>
             <div className="site-footer__nav-col">
               <strong>Services</strong>

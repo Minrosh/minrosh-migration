@@ -1,14 +1,39 @@
+"use client";
+
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import Image from "next/image";
 import { CountryCoverage } from "../country-coverage";
 import { HomeDiscoverStrip } from "./home-discover-strip";
-import { HomeHeroBento } from "./home-hero-bento";
 import { NewsBoard } from "../news-board";
-import { SmartNavigator } from "../smart-navigator";
 import { PathwayMapDisclosure } from "./pathway-map-disclosure";
 import { GoogleReviewsPanel } from "./google-reviews-panel";
 import { PathwaySequenceAnimated } from "./pathway-sequence-animated";
-import { MotionReveal, MotionStagger, MotionItem } from "../ui/motion-wrapper";
+
+const HomeHeroBento = dynamic(
+  () => import("./home-hero-bento").then((m) => ({ default: m.HomeHeroBento })),
+  { ssr: false, loading: () => null }
+);
+
+const SmartNavigator = dynamic(
+  () => import("../smart-navigator").then((m) => ({ default: m.SmartNavigator })),
+  { ssr: false, loading: () => null }
+);
+
+const MotionReveal = dynamic(
+  () => import("../ui/motion-wrapper").then((m) => ({ default: m.MotionReveal })),
+  { ssr: false, loading: () => null }
+);
+
+const MotionStagger = dynamic(
+  () => import("../ui/motion-wrapper").then((m) => ({ default: m.MotionStagger })),
+  { ssr: false, loading: () => null }
+);
+
+const MotionItem = dynamic(
+  () => import("../ui/motion-wrapper").then((m) => ({ default: m.MotionItem })),
+  { ssr: false, loading: () => null }
+);
 
 const countryBannerLinks = [
   { label: "Australia", href: "/destinations/australia" },

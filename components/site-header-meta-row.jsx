@@ -28,6 +28,7 @@ const phoneIcon = (
  */
 export function SiteHeaderMetaRow({ siteData }) {
   const email = String(siteData?.brand?.email || "").trim();
+  const supportEmailLabel = email.replace("@", " [at] ");
   const phoneRaw = String(siteData?.brand?.phone || "").trim();
   const telHref = phoneRaw ? `tel:${phoneRaw.replace(/\s+/g, "")}` : "";
   const topbarBrand = { ...siteData.brand, whatsappSecondary: "" };
@@ -43,10 +44,10 @@ export function SiteHeaderMetaRow({ siteData }) {
       </div>
       <div className="site-header__meta-contact">
         {email ? (
-          <a href={`mailto:${email}`} className="site-header__meta-contact-link">
+          <Link href="/contact" className="site-header__meta-contact-link" aria-label="Open contact page for email support">
             {emailIcon}
-            <span>{email}</span>
-          </a>
+            <span>{supportEmailLabel}</span>
+          </Link>
         ) : null}
         {telHref ? (
           <a href={telHref} className="site-header__meta-contact-link">

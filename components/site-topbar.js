@@ -9,6 +9,7 @@ import { SiteSocialIcons } from "./site-social-icons";
 export function SiteTopbar({ siteData }) {
   const destinationPickerRef = useRef(null);
   const topbarBrand = { ...siteData.brand, whatsappSecondary: "" };
+  const supportEmailLabel = String(siteData?.brand?.email || "").trim().replace("@", " [at] ");
 
   function closeDestinationPicker() {
     if (destinationPickerRef.current) destinationPickerRef.current.open = false;
@@ -40,7 +41,9 @@ export function SiteTopbar({ siteData }) {
           </div>
         </details>
         <div className="site-topbar__group site-topbar__group--contact">
-          <a href={`mailto:${siteData.brand.email}`}>{siteData.brand.email}</a>
+          <Link href="/contact" aria-label="Open contact page for email enquiries">
+            {supportEmailLabel || "Email support"}
+          </Link>
           <a href="tel:0478100542">0478 100 542</a>
         </div>
         {listPublicSocialIcons(topbarBrand).length ? (

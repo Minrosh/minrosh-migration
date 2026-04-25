@@ -9,7 +9,7 @@ import { SiteSocialIcons } from "./site-social-icons";
 /**
  * Client island: brand + stats, optional middle columns (nav), newsletter last.
  */
-export function SiteFooterInteractive({ siteData, initialStats, children }) {
+export function SiteFooterInteractive({ brand, initialStats, children }) {
   const [stats, setStats] = useState(initialStats);
 
   useEffect(() => {
@@ -63,7 +63,7 @@ export function SiteFooterInteractive({ siteData, initialStats, children }) {
             <PublicFileImg src="/images/minrosh-logo.png" alt="" width={60} height={60} />
           </span>
           <span className="brand__text">
-            <strong>{siteData.brand.name}</strong>
+            <strong>{brand.name}</strong>
             <span>Unlock New Horizons for better tomorrow</span>
           </span>
         </Link>
@@ -71,10 +71,12 @@ export function SiteFooterInteractive({ siteData, initialStats, children }) {
           Clear migration and education guidance for clients across Australia (and destination hubs worldwide).
         </p>
         <div className="site-footer__quick-contact">
-          <a href={`mailto:${siteData.brand.email}`}>{siteData.brand.email}</a>
-          <a href={`tel:${siteData.brand.phone.replace(/\s+/g, "")}`}>{siteData.brand.phone}</a>
+          <Link href="/contact" aria-label="Open contact page for email enquiries">
+            Email support via contact page
+          </Link>
+          <a href={`tel:${brand.phone.replace(/\s+/g, "")}`}>{brand.phone}</a>
         </div>
-        <SiteSocialIcons brand={siteData.brand} variant="footer" />
+        <SiteSocialIcons brand={brand} variant="footer" />
         <div className="site-footer__stats">
           <div className="site-footer__stat">
             <strong>{stats.enquiryCount}</strong>

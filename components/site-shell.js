@@ -25,6 +25,7 @@ export function SiteShell({
 }) {
   const footerStats = getFooterStats();
   const primaryWhatsAppUrl = buildWhatsAppUrl(siteData.brand.whatsapp, WHATSAPP_LEAD_MESSAGE);
+  const publicBrand = { ...siteData.brand, email: "" };
   const navLinks = destinationContext
     ? getDestinationNavLinks(destinationContext.slug)
     : globalPrimaryLinks;
@@ -67,7 +68,7 @@ export function SiteShell({
             enableVisaMega={!destinationContext}
           />
         </div>
-        <SiteHeaderMobileUtilities siteData={siteData} />
+        <SiteHeaderMobileUtilities brand={publicBrand} />
       </SitePublicStickyHeader>
 
       <main id="main-content" className="portal-main portal-main--immersive pt-6 md:pt-8">{children}</main>

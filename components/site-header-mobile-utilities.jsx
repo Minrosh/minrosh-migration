@@ -30,12 +30,11 @@ function IconPhone() {
 
 /**
  * Compact destinations + contact + social for the sticky header on small viewports.
- * @param {{ siteData: { brand: { email?: string, name?: string, whatsapp?: string } } }} props
+ * @param {{ brand: { name?: string, whatsapp?: string } }} props
  */
-export function SiteHeaderMobileUtilities({ siteData }) {
+export function SiteHeaderMobileUtilities({ brand }) {
   const destinationPickerRef = useRef(null);
-  const email = String(siteData?.brand?.email || "").trim();
-  const topbarBrand = { ...siteData.brand, whatsappSecondary: "" };
+  const topbarBrand = { ...brand, whatsappSecondary: "" };
 
   function closeDestinationPicker() {
     if (destinationPickerRef.current) destinationPickerRef.current.open = false;
@@ -59,15 +58,9 @@ export function SiteHeaderMobileUtilities({ siteData }) {
         </div>
       </details>
       <div className="site-header__utility-actions">
-        {email ? (
-          <a
-            className="site-header__icon-btn"
-            href={`mailto:${email}`}
-            aria-label={`Email ${email}`}
-          >
-            <IconMail />
-          </a>
-        ) : null}
+        <Link className="site-header__icon-btn" href="/contact" aria-label="Open contact page for email enquiries">
+          <IconMail />
+        </Link>
         <a className="site-header__icon-btn" href="tel:0478100542" aria-label="Call 0478 100 542">
           <IconPhone />
         </a>

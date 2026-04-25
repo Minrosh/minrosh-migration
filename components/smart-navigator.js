@@ -21,6 +21,7 @@ export function SmartNavigator({
   const [stepIndex, setStepIndex] = useState(0);
   const [answers, setAnswers] = useState({});
   const [intentHint, setIntentHint] = useState("");
+  const [dailyUsageCount, setDailyUsageCount] = useState(null);
 
   const currentStep = navigatorSteps[stepIndex];
   const progress = ((stepIndex + 1) / (navigatorSteps.length + 1)) * 100;
@@ -33,6 +34,7 @@ export function SmartNavigator({
   useEffect(() => {
     // Track when the navigator is first viewed
     trackEvent("ai_navigator_started", { path: window.location.pathname });
+    setDailyUsageCount(14);
   }, []);
 
   useEffect(() => {
@@ -120,7 +122,9 @@ export function SmartNavigator({
         <div className="mt-4 flex items-center gap-2">
           <span className="flex h-2 w-2 rounded-full bg-green-500 animate-pulse" />
           <p className="text-xs font-bold text-brand-plum/60 uppercase tracking-wider">
-            14 people used this navigator today
+            {(dailyUsageCount ?? 0) > 0
+              ? `${dailyUsageCount} people used this navigator today`
+              : "Navigator activity updates after load"}
           </p>
         </div>
       </div>

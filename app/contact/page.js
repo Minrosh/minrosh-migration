@@ -27,6 +27,7 @@ export const metadata = buildMetadata({
 
 export default function ContactPage() {
   const siteData = getHomeSiteData(siteDataStatic);
+  const supportEmailLabel = String(siteData?.brand?.email || "").trim().replace("@", " [at] ");
   const waPrimary = buildWhatsAppUrl(siteData.brand.whatsapp, WHATSAPP_LEAD_MESSAGE);
   const waSecondary = buildWhatsAppUrl(siteData.brand.whatsappSecondary, WHATSAPP_LEAD_MESSAGE);
   const trustSignals = Array.isArray(readinessSignals?.trustSignals) ? readinessSignals.trustSignals : [];
@@ -131,7 +132,7 @@ export default function ContactPage() {
                 <div className="contact-details">
                   <div>
                     <span>Email</span>
-                    <a href={`mailto:${siteData.brand.email}`}>{siteData.brand.email}</a>
+                    <span>{supportEmailLabel || "Use the contact forms below"}</span>
                   </div>
                   <div>
                     <span>Phone</span>
