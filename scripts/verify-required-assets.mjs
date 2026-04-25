@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(__dirname, "..");
 const publicImages = path.join(root, "public", "images");
+const publicAssets = path.join(root, "public", "assets");
 
 // Keep this list minimal and critical for homepage/brand rendering.
 // We enforce minimum byte sizes to prevent placeholder "tiny image" regressions.
@@ -31,6 +32,16 @@ for (const { name, minBytes } of requiredAssets) {
   }
   if (size < minBytes) {
     missing.push(`${name} (too small: ${size} bytes, expected >= ${minBytes})`);
+  }
+}
+
+const brochureFile = path.join(publicAssets, "minrosh-email-brochure.pdf");
+if (!fs.existsSync(brochureFile)) {
+  missing.push("minrosh-email-brochure.pdf (missing)");
+} else {
+  const brochureSize = fs.statSync(brochureFile).size;
+  if (brochureSize < 50_000) {
+    missing.push(`minrosh-email-brochure.pdf (too small: ${brochureSize} bytes, expected >= 50000)`);
   }
 }
 

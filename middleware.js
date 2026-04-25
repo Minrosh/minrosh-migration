@@ -4,6 +4,8 @@ import { getAdminSessionValueFromRequestCookies } from "./lib/admin/session-cook
 import { buildContentSecurityPolicy } from "./lib/csp/build-csp-header";
 import { getOrCreateRequestId, REQUEST_ID_HEADER } from "./lib/observability/request-id";
 
+const MAINTENANCE_VALUES = new Set(["1", "true", "on", "yes"]);
+
 function newCspNonce() {
   const bytesToBase64 = (bytes) => {
     if (typeof btoa === "function") {
@@ -21,7 +23,7 @@ function newCspNonce() {
 }
 
 /**
- * Edge middleware: admin session + CSP nonce for HTML routes.
+ * Edge middleware: maintenance gate + admin session + CSP nonce for HTML routes.
  * Nonce is forwarded on the request (`x-csp-nonce`) so `app/layout.js` can pass it to `<Script nonce>`.
  */
 export async function middleware(request) {
@@ -57,7 +59,9 @@ export async function middleware(request) {
     pathname.startsWith("/admin/") ||
     pathname.startsWith("/api/admin/");
 
-  const maintenanceMode = process.env.MAINTENANCE_MODE === "true";
+  const maintenanceMode = production
+    ? MAINTENANCE_VALUES.has(String(process.env.MAINTENANCE_MODE || "").toLowerCase())
+    : false;
   const bypassToken = String(process.env.MAINTENANCE_BYPASS_TOKEN || "").trim();
   const reqBypassToken =
     request.nextUrl.searchParams.get("maintenance_bypass") ||
@@ -65,24 +69,43 @@ export async function middleware(request) {
     request.cookies.get("maintenance_bypass")?.value ||
     "";
   const hasBypass = Boolean(bypassToken) && reqBypassToken === bypassToken;
-  const maintenanceBypassPath =
+  const maintenancePublicBypass =
     pathname === "/maintenance" ||
-    pathname.startsWith("/_next/") ||
     pathname === "/favicon.ico" ||
-    pathname.startsWith("/api/") || // Includes /api/inngest and /api/webhooks/*
-    pathname.startsWith("/admin/");
+    pathname.startsWith("/admin/") ||
+    pathname === "/admin";
+  const maintenanceApiBypass =
+    pathname.startsWith("/api/admin/") ||
+    pathname.startsWith("/api/cron/") ||
+    pathname.startsWith("/api/inngest") ||
+    pathname.startsWith("/api/webhooks/");
+
+  if (maintenanceMode && !hasBypass && !maintenancePublicBypass && !maintenanceApiBypass) {
+    if (pathname.startsWith("/api/")) {
+      const response = NextResponse.json(
+        { error: "Maintenance mode is active. Please try again shortly." },
+        { status: 503 }
+      );
+      response.headers.set("Retry-After", "120");
+      response.headers.set("Cache-Control", "no-store");
+      response.headers.set("X-Robots-Tag", "noindex, nofollow");
+      return withCsp(response);
+    }
+
+    const maintenanceUrl = request.nextUrl.clone();
+    maintenanceUrl.pathname = "/maintenance";
+    maintenanceUrl.search = "";
+    const response = NextResponse.rewrite(maintenanceUrl, { request: { headers: requestHeaders } });
+    response.headers.set("Retry-After", "120");
+    response.headers.set("Cache-Control", "no-store");
+    response.headers.set("X-Robots-Tag", "noindex, nofollow");
+    return withCsp(response);
+  }
 
   const isLocalhost = host.startsWith("localhost:") || host.startsWith("127.0.0.1:");
   const localAdminBypass =
     !production &&
     (isLocalhost || String(process.env.ADMIN_BYPASS_LOCAL || "").toLowerCase() === "true");
-
-  if (maintenanceMode && !maintenanceBypassPath && !hasBypass) {
-    const maintenanceUrl = request.nextUrl.clone();
-    maintenanceUrl.pathname = "/maintenance";
-    maintenanceUrl.search = "";
-    return withCsp(NextResponse.rewrite(maintenanceUrl, { request: { headers: requestHeaders } }));
-  }
 
   if (!isAdminApp) {
     return continueRequest();

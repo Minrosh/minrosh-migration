@@ -156,10 +156,10 @@ echo "==> Writable runtime data under standalone (enquiries, customers, invoices
 mkdir -p .next/standalone/data
 chmod -R u+rwX .next/standalone/data
 
-echo "==> Reload PM2 from ecosystem (.env merge guaranteed)"
-pm2 delete minrosh-next || true
-pm2 start ecosystem.config.js
-pm2 save
+echo "==> Disable maintenance mode before booting the new build"
+set_env_value "MAINTENANCE_MODE" "false"
+reload_runtime_for_env
+echo "==> Maintenance mode disabled"
 
 if [[ "${SKIP_REINDEX_VERIFY:-}" == "1" ]]; then
   echo "==> Skipping reindex:verify (SKIP_REINDEX_VERIFY=1)"
@@ -171,5 +171,4 @@ fi
 echo "==> Done. Keep SMTP_*, ADMIN_SESSION_SECRET, ADMIN_PASSWORD, etc. in $ROOT/.env — PM2 loads them from ecosystem.config.js."
 echo "==> After deploy: if forms show Server Action errors, hard-refresh the site (Ctrl+Shift+R) so the browser loads new /_next/static chunks."
 echo "==> SEO: submit/refresh sitemap + Request indexing for priority URLs in Google Search Console — docs/SEARCH-CONSOLE-REINDEX.md"
-disable_maintenance_mode
 trap - ERR

@@ -295,6 +295,9 @@ export function HomeEligibilityWizard() {
                     <p className="mt-1 text-sm text-brand-ink/80">{momentumMilestone.description}</p>
                   </div>
                 ) : null}
+                <p className="home-eligibility-wizard__helper">
+                  This quick check is advisory only and is not an official eligibility decision.
+                </p>
                 {goalMeta?.href ? (
                   <p className="home-eligibility-wizard__result-page">
                     <Link href={goalMeta.href} className="home-eligibility-wizard__link">

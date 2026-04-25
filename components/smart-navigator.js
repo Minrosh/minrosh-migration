@@ -340,8 +340,8 @@ export function SmartNavigator({
             <>
               <h3>Build your pathway summary</h3>
               <p>
-                The Visa Decision Engine uses your profile, timeline, and goals to generate a 
-                confidence-scored migration roadmap.
+                This expanded navigator now looks at country, goal, timing, support preference, and
+                profile signals to suggest a sensible next step.
               </p>
               <div className="mt-8 space-y-4 opacity-40 grayscale pointer-events-none">
                  <div className="h-4 w-3/4 bg-brand-plum/10 rounded" />
@@ -350,6 +350,10 @@ export function SmartNavigator({
               </div>
             </>
           )}
+          <p className="mt-4 rounded-xl border border-brand-rose/25 bg-brand-rose/10 px-3 py-2 text-xs leading-5 text-brand-plum/75">
+            General guidance only. The Smart Navigator is not an official eligibility decision and
+            does not replace advice from a registered migration professional.
+          </p>
           </aside>
         </div>
       </div>

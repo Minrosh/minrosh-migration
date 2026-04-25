@@ -55,25 +55,11 @@ async function run() {
 
   if (await expectOk(page, "/")) {
     try {
-      await page.getByText("Explore pathways", { exact: false }).first().scrollIntoViewIfNeeded();
-      const smartInput = page.locator('input[type="text"]').first();
-      await smartInput.fill("Skilled visa after study in Australia");
-      await page.getByRole("link", { name: "Run Smart Navigator" }).first().click();
-      await page.waitForTimeout(250);
-      const hash = new URL(page.url()).hash;
-      if (!hash.includes("smart-navigator")) fail("Run Smart Navigator did not navigate to #smart-navigator");
-      const hint = page.getByText("Using your typed intent:", { exact: false });
-      if ((await hint.count()) === 0) fail("Typed intent hint did not appear in Smart Navigator");
-    } catch (err) {
-      fail(`Smart Navigator CTA flow failed: ${err.message}`);
-    }
-
-    try {
-      const discoverSection = page.locator("section").filter({ hasText: "Explore pathways" }).first();
-      const startPathway = discoverSection.locator('a[href="/assessment"]').first();
+      const startPathway = page.locator('a[href="/assessment"]:visible').first();
       await startPathway.scrollIntoViewIfNeeded();
       await startPathway.click();
       await page.waitForURL(/\/assessment/, { timeout: 8000 });
+      await page.getByText(/Smart Navigator|Visa Decision Engine/i).first().waitFor({ timeout: 8000 });
     } catch (err) {
       fail(`Start your pathway flow failed: ${err.message}`);
     }

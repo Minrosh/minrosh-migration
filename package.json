@@ -11,7 +11,7 @@
     "generate:admin-session-secret": "node scripts/generate-admin-session-secret.mjs",
     "prebuild:verify": "bash scripts/pre-build-verify.sh",
     "deploy:server": "bash ./deploy-server.sh",
-    "build": "node scripts/verify-required-assets.mjs && next build && node scripts/generate-brochure.mjs && node scripts/copy-standalone-assets.mjs",
+    "build": "node scripts/verify-required-assets.mjs && next build && node scripts/copy-standalone-assets.mjs",
     "start": "next start",
     "lint": "next lint",
     "test:contact": "node scripts/test-contact-save.mjs",
@@ -60,8 +60,13 @@
     "eslint": "^8.57.0",
     "eslint-config-next": "^15.5.14",
     "inngest": "^3.22.13",
-    "postcss": "^8.5.8",
+    "postcss": "^8.5.10",
     "tailwindcss": "^3.4.19",
     "vitest": "^3.2.4"
+  },
+  "overrides": {
+    "next": {
+      "postcss": "^8.5.10"
+    }
   }
 }
