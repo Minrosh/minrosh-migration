@@ -162,8 +162,17 @@ export function SmartNavigator({
             </div>
           ) : (
             <form onSubmit={handleEmailSubmit} className="my-6">
+              <div className="mb-6 p-4 rounded-2xl bg-brand-plum/5 border border-brand-plum/10 border-dashed text-center">
+                 <p className="text-[0.6rem] uppercase tracking-widest font-bold text-brand-plum/40 mb-2">Preliminary Assessment</p>
+                 <p className="text-sm font-bold text-brand-plum mb-1">
+                   Primary Pathway identified: <span className="text-brand-rose">{recommendation?.title || "Calculating..."}</span>
+                 </p>
+                 <p className="text-xs text-brand-plum/60 italic">
+                   We&apos;ve generated your confidence score and alternative roadmap.
+                 </p>
+              </div>
               <label className="block text-sm font-semibold text-brand-plum mb-2">
-                Your Email Address
+                Where should we send your full analysis?
               </label>
               <input
                 type="email"
@@ -174,7 +183,7 @@ export function SmartNavigator({
                 defaultValue={answers.email || ""}
               />
               <p className="text-xs text-brand-plum/60 mt-3">
-                We&apos;ll securely send you a copy of your personalised AI pathway analysis.
+                We&apos;ll securely send your personalised AI pathway analysis and confidence report.
               </p>
             </form>
           )}
