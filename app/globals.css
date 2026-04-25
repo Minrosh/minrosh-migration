@@ -88,6 +88,23 @@
   animation: blob-pulse 8s ease-in-out infinite;
 }
 
+/* --- ULTRA MAXIMUM SCROLL SNAP --- */
+.ultra-snap-container {
+  scroll-snap-type: y mandatory;
+  overflow-y: auto;
+  height: 100vh;
+  scroll-behavior: smooth;
+}
+
+.ultra-snap-section {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 *,
 *::before,
 *::after {

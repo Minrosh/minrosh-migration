@@ -17,7 +17,7 @@ export default function HomePage() {
         </div>
 
         {/* HERO SECTION - THE MAXIMUM LEVEL */}
-        <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-brand-cream/20 py-20 lg:py-32 snap-start">
+        <section className="ultra-snap-section relative overflow-hidden bg-brand-cream/20">
           <div className="absolute inset-0 z-0 opacity-[0.03]">
             <PublicFileImg 
               src="/images/hero-sydney-real.jpg" 
@@ -27,7 +27,7 @@ export default function HomePage() {
             />
           </div>
           
-          <div className="container relative z-10 mx-auto px-4 text-center">
+          <div className="container relative z-10 mx-auto px-4 text-center py-20">
             <MotionReveal delay={0.1}>
               <div className="inline-flex items-center gap-3 rounded-full bg-white/60 px-6 py-2.5 text-xs font-extrabold text-brand-rose shadow-xl backdrop-blur-xl mb-10 border border-white animate-float">
                 <span className="flex h-2.5 w-2.5 rounded-full bg-brand-rose shadow-[0_0_10px_#9b4a6c] animate-pulse" />
@@ -91,8 +91,8 @@ export default function HomePage() {
         </section>
 
         {/* THE INTELLIGENT ISLAND */}
-        <section className="bg-white py-32 lg:py-48 relative snap-start min-h-screen flex flex-col justify-center">
-          <div className="container mx-auto px-4 relative z-10">
+        <section className="ultra-snap-section bg-white relative">
+          <div className="container mx-auto px-4 relative z-10 py-20">
             <MotionReveal>
               <div className="mx-auto max-w-4xl text-center mb-20">
                 <p className="text-brand-rose font-black uppercase tracking-[0.3em] text-xs mb-4">Precision Routing</p>
@@ -113,12 +113,12 @@ export default function HomePage() {
         </section>
 
         {/* THE 4 PILLARS - ELITE GRID */}
-        <section className="bg-brand-plum py-32 lg:py-48 text-white overflow-hidden relative snap-start min-h-screen flex flex-col justify-center">
+        <section className="ultra-snap-section bg-brand-plum text-white overflow-hidden relative">
           <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-brand-rose/10 rounded-full blur-[120px] -z-0 translate-x-1/2 -translate-y-1/2" />
-          <div className="container mx-auto px-4 relative z-10">
+          <div className="container mx-auto px-4 relative z-10 py-20">
             <div className="grid grid-cols-1 gap-20 lg:grid-cols-2">
               <MotionReveal>
-                <div className="flex flex-col justify-center h-full">
+                <div className="flex flex-col justify-center h-full text-left">
                   <p className="text-brand-gold font-black uppercase tracking-[0.3em] text-xs mb-6">Why MinRosh?</p>
                   <h2 className="text-6xl font-black tracking-tighter sm:text-8xl mb-8 leading-[0.9]">
                     Engineered for <br /><span className="text-brand-rose italic">Approval.</span>
@@ -149,14 +149,14 @@ export default function HomePage() {
         </section>
 
         {/* CORE SERVICES - THE BENTO GRID */}
-        <section className="py-32 lg:py-48 bg-white snap-start min-h-screen flex flex-col justify-center">
-          <div className="container mx-auto px-4">
+        <section className="ultra-snap-section bg-white">
+          <div className="container mx-auto px-4 py-20">
             <MotionReveal>
               <h2 className="text-center text-5xl font-black text-brand-plum tracking-tighter mb-20 sm:text-7xl">Core Visa Engines.</h2>
             </MotionReveal>
             <MotionStagger className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               <MotionItem className="lg:col-span-2">
-                <div className="glass-card !bg-brand-cream/20 p-12 h-full flex flex-col justify-between group overflow-hidden relative">
+                <div className="glass-card !bg-brand-cream/20 p-12 h-full flex flex-col justify-between group overflow-hidden relative text-left">
                   <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
                     <span className="text-[200px] font-black leading-none">01</span>
                   </div>
@@ -172,7 +172,7 @@ export default function HomePage() {
                 </div>
               </MotionItem>
               <MotionItem>
-                <div className="glass-card !bg-brand-rose/5 p-12 h-full border-brand-rose/10 flex flex-col justify-between group overflow-hidden relative">
+                <div className="glass-card !bg-brand-rose/5 p-12 h-full border-brand-rose/10 flex flex-col justify-between group overflow-hidden relative text-left">
                   <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
                     <span className="text-[120px] font-black leading-none">02</span>
                   </div>
@@ -183,7 +183,7 @@ export default function HomePage() {
                 </div>
               </MotionItem>
               <MotionItem>
-                <div className="glass-card !bg-brand-gold/5 p-12 h-full border-brand-gold/10 flex flex-col justify-between group overflow-hidden relative">
+                <div className="glass-card !bg-brand-gold/5 p-12 h-full border-brand-gold/10 flex flex-col justify-between group overflow-hidden relative text-left">
                   <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
                     <span className="text-[120px] font-black leading-none">03</span>
                   </div>
@@ -194,7 +194,7 @@ export default function HomePage() {
                 </div>
               </MotionItem>
               <MotionItem className="lg:col-span-2">
-                <div className="glass-card !bg-brand-plum p-12 h-full text-white group overflow-hidden relative">
+                <div className="glass-card !bg-brand-plum p-12 h-full text-white group overflow-hidden relative text-left">
                   <div className="absolute bottom-0 right-0 p-12 opacity-10 group-hover:opacity-20 transition-opacity">
                     <span className="text-[150px] font-black leading-none">04</span>
                   </div>
@@ -209,10 +209,10 @@ export default function HomePage() {
         </section>
 
         {/* TESTIMONIALS - THE IMMERSIVE SLIDER */}
-        <section className="bg-brand-cream/30 py-32 lg:py-48 overflow-hidden snap-start min-h-screen flex flex-col justify-center">
-          <div className="container mx-auto px-4">
+        <section className="ultra-snap-section bg-brand-cream/30 overflow-hidden">
+          <div className="container mx-auto px-4 py-20">
             <div className="flex flex-col md:flex-row gap-20 items-center">
-              <MotionReveal className="w-full md:w-1/3">
+              <MotionReveal className="w-full md:w-1/3 text-left">
                 <h2 className="text-6xl font-black text-brand-plum tracking-tighter leading-[0.9] mb-8">
                   Success <br /><span className="text-brand-rose">Stories.</span>
                 </h2>
@@ -224,7 +224,7 @@ export default function HomePage() {
                   { name: "Sarah", visa: "Partner 820", quote: "The evidence binder they helped me build was so professional." },
                 ].map((item, i) => (
                   <MotionItem key={i} className="flex-1">
-                    <div className="glass-card p-10 h-full shadow-2xl transition-transform hover:-rotate-1">
+                    <div className="glass-card p-10 h-full shadow-2xl transition-transform hover:-rotate-1 text-left">
                       <div className="flex text-yellow-400 gap-1 mb-6">★★★★★</div>
                       <p className="text-xl font-bold text-brand-plum italic mb-8 leading-relaxed">&quot;{item.quote}&quot;</p>
                       <p className="font-black text-brand-rose uppercase tracking-widest text-xs">{item.name} — {item.visa}</p>
@@ -237,11 +237,11 @@ export default function HomePage() {
         </section>
 
         {/* FINAL CTA - THE ABSOLUTE MAXIMUM */}
-        <section className="py-40 lg:py-64 bg-brand-plum relative overflow-hidden snap-start min-h-screen flex flex-col justify-center">
+        <section className="ultra-snap-section bg-brand-plum relative overflow-hidden">
           <div className="blur-orb bg-brand-rose/20 top-[-20%] left-[-20%]" />
           <div className="blur-orb bg-brand-gold/10 bottom-[-20%] right-[-20%]" />
           
-          <div className="container mx-auto px-4 text-center relative z-10">
+          <div className="container mx-auto px-4 text-center relative z-10 py-20">
             <MotionReveal>
               <p className="text-brand-gold font-black uppercase tracking-[0.5em] text-xs mb-8">Initiate Pathway</p>
               <h2 className="text-7xl font-black text-white mb-12 sm:text-9xl tracking-tight leading-none">
