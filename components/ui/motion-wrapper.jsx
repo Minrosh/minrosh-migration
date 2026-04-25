@@ -4,18 +4,36 @@ import { motion, useInView, useReducedMotion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
 const EASE = [0.22, 1, 0.36, 1];
+const MOBILE_QUERY = "(max-width: 768px)";
+
+function useShouldMinimizeMotion() {
+  const reduce = useReducedMotion();
+  const [isMobile, setIsMobile] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    if (typeof window === "undefined" || typeof window.matchMedia !== "function") return;
+    const query = window.matchMedia(MOBILE_QUERY);
+    const sync = () => setIsMobile(query.matches);
+    sync();
+    if (typeof query.addEventListener === "function") {
+      query.addEventListener("change", sync);
+      return () => query.removeEventListener("change", sync);
+    }
+    query.addListener(sync);
+    return () => query.removeListener(sync);
+  }, []);
+
+  const userReduce = mounted ? reduce : false;
+  return Boolean(userReduce || isMobile);
+}
 
 export function MotionReveal({ as: Comp = "div", className = "", delay = 0, y = 22, children }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-10% 0px -10% 0px" });
-  const reduce = useReducedMotion();
-  const [mounted, setMounted] = useState(false);
+  const shouldReduce = useShouldMinimizeMotion();
   const MotionComp = motion[Comp] || motion.div;
-  const shouldReduce = mounted ? reduce : false;
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   return (
     <MotionComp
@@ -31,13 +49,7 @@ export function MotionReveal({ as: Comp = "div", className = "", delay = 0, y = 
 }
 
 export function MotionStagger({ className = "", stagger = 0.08, children }) {
-  const reduce = useReducedMotion();
-  const [mounted, setMounted] = useState(false);
-  const shouldReduce = mounted ? reduce : false;
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const shouldReduce = useShouldMinimizeMotion();
 
   return (
     <motion.div
@@ -60,13 +72,7 @@ export function MotionStagger({ className = "", stagger = 0.08, children }) {
 }
 
 export function MotionItem({ className = "", children }) {
-  const reduce = useReducedMotion();
-  const [mounted, setMounted] = useState(false);
-  const shouldReduce = mounted ? reduce : false;
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const shouldReduce = useShouldMinimizeMotion();
 
   return (
     <motion.div

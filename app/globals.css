@@ -102,6 +102,8 @@
   flex-direction: column;
   justify-content: center;
   padding: 2rem 0;
+  content-visibility: auto;
+  contain-intrinsic-size: 960px;
 }
 
 *,
@@ -5525,6 +5527,24 @@ body.ai-concierge-panel-open .mobile-sticky-quiz-cta {
   :root {
     --content-max: 100%;
     --content-pad: 16px;
+  }
+
+  .glass-card {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .blur-orb {
+    display: none;
+  }
+
+  .animate-float,
+  .text-gradient-shine {
+    animation: none;
+  }
+
+  .portal-main--immersive::before {
+    display: none;
   }
 
   .site-header__inner,
