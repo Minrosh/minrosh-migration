@@ -7,8 +7,13 @@ import {
 import { getNewsData } from "../lib/news-data";
 import { NEWS_PUBLIC_BASE } from "../lib/news-store";
 
-/** Regenerate sitemap periodically so `lastModified` advances after content/deploys (crawl hint). */
-export const revalidate = 21600;
+/** Refresh sitemap frequently so deploy/content updates are reflected sooner. */
+export const revalidate = 300;
+
+function safeDate(value) {
+  const d = new Date(value);
+  return Number.isNaN(d.getTime()) ? null : d;
+}
 
 export default function sitemap() {
   const routes = buildPublicSitemapRoutes(destinations);
@@ -24,7 +29,7 @@ export default function sitemap() {
     .filter((n) => n.slug)
     .map((n) => ({
       url: sitemapUrlForPath(`${NEWS_PUBLIC_BASE}/${n.slug}`),
-      lastModified: new Date(),
+      lastModified: safeDate(n.updatedAt) || safeDate(n.date) || new Date(),
       changeFrequency: "weekly",
       priority: 0.7,
     }));
