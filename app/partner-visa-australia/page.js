@@ -4,6 +4,7 @@ import { ContentPage } from "../../components/content-page";
 import { SiteShell } from "../../components/site-shell";
 import { StructuredData } from "../../components/structured-data";
 import { buildMetadata, breadcrumbJsonLd, faqJsonLd } from "../../lib/seo";
+import { HubClusterNavigator } from "../../components/seo/hub-cluster-navigator";
 
 const pageData = seoPages.servicePages.partnerVisa;
 
@@ -36,6 +37,7 @@ export default function PartnerVisaPage() {
         currentPath={pageData.path}
         sections={pageData.sections}
         faq={pageData.faq}
+        mainLead={<HubClusterNavigator category="partner" />}
         related={[
           ...pageData.relatedGuides,
           { href: "/partner-visa-820-801-guide", title: "820/801 onshore partner guide" },

@@ -4,6 +4,7 @@ import { ContentPage } from "../../components/content-page";
 import { SiteShell } from "../../components/site-shell";
 import { StructuredData } from "../../components/structured-data";
 import { buildMetadata, breadcrumbJsonLd, faqJsonLd } from "../../lib/seo";
+import { HubClusterNavigator } from "../../components/seo/hub-cluster-navigator";
 
 const pageData = seoPages.servicePages.skilledMigration;
 
@@ -36,6 +37,7 @@ export default function SkilledMigrationPage() {
         officialResources={pageData.officialResources ?? []}
         sections={pageData.sections}
         faq={pageData.faq}
+        mainLead={<HubClusterNavigator category="skilled" />}
         heroImage={{
           src: "/images/hero-sydney-real.jpg",
           alt: "Sydney Harbour — Australian skilled migration context",

@@ -8,6 +8,8 @@ import { getLifestyleGuide } from "../../lib/lifestyle-guides";
 import { getFirst14Days, getStudentJobBoardAu, getTransportGuide } from "../../lib/experience-data";
 import { LifestyleExperienceBlock } from "../../components/lifestyle/lifestyle-experience-block";
 
+import { HubClusterNavigator } from "../../components/seo/hub-cluster-navigator";
+
 const pageData = seoPages.servicePages.studentVisa;
 
 export const metadata = buildMetadata({
@@ -43,12 +45,15 @@ export default function StudentVisaPage() {
         officialResources={pageData.officialResources ?? []}
         currentPath={pageData.path}
         mainLead={
-          <LifestyleExperienceBlock
-            guide={lifestyleGuide}
-            first14={first14}
-            transport={transport}
-            jobBoard={jobBoard}
-          />
+          <>
+            <HubClusterNavigator category="student" />
+            <LifestyleExperienceBlock
+              guide={lifestyleGuide}
+              first14={first14}
+              transport={transport}
+              jobBoard={jobBoard}
+            />
+          </>
         }
         sections={pageData.sections}
         faq={pageData.faq}

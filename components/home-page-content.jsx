@@ -8,6 +8,8 @@ import { QuizResultSkeleton } from "./home/quiz-result-skeleton";
 import { ServiceDecisionEngine } from "./home/service-decision-engine";
 import { StoriesCarouselPanel } from "./home/stories-carousel-panel";
 import { MidContentCTA } from "./mid-content-cta";
+import { TrustSignalsGrid } from "./home/trust-signals-grid";
+import { ClientJourneyMap } from "./home/client-journey-map";
 import futurePacingData from "../data/home-future-pacing.json";
 
 const TAB_IDS = new Set(["home", "quiz", "pathways", "services", "stories"]);
@@ -112,6 +114,8 @@ export function HomePageContent({ siteData, homeTab }) {
         ))}
       </div>
       <MidContentCTA className="mt-8 mb-16 max-w-5xl mx-auto" />
+      <TrustSignalsGrid />
+      <ClientJourneyMap />
       <FuturePacingLab data={futurePacingData} />
     </section>
   );

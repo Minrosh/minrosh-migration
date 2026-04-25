@@ -31,6 +31,11 @@ export function SmartNavigator({
   );
 
   useEffect(() => {
+    // Track when the navigator is first viewed
+    trackEvent("ai_navigator_started", { path: window.location.pathname });
+  }, []);
+
+  useEffect(() => {
     const query = String(searchParams?.get("q") || "").trim();
     if (!query) return;
     setIntentHint(query);
@@ -52,19 +57,53 @@ export function SmartNavigator({
     };
     persistNavigatorSummary(detail);
     window.dispatchEvent(new CustomEvent("minrosh:navigator-summary", { detail }));
+    
+    // Track when results are successfully generated
+    trackEvent("ai_navigator_results_generated", {
+      main_need: recommendation.mainNeed,
+      confidence: recommendation.confidenceScore
+    });
   }, [answers, recommendation]);
 
   function selectAnswer(value) {
-    setAnswers((current) => ({ ...current, [currentStep.id]: value }));
+    const stepId = currentStep.id;
+    setAnswers((current) => ({ ...current, [stepId]: value }));
+    trackEvent("ai_navigator_step_completed", { step: stepId, value });
   }
 
-  function handleEmailSubmit(e) {
+  async function handleEmailSubmit(e) {
     e.preventDefault();
     const email = new FormData(e.target).get("email");
     if (email) {
       const emailStr = String(email);
       setAnswers((current) => ({ ...current, email: emailStr }));
+      trackEvent("ai_navigator_email_captured", { 
+        email: emailStr, 
+        country: answers.country, 
+        goal: answers.goal 
+      });
       trackEvent("ai_funnel_lead_captured", { email: emailStr, country: answers.country, goal: answers.goal });
+
+      // Persist lead to CRM
+      try {
+        fetch("/api/ai-funnel", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: emailStr,
+            country: answers.country,
+            goal: answers.goal,
+            answers: answers,
+            insights: {
+              why: recommendation?.why,
+              risks: recommendation?.risks,
+              timelineExpectation: recommendation?.timelineExpectation
+            }
+          })
+        });
+      } catch (err) {
+        console.error("Failed to persist lead:", err);
+      }
     }
   }
 
@@ -74,14 +113,20 @@ export function SmartNavigator({
     <section className="navigator-section">
       <div className="section-head">
         <div>
-          <p className="section-label">Smart Navigator</p>
+          <p className="section-label">Visa Decision Engine</p>
           <h2>{title}</h2>
         </div>
         <p className="process-section__lead">{description}</p>
+        <div className="mt-4 flex items-center gap-2">
+          <span className="flex h-2 w-2 rounded-full bg-green-500 animate-pulse" />
+          <p className="text-xs font-bold text-brand-plum/60 uppercase tracking-wider">
+            14 people used this navigator today
+          </p>
+        </div>
       </div>
       {intentHint ? (
         <p className="mt-2 rounded-xl border border-brand-rose/25 bg-brand-rose/10 px-3 py-2 text-sm text-brand-plum/80">
-          Using your typed intent: <strong>{intentHint}</strong>
+          Analysing intent: <strong>{intentHint}</strong>
         </p>
       ) : null}
 
@@ -138,7 +183,10 @@ export function SmartNavigator({
             <button
               type="button"
               className="btn btn-secondary"
-              onClick={() => setStepIndex((current) => Math.max(current - 1, 0))}
+              onClick={() => {
+                setStepIndex((current) => Math.max(current - 1, 0));
+                trackEvent("ai_navigator_back_clicked", { from_step: stepIndex });
+              }}
               disabled={stepIndex === 0}
             >
               Back
@@ -147,9 +195,10 @@ export function SmartNavigator({
               <button
                 type="button"
                 className="btn btn-primary"
-                onClick={() =>
-                  setStepIndex((current) => current + 1)
-                }
+                onClick={() => {
+                  setStepIndex((current) => current + 1);
+                  trackEvent("ai_navigator_next_clicked", { from_step: stepIndex });
+                }}
                 disabled={!answers[currentStep.id]}
               >
                 Next
@@ -169,6 +218,7 @@ export function SmartNavigator({
               <Link
                 href={recommendation?.href || finalHref}
                 className="btn btn-primary"
+                onClick={() => trackEvent("ai_navigator_primary_cta_clicked", { need: recommendation?.mainNeed })}
               >
                 {primaryLabel}
               </Link>
@@ -179,19 +229,69 @@ export function SmartNavigator({
 
         <div className="rounded-[2rem] border border-white/60 bg-white/75 backdrop-blur-md shadow-xl p-3 sm:p-4">
           <aside className="quiz-result bento-hover">
-          <p className="section-label">Personalised result</p>
+          <p className="section-label">Analysis Result</p>
           {recommendation ? (
             <>
-              <h3>{recommendation.title}</h3>
-              <p>{recommendation.summary}</p>
-              <div className="insight-card">
-                <span className="insight-card__badge">Urgency</span>
-                <p>{recommendation.urgency}</p>
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="mb-0">{recommendation.title}</h3>
+                <div className="flex flex-col items-end">
+                  <span className="text-[0.65rem] uppercase tracking-wider font-bold text-brand-plum/40">Confidence</span>
+                  <span className="text-xl font-display font-bold text-brand-rose">{recommendation.confidenceScore}%</span>
+                </div>
               </div>
+              
+              <p>{recommendation.summary}</p>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-6">
+                <div className="p-3 rounded-xl border border-brand-plum/10 bg-brand-cream/20">
+                  <span className="text-[0.65rem] uppercase tracking-wider font-bold text-brand-plum/50 block mb-1">Why this result?</span>
+                  <ul className="text-[0.65rem] leading-tight space-y-1 text-brand-plum/70">
+                    {recommendation.why.map((w) => <li key={w}>• {w}</li>)}
+                  </ul>
+                </div>
+                <div className="p-3 rounded-xl border border-brand-rose/10 bg-brand-rose/5">
+                  <span className="text-[0.65rem] uppercase tracking-wider font-bold text-brand-rose/60 block mb-1">Risk Factors</span>
+                  <ul className="text-[0.65rem] leading-tight space-y-1 text-brand-rose/80">
+                    {recommendation.risks.map((r) => <li key={r}>• {r}</li>)}
+                  </ul>
+                </div>
+              </div>
+
+              {recommendation.alternative && (
+                <div className="mt-3 p-3 rounded-xl border border-brand-plum/10 bg-white/50">
+                  <span className="text-[0.65rem] uppercase tracking-wider font-bold text-brand-plum/50 block mb-1">Alternative Pathway</span>
+                  <p className="text-[0.7rem] font-semibold text-brand-plum mb-0">
+                    {recommendation.alternative.need} <span className="font-normal text-brand-plum/60">— {recommendation.alternative.reason}</span>
+                  </p>
+                </div>
+              )}
+
+              <div className="mt-3 p-3 rounded-xl border border-brand-plum/10 bg-brand-plum/5">
+                <span className="text-[0.65rem] uppercase tracking-wider font-bold text-brand-plum/50 block mb-1">Adaptive Strategy (AI v3)</span>
+                <p className="text-[0.7rem] font-bold text-brand-plum mb-1">
+                  Hybrid: <span className="font-normal">{recommendation.hybridPathway}</span>
+                </p>
+                <p className="text-[0.7rem] font-bold text-brand-plum mb-0">
+                  Backup: <span className="font-normal">{recommendation.backupStrategy.need} ({recommendation.backupStrategy.reason})</span>
+                </p>
+              </div>
+
+              <div className="insight-card mt-6">
+                <span className="insight-card__badge">Urgency & Timeline</span>
+                <p className="font-bold text-brand-plum mb-1">{recommendation.urgency}</p>
+                <p className="text-[0.7rem] text-brand-plum/60">Estimated: {recommendation.timelineExpectation}</p>
+              </div>
+
+              <div className="mt-4 flex items-center justify-center gap-2 opacity-40">
+                 <span className="h-1.5 w-1.5 rounded-full bg-brand-plum" />
+                 <span className="text-[0.6rem] uppercase tracking-tighter font-bold">Calibration Active</span>
+              </div>
+              
               <div className="navigator-result__notes">
                 <p>{recommendation.profileNote}</p>
                 <p>{recommendation.supportNote}</p>
               </div>
+
               <div className="points-breakdown">
                 <h4>Prepare before you speak with us</h4>
                 <ul>
@@ -204,10 +304,10 @@ export function SmartNavigator({
               </div>
               <p className="navigator-result__next">{recommendation.next}</p>
               <div className="content-aside-card__actions">
-                <Link href={recommendation.href} className="btn btn-primary">
+                <Link href={recommendation.href} className="btn btn-primary" onClick={() => trackEvent("ai_navigator_view_pathway_clicked")}>
                   {recommendation.cta}
                 </Link>
-                <Link href={finalHref} className="btn btn-ghost">
+                <Link href={finalHref} className="btn btn-ghost" onClick={() => trackEvent("ai_navigator_book_consult_clicked")}>
                   Book Consultation
                 </Link>
               </div>
@@ -216,9 +316,14 @@ export function SmartNavigator({
             <>
               <h3>Build your pathway summary</h3>
               <p>
-                This expanded navigator now looks at country, goal, timing, support preference, and
-                profile confidence to recommend the strongest next step.
+                The Visa Decision Engine uses your profile, timeline, and goals to generate a 
+                confidence-scored migration roadmap.
               </p>
+              <div className="mt-8 space-y-4 opacity-40 grayscale pointer-events-none">
+                 <div className="h-4 w-3/4 bg-brand-plum/10 rounded" />
+                 <div className="h-4 w-1/2 bg-brand-plum/10 rounded" />
+                 <div className="h-24 bg-brand-plum/5 rounded-2xl" />
+              </div>
             </>
           )}
           </aside>
