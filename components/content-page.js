@@ -37,6 +37,8 @@ export function ContentPage({
   asideTools = null,
   /** Optional rich block after official sources (e.g. lifestyle experience). */
   mainLead = null,
+  /** Optional quick summary for the top of the page. */
+  summary = null,
 }) {
   const resolvedPath = currentPath || breadcrumbs[breadcrumbs.length - 1]?.href || "";
   const personalizedCta = personalizedCtaForPath(resolvedPath);
@@ -91,6 +93,15 @@ export function ContentPage({
           </div>
         </div>
       </MotionReveal>
+
+      {summary ? (
+        <div className="container mx-auto px-4 mt-8">
+          <div className="p-6 rounded-2xl bg-brand-cream/40 border border-brand-plum/10 border-dashed">
+            <p className="text-[10px] uppercase tracking-widest font-black text-brand-plum/40 mb-2">In a hurry? Here&apos;s what you need to know</p>
+            <p className="text-sm font-medium text-brand-plum/80 leading-relaxed">{summary}</p>
+          </div>
+        </div>
+      ) : null}
 
       <div className="content-page__grid">
         <div className="content-page__main">
@@ -203,14 +214,20 @@ export function ContentPage({
             <GlossaryParagraph text={ctaBody || personalizedCta.body} />
             <div className="content-aside-card__actions">
               <Link href="/book-consultation" className="btn btn-primary">
-                Book consultation
+                Book Consultation
               </Link>
               <Link href="/assessment" className="btn btn-ghost">
-                Free assessment
+                Free Assessment
               </Link>
-              <Link href="/#quiz" className="content-aside-card__text-link">
-                Open points wizard on homepage
-              </Link>
+            </div>
+            <div className="mt-6 pt-6 border-t border-brand-plum/10">
+              <div className="flex items-center gap-3">
+                <div className="h-8 w-8 rounded bg-brand-plum/5 flex items-center justify-center text-[10px] font-black text-brand-plum/40 border border-brand-plum/10">MARA</div>
+                <p className="text-[10px] font-bold text-brand-plum/60 leading-tight">
+                  Registered Migration Agent <br />
+                  <span className="text-brand-rose">MARN 1801042</span>
+                </p>
+              </div>
             </div>
           </div>
 

@@ -15,30 +15,47 @@ export function PathwayInfographics({ sections = [] }) {
   const reduce = useReducedMotion();
 
   const metrics = useMemo(() => {
-    const count = sections.length || 1;
+    const totalPossible = Math.max(3, sections.length);
+    const score = Math.min(totalPossible, sections.length);
+    
     return [
-      { label: "Pathway readiness", value: clampScore(52 + count * 4) },
-      { label: "Documentation clarity", value: clampScore(46 + count * 5) },
-      { label: "Strategic confidence", value: clampScore(44 + count * 6) },
+      { 
+        label: "Document Prep", 
+        value: `${score}/${totalPossible}`,
+        percent: (score / totalPossible) * 100,
+        tip: "Estimate of documentation volume addressed in this guide." 
+      },
+      { 
+        label: "Strategic Coverage", 
+        value: `${score}/${totalPossible}`,
+        percent: (score / totalPossible) * 100,
+        tip: "Depth of strategic scenarios covered in these sections." 
+      }
     ];
   }, [sections.length]);
 
   return (
-    <section ref={ref} className="pathway-infographics bento-hover" aria-label="Visual migration strategy indicators">
-      <h3>Strategy indicators</h3>
+    <section ref={ref} className="pathway-infographics bento-hover" aria-label="Strategy preparation indicators">
+      <div className="flex justify-between items-center mb-6">
+        <h3 className="!mb-0 text-brand-plum">Preparation Indicators</h3>
+        <span className="text-[10px] uppercase tracking-widest text-brand-plum/40 font-bold italic">Estimated from content depth</span>
+      </div>
+      
       <div className="pathway-infographics__grid">
         {metrics.map((m, idx) => (
-          <article key={m.label} className="pathway-infographics__metric">
-            <p>{m.label}</p>
-            <div className="pathway-infographics__track" aria-hidden>
+          <article key={m.label} className="pathway-infographics__metric group relative" title={m.tip}>
+            <div className="flex justify-between items-center mb-2">
+              <p className="text-xs font-black text-brand-plum/70">{m.label}</p>
+              <strong className="text-xs font-black text-brand-rose">{m.value}</strong>
+            </div>
+            <div className="pathway-infographics__track bg-brand-plum/5 h-1.5 rounded-full overflow-hidden" aria-hidden>
               <motion.span
-                className="pathway-infographics__fill"
-                initial={reduce ? { width: `${m.value}%` } : { width: 0 }}
-                animate={inView ? { width: `${m.value}%` } : undefined}
+                className="pathway-infographics__fill bg-brand-rose block h-full"
+                initial={reduce ? { width: `${m.percent}%` } : { width: 0 }}
+                animate={inView ? { width: `${m.percent}%` } : undefined}
                 transition={{ duration: 1, delay: idx * 0.12, ease: [0.22, 1, 0.36, 1] }}
               />
             </div>
-            <strong>{m.value}%</strong>
           </article>
         ))}
       </div>

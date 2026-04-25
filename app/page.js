@@ -16,7 +16,7 @@ export default function HomePage() {
           <div className="blur-orb bg-brand-gold/5 bottom-[-10%] right-[-10%]" />
         </div>
 
-        {/* HERO SECTION - REFINED RESPONSIVE TYPOGRAPHY */}
+        {/* HERO SECTION - SNAPPY ANIMATIONS */}
         <section className="ultra-snap-section relative overflow-hidden bg-brand-cream/20">
           <div className="absolute inset-0 z-0 opacity-[0.03]">
             <PublicFileImg 
@@ -28,14 +28,14 @@ export default function HomePage() {
           </div>
           
           <div className="container relative z-10 mx-auto px-4 text-center py-12 md:py-20">
-            <MotionReveal delay={0.1}>
+            <MotionReveal delay={0} y={10}>
               <div className="inline-flex items-center gap-3 rounded-full bg-white/60 px-5 py-2 text-[10px] sm:text-xs font-extrabold text-brand-rose shadow-xl backdrop-blur-xl mb-8 border border-white animate-float">
                 <span className="flex h-2 w-2 rounded-full bg-brand-rose shadow-[0_0_10px_#9b4a6c] animate-pulse" />
                 MinRosh Intelligence v3.4 Active
               </div>
             </MotionReveal>
             
-            <MotionReveal delay={0.2} y={30}>
+            <MotionReveal delay={0.05} y={15}>
               <h1 className="mx-auto max-w-5xl text-4xl font-black tracking-tight text-brand-plum sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl leading-[1.1] sm:leading-[0.95]">
                 <span className="text-gradient-shine">
                   Migration Agent Brisbane
@@ -45,13 +45,13 @@ export default function HomePage() {
               </h1>
             </MotionReveal>
             
-            <MotionReveal delay={0.3}>
+            <MotionReveal delay={0.1}>
               <p className="mx-auto mt-8 max-w-2xl text-lg text-brand-plum/60 sm:text-xl md:text-2xl leading-relaxed font-medium">
                 Strategic visa guidance powered by AI and human expertise. We define your clearest pathway before you spend a single cent on lodgement.
               </p>
             </MotionReveal>
             
-            <MotionReveal delay={0.4} y={20}>
+            <MotionReveal delay={0.15} y={10}>
               <div className="mt-12 flex flex-wrap justify-center gap-4 sm:gap-6">
                 <Link 
                   id="hero-cta-assessment"
@@ -69,14 +69,14 @@ export default function HomePage() {
                   rel="noopener noreferrer"
                 >
                   <svg className="h-6 w-6 sm:h-7 sm:w-7 text-green-500" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.246 2.248 3.484 5.232 3.484 8.412-.003 6.557-5.338 11.892-11.893 11.892-1.997-.001-3.951-.5-5.688-1.448l-6.309 1.656zm6.223-3.081c1.466.827 3.015 1.346 4.604 1.346 5.488 0 9.954-4.466 9.954-9.954 0-2.651-1.033-5.147-2.908-7.024-1.875-1.875-4.37-2.907-7.024-2.907-5.491 0-9.954 4.466-9.954 9.954 0 1.83.504 3.618 1.455 5.178l-1.003 3.666 3.831-.959z"/>
+                    <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.246 2.248 3.484 5.232 3.484 8.412-.003 6.557-5.338 11.892-11.893 11.892-1.997-.001-3.951-.5-5.688-1.448l-6.309 1.656zm6.223-3.081c1.466.827 3.015 1.346 4.604 1.346 5.488 0 9.954-4.466 9.954-9.954 0-2.651-1.033-5.147-2.908-7.024-1.875-1.875-4.37-2.907-7.024-2.907-5.491 0-9.954-4.466-9.954 9.954 0 1.83.504 3.618 1.455 5.178l-1.003 3.666 3.831-.959z"/>
                   </svg>
                   Chat on WhatsApp
                 </a>
               </div>
             </MotionReveal>
 
-            <MotionReveal delay={0.6}>
+            <MotionReveal delay={0.25}>
               <div className="mt-16 flex justify-center">
                 <div className="glass-card inline-flex items-center gap-3 sm:gap-4 px-4 py-2 sm:px-6 sm:py-3 rounded-2xl border-brand-rose/20 shadow-inner">
                   <span className="text-[8px] sm:text-[10px] font-black uppercase tracking-[0.2em] text-brand-rose">Live Activity</span>
@@ -93,7 +93,7 @@ export default function HomePage() {
         {/* THE INTELLIGENT ISLAND */}
         <section className="ultra-snap-section bg-white relative">
           <div className="container mx-auto px-4 relative z-10 py-12 md:py-20">
-            <MotionReveal>
+            <MotionReveal y={20}>
               <div className="mx-auto max-w-4xl text-center mb-12 md:mb-20">
                 <p className="text-brand-rose font-black uppercase tracking-[0.3em] text-[10px] sm:text-xs mb-4">Precision Routing</p>
                 <h2 className="text-4xl font-black text-brand-plum tracking-tighter sm:text-6xl lg:text-8xl">The Island.</h2>
@@ -102,7 +102,7 @@ export default function HomePage() {
                 </p>
               </div>
             </MotionReveal>
-            <MotionReveal delay={0.2}>
+            <MotionReveal delay={0.1} y={30}>
               <div className="mx-auto max-w-5xl rounded-[2rem] sm:rounded-[4rem] shadow-[0_40px_100px_rgba(61,36,50,0.15)] p-1 bg-gradient-to-tr from-brand-rose/30 via-white to-brand-gold/30">
                 <div className="bg-white/80 backdrop-blur-3xl rounded-[1.9rem] sm:rounded-[3.9rem] p-3 sm:p-6 shadow-inner overflow-hidden">
                   <HomeSmartNavigatorIsland />
@@ -117,7 +117,7 @@ export default function HomePage() {
           <div className="absolute top-0 right-0 w-[400px] sm:w-[800px] h-[400px] sm:h-[800px] bg-brand-rose/10 rounded-full blur-[80px] sm:blur-[120px] -z-0 translate-x-1/2 -translate-y-1/2" />
           <div className="container mx-auto px-4 relative z-10 py-12 md:py-20">
             <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
-              <MotionReveal>
+              <MotionReveal y={20}>
                 <div className="flex flex-col justify-center h-full text-center lg:text-left">
                   <p className="text-brand-gold font-black uppercase tracking-[0.3em] text-[10px] sm:text-xs mb-6">Why MinRosh?</p>
                   <h2 className="text-4xl font-black tracking-tighter sm:text-6xl lg:text-8xl mb-8 leading-[1.1] sm:leading-[0.9]">
@@ -151,7 +151,7 @@ export default function HomePage() {
         {/* CORE SERVICES - THE BENTO GRID */}
         <section className="ultra-snap-section bg-white">
           <div className="container mx-auto px-4 py-12 md:py-20">
-            <MotionReveal>
+            <MotionReveal y={20}>
               <h2 className="text-center text-4xl font-black text-brand-plum tracking-tighter mb-12 sm:mb-20 sm:text-6xl lg:text-7xl">Core Visa Engines.</h2>
             </MotionReveal>
             <MotionStagger className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 text-center sm:text-left">
@@ -212,7 +212,7 @@ export default function HomePage() {
         <section className="ultra-snap-section bg-brand-cream/30 overflow-hidden">
           <div className="container mx-auto px-4 py-12 md:py-20">
             <div className="flex flex-col md:flex-row gap-12 lg:gap-20 items-center">
-              <MotionReveal className="w-full md:w-1/3 text-center md:text-left">
+              <MotionReveal className="w-full md:w-1/3 text-center md:text-left" y={20}>
                 <h2 className="text-4xl font-black text-brand-plum tracking-tighter leading-[1.1] md:leading-[0.9] mb-8 sm:text-6xl lg:text-7xl">
                   Success <br /><span className="text-brand-rose">Stories.</span>
                 </h2>
@@ -242,13 +242,13 @@ export default function HomePage() {
           <div className="blur-orb bg-brand-gold/10 bottom-[-20%] right-[-20%]" />
           
           <div className="container mx-auto px-4 text-center relative z-10 py-20">
-            <MotionReveal>
+            <MotionReveal y={20}>
               <p className="text-brand-gold font-black uppercase tracking-[0.5em] text-[10px] sm:text-xs mb-8">Initiate Pathway</p>
               <h2 className="text-5xl font-black text-white mb-10 sm:text-8xl lg:text-9xl tracking-tight leading-none">
                 Ready for <br /><span className="text-brand-rose">Residency?</span>
               </h2>
             </MotionReveal>
-            <MotionReveal delay={0.3}>
+            <MotionReveal delay={0.1} y={30}>
               <div className="flex flex-wrap justify-center gap-6 sm:gap-8 mt-12 sm:mt-16">
                 <Link 
                   id="footer-cta-assessment"

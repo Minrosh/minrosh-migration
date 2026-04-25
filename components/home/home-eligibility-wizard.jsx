@@ -101,8 +101,8 @@ export function HomeEligibilityWizard() {
               {step === 0
                 ? "No long forms — three quick choices, then we suggest the best next page or tool."
                 : step === RESULT_STEP
-                  ? "General guidance only — confirm everything on official sources before you lodge."
-                : `Question ${step} of ${LAST_QUESTION_STEP} - you are already 40% complete`}
+                  ? "A simplified sequence based on your selections."
+                : `Step ${step} of ${LAST_QUESTION_STEP}`}
             </p>
             <div
               aria-label="Eligibility progress"
@@ -248,7 +248,11 @@ export function HomeEligibilityWizard() {
 
             {step === 4 ? (
               <div className="home-eligibility-wizard__step home-eligibility-wizard__step--result">
-                <p className="home-eligibility-wizard__result-lead">Here&apos;s a sensible sequence for you</p>
+                <div className="mb-6 p-4 rounded-xl border border-brand-rose/20 bg-brand-rose/5 text-xs text-brand-plum/80 leading-relaxed text-left">
+                  <strong className="text-brand-plum block mb-1 uppercase tracking-widest text-[10px]">General Guidance Only</strong>
+                  These results provide a starting direction based on your current preferences. They do not constitute legal advice or a guarantee of visa success.
+                </div>
+                <p className="home-eligibility-wizard__result-lead">Your Selection Summary</p>
                 <p className="home-eligibility-wizard__result-copy">
                   <strong>{citizenshipLabel}</strong>
                   {goalMeta ? (

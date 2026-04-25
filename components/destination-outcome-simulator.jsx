@@ -46,8 +46,12 @@ export function DestinationOutcomeSimulator({ destinationName, sectionLabel, sce
               transition={{ duration: 0.45, ease: "easeOut" }}
             />
           </div>
-          <p className="mt-2 text-sm font-medium text-brand-plum/80">{progress}% journey momentum</p>
+          <p className="mt-2 text-sm font-medium text-brand-plum/80">{progress}% progress towards your plan</p>
         </div>
+      </div>
+
+      <div className="mt-4 p-3 rounded-xl bg-brand-plum/5 text-[10px] text-brand-plum/60 border border-brand-plum/10 border-dashed">
+        <strong>Important:</strong> These values are relative estimates based on similar case patterns. They are for informational purposes only and do not constitute a legal probability or guarantee.
       </div>
 
       <div className="mt-5 flex flex-wrap gap-2">
@@ -94,8 +98,10 @@ export function DestinationOutcomeSimulator({ destinationName, sectionLabel, sce
                 </p>
               </div>
               <div className="rounded-xl bg-brand-cream/55 p-3">
-                <p className="text-xs uppercase tracking-[0.12em] text-brand-plum/55">Confidence</p>
-                <p className="mt-1 text-xl font-semibold text-brand-plum">{confidence}/100</p>
+                <p className="text-xs uppercase tracking-[0.12em] text-brand-plum/55">Profile Alignment</p>
+                <p className="mt-1 text-xl font-semibold text-brand-plum">
+                  {confidence > 80 ? "Excellent" : confidence > 60 ? "Strong" : "Developing"}
+                </p>
               </div>
             </div>
 

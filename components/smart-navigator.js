@@ -124,13 +124,11 @@ export function SmartNavigator({
           <h2>{title}</h2>
         </div>
         <p className="process-section__lead">{description}</p>
-        <div className="mt-4 flex items-center gap-2">
-          <span className="flex h-2 w-2 rounded-full bg-green-500 animate-pulse" />
-          <p className="text-xs font-bold text-brand-plum/60 uppercase tracking-wider">
-            {(dailyUsageCount ?? 0) > 0
-              ? `${dailyUsageCount} people used this navigator today`
-              : "Navigator activity updates after load"}
-          </p>
+        
+        {/* GUIDANCE NOTICE */}
+        <div className="mt-6 p-4 rounded-xl border border-brand-plum/10 bg-brand-plum/5 text-xs text-brand-plum/70 font-medium leading-relaxed">
+          <strong className="text-brand-plum block mb-1">General Guidance Only</strong>
+          This tool provides preliminary routing based on your answers. It does not guarantee eligibility or constitute legal advice. Confirm all details with a registered agent or official sources before lodgement.
         </div>
       </div>
       {intentHint ? (
@@ -177,7 +175,7 @@ export function SmartNavigator({
                    Primary Pathway identified: <span className="text-brand-rose">{recommendation?.title || "Calculating..."}</span>
                  </p>
                  <p className="text-xs text-brand-plum/60 italic">
-                   We&apos;ve generated your confidence score and alternative roadmap.
+                   We&apos;ve identified your preparation level and strategic roadmap.
                  </p>
               </div>
               <label className="block text-sm font-semibold text-brand-plum mb-2">
@@ -253,8 +251,10 @@ export function SmartNavigator({
               <div className="flex items-center justify-between mb-4">
                 <h3 className="mb-0">{recommendation.title}</h3>
                 <div className="flex flex-col items-end">
-                  <span className="text-[0.65rem] uppercase tracking-wider font-bold text-brand-plum/40">Confidence</span>
-                  <span className="text-xl font-display font-bold text-brand-rose">{recommendation.confidenceScore}%</span>
+                  <span className="text-[0.65rem] uppercase tracking-wider font-bold text-brand-plum/40">Readiness Level</span>
+                  <span className="text-xl font-display font-bold text-brand-rose">
+                    {recommendation.confidenceScore > 80 ? "High" : recommendation.confidenceScore > 50 ? "Medium" : "Low"}
+                  </span>
                 </div>
               </div>
               
@@ -287,7 +287,7 @@ export function SmartNavigator({
               <div className="mt-3 p-3 rounded-xl border border-brand-plum/10 bg-brand-plum/5">
                 <span className="text-[0.65rem] uppercase tracking-wider font-bold text-brand-plum/50 block mb-1">Adaptive Strategy (AI v3)</span>
                 <p className="text-[0.7rem] font-bold text-brand-plum mb-1">
-                  Hybrid: <span className="font-normal">{recommendation.hybridPathway}</span>
+                  Strategy: <span className="font-normal">{recommendation.strategyPlan}</span>
                 </p>
                 <p className="text-[0.7rem] font-bold text-brand-plum mb-0">
                   Backup: <span className="font-normal">{recommendation.backupStrategy.need} ({recommendation.backupStrategy.reason})</span>
@@ -300,9 +300,15 @@ export function SmartNavigator({
                 <p className="text-[0.7rem] text-brand-plum/60">Estimated: {recommendation.timelineExpectation}</p>
               </div>
 
-              <div className="mt-4 flex items-center justify-center gap-2 opacity-40">
-                 <span className="h-1.5 w-1.5 rounded-full bg-brand-plum" />
-                 <span className="text-[0.6rem] uppercase tracking-tighter font-bold">Calibration Active</span>
+              <div className="mt-4 flex items-center justify-center gap-4">
+                 <div className="flex items-center gap-1.5 opacity-40">
+                   <span className="h-1.5 w-1.5 rounded-full bg-brand-plum" />
+                   <span className="text-[0.6rem] uppercase tracking-tighter font-bold">Calibration Active</span>
+                 </div>
+                 <div className="flex items-center gap-1.5 opacity-40">
+                   <span className="h-1.5 w-1.5 rounded-full bg-green-500" />
+                   <span className="text-[0.6rem] uppercase tracking-tighter font-bold">{(dailyUsageCount ?? 0)} Active Today</span>
+                 </div>
               </div>
               
               <div className="navigator-result__notes">

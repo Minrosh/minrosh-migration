@@ -57,13 +57,18 @@ export default function StudentVisaPage() {
         }
         sections={pageData.sections}
         faq={pageData.faq}
+        summary="Student visas (Subclass 500) allow international students to study full-time in Australia. Success depends on Genuine Student (GS) requirements, financial capacity, and English proficiency."
         related={[
           ...pageData.relatedGuides,
           {
-            href: "/immigration-lawyer-australia-vs-registered-migration-agent-guide",
-            title: "Immigration lawyer vs registered migration agent guide",
+            href: "/student-visa-australia-requirements",
+            title: "Detailed Requirements",
           },
-          { href: "/contact", title: "Speak with MinRosh Migration" },
+          {
+            href: "/australia-visa-fees-and-costs-guide",
+            title: "Cost of Living & Fees",
+          },
+          { href: "/australian-visas-official-sources", title: "Official Sources" },
         ]}
       />
     </SiteShell>

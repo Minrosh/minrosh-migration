@@ -42,17 +42,21 @@ export default function SkilledMigrationPage() {
           src: "/images/hero-sydney-real.jpg",
           alt: "Sydney Harbour — Australian skilled migration context",
         }}
+        summary="Skilled migration allows qualified professionals to move to Australia based on their points, occupation, and state demand. Key steps include Skills Assessment, English testing, and an Expression of Interest (EOI)."
         related={[
           ...pageData.relatedGuides,
           {
-            href: "/immigration-lawyer-australia-vs-registered-migration-agent-guide",
-            title: "Immigration lawyer vs registered migration agent guide",
+            href: "/skilled-migration-australia-points-guide",
+            title: "Points Test Guide",
           },
           {
-            href: "/visa-refusal-help-australia-and-aat-migration-appeal-guide",
-            title: "Visa refusal help and AAT migration appeal guide",
+            href: "/australia-visa-fees-and-costs-guide",
+            title: "Visa Fees & Costs",
           },
-          { href: "/contact", title: "Contact MinRosh Migration" },
+          {
+            href: "/australian-visas-official-sources",
+            title: "Official Sources",
+          },
         ]}
       />
     </SiteShell>

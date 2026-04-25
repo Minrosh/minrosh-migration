@@ -38,15 +38,16 @@ export default function PartnerVisaPage() {
         sections={pageData.sections}
         faq={pageData.faq}
         mainLead={<HubClusterNavigator category="partner" />}
+        summary="Partner visas allow spouses or de facto partners of Australian citizens or PRs to live in Australia. The process focuses on proving a genuine and continuing relationship across financial, social, and household categories."
         related={[
           ...pageData.relatedGuides,
-          { href: "/partner-visa-820-801-guide", title: "820/801 onshore partner guide" },
-          { href: "/partner-visa-309-100-guide", title: "309/100 offshore partner guide" },
+          { href: "/partner-visa-820-801-guide", title: "Onshore 820/801 Guide" },
+          { href: "/partner-visa-309-100-guide", title: "Offshore 309/100 Guide" },
           {
-            href: "/visa-refusal-help-australia-and-aat-migration-appeal-guide",
-            title: "Visa refusal help and AAT migration appeal guide",
+            href: "/australia-visa-processing-times-guide",
+            title: "Processing Times",
           },
-          { href: "/contact", title: "Book a consultation" },
+          { href: "/australian-visas-official-sources", title: "Official Sources" },
         ]}
       />
     </SiteShell>
