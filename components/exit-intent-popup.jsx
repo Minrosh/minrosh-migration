@@ -64,7 +64,7 @@ export function ExitIntentPopup() {
           
           <h3 className="mb-2 text-2xl font-bold text-brand-plum">Not sure about your visa options?</h3>
           <p className="mb-6 text-brand-plum/70">
-            Don't leave your migration journey to chance. Take our free 2-minute assessment to discover your clearest pathway.
+            Don&apos;t leave your migration journey to chance. Take our free 2-minute assessment to discover your clearest pathway.
           </p>
           
           <Link
@@ -78,7 +78,7 @@ export function ExitIntentPopup() {
             onClick={() => setIsVisible(false)}
             className="mt-4 text-sm font-semibold text-brand-plum/50 transition hover:text-brand-plum"
           >
-            No thanks, I'll figure it out myself
+            No thanks, I&apos;ll figure it out myself
           </button>
         </motion.div>
       </motion.div>

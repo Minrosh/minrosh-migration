@@ -129,7 +129,7 @@ export function SmartNavigator({
                 defaultValue={answers.email || ""}
               />
               <p className="text-xs text-brand-plum/60 mt-3">
-                We'll securely send you a copy of your personalised AI pathway analysis.
+                We&apos;ll securely send you a copy of your personalised AI pathway analysis.
               </p>
             </form>
           )}
