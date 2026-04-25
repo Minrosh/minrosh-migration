@@ -31,7 +31,7 @@ const clusters = {
   }
 };
 
-export function HubClusterNavigator({ category, className = "" }) {
+export function HubClusterNavigator({ category, currentPath = "", className = "" }) {
   const hub = clusters[category];
   if (!hub) return null;
 
@@ -43,14 +43,25 @@ export function HubClusterNavigator({ category, className = "" }) {
         
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {hub.links.map((link) => (
-            <Link 
-              key={link.href} 
-              href={link.href}
-              className="flex items-center justify-between p-4 rounded-2xl bg-white/10 border border-white/10 hover:bg-white/20 transition-all group"
-            >
-              <span className="font-semibold">{link.label}</span>
-              <span className="text-xl group-hover:translate-x-1 transition-transform">→</span>
-            </Link>
+            link.href === currentPath ? (
+              <span
+                key={link.href}
+                className="flex items-center justify-between p-4 rounded-2xl bg-white/20 border border-white/30"
+                aria-current="page"
+              >
+                <span className="font-semibold">{link.label}</span>
+                <span className="text-xs font-bold uppercase tracking-wider text-brand-cream/80">Current page</span>
+              </span>
+            ) : (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="flex items-center justify-between p-4 rounded-2xl bg-white/10 border border-white/10 hover:bg-white/20 transition-all group"
+              >
+                <span className="font-semibold">{link.label}</span>
+                <span className="text-xl group-hover:translate-x-1 transition-transform">→</span>
+              </Link>
+            )
           ))}
         </div>
       </div>

@@ -1,4 +1,7 @@
+ "use client";
+
 import Link from "next/link";
+import { useEffect, useRef } from "react";
 import conversionSignals from "../data/visas-mega-conversion-signals.json";
 
 const COLUMNS = [
@@ -50,11 +53,51 @@ const COLUMNS = [
  * Desktop mega menu: wide panel for Australian visa pathways (hidden below 921px via CSS).
  */
 export function SiteVisasMegaMenu() {
-  const trustSignals = Array.isArray(conversionSignals?.trustSignals) ? conversionSignals.trustSignals : [];
+  const menuRef = useRef(null);
   const intentShortcuts = Array.isArray(conversionSignals?.intentShortcuts) ? conversionSignals.intentShortcuts : [];
 
+  useEffect(() => {
+    function closeOnOutsideClick(event) {
+      const root = menuRef.current;
+      if (!root || !root.open) return;
+      if (!root.contains(event.target)) {
+        root.open = false;
+      }
+    }
+
+    function closeOnEscape(event) {
+      const root = menuRef.current;
+      if (!root || !root.open) return;
+      if (event.key === "Escape") {
+        root.open = false;
+      }
+    }
+
+    function closeOnMenuLinkClick(event) {
+      const root = menuRef.current;
+      if (!root || !root.open) return;
+      const target = event.target;
+      if (target instanceof Element && target.closest("a")) {
+        root.open = false;
+      }
+    }
+
+    const root = menuRef.current;
+    document.addEventListener("mousedown", closeOnOutsideClick);
+    document.addEventListener("touchstart", closeOnOutsideClick, { passive: true });
+    window.addEventListener("keydown", closeOnEscape);
+    root?.addEventListener("click", closeOnMenuLinkClick);
+
+    return () => {
+      document.removeEventListener("mousedown", closeOnOutsideClick);
+      document.removeEventListener("touchstart", closeOnOutsideClick);
+      window.removeEventListener("keydown", closeOnEscape);
+      root?.removeEventListener("click", closeOnMenuLinkClick);
+    };
+  }, []);
+
   return (
-    <details className="visas-mega">
+    <details ref={menuRef} className="visas-mega">
       <summary className="visas-mega__summary">
         Australian visas
         <span className="visas-mega__summary-chip">Popular routes</span>
@@ -63,19 +106,11 @@ export function SiteVisasMegaMenu() {
       <div className="visas-mega__panel" role="region" aria-label="Australian visa pathways">
         <div className="visas-mega__hero">
           <p className="visas-mega__hero-label">Pathway navigator</p>
+          <h3 className="visas-mega__hero-title">Find the right visa lane in under a minute</h3>
           <p className="visas-mega__hero-copy">
-            Choose the lane that matches your intent, then move with official-source clarity.
+            Choose the lane that matches your intent, then move with official-source clarity and a
+            practical next step.
           </p>
-          {trustSignals.length ? (
-            <div className="mt-3 grid gap-2 sm:grid-cols-3" aria-label="Visa pathway trust signals">
-              {trustSignals.map((item) => (
-                <div key={item.id} className="rounded-xl border border-white/20 bg-white/10 px-3 py-2 backdrop-blur">
-                  <p className="text-sm font-bold text-white">{item.value}</p>
-                  <p className="text-xs text-white/80">{item.label}</p>
-                </div>
-              ))}
-            </div>
-          ) : null}
         </div>
         <div className="visas-mega__grid">
           {COLUMNS.map((col) => (
@@ -90,7 +125,10 @@ export function SiteVisasMegaMenu() {
                 {col.links.map((item) => (
                   <li key={item.href}>
                     <Link href={item.href} className="visas-mega__link">
-                      {item.label}
+                      <span>{item.label}</span>
+                      <span className="visas-mega__link-arrow" aria-hidden="true">
+                        →
+                      </span>
                     </Link>
                   </li>
                 ))}
@@ -102,24 +140,29 @@ export function SiteVisasMegaMenu() {
         <div className="visas-mega__footer">
           <p className="visas-mega__footer-proof">Trusted flow: quiz → strategy → consultation-ready submission</p>
           {intentShortcuts.length ? (
-            <div className="flex flex-wrap gap-2">
+            <div className="visas-mega__intent-shortcuts">
               {intentShortcuts.map((shortcut) => (
                 <Link
                   key={shortcut.id}
                   href={shortcut.href}
-                  className="rounded-full border border-white/35 bg-white/10 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-white/20"
+                  className="visas-mega__intent-chip"
                 >
                   {shortcut.label}
                 </Link>
               ))}
             </div>
           ) : null}
-          <Link href="/book-consultation" className="visas-mega__footer-cta">
-            Book consultation
-          </Link>
-          <Link href="/assessment" className="visas-mega__footer-cta visas-mega__footer-cta--ghost">
-            Free assessment
-          </Link>
+          <div className="visas-mega__actions">
+            <Link href="/assessment" className="visas-mega__footer-cta">
+              Start free assessment
+            </Link>
+            <Link href="/book-consultation" className="visas-mega__footer-cta visas-mega__footer-cta--ghost">
+              Book consultation
+            </Link>
+          </div>
+          <p className="visas-mega__disclaimer">
+            Smart tools are advisory only and do not replace official eligibility decisions.
+          </p>
         </div>
       </div>
     </details>

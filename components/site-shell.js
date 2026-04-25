@@ -71,21 +71,8 @@ export function SiteShell({
         <SiteHeaderMobileUtilities brand={publicBrand} />
       </SitePublicStickyHeader>
 
-      <main id="main-content" className="portal-main portal-main--immersive pt-6 md:pt-8">{children}</main>
+      <main id="main-content" className="portal-main portal-main--immersive">{children}</main>
       <SiteFooter siteData={siteData} initialStats={footerStats} />
-      <div className="mobile-sticky-cta" role="region" aria-label="Quick contact actions">
-        <Link href="/assessment" className="mobile-sticky-cta__action mobile-sticky-cta__action--primary">
-          Free assessment
-        </Link>
-        <a
-          href={primaryWhatsAppUrl}
-          className="mobile-sticky-cta__action mobile-sticky-cta__action--secondary"
-          target="_blank"
-          rel="noreferrer"
-        >
-          WhatsApp now
-        </a>
-      </div>
     </div>
   );
 }

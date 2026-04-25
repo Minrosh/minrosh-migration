@@ -7,6 +7,7 @@ import { SiteShell } from "../../components/site-shell";
 import { SmartNavigator } from "../../components/smart-navigator";
 import { StructuredData } from "../../components/structured-data";
 import { buildMetadata, breadcrumbJsonLd } from "../../lib/seo";
+import { TrackedLink } from "../../components/tracked-link";
 
 export const metadata = buildMetadata({
   title: "Free Assessment | MinRosh Migration",
@@ -68,13 +69,29 @@ export default function AssessmentPage() {
                 Navigator, or a direct consultation based on how clear their pathway already is.
               </p>
               <div className="content-aside-card__actions">
-                <Link href="/#quiz" className="btn btn-primary">
+                <TrackedLink
+                  href="/#quiz"
+                  eventName="cta_click"
+                  eventParams={{ cta_id: "assessment_primary_quiz", cta_location: "assessment_hero", destination: "/#quiz" }}
+                  aria-label="Open points wizard from assessment page"
+                  className="btn btn-primary"
+                >
                   Open 2026 Points Wizard
-                </Link>
-                <Link href="/book-consultation" className="btn btn-ghost">
-                  Book Consultation
-                </Link>
+                </TrackedLink>
               </div>
+              <p className="mt-3 text-sm text-brand-plum/70">
+                Need a human strategy session instead?{" "}
+                <TrackedLink
+                  href="/book-consultation"
+                  eventName="cta_click"
+                  eventParams={{ cta_id: "assessment_secondary_consultation", cta_location: "assessment_hero", destination: "/book-consultation" }}
+                  aria-label="Open consultation booking page"
+                  className="font-semibold text-brand-rose underline decoration-brand-rose/40 underline-offset-4"
+                >
+                  Book consultation
+                </TrackedLink>
+                .
+              </p>
             </div>
             <div className="content-hero__media" aria-hidden="true">
               <PublicFileImg
@@ -85,29 +102,6 @@ export default function AssessmentPage() {
               />
             </div>
           </div>
-        </section>
-
-        <section className="official-resources" aria-label="Official government sources">
-          <h2>Official sources before you assess</h2>
-          <ul>
-            <li>
-              <a href="https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing" target="_blank" rel="noreferrer">
-                Department of Home Affairs — visa listing
-              </a>
-            </li>
-            <li>
-              <a href="https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-finder" target="_blank" rel="noreferrer">
-                Department of Home Affairs — Visa Finder
-              </a>
-            </li>
-            <li>
-              <Link href="/australian-visas-official-sources">MinRosh hub: how to use those tools with our pages</Link>
-            </li>
-          </ul>
-          <p className="content-hero__note">
-            The Smart Navigator and points wizard give indicative direction only. Always confirm criteria, charges,
-            and forms on the Department of Home Affairs website for your subclass.
-          </p>
         </section>
 
         <div className="content-page__grid">
@@ -209,6 +203,15 @@ export default function AssessmentPage() {
               primaryLabel="Open recommended page"
               finalHref="/book-consultation"
             />
+
+            <section className="content-section bento-hover mt-5" aria-label="What to do next">
+              <h2>What to do next</h2>
+              <ul className="feature-list">
+                <li>Use the points wizard if you want an immediate structured self-check</li>
+                <li>Open Smart Navigator for advisory pathway direction and preparation cues</li>
+                <li>Book consultation when your case is time-sensitive or complex</li>
+              </ul>
+            </section>
           </div>
 
           <div className="content-page__aside">

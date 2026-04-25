@@ -4,11 +4,24 @@ import { ContentPage } from "../../components/content-page";
 import { SiteShell } from "../../components/site-shell";
 import { StructuredData } from "../../components/structured-data";
 import { articleJsonLd, breadcrumbJsonLd, buildMetadata, faqJsonLd } from "../../lib/seo";
-import { getLifestyleGuide } from "../../lib/lifestyle-guides";
-import { getFirst14Days, getStudentJobBoardAu, getTransportGuide } from "../../lib/experience-data";
-import { LifestyleExperienceBlock } from "../../components/lifestyle/lifestyle-experience-block";
 
 const guideData = seoPages.guidePages.studentVisaGuide;
+const SECTION_FLOW = [
+  "Basic student visa requirements",
+  "Financial capacity and preparation",
+  "Processing time and planning",
+  "Tips for a cleaner application",
+  "Using Visa Finder when you are choosing between study and skilled routes",
+];
+
+function reorderSectionsForClarity(sections = []) {
+  const desiredOrder = new Map(SECTION_FLOW.map((title, index) => [title, index]));
+  return [...sections].sort((a, b) => {
+    const aIndex = desiredOrder.has(a.title) ? desiredOrder.get(a.title) : Number.MAX_SAFE_INTEGER;
+    const bIndex = desiredOrder.has(b.title) ? desiredOrder.get(b.title) : Number.MAX_SAFE_INTEGER;
+    return aIndex - bIndex;
+  });
+}
 
 export const metadata = buildMetadata({
   title: guideData.metaTitle,
@@ -18,10 +31,7 @@ export const metadata = buildMetadata({
 });
 
 export default function StudentVisaGuidePage() {
-  const lifestyleGuide = getLifestyleGuide("student-australia");
-  const first14 = getFirst14Days("student-australia");
-  const transport = getTransportGuide("australia");
-  const jobBoard = getStudentJobBoardAu();
+  const orderedSections = reorderSectionsForClarity(guideData.sections);
 
   return (
     <SiteShell siteData={siteData} currentPath={guideData.path}>
@@ -52,15 +62,13 @@ export default function StudentVisaGuidePage() {
         ]}
         officialResources={guideData.officialResources ?? []}
         currentPath={guideData.path}
-        mainLead={
-          <LifestyleExperienceBlock
-            guide={lifestyleGuide}
-            first14={first14}
-            transport={transport}
-            jobBoard={jobBoard}
-          />
-        }
-        sections={guideData.sections}
+        summary="Students who need a clear requirements checklist before paying fees, booking medicals, or locking timelines."
+        takeaways={[
+          "Confirm your exact subclass and requirement page from official sources first.",
+          "Prepare CoE, financial and supporting evidence together as one consistent application pack.",
+          "Decide whether to continue self-guided or book a strategy session for complex or time-sensitive cases.",
+        ]}
+        sections={orderedSections}
         faq={guideData.faq}
         related={[
           guideData.relatedService,

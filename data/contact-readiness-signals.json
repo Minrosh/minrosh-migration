@@ -2,18 +2,18 @@
   "trustSignals": [
     {
       "id": "response",
-      "value": "< 1 business day",
-      "label": "typical first response window"
+      "value": "Fast Response",
+      "label": "Typically within 1 business day"
     },
     {
       "id": "clarity",
-      "value": "4.8/5",
-      "label": "clarity rating after first contact"
+      "value": "High Clarity",
+      "label": "Clients usually report clearer direction after first review"
     },
     {
       "id": "readiness",
-      "value": "88%",
-      "label": "continue to structured strategy steps"
+      "value": "High Success",
+      "label": "Most clients continue into a structured strategy plan"
     }
   ],
   "progressiveDisclosure": [

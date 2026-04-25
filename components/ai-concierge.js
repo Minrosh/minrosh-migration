@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import { buildWhatsAppUrl, WHATSAPP_LEAD_MESSAGE } from "@/lib/whatsapp-prefill";
+import { trackEvent } from "@/lib/client-analytics";
 
 /** Inline **bold** segments (Gemini/OpenAI often emit this). */
 function formatBoldSegments(text) {
@@ -286,7 +287,7 @@ export function AIConcierge({ siteData }) {
       id: "welcome",
       role: "assistant",
       content:
-        "Ask about skilled migration, student or partner visas, or education planning. I give practical next steps—not legal advice.",
+        "Hello! I can help you understand skilled migration, student or partner visa options. I provide practical orientation and next-step planning—not formal legal advice. What can I clarify for you today?",
     },
   ]);
   const [input, setInput] = useState("");
@@ -329,6 +330,11 @@ export function AIConcierge({ siteData }) {
   async function sendMessage(text) {
     const trimmed = text.trim();
     if (!trimmed) return;
+
+    trackEvent("ai_chat_message_send", {
+      source: "ai_concierge",
+      message_length: trimmed.length,
+    });
 
     if (suggestionsRef.current) {
       suggestionsRef.current.open = false;
@@ -550,8 +556,15 @@ export function AIConcierge({ siteData }) {
         <button
           type="button"
           className="floating-tools__ai"
-          onClick={() => setOpen((current) => !current)}
+          onClick={() =>
+            setOpen((current) => {
+              const next = !current;
+              trackEvent(next ? "ai_chat_open" : "ai_chat_close", { source: "floating_button" });
+              return next;
+            })
+          }
           aria-expanded={open ? "true" : "false"}
+          aria-label={open ? "Close Ask MinRosh chat" : "Open Ask MinRosh chat"}
         >
           Ask MinRosh
         </button>

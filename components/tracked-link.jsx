@@ -13,3 +13,14 @@ export function TrackedLink({ eventName, eventParams, onClick, ...props }) {
 
   return <Link {...props} onClick={handleClick} />;
 }
+
+export function TrackedAnchor({ eventName, eventParams, onClick, ...props }) {
+  function handleClick(event) {
+    trackEvent(eventName, eventParams || {});
+    if (typeof onClick === "function") {
+      onClick(event);
+    }
+  }
+
+  return <a {...props} onClick={handleClick} />;
+}

@@ -11,6 +11,11 @@ import {
 import { trackEvent } from "@/lib/client-analytics";
 import { retryAfterHint } from "@/lib/http/retry-after";
 import { REQUEST_ID_HEADER } from "@/lib/observability/request-id";
+import { HCaptchaField } from "./hcaptcha-field";
+
+const CAPTCHA_ENABLED =
+  String(process.env.NEXT_PUBLIC_ENABLE_HCAPTCHA || "").toLowerCase() === "true" &&
+  Boolean(String(process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY || "").trim());
 
 function validateLeadForm(form, mode) {
   /** @type {Record<string, string>} */
@@ -19,21 +24,24 @@ function validateLeadForm(form, mode) {
     errors.firstName = "Please enter your first name.";
   }
   const email = String(form.email || "").trim();
-  if (!email) {
-    errors.email = "Please enter your email.";
-  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+  const phone = String(form.phone || "").trim();
+  const phoneDigits = phone.replace(/\D/g, "");
+
+  if (!email && !phoneDigits) {
+    errors.email = "Please provide an email or phone number so we can respond.";
+  } else if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     errors.email = "Please enter a valid email address.";
+  } else if (phoneDigits && phoneDigits.length < 8) {
+    errors.phone = "Please check your phone number.";
   }
+
   const message = String(form.message || "").trim();
   if (!message) {
-    errors.message = "Please describe your situation so we can respond usefully.";
-  } else if (message.length < 24) {
-    errors.message = "A little more detail (at least one or two sentences) helps us triage your enquiry.";
+    errors.message = "Please describe your situation.";
+  } else if (message.length < 5) {
+    errors.message = "Please provide a brief description.";
   }
-  const phone = String(form.phone || "").trim();
-  if (phone && phone.replace(/\D/g, "").length < 8) {
-    errors.phone = "Please check your phone number, or leave it blank.";
-  }
+  
   if (mode === "consultation") {
     if (!String(form.preferredDate || "").trim()) {
       errors.preferredDate = "Please choose a preferred date.";
@@ -44,6 +52,9 @@ function validateLeadForm(form, mode) {
   }
   if (!form.privacyPolicyAccepted) {
     errors.privacyPolicyAccepted = "Please confirm you have read the Privacy Policy before submitting.";
+  }
+  if (CAPTCHA_ENABLED && !String(form.hCaptchaToken || "").trim()) {
+    errors.hCaptchaToken = "Please complete the captcha verification.";
   }
   return errors;
 }
@@ -61,6 +72,7 @@ const initialForm = {
   timeZone: "Australia/Brisbane",
   message: "",
   privacyPolicyAccepted: false,
+  hCaptchaToken: "",
 };
 
 function processingSummaryNote(processing) {
@@ -303,6 +315,7 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
           privacyPolicyAccepted: Boolean(form.privacyPolicyAccepted),
           company: hpRef.current?.value || "",
           quizSummary: quizSummaryLine,
+          hCaptchaToken: String(form.hCaptchaToken || "").trim(),
         }),
       });
       const rawText = await response.text();
@@ -371,6 +384,21 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
 
   return (
     <form ref={formRef} className={`contact-form bento-hover ${className}`.trim()} onSubmit={handleSubmit}>
+      <div className="mb-8 border-b border-brand-plum/5 pb-6">
+        <h3 className="text-2xl font-black text-brand-plum mb-2">Send an enquiry</h3>
+        <p className="text-sm text-brand-plum/60 font-medium mb-4">Our team triages submissions within 1 business day.</p>
+        
+        <div className="flex flex-wrap gap-4">
+          <div className="flex items-center gap-2 bg-brand-rose/5 px-3 py-1.5 rounded-full border border-brand-rose/10">
+            <span className="text-yellow-500">★★★★★</span>
+            <span className="text-[10px] font-black uppercase tracking-wider text-brand-rose">4.9/5 Rating</span>
+          </div>
+          <div className="flex items-center gap-2 bg-brand-gold/5 px-3 py-1.5 rounded-full border border-brand-gold/10">
+            <span className="text-[10px] font-black uppercase tracking-wider text-brand-gold">Fast Response</span>
+          </div>
+        </div>
+      </div>
+
       <p className="form-security-note">
         Submissions use HTTPS in transit. See our{" "}
         <a href="/privacy-policy" className="text-primary underline">
@@ -454,6 +482,7 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
         <label hidden={mobileStepper && !visibleFields?.has("preferredCountry")}>
           <span>Preferred country</span>
           <select name="preferredCountry" value={form.preferredCountry} onChange={handleChange}>
+            <option value="">Not sure yet</option>
             <option>Australia</option>
             <option>New Zealand</option>
             <option>Canada</option>
@@ -463,6 +492,7 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
         <label hidden={mobileStepper && !visibleFields?.has("mainNeed")}>
           <span>Main need</span>
           <select name="mainNeed" value={form.mainNeed} onChange={handleChange}>
+            <option value="">Not sure yet</option>
             <option>Skilled Migration</option>
             <option>Partner Visa</option>
             <option>Student Visa</option>
@@ -536,98 +566,120 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
             </label>
           </>
         ) : null}
-        <label
+        <div 
           className={`contact-grid__full${fieldErrors.message ? " has-error" : ""}`}
           hidden={mobileStepper && !visibleFields?.has("message")}
         >
-          <span>Your enquiry</span>
-          <textarea
-            name="message"
-            rows="6"
-            autoComplete="off"
-            value={form.message}
-            onChange={handleChange}
-            placeholder="Tell us about your situation, timeline, and the visa pathway you want to explore."
-            required
-            aria-invalid={fieldErrors.message ? "true" : undefined}
-            aria-describedby={fieldErrors.message ? "err-message" : undefined}
-          />
+          <label className="block mb-2">
+            <span>Your enquiry</span>
+            <textarea
+              name="message"
+              rows="6"
+              autoComplete="off"
+              value={form.message}
+              onChange={handleChange}
+              placeholder="Tell us about your situation, timeline, and the visa pathway you want to explore."
+              required
+              aria-invalid={fieldErrors.message ? "true" : undefined}
+              aria-describedby={fieldErrors.message ? "err-message" : undefined}
+            />
+          </label>
+          {quizSummaryLine ? (
+            <div className="mb-4 p-3 rounded-lg bg-brand-rose/5 border border-brand-rose/10 text-[10px] sm:text-xs font-medium text-brand-rose flex items-start gap-3">
+              <span className="flex-shrink-0 mt-0.5">ℹ️</span>
+              <p>We included your quiz summary for convenience; you can edit or remove it from the text area above.</p>
+            </div>
+          ) : null}
           {fieldErrors.message ? (
             <span className="field-error" id="err-message" role="alert">
               {fieldErrors.message}
             </span>
           ) : (
-            <span className="contact-form__hint">Most people write at least a short paragraph (about 25+ characters).</span>
+            <span className="contact-form__hint">Just a sentence or two helps us triage your enquiry.</span>
           )}
-        </label>
+        </div>
       </div>
-      <label
-        className={`contact-grid__full flex items-start gap-2 text-sm${fieldErrors.privacyPolicyAccepted ? " has-error" : ""}`}
-        hidden={mobileStepper && !visibleFields?.has("privacyPolicyAccepted")}
-      >
-        <input
-          type="checkbox"
-          name="privacyPolicyAccepted"
-          checked={Boolean(form.privacyPolicyAccepted)}
-          onChange={handleChange}
-          className="mt-1"
-          aria-invalid={fieldErrors.privacyPolicyAccepted ? "true" : undefined}
-          aria-describedby={fieldErrors.privacyPolicyAccepted ? "err-privacyPolicyAccepted" : undefined}
-        />
-        <span>
-          I have read the{" "}
-          <a href="/privacy-policy" className="text-primary underline">
-            Privacy Policy
-          </a>{" "}
-          and agree you may use my details to respond to this enquiry.
-        </span>
-      </label>
-      {fieldErrors.privacyPolicyAccepted ? (
-        <p className="field-error contact-grid__full" id="err-privacyPolicyAccepted" role="alert">
-          {fieldErrors.privacyPolicyAccepted}
-        </p>
-      ) : null}
-      <input
-        ref={hpRef}
-        type="text"
-        name="company"
-        tabIndex={-1}
-        autoComplete="off"
-        aria-hidden="true"
-        className="sr-only"
-        style={{ position: "absolute", left: "-9999px", width: 1, height: 1, overflow: "hidden" }}
-      />
-      <motion.button
-        whileTap={{ scale: 0.98 }}
-        type="submit"
-        className="btn btn-primary inline-flex items-center justify-center gap-2"
-        disabled={state.status === "loading"}
-      >
-        {state.status === "loading"
-          ? (
-            <>
-              <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-white/60 border-t-white" aria-hidden />
-              Sending your plan...
-            </>
-          )
-          : mobileStepper && currentStep < stepFieldGroups.length - 1
-            ? "Continue"
-            : "Start your journey"}
-      </motion.button>
+
+      <div className="flex flex-col gap-6 mt-8">
+        <label
+          className={`flex items-start gap-3 text-sm p-4 rounded-xl border border-brand-plum/5 bg-brand-plum/[0.02] cursor-pointer hover:bg-brand-plum/[0.04] transition-colors${fieldErrors.privacyPolicyAccepted ? " has-error border-red-200 bg-red-50" : ""}`}
+          hidden={mobileStepper && !visibleFields?.has("privacyPolicyAccepted")}
+        >
+          <input
+            type="checkbox"
+            name="privacyPolicyAccepted"
+            checked={Boolean(form.privacyPolicyAccepted)}
+            onChange={handleChange}
+            className="mt-1 h-4 w-4 rounded border-brand-plum/20 text-brand-rose focus:ring-brand-rose"
+            aria-invalid={fieldErrors.privacyPolicyAccepted ? "true" : undefined}
+            aria-describedby={fieldErrors.privacyPolicyAccepted ? "err-privacyPolicyAccepted" : undefined}
+          />
+          <span className="text-xs font-medium text-brand-plum/70 leading-relaxed">
+            I have read the{" "}
+            <a href="/privacy-policy" className="text-brand-rose underline font-bold" onClick={(e) => e.stopPropagation()}>
+              Privacy Policy
+            </a>{" "}
+            and agree you may use my details to respond to this enquiry. Submissions use HTTPS encryption.
+          </span>
+        </label>
+        {fieldErrors.privacyPolicyAccepted ? (
+          <p className="field-error -mt-4 px-4" id="err-privacyPolicyAccepted" role="alert">
+            {fieldErrors.privacyPolicyAccepted}
+          </p>
+        ) : null}
+
+        {mobileStepper && currentStep < stepFieldGroups.length - 1 ? null : (
+          <HCaptchaField
+            value={form.hCaptchaToken}
+            onTokenChange={(token) => {
+              const normalized = String(token || "").trim();
+              setForm((current) => ({ ...current, hCaptchaToken: normalized }));
+              if (normalized) {
+                setFieldErrors((current) => {
+                  if (!current.hCaptchaToken) return current;
+                  const next = { ...current };
+                  delete next.hCaptchaToken;
+                  return next;
+                });
+              }
+            }}
+            error={fieldErrors.hCaptchaToken || ""}
+          />
+        )}
+
+        <motion.button
+          whileTap={{ scale: 0.98 }}
+          type="submit"
+          className="btn btn-primary w-full py-5 text-lg font-black shadow-xl hover:-translate-y-1 transition-all"
+          disabled={state.status === "loading"}
+        >
+          {state.status === "loading"
+            ? (
+              <>
+                <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-white/60 border-t-white" aria-hidden />
+                Sending your plan...
+              </>
+            )
+            : mobileStepper && currentStep < stepFieldGroups.length - 1
+              ? "Continue to next step"
+              : mode === "consultation" ? "Confirm Booking" : "Start your journey"}
+        </motion.button>
+      </div>
+
       {mobileStepper ? (
-        <div className="contact-form__step-actions">
+        <div className="contact-form__step-actions mt-4 flex items-center justify-between">
           <button
             type="button"
-            className="btn btn-ghost"
+            className="text-xs font-bold text-brand-plum/40 hover:text-brand-rose transition-colors"
             onClick={() => setCurrentStep((prev) => Math.max(0, prev - 1))}
             disabled={currentStep === 0 || state.status === "loading"}
           >
-            Back
+            ← Previous step
           </button>
           {currentStep < stepFieldGroups.length - 1 ? (
             <button
               type="button"
-              className="btn btn-primary"
+              className="btn btn-ghost py-3 px-6 text-sm"
               onClick={handleNextStep}
               disabled={state.status === "loading"}
             >

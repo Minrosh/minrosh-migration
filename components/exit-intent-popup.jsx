@@ -15,17 +15,33 @@ export function ExitIntentPopup() {
       return;
     }
 
+    const startTime = Date.now();
+    let scrollReached = false;
+
+    const handleScroll = () => {
+      const scrollPos = window.scrollY + window.innerHeight;
+      const totalHeight = document.documentElement.scrollHeight;
+      if (scrollPos / totalHeight > 0.3) {
+        scrollReached = true;
+      }
+    };
+
     const handleMouseLeave = (e) => {
-      // Check if mouse leaves the top of the viewport (indicating closing tab or going to address bar)
-      if (e.clientY <= 0 && !hasTriggered) {
+      const timeSpent = (Date.now() - startTime) / 1000;
+      // Trigger if mouse leaves top, spent > 20s, and scrolled > 30%
+      if (e.clientY <= 0 && !hasTriggered && timeSpent > 20 && scrollReached) {
         setIsVisible(true);
         setHasTriggered(true);
         sessionStorage.setItem("exitIntentTriggered", "true");
       }
     };
 
+    window.addEventListener("scroll", handleScroll);
     document.addEventListener("mouseleave", handleMouseLeave);
-    return () => document.removeEventListener("mouseleave", handleMouseLeave);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      document.removeEventListener("mouseleave", handleMouseLeave);
+    };
   }, [hasTriggered]);
 
   if (!isVisible) return null;

@@ -4,14 +4,6 @@ import { Fragment, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { SiteVisasMegaMenu } from "./site-visas-mega-menu";
 
-const HOME_SECTION_IDS = new Set(["home", "quiz", "pathways", "services", "stories"]);
-const HASH_PROGRESS = {
-  quiz: { step: 1, total: 4, label: "Profile started" },
-  pathways: { step: 2, total: 4, label: "Pathway matched" },
-  services: { step: 3, total: 4, label: "Service aligned" },
-  stories: { step: 4, total: 4, label: "Decision-ready" },
-};
-
 /** Collapsed into desktop mega menu when `enableVisaMega` is true. */
 const VISA_HUB_PATHS = new Set(["/skilled-migration", "/partner-visa-australia", "/student-visa-australia"]);
 
@@ -59,8 +51,6 @@ export function SiteHeaderNav({ navLinks, currentPath, enableVisaMega = false })
     if (typeof window === "undefined") return;
     const syncHash = () => setCurrentHash(window.location.hash || "");
     syncHash();
-    window.addEventListener("hashchange", syncHash);
-    return () => window.removeEventListener("hashchange", syncHash);
   }, []);
 
   function closeMenu() {
@@ -70,43 +60,20 @@ export function SiteHeaderNav({ navLinks, currentPath, enableVisaMega = false })
 
   function normalizeNavHref(href) {
     if (!href) return href;
-    if (href.startsWith("/#")) return href;
-    if (href.startsWith("#")) return `/${href}`;
-    const sectionCandidate = href.startsWith("/") ? href.slice(1) : href;
-    if (HOME_SECTION_IDS.has(sectionCandidate)) return `/#${sectionCandidate}`;
     return href;
   }
 
   function isActiveNavHref(href) {
-    if (!href.startsWith("/#")) return currentPath === href;
-    if (currentPath !== "/") return false;
-    const hash = `#${href.split("#")[1] || ""}`;
-    if (hash === "#home") return currentHash === "" || currentHash === "#home";
-    return currentHash === hash;
+    if (href === "/") return currentPath === "/";
+    return currentPath === href || currentPath.startsWith(`${href}/`);
   }
 
   function handleNavClick(event, href) {
     closeMenu();
     if (typeof window === "undefined") return;
-    if (!href.startsWith("/#")) {
-      window.scrollTo({ top: 0, behavior: "auto" });
-      return;
-    }
-
-    const sectionId = href.split("#")[1];
-    if (!sectionId) return;
-    if (window.location.pathname !== "/") return;
-
-    const target = document.getElementById(sectionId);
-    if (!target) return;
-    event.preventDefault();
-    window.history.replaceState(null, "", href);
-    window.dispatchEvent(new CustomEvent("minrosh-hashnav"));
-    setCurrentHash(`#${sectionId}`);
+    window.scrollTo({ top: 0, behavior: "auto" });
   }
 
-  const currentSection = (currentHash || "").replace(/^#/, "");
-  const navProgress = HASH_PROGRESS[currentSection] || null;
 
   return (
     <>
@@ -155,7 +122,7 @@ export function SiteHeaderNav({ navLinks, currentPath, enableVisaMega = false })
               <Fragment key={link.href}>
                 <Link
                   href={normalizedHref}
-                  scroll={!normalizedHref.startsWith("/#")}
+                  scroll
                   className={`site-nav__link site-nav__link--header ${
                     collapseDesktop ? "site-nav__link--visa-hub-collapsed-desktop " : ""
                   }${
@@ -168,7 +135,7 @@ export function SiteHeaderNav({ navLinks, currentPath, enableVisaMega = false })
                 >
                   {link.label}
                 </Link>
-                {enableVisaMega && normalizedHref === "/#home" ? (
+                {enableVisaMega && normalizedHref === "/" ? (
                   <div className="site-nav__mega-host">
                     <SiteVisasMegaMenu />
                   </div>
@@ -178,17 +145,6 @@ export function SiteHeaderNav({ navLinks, currentPath, enableVisaMega = false })
           })}
         </div>
         <div className="site-nav__toolbar">
-          {navProgress ? (
-            <div
-              className="hidden items-center gap-2 rounded-full border border-brand-rose/20 bg-brand-rose/10 px-3 py-1 text-xs font-semibold text-brand-plum md:inline-flex"
-              aria-live="polite"
-            >
-              <span className="text-brand-rose">
-                Step {navProgress.step}/{navProgress.total}
-              </span>
-              <span className="text-brand-plum/80">{navProgress.label}</span>
-            </div>
-          ) : null}
           <div className="site-nav__cta-cluster">
             <Link
               href="/book-consultation"

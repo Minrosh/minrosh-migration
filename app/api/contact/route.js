@@ -11,6 +11,7 @@ import { runAutomationRules } from "../../../lib/crm/automation-runner";
 import { findOrCreateCustomerByIdentity } from "../../../lib/admin/customers-service";
 import { dualWriteEnquiryToSupabase } from "@/lib/supabase/enquiries-dual-write";
 import { API_ERROR_CODES, apiFail, apiOk, requestContextFromRequest } from "@/lib/api/response";
+import { hCaptchaEnabledOnServer, verifyHCaptchaToken } from "@/lib/security/hcaptcha";
 
 export async function POST(request) {
   const context = requestContextFromRequest(request);
@@ -54,6 +55,23 @@ export async function POST(request) {
     if (validated.value.privacyPolicyAccepted !== true) {
       return apiFail(
         { code: API_ERROR_CODES.VALIDATION_FAILED, message: "Please confirm you have read and accept the privacy policy before submitting.", status: 400 },
+        context
+      );
+    }
+  }
+
+  if (hCaptchaEnabledOnServer()) {
+    const captchaToken = String(body?.hCaptchaToken || "").trim();
+    if (!captchaToken) {
+      return apiFail(
+        { code: API_ERROR_CODES.VALIDATION_FAILED, message: "Please complete captcha verification before submitting.", status: 400 },
+        context
+      );
+    }
+    const verification = await verifyHCaptchaToken({ token: captchaToken, remoteIp: ip });
+    if (!verification.ok) {
+      return apiFail(
+        { code: API_ERROR_CODES.VALIDATION_FAILED, message: "Captcha verification failed. Please retry.", status: 400 },
         context
       );
     }

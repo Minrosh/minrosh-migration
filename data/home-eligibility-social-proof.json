@@ -2,8 +2,8 @@
   "stats": [
     {
       "id": "pathway-shortlist",
-      "value": "84%",
-      "label": "felt clearer after shortlist tools"
+      "value": "Clear Direction",
+      "label": "Visitors often feel clearer after shortlist tools"
     },
     {
       "id": "next-step-speed",
@@ -12,8 +12,8 @@
     },
     {
       "id": "structured-intent",
-      "value": "4.8/5",
-      "label": "clarity score from guided sessions"
+      "value": "Guided Clarity",
+      "label": "Guided sessions help convert uncertainty into practical next steps"
     }
   ],
   "milestones": [

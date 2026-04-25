@@ -37,8 +37,13 @@ export default function PartnerVisaPage() {
         currentPath={pageData.path}
         sections={pageData.sections}
         faq={pageData.faq}
-        mainLead={<HubClusterNavigator category="partner" />}
+        mainLead={<HubClusterNavigator category="partner" currentPath={pageData.path} />}
         summary="Partner visas allow spouses or de facto partners of Australian citizens or PRs to live in Australia. The process focuses on proving a genuine and continuing relationship across financial, social, and household categories."
+        takeaways={[
+          "Gather relationship evidence (financial, social, household)",
+          "Determine if onshore (820) or offshore (309) is your path",
+          "Map your marriage or de facto history for consistency"
+        ]}
         related={[
           ...pageData.relatedGuides,
           { href: "/partner-visa-820-801-guide", title: "Onshore 820/801 Guide" },

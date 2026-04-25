@@ -3,7 +3,8 @@ import { BreadcrumbsNav } from "./breadcrumbs-nav";
 import { PublicFileImg } from "./public-file-img";
 import { GlossaryParagraph } from "./glossary-paragraph";
 import { MotionReveal, MotionStagger, MotionItem } from "./ui/motion-wrapper";
-import { PathwayInfographics } from "./ui/pathway-infographics";
+import { StructuredData } from "./structured-data";
+import { faqJsonLd } from "../lib/seo";
 import { personalizedCtaForPath, recommendedLinksForPath } from "../lib/content-personalization";
 
 /** Stable in-page anchors for section titles (deduped with index). */
@@ -39,6 +40,8 @@ export function ContentPage({
   mainLead = null,
   /** Optional quick summary for the top of the page. */
   summary = null,
+  /** Optional top 3 action steps for the takeaways box. */
+  takeaways = [],
 }) {
   const resolvedPath = currentPath || breadcrumbs[breadcrumbs.length - 1]?.href || "";
   const personalizedCta = personalizedCtaForPath(resolvedPath);
@@ -47,7 +50,9 @@ export function ContentPage({
     ...recommendedLinksForPath(resolvedPath).filter((item) => item.href !== resolvedPath),
   ];
   const dedupedRelated = mergedRelated.filter(
-    (item, index) => mergedRelated.findIndex((candidate) => candidate.href === item.href) === index
+    (item, index) =>
+      item.href !== resolvedPath &&
+      mergedRelated.findIndex((candidate) => candidate.href === item.href) === index
   );
 
   const tocEntries = [];
@@ -58,9 +63,11 @@ export function ContentPage({
     tocEntries.push({ id: "page-faq", label: "FAQ" });
   }
   const showToc = tocEntries.length >= 2;
+  const faqSchema = faq.length ? faqJsonLd(faq) : null;
 
   return (
     <article className="content-page">
+      {faqSchema ? <StructuredData data={faqSchema} /> : null}
       {breadcrumbs.length ? (
         <BreadcrumbsNav
           currentPath={resolvedPath}
@@ -96,9 +103,35 @@ export function ContentPage({
 
       {summary ? (
         <div className="container mx-auto px-4 mt-8">
-          <div className="p-6 rounded-2xl bg-brand-cream/40 border border-brand-plum/10 border-dashed">
-            <p className="text-[10px] uppercase tracking-widest font-black text-brand-plum/40 mb-2">In a hurry? Here&apos;s what you need to know</p>
-            <p className="text-sm font-medium text-brand-plum/80 leading-relaxed">{summary}</p>
+          <div className="p-8 rounded-[2rem] bg-brand-plum/5 border border-brand-plum/10 border-dashed relative overflow-hidden group">
+            <div className="absolute top-0 right-0 p-8 opacity-[0.03] group-hover:opacity-[0.06] transition-opacity">
+              <span className="text-8xl font-black italic">!</span>
+            </div>
+            <p className="text-[10px] uppercase tracking-[0.2em] font-black text-brand-rose mb-4 flex items-center gap-2">
+              <span className="h-1 w-4 bg-brand-rose rounded-full" />
+              Key Takeaways
+            </p>
+            <div className="grid gap-8 lg:grid-cols-2 items-start">
+              <div>
+                <p className="text-sm font-bold text-brand-plum/40 uppercase tracking-widest mb-2">Who this is for</p>
+                <p className="text-base font-semibold text-brand-plum leading-relaxed">{summary}</p>
+              </div>
+              <div className="space-y-4">
+                <p className="text-sm font-bold text-brand-plum/40 uppercase tracking-widest mb-2">Top 3 actions</p>
+                <ul className="space-y-3">
+                  {(takeaways?.length ? takeaways : [
+                    "Complete the initial profile quiz",
+                    "Verify occupation on the priority list",
+                    "Schedule a strategy discussion"
+                  ]).slice(0, 3).map((action, i) => (
+                    <li key={i} className="flex items-center gap-3 text-sm font-bold text-brand-plum">
+                      <span className="flex h-5 w-5 items-center justify-center rounded-full bg-brand-rose text-[10px] text-white">{i + 1}</span>
+                      {action}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
       ) : null}
@@ -106,12 +139,21 @@ export function ContentPage({
       <div className="content-page__grid">
         <div className="content-page__main">
           {showToc ? (
-            <nav className="content-page__toc content-page__toc--inline" aria-label="On this page">
-              <p className="content-page__toc-label">On this page</p>
-              <ul className="content-page__toc-list">
+            <nav className="content-page__toc content-page__toc--inline mb-12" aria-label="On this page">
+              <p className="text-sm font-black text-brand-plum uppercase tracking-widest mb-6 flex items-center gap-3">
+                <span className="h-0.5 w-8 bg-brand-plum/10" />
+                Table of Contents
+              </p>
+              <ul className="grid gap-3 sm:grid-cols-2">
                 {tocEntries.map((item) => (
                   <li key={item.id}>
-                    <a href={`#${item.id}`}>{item.label}</a>
+                    <a 
+                      href={`#${item.id}`} 
+                      className="flex items-center gap-3 p-4 rounded-xl border border-brand-plum/5 hover:border-brand-rose/20 hover:bg-brand-rose/[0.02] transition-all group"
+                    >
+                      <span className="text-[10px] font-black text-brand-plum/20 group-hover:text-brand-rose transition-colors">→</span>
+                      <span className="text-sm font-bold text-brand-plum/70 group-hover:text-brand-plum transition-colors">{item.label}</span>
+                    </a>
                   </li>
                 ))}
               </ul>
@@ -135,7 +177,6 @@ export function ContentPage({
 
           {mainLead}
 
-          <PathwayInfographics sections={sections} />
           <MotionStagger>
           {sections.map((section, index) => (
             <MotionItem key={`${section.title}-${index}`}>
@@ -237,8 +278,9 @@ export function ContentPage({
               <div className="content-links">
                 {dedupedRelated.map((item) => (
                   <Link key={item.href} href={item.href} className="content-links__item">
+                    <span className="content-links__kicker">Related guide</span>
                     <strong>{item.title}</strong>
-                    <span>Open page</span>
+                    <span className="content-links__arrow" aria-hidden="true">→</span>
                   </Link>
                 ))}
               </div>

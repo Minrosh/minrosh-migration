@@ -46,7 +46,7 @@ export default function StudentVisaPage() {
         currentPath={pageData.path}
         mainLead={
           <>
-            <HubClusterNavigator category="student" />
+            <HubClusterNavigator category="student" currentPath={pageData.path} />
             <LifestyleExperienceBlock
               guide={lifestyleGuide}
               first14={first14}
@@ -58,6 +58,11 @@ export default function StudentVisaPage() {
         sections={pageData.sections}
         faq={pageData.faq}
         summary="Student visas (Subclass 500) allow international students to study full-time in Australia. Success depends on Genuine Student (GS) requirements, financial capacity, and English proficiency."
+        takeaways={[
+          "Select a course and provider that aligns with your history",
+          "Verify your financial capacity for fees and living costs",
+          "Plan your Genuine Student (GS) evidence set early"
+        ]}
         related={[
           ...pageData.relatedGuides,
           {

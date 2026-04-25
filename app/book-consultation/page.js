@@ -9,6 +9,8 @@ import { SiteShell } from "../../components/site-shell";
 import { StructuredData } from "../../components/structured-data";
 import { buildMetadata, breadcrumbJsonLd } from "../../lib/seo";
 import readinessSignals from "../../data/book-consultation-readiness-signals.json";
+import Link from "next/link";
+import { TrackedLink } from "../../components/tracked-link";
 
 const pageData = seoPages.servicePages.bookConsultation;
 
@@ -21,7 +23,6 @@ export const metadata = buildMetadata({
 
 export default function BookConsultationPage() {
   const siteData = getHomeSiteData(siteDataStatic);
-  const signalChips = Array.isArray(readinessSignals?.signalChips) ? readinessSignals.signalChips : [];
   const journeyRail = Array.isArray(readinessSignals?.journeyRail) ? readinessSignals.journeyRail : [];
 
   return (
@@ -48,6 +49,30 @@ export default function BookConsultationPage() {
             A premium consultation flow designed to reduce guesswork and lock your highest-impact
             next steps before you spend time on the wrong pathway.
           </p>
+          <div className="content-aside-card__actions">
+            <TrackedLink
+              href="#consultation-enquiry-form"
+              eventName="cta_click"
+              eventParams={{ cta_id: "book_primary_consultation", cta_location: "book_hero", destination: "#consultation-enquiry-form" }}
+              aria-label="Jump to consultation booking form"
+              className="btn btn-primary"
+            >
+              Book consultation now
+            </TrackedLink>
+          </div>
+          <p className="text-sm text-brand-plum/70">
+            Not ready to book yet?{" "}
+            <TrackedLink
+              href="/assessment"
+              eventName="cta_click"
+              eventParams={{ cta_id: "book_secondary_assessment", cta_location: "book_hero", destination: "/assessment" }}
+              aria-label="Go to free assessment page"
+              className="font-semibold text-brand-rose underline decoration-brand-rose/40 underline-offset-4"
+            >
+              Start free assessment
+            </TrackedLink>
+            .
+          </p>
           <div className="mt-4 flex flex-wrap gap-2">
             <span className="rounded-full border border-brand-plum/15 bg-white px-3 py-1 text-xs font-semibold text-brand-plum/75">
               Endowed progress from the first step
@@ -59,39 +84,10 @@ export default function BookConsultationPage() {
               Official-source aligned
             </span>
           </div>
-          {signalChips.length ? (
-            <div className="mt-4 grid gap-2 sm:grid-cols-3">
-              {signalChips.map((item) => (
-                <div key={item.id} className="rounded-xl border border-brand-plum/15 bg-white px-3 py-2">
-                  <p className="text-sm font-bold text-brand-plum">{item.value}</p>
-                  <p className="text-xs text-brand-plum/70">{item.label}</p>
-                </div>
-              ))}
-            </div>
-          ) : null}
           {siteData.consultationHoursNote ? (
             <p className="content-hero__note">{siteData.consultationHoursNote}</p>
           ) : null}
         </section>
-
-        {(pageData.officialResources ?? []).length ? (
-          <section className="official-resources" aria-label="Official government sources">
-            <h2>Official sources to verify visa options</h2>
-            <ul>
-              {(pageData.officialResources ?? []).map((item) => (
-                <li key={item.href}>
-                  <a href={item.href} target="_blank" rel="noreferrer">
-                    {item.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-            <p className="content-hero__note">
-              MinRosh helps you interpret pathways against your facts. Subclass names, charges, and
-              criteria are always confirmed on the Department of Home Affairs website before lodgement.
-            </p>
-          </section>
-        ) : null}
 
         <section className="grid gap-6 lg:grid-cols-[1fr_1.1fr] lg:items-start">
           <div className="rounded-[2rem] border border-brand-plum/10 bg-white/90 p-5 shadow-lux md:p-7">
@@ -156,9 +152,18 @@ export default function BookConsultationPage() {
                 </ul>
               </div>
             </details>
+
+            <section className="content-section bento-hover mt-5" aria-label="What to do next">
+              <h2>What to do next</h2>
+              <ul className="feature-list">
+                <li>Submit your profile basics and preferred timeline in the enquiry form</li>
+                <li>Bring key evidence notes so we can prioritise viable pathways faster</li>
+                <li>Use your session outcome as a practical action plan for the next 14 days</li>
+              </ul>
+            </section>
           </div>
 
-          <div className="contact-form-column rounded-[2rem] border border-brand-plum/10 bg-white/90 p-4 shadow-lux md:p-6">
+          <div id="consultation-enquiry-form" className="contact-form-column rounded-[2rem] border border-brand-plum/10 bg-white/90 p-4 shadow-lux md:p-6">
             <AgentRegistrationStrip brand={siteData.brand} />
             <ContactLeadForm mode="consultation" />
           </div>

@@ -37,12 +37,17 @@ export default function SkilledMigrationPage() {
         officialResources={pageData.officialResources ?? []}
         sections={pageData.sections}
         faq={pageData.faq}
-        mainLead={<HubClusterNavigator category="skilled" />}
+        mainLead={<HubClusterNavigator category="skilled" currentPath={pageData.path} />}
         heroImage={{
           src: "/images/hero-sydney-real.jpg",
           alt: "Sydney Harbour — Australian skilled migration context",
         }}
         summary="Skilled migration allows qualified professionals to move to Australia based on their points, occupation, and state demand. Key steps include Skills Assessment, English testing, and an Expression of Interest (EOI)."
+        takeaways={[
+          "Verify your occupation on the latest priority list",
+          "Calculate your points profile for 189/190 subclasses",
+          "Map your skills assessment and English test sequence"
+        ]}
         related={[
           ...pageData.relatedGuides,
           {

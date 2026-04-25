@@ -2,8 +2,8 @@
   "trustSignals": [
     {
       "id": "pathway-clarity",
-      "value": "4.8/5",
-      "label": "pathway clarity after navigator use"
+      "value": "High",
+      "label": "Pathway clarity after navigator use"
     },
     {
       "id": "decision-speed",
@@ -12,8 +12,8 @@
     },
     {
       "id": "readiness",
-      "value": "89%",
-      "label": "continue to assessment or consultation"
+      "value": "Most",
+      "label": "Continue to assessment or consultation"
     }
   ],
   "intentShortcuts": [

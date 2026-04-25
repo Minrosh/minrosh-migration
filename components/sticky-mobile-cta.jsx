@@ -33,16 +33,16 @@ export function StickyMobileCTA() {
         >
           <Link
             href="/assessment"
-            className="flex flex-1 items-center justify-center rounded-xl bg-orange-500 py-3 text-sm font-bold text-white shadow-md shadow-orange-500/20 transition-transform active:scale-95"
+            className="flex flex-1 items-center justify-center rounded-xl bg-brand-rose py-4 text-xs font-black uppercase tracking-widest text-white shadow-lg shadow-brand-rose/20 transition-transform active:scale-95"
           >
-            Start Assessment
+            Free Assessment
           </Link>
-          <a
-            href="tel:+61000000000" // Replace with actual number
-            className="flex flex-1 items-center justify-center rounded-xl border border-brand-plum/15 bg-brand-cream/30 py-3 text-sm font-bold text-brand-plum transition-transform active:scale-95"
+          <Link
+            href="/book-consultation"
+            className="flex flex-1 items-center justify-center rounded-xl border border-brand-plum/10 bg-brand-plum/5 py-4 text-xs font-black uppercase tracking-widest text-brand-plum transition-transform active:scale-95"
           >
-            Call Now
-          </a>
+            Book Now
+          </Link>
         </motion.div>
       )}
     </AnimatePresence>

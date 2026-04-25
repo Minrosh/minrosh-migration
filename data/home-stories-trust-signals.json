@@ -2,18 +2,18 @@
   "proofStats": [
     {
       "id": "approval-readiness",
-      "value": "91%",
-      "label": "felt more prepared before lodgement"
+      "value": "Prepared",
+      "label": "Clients often feel better prepared before lodgement"
     },
     {
       "id": "timeline-confidence",
-      "value": "4.8/5",
-      "label": "timeline clarity after roadmap sessions"
+      "value": "Clear Timeline",
+      "label": "Roadmap sessions create clearer timeline decisions"
     },
     {
       "id": "document-accuracy",
-      "value": "96%",
-      "label": "document sets submitted without rework"
+      "value": "Evidence-Ready",
+      "label": "Document packs are reviewed for consistency before submission"
     }
   ],
   "decisionPatterns": {

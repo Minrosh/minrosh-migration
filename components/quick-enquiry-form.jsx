@@ -9,6 +9,11 @@ import {
 import { retryAfterHint } from "@/lib/http/retry-after";
 import { REQUEST_ID_HEADER } from "@/lib/observability/request-id";
 import trustSignalsData from "../data/quick-enquiry-signals.json";
+import { HCaptchaField } from "./hcaptcha-field";
+
+const CAPTCHA_ENABLED =
+  String(process.env.NEXT_PUBLIC_ENABLE_HCAPTCHA || "").toLowerCase() === "true" &&
+  Boolean(String(process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY || "").trim());
 
 const initial = {
   firstName: "",
@@ -19,6 +24,7 @@ const initial = {
   mainNeed: "General Enquiry",
   message: "",
   privacyPolicyAccepted: false,
+  hCaptchaToken: "",
 };
 
 function processingSummaryNote(processing) {
@@ -78,6 +84,9 @@ function validateQuickEnquiry(form) {
   }
   if (!form.privacyPolicyAccepted) {
     errors.privacyPolicyAccepted = "Please confirm you have read the Privacy Policy before submitting.";
+  }
+  if (CAPTCHA_ENABLED && !String(form.hCaptchaToken || "").trim()) {
+    errors.hCaptchaToken = "Please complete the captcha verification.";
   }
   return errors;
 }
@@ -221,6 +230,7 @@ export function QuickEnquiryForm({ className = "" }) {
           quickEnquiry: true,
           company: hpRef.current?.value || "",
           quizSummary: quizSummaryLine,
+          hCaptchaToken: String(form.hCaptchaToken || "").trim(),
         }),
       });
       const rawText = await response.text();
@@ -439,6 +449,24 @@ export function QuickEnquiryForm({ className = "" }) {
           {fieldErrors.privacyPolicyAccepted}
         </p>
       ) : null}
+      {mobileStepper && currentStep < stepFieldGroups.length - 1 ? null : (
+        <HCaptchaField
+          value={form.hCaptchaToken}
+          onTokenChange={(token) => {
+            const normalized = String(token || "").trim();
+            setForm((current) => ({ ...current, hCaptchaToken: normalized }));
+            if (normalized) {
+              setFieldErrors((current) => {
+                if (!current.hCaptchaToken) return current;
+                const next = { ...current };
+                delete next.hCaptchaToken;
+                return next;
+              });
+            }
+          }}
+          error={fieldErrors.hCaptchaToken || ""}
+        />
+      )}
       <input
         ref={hpRef}
         type="text"

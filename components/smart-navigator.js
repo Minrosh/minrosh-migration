@@ -248,48 +248,49 @@ export function SmartNavigator({
           <p className="section-label">Analysis Result</p>
           {recommendation ? (
             <>
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="mb-0">{recommendation.title}</h3>
-                <div className="flex flex-col items-end">
-                  <span className="text-[0.65rem] uppercase tracking-wider font-bold text-brand-plum/40">Readiness Level</span>
-                  <span className="text-xl font-display font-bold text-brand-rose">
+              <div className="navigator-result-header">
+                <div>
+                  <h3 className="mb-0">{recommendation.title}</h3>
+                  <p className="navigator-result-summary">{recommendation.summary}</p>
+                </div>
+                <div className="navigator-readiness-pill">
+                  <span>Readiness</span>
+                  <strong>
                     {recommendation.confidenceScore > 80 ? "High" : recommendation.confidenceScore > 50 ? "Medium" : "Low"}
-                  </span>
+                  </strong>
                 </div>
               </div>
-              
-              <p>{recommendation.summary}</p>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-6">
-                <div className="p-3 rounded-xl border border-brand-plum/10 bg-brand-cream/20">
-                  <span className="text-[0.65rem] uppercase tracking-wider font-bold text-brand-plum/50 block mb-1">Why this result?</span>
-                  <ul className="text-[0.65rem] leading-tight space-y-1 text-brand-plum/70">
+              <div className="navigator-result-grid">
+                <div className="navigator-result-card navigator-result-card--soft">
+                  <span className="navigator-result-card-label">Why this result?</span>
+                  <ul className="navigator-result-list">
                     {recommendation.why.map((w) => <li key={w}>• {w}</li>)}
                   </ul>
                 </div>
-                <div className="p-3 rounded-xl border border-brand-rose/10 bg-brand-rose/5">
-                  <span className="text-[0.65rem] uppercase tracking-wider font-bold text-brand-rose/60 block mb-1">Risk Factors</span>
-                  <ul className="text-[0.65rem] leading-tight space-y-1 text-brand-rose/80">
+                <div className="navigator-result-card navigator-result-card--alert">
+                  <span className="navigator-result-card-label">Risk Factors</span>
+                  <ul className="navigator-result-list">
                     {recommendation.risks.map((r) => <li key={r}>• {r}</li>)}
                   </ul>
                 </div>
               </div>
 
               {recommendation.alternative && (
-                <div className="mt-3 p-3 rounded-xl border border-brand-plum/10 bg-white/50">
-                  <span className="text-[0.65rem] uppercase tracking-wider font-bold text-brand-plum/50 block mb-1">Alternative Pathway</span>
-                  <p className="text-[0.7rem] font-semibold text-brand-plum mb-0">
+                <div className="navigator-result-card navigator-result-card--alt">
+                  <span className="navigator-result-card-label">Alternative Pathway</span>
+                  <p className="navigator-result-mini">
                     {recommendation.alternative.need} <span className="font-normal text-brand-plum/60">— {recommendation.alternative.reason}</span>
                   </p>
                 </div>
               )}
 
-              <div className="mt-3 p-3 rounded-xl border border-brand-plum/10 bg-brand-plum/5">
-                <span className="text-[0.65rem] uppercase tracking-wider font-bold text-brand-plum/50 block mb-1">Adaptive Strategy (AI v3)</span>
-                <p className="text-[0.7rem] font-bold text-brand-plum mb-1">
+              <div className="navigator-result-card navigator-result-card--strategy">
+                <span className="navigator-result-card-label">Adaptive Strategy (AI v3)</span>
+                <p className="navigator-result-mini">
                   Strategy: <span className="font-normal">{recommendation.strategyPlan}</span>
                 </p>
-                <p className="text-[0.7rem] font-bold text-brand-plum mb-0">
+                <p className="navigator-result-mini">
                   Backup: <span className="font-normal">{recommendation.backupStrategy.need} ({recommendation.backupStrategy.reason})</span>
                 </p>
               </div>
@@ -300,12 +301,12 @@ export function SmartNavigator({
                 <p className="text-[0.7rem] text-brand-plum/60">Estimated: {recommendation.timelineExpectation}</p>
               </div>
 
-              <div className="mt-4 flex items-center justify-center gap-4">
-                 <div className="flex items-center gap-1.5 opacity-40">
+              <div className="navigator-result-meta">
+                 <div className="navigator-result-meta-item">
                    <span className="h-1.5 w-1.5 rounded-full bg-brand-plum" />
                    <span className="text-[0.6rem] uppercase tracking-tighter font-bold">Calibration Active</span>
                  </div>
-                 <div className="flex items-center gap-1.5 opacity-40">
+                 <div className="navigator-result-meta-item">
                    <span className="h-1.5 w-1.5 rounded-full bg-green-500" />
                    <span className="text-[0.6rem] uppercase tracking-tighter font-bold">{(dailyUsageCount ?? 0)} Active Today</span>
                  </div>
