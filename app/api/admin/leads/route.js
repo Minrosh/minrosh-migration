@@ -25,7 +25,10 @@ export async function POST(request) {
   const lead = createLead(body);
   const ip = getClientIp(request);
   appendAudit(AUDIT_ACTIONS.CRM_LEAD_CREATE, lead.id, { ip, route: "POST /api/admin/leads", requestId: context.requestId });
-  runAutomationRules({ trigger: "lead_created", payload: { customerId: lead.customerId } });
+  runAutomationRules({
+    trigger: "lead_created",
+    payload: { customerId: lead.customerId, leadId: lead.id, pathwaySegment: lead.pathwaySegment },
+  });
   return apiOk({ lead }, context);
 }
 

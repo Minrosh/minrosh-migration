@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import {
   clearNavigatorSummarySession,
   quizSummaryFromNavigatorDetail,
@@ -25,6 +26,9 @@ const initial = {
   message: "",
   privacyPolicyAccepted: false,
   hCaptchaToken: "",
+  referralSource: "",
+  referralCode: "",
+  utmSource: "",
 };
 
 function processingSummaryNote(processing) {
@@ -92,6 +96,7 @@ function validateQuickEnquiry(form) {
 }
 
 export function QuickEnquiryForm({ className = "" }) {
+  const searchParams = useSearchParams();
   const [form, setForm] = useState(initial);
   const [quizSummaryLine, setQuizSummaryLine] = useState("");
   const [state, setState] = useState({ status: "idle", message: "" });
@@ -110,6 +115,19 @@ export function QuickEnquiryForm({ className = "" }) {
   useEffect(() => {
     setQuizSummaryLine(readNavigatorQuizSummaryLine());
   }, []);
+
+  useEffect(() => {
+    const ref = String(searchParams.get("ref") || "").trim();
+    const refCode = String(searchParams.get("ref_code") || "").trim();
+    const utmSource = String(searchParams.get("utm_source") || "").trim();
+    if (!ref && !refCode && !utmSource) return;
+    setForm((current) => ({
+      ...current,
+      referralSource: ref || current.referralSource,
+      referralCode: refCode || current.referralCode,
+      utmSource: utmSource || current.utmSource,
+    }));
+  }, [searchParams]);
 
   useEffect(() => {
     if (typeof window === "undefined" || typeof window.matchMedia !== "function") return;
@@ -231,6 +249,9 @@ export function QuickEnquiryForm({ className = "" }) {
           company: hpRef.current?.value || "",
           quizSummary: quizSummaryLine,
           hCaptchaToken: String(form.hCaptchaToken || "").trim(),
+          referralSource: String(form.referralSource || "").trim(),
+          referralCode: String(form.referralCode || "").trim(),
+          utmSource: String(form.utmSource || "").trim(),
         }),
       });
       const rawText = await response.text();

@@ -73,6 +73,9 @@ const initialForm = {
   message: "",
   privacyPolicyAccepted: false,
   hCaptchaToken: "",
+  referralSource: "",
+  referralCode: "",
+  utmSource: "",
 };
 
 function processingSummaryNote(processing) {
@@ -144,12 +147,23 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
   useEffect(() => {
     const fromCity = String(searchParams.get("fromCity") || "").trim();
     const pathwayGoal = String(searchParams.get("pathwayGoal") || "").trim();
-    if (!fromCity && !pathwayGoal) return;
+    const ref = String(searchParams.get("ref") || "").trim();
+    const refCode = String(searchParams.get("ref_code") || "").trim();
+    const utmSource = String(searchParams.get("utm_source") || "").trim();
+    if (!fromCity && !pathwayGoal && !ref && !refCode && !utmSource) return;
     setForm((current) => ({
       ...current,
       preferredCountry: "Australia",
       mainNeed: mode === "consultation" ? "Student Pathway" : current.mainNeed,
-      message: `Pathway map prefill:\nFrom city: ${fromCity || "Sri Lanka"}\nGoal: ${pathwayGoal || "Australia pathway"}\n\n${current.message}`.trim(),
+      message:
+        fromCity || pathwayGoal
+          ? `Pathway map prefill:\nFrom city: ${fromCity || "Sri Lanka"}\nGoal: ${
+              pathwayGoal || "Australia pathway"
+            }\n\n${current.message}`.trim()
+          : current.message,
+      referralSource: ref || current.referralSource,
+      referralCode: refCode || current.referralCode,
+      utmSource: utmSource || current.utmSource,
     }));
   }, [searchParams, mode]);
 
@@ -316,6 +330,9 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
           company: hpRef.current?.value || "",
           quizSummary: quizSummaryLine,
           hCaptchaToken: String(form.hCaptchaToken || "").trim(),
+          referralSource: String(form.referralSource || "").trim(),
+          referralCode: String(form.referralCode || "").trim(),
+          utmSource: String(form.utmSource || "").trim(),
         }),
       });
       const rawText = await response.text();

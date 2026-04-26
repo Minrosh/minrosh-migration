@@ -139,13 +139,20 @@ export async function POST(request) {
       lastName: enquiryRecord.lastName,
       email: enquiryRecord.email,
       phone: enquiryRecord.phone,
+      preferredCountry: enquiryRecord.preferredCountry,
       mainNeed: enquiryRecord.mainNeed,
       message: enquiryRecord.message,
+      referralSource: enquiryRecord.referralSource,
+      referralCode: enquiryRecord.referralCode,
+      utmSource: enquiryRecord.utmSource,
       quizCompleted: Boolean(String(enquiryRecord.quizSummary || "").trim()),
       quizCompletionDepth: String(enquiryRecord.quizSummary || "").trim() ? 10 : 0,
       consultationRequested: Boolean(enquiryRecord.preferredDate && enquiryRecord.preferredTime),
     });
-    runAutomationRules({ trigger: "lead_created", payload: { customerId: lead.customerId } });
+    runAutomationRules({
+      trigger: "lead_created",
+      payload: { customerId: lead.customerId, leadId: lead.id, pathwaySegment: lead.pathwaySegment },
+    });
     processing.crmLeadCapture = "ok";
   } catch {
     /* CRM lead capture is best-effort */

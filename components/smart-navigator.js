@@ -115,6 +115,7 @@ export function SmartNavigator({
   }
 
   const isEmailStep = stepIndex === navigatorSteps.length;
+  const showStackedResults = Boolean(recommendation);
 
   return (
     <section className="navigator-section">
@@ -137,7 +138,7 @@ export function SmartNavigator({
         </p>
       ) : null}
 
-      <div className="quiz-shell">
+      <div className={`quiz-shell ${showStackedResults ? "quiz-shell--completed" : ""}`}>
         <div className="rounded-[2rem] border border-white/60 bg-white/75 backdrop-blur-md shadow-xl p-3 sm:p-4">
           <section className="quiz-card bento-hover">
           <div className="quiz-wizard__meta">
@@ -244,7 +245,7 @@ export function SmartNavigator({
         </div>
 
         <div className="rounded-[2rem] border border-white/60 bg-white/75 backdrop-blur-md shadow-xl p-3 sm:p-4">
-          <aside className="quiz-result bento-hover">
+          <aside className={`quiz-result bento-hover ${showStackedResults ? "quiz-result--completed" : ""}`}>
           <p className="section-label">Analysis Result</p>
           {recommendation ? (
             <>

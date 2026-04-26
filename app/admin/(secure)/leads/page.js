@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { AdminTableSkeleton } from "@/components/admin/admin-table-skeleton";
@@ -18,6 +18,9 @@ export default function LeadsPage() {
   const [leads, setLeads] = useState([]);
   const [loading, setLoading] = useState(true);
   const [msg, setMsg] = useState("");
+  const [pathwayFilter, setPathwayFilter] = useState("all");
+  const [countryFilter, setCountryFilter] = useState("all");
+  const [query, setQuery] = useState("");
 
   useEffect(() => {
     setMsg("");
@@ -62,6 +65,45 @@ export default function LeadsPage() {
     );
   }
 
+  const pathwayOptions = useMemo(() => {
+    const values = new Set();
+    leads.forEach((lead) => {
+      const value = String(lead.pathwaySegment || "").trim();
+      if (value) values.add(value);
+    });
+    return ["all", ...Array.from(values).sort()];
+  }, [leads]);
+
+  const countryOptions = useMemo(() => {
+    const values = new Set();
+    leads.forEach((lead) => {
+      const value = String(lead.countrySegment || "").trim();
+      if (value) values.add(value);
+    });
+    return ["all", ...Array.from(values).sort()];
+  }, [leads]);
+
+  const filteredLeads = useMemo(() => {
+    const search = query.trim().toLowerCase();
+    return leads.filter((lead) => {
+      if (pathwayFilter !== "all" && String(lead.pathwaySegment || "") !== pathwayFilter) return false;
+      if (countryFilter !== "all" && String(lead.countrySegment || "") !== countryFilter) return false;
+      if (!search) return true;
+      const haystack = [
+        lead.firstName,
+        lead.lastName,
+        lead.email,
+        lead.mainNeed,
+        lead.pathwaySegment,
+        lead.countrySegment,
+        Array.isArray(lead.interestTags) ? lead.interestTags.join(" ") : "",
+      ]
+        .map((item) => String(item || "").toLowerCase())
+        .join(" ");
+      return haystack.includes(search);
+    });
+  }, [leads, pathwayFilter, countryFilter, query]);
+
   if (loading) {
     return (
       <div>
@@ -78,17 +120,60 @@ export default function LeadsPage() {
         Scored leads in <code className="rounded bg-muted px-1">data/crm-leads.json</code>. Convert requires{" "}
         <code className="rounded bg-muted px-1">customerId</code> on the lead.
       </p>
+      <div className="mb-6 grid gap-3 rounded-lg border bg-card p-3 md:grid-cols-4">
+        <label className="text-xs text-muted-foreground">
+          Search
+          <input
+            className="mt-1 w-full rounded border bg-background px-2 py-2 text-sm text-foreground"
+            placeholder="Name, email, segment..."
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+          />
+        </label>
+        <label className="text-xs text-muted-foreground">
+          Pathway segment
+          <select
+            className="mt-1 w-full rounded border bg-background px-2 py-2 text-sm text-foreground"
+            value={pathwayFilter}
+            onChange={(event) => setPathwayFilter(event.target.value)}
+          >
+            {pathwayOptions.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className="text-xs text-muted-foreground">
+          Country segment
+          <select
+            className="mt-1 w-full rounded border bg-background px-2 py-2 text-sm text-foreground"
+            value={countryFilter}
+            onChange={(event) => setCountryFilter(event.target.value)}
+          >
+            {countryOptions.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
+        </label>
+        <div className="flex items-end text-xs text-muted-foreground">
+          Showing <strong className="ml-1 text-foreground">{filteredLeads.length}</strong>
+          <span className="ml-1">of {leads.length} leads</span>
+        </div>
+      </div>
       {msg ? <p className="mb-4 text-sm text-muted-foreground">{msg}</p> : null}
       <div className="grid gap-4">
-        {leads.length === 0 ? (
+        {filteredLeads.length === 0 ? (
           <Card>
             <CardHeader>
-              <CardTitle>No leads yet</CardTitle>
-              <CardDescription>Create via API or extend enquiry flow to auto-create leads.</CardDescription>
+              <CardTitle>No matching leads</CardTitle>
+              <CardDescription>Try clearing filters or wait for new enquiries to sync.</CardDescription>
             </CardHeader>
           </Card>
         ) : (
-          leads.map((l) => (
+          filteredLeads.map((l) => (
             <Card key={l.id}>
               <CardHeader className="flex flex-row flex-wrap items-start justify-between gap-2">
                 <div>
@@ -110,6 +195,10 @@ export default function LeadsPage() {
               </CardHeader>
               <CardContent className="text-xs text-muted-foreground">
                 <p>customerId: {l.customerId || "—"}</p>
+                <p>
+                  segments: {l.pathwaySegment || "general"} · {l.countrySegment || "unspecified"}
+                </p>
+                <p>tags: {Array.isArray(l.interestTags) && l.interestTags.length ? l.interestTags.join(", ") : "—"}</p>
               </CardContent>
             </Card>
           ))

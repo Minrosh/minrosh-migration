@@ -5,6 +5,7 @@ import { getHomeSiteData } from "../../lib/home-site-data";
 import { SiteShell } from "../../components/site-shell";
 import { StructuredData } from "../../components/structured-data";
 import { buildMetadata, breadcrumbJsonLd } from "../../lib/seo";
+import { SkilledCostTimelineCalculator } from "../../components/tools/skilled-cost-timeline-calculator";
 
 const path = "/tools";
 
@@ -121,6 +122,8 @@ export default function ToolsPage() {
             ))}
           </ul>
         </section>
+
+        <SkilledCostTimelineCalculator />
 
         <section className="content-section bento-hover tools-hub__footer-cta">
           <h2>Prefer to speak first?</h2>

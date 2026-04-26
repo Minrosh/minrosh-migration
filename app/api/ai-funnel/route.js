@@ -31,6 +31,7 @@ export async function POST(request) {
       email: email,
       preferredCountry: country,
       mainNeed: goal,
+      goal,
       message: `AI Navigator v2 Insights:
 - Why: ${insights?.why?.join(", ") || "N/A"}
 - Risks: ${insights?.risks?.join(", ") || "N/A"}
