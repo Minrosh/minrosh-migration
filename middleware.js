@@ -6,6 +6,27 @@ import { getOrCreateRequestId, REQUEST_ID_HEADER } from "./lib/observability/req
 
 const MAINTENANCE_VALUES = new Set(["1", "true", "on", "yes"]);
 
+function maintenanceHtml() {
+  return `<!doctype html>
+<html lang="en-AU">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MinRosh Migration | Maintenance</title>
+  </head>
+  <body>
+    <main>
+      <h1>Upgrading for a better experience</h1>
+      <p>MinRosh Migration is briefly undergoing maintenance. Please try again shortly.</p>
+      <p>
+        <a href="tel:+61478100542">Call 0478 100 542</a> |
+        <a href="mailto:info@minroshmigration.com.au">Email info@minroshmigration.com.au</a>
+      </p>
+    </main>
+  </body>
+</html>`;
+}
+
 function newCspNonce() {
   const bytesToBase64 = (bytes) => {
     if (typeof btoa === "function") {
@@ -71,6 +92,7 @@ export async function middleware(request) {
   const hasBypass = Boolean(bypassToken) && reqBypassToken === bypassToken;
   const maintenancePublicBypass =
     pathname === "/maintenance" ||
+    pathname === "/maintenance.html" ||
     pathname === "/favicon.ico" ||
     pathname.startsWith("/admin/") ||
     pathname === "/admin";
@@ -92,10 +114,12 @@ export async function middleware(request) {
       return withCsp(response);
     }
 
-    const maintenanceUrl = request.nextUrl.clone();
-    maintenanceUrl.pathname = "/maintenance";
-    maintenanceUrl.search = "";
-    const response = NextResponse.rewrite(maintenanceUrl, { request: { headers: requestHeaders } });
+    const response = new NextResponse(maintenanceHtml(), {
+      status: 503,
+      headers: {
+        "Content-Type": "text/html; charset=utf-8",
+      },
+    });
     response.headers.set("Retry-After", "120");
     response.headers.set("Cache-Control", "no-store");
     response.headers.set("X-Robots-Tag", "noindex, nofollow");

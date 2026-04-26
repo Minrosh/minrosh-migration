@@ -7,6 +7,23 @@ import { buildMetadata, breadcrumbJsonLd, webPageSpeakableJsonLd } from "../../l
 
 const path = "/meet-the-team";
 
+const coFounders = [
+  {
+    name: "Roshan Samarawickrema",
+    role: "Co-founder & Director",
+    responsibilities: "Responsible for business planning and IT infrastructure.",
+    imageSrc: "/images/team/roshan-samarawickrema.v1.webp",
+    alt: "Roshan Samarawickrema, Co-founder & Director of MinRosh Migration",
+  },
+  {
+    name: "Minoli Bandaranayake",
+    role: "Co-founder & Director",
+    responsibilities: "Responsible for migration planning and education consultations.",
+    imageSrc: "/images/team/minoli-bandaranayake.v1.webp",
+    alt: "Minoli Bandaranayake, Co-founder & Director of MinRosh Migration",
+  },
+];
+
 const consultants = [
   {
     name: "MinRosh Advisory Team",
@@ -32,9 +49,9 @@ const consultants = [
 ];
 
 export const metadata = buildMetadata({
-  title: "Meet the Team",
+  title: "Meet the Team | Co-founders",
   description:
-    "Meet the MinRosh Migration team — consultant profiles, languages spoken, and how each team supports your migration journey.",
+    "Meet Roshan Samarawickrema and Minoli Bandaranayake, the co-founders of MinRosh Migration, and learn how the wider team supports your migration journey.",
   path,
   keywords: ["migration team Brisbane", "migration consultant profiles", "MinRosh team"],
 });
@@ -50,8 +67,9 @@ export default function MeetTheTeamPage() {
           ]),
           webPageSpeakableJsonLd({
             path,
-            title: "Meet the Team | MinRosh Migration",
-            description: "Consultant bios, credentials context, and language support at MinRosh Migration.",
+            title: "Meet the Co-founders and Team | MinRosh Migration",
+            description:
+              "Co-founder bios for Roshan Samarawickrema and Minoli Bandaranayake, plus the wider advisory support team.",
           }),
         ]}
       />
@@ -69,8 +87,8 @@ export default function MeetTheTeamPage() {
               <p className="section-label">Trust and credentials</p>
               <h1>Meet the people behind your migration journey</h1>
               <p>
-                Migration outcomes depend on clarity, consistency, and timing. Our team combines human consultation
-                with structured systems so clients can make decisions with confidence, not guesswork.
+                Migration outcomes depend on clarity, consistency, and timing. Meet our co-founders and support team
+                who combine human consultation with structured systems so clients can make decisions with confidence.
               </p>
             </div>
             <div className="content-hero__media" aria-hidden="true">
@@ -85,7 +103,38 @@ export default function MeetTheTeamPage() {
             </div>
           </div>
         </section>
+        <section className="tools-hub" aria-label="Co-founders">
+          <div className="mb-6 sm:mb-8">
+            <p className="section-label">Leadership</p>
+            <h2 className="text-3xl font-black tracking-tight text-brand-plum sm:text-4xl">Co-founders & Directors</h2>
+          </div>
+          <ul className="tools-hub__grid">
+            {coFounders.map((person) => (
+              <li key={person.name}>
+                <article className="tools-hub__card bento-hover">
+                  <div className="mb-4 overflow-hidden rounded-2xl border border-brand-plum/10 bg-white">
+                    <PublicFileImg
+                      src={person.imageSrc}
+                      alt={person.alt}
+                      width={640}
+                      height={640}
+                      className="h-auto w-full object-cover"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    />
+                  </div>
+                  <p className="section-label">{person.role}</p>
+                  <h3>{person.name}</h3>
+                  <p>{person.responsibilities}</p>
+                </article>
+              </li>
+            ))}
+          </ul>
+        </section>
         <section className="tools-hub" aria-label="Consultant biographies">
+          <div className="mb-6 sm:mb-8">
+            <p className="section-label">Advisory and operations</p>
+            <h2 className="text-3xl font-black tracking-tight text-brand-plum sm:text-4xl">Wider team support</h2>
+          </div>
           <ul className="tools-hub__grid">
             {consultants.map((person) => (
               <li key={person.name}>
