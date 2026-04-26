@@ -2,7 +2,7 @@ import siteData from "../../data/site.json";
 import { ContentPage } from "../../components/content-page";
 import { SiteShell } from "../../components/site-shell";
 import { StructuredData } from "../../components/structured-data";
-import { buildMetadata, breadcrumbJsonLd, faqJsonLd } from "../../lib/seo";
+import { buildMetadata, breadcrumbJsonLd, faqJsonLd, webPageSpeakableJsonLd } from "../../lib/seo";
 import { mergedFaqItems } from "../../lib/intelligence/faq";
 
 export const metadata = buildMetadata({
@@ -36,8 +36,26 @@ const faqExtraSections = [
   },
 ];
 
+const conversationalFaqItems = [
+  {
+    question: "How can I get an Australian partner visa if we are not married yet?",
+    answer:
+      "You may still qualify as de facto partners if you can show evidence of a genuine and continuing relationship. You usually need documents across financial, social, and household categories, plus timeline consistency.",
+  },
+  {
+    question: "How long does a skilled visa usually take after I lodge?",
+    answer:
+      "Processing timelines vary by visa subclass, case complexity, and policy settings. MinRosh uses official Home Affairs updates as the baseline and then maps likely timing risks from your profile.",
+  },
+  {
+    question: "Can I move from student visa to permanent residency in Australia?",
+    answer:
+      "Some students later move into skilled, employer-sponsored, or partner pathways. The best route depends on your occupation, location strategy, English profile, and evidence readiness.",
+  },
+];
+
 export default function FAQPage() {
-  const faqItems = mergedFaqItems();
+  const faqItems = [...mergedFaqItems(), ...conversationalFaqItems];
   return (
     <SiteShell siteData={siteData} currentPath="/faq">
       <StructuredData
@@ -47,6 +65,12 @@ export default function FAQPage() {
             { name: "FAQ", path: "/faq" },
           ]),
           faqJsonLd(faqItems),
+          webPageSpeakableJsonLd({
+            path: "/faq",
+            title: "Migration FAQ | MinRosh Migration",
+            description:
+              "Voice-friendly migration FAQ covering partner, skilled, and student pathway questions for Australia.",
+          }),
         ]}
       />
       <ContentPage

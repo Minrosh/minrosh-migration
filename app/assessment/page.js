@@ -99,6 +99,8 @@ export default function AssessmentPage() {
                 alt="Brisbane skyline and riverfront"
                 width={1600}
                 height={900}
+                priority
+                sizes="(max-width: 1024px) 100vw, 42vw"
               />
             </div>
           </div>

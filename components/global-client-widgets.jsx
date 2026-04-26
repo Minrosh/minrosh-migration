@@ -21,7 +21,7 @@ export function GlobalClientWidgets({ siteData }) {
   const [showEngagementWidgets, setShowEngagementWidgets] = useState(false);
 
   useEffect(() => {
-    const stickyTimer = window.setTimeout(() => setShowStickyCta(true), 700);
+    const stickyTimer = window.setTimeout(() => setShowStickyCta(true), 1200);
 
     let cancelled = false;
     const idleCb =
@@ -30,7 +30,7 @@ export function GlobalClientWidgets({ siteData }) {
             () => {
               if (!cancelled) setShowEngagementWidgets(true);
             },
-            { timeout: 2500 }
+            { timeout: 4000 }
           )
         : null;
 
@@ -38,7 +38,7 @@ export function GlobalClientWidgets({ siteData }) {
       idleCb == null
         ? window.setTimeout(() => {
             if (!cancelled) setShowEngagementWidgets(true);
-          }, 1500)
+          }, 2600)
         : null;
 
     return () => {

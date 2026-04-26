@@ -20,6 +20,7 @@ const inter = Inter({
 const playfair = Playfair_Display({
   subsets: ["latin"],
   variable: "--font-display",
+  preload: false,
 });
 
 export const viewport = {
@@ -94,6 +95,12 @@ export default async function RootLayout({ children }) {
   return (
     <html lang="en-AU">
       <body className={`${inter.variable} ${playfair.variable} immersive-theme`}>
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "(function(){try{var raw=localStorage.getItem('minrosh_accessibility_preferences_v1');if(!raw)return;var p=JSON.parse(raw)||{};var d=document.documentElement;d.setAttribute('data-font-scale',p.fontScale||'medium');d.setAttribute('data-contrast',p.contrast||'normal');d.setAttribute('data-theme',p.theme||'light');}catch(_e){}})();",
+          }}
+        />
         <ScrollRestorer />
         <PWARegister />
         <GoogleAnalytics nonce={nonce} />

@@ -111,6 +111,7 @@ export default function ContactPage() {
                 width={1600}
                 height={900}
                 priority
+                sizes="(max-width: 1024px) 100vw, 42vw"
               />
             </div>
           </div>
@@ -124,6 +125,7 @@ export default function ContactPage() {
                 width={1600}
                 height={900}
                 className="h-full w-full object-cover"
+                sizes="(max-width: 1024px) 100vw, 46vw"
               />
             </div>
             <div className="space-y-4 p-6">

@@ -26,7 +26,8 @@ export default function HomePage() {
               src="/images/hero-sydney-real.jpg" 
               alt="" 
               className="h-full w-full object-cover grayscale"
-              priority={true}
+              sizes="100vw"
+              fetchPriority="low"
             />
           </div>
           

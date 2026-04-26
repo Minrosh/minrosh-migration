@@ -3,6 +3,7 @@
 import { Fragment, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { SiteVisasMegaMenu } from "./site-visas-mega-menu";
+import { AccessibilityPreferences } from "./accessibility-preferences";
 
 /** Collapsed into desktop mega menu when `enableVisaMega` is true. */
 const VISA_HUB_PATHS = new Set(["/skilled-migration", "/partner-visa-australia", "/student-visa-australia"]);
@@ -146,6 +147,7 @@ export function SiteHeaderNav({ navLinks, currentPath, enableVisaMega = false })
         </div>
         <div className="site-nav__toolbar">
           <div className="site-nav__cta-cluster">
+            <AccessibilityPreferences />
             <Link
               href="/book-consultation"
               scroll

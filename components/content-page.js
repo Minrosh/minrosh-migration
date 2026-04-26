@@ -96,7 +96,14 @@ export function ContentPage({
             ) : null}
           </div>
           <div className="content-hero__media" aria-hidden="true">
-            <PublicFileImg src={heroImage.src} alt={heroImage.alt} width={1600} height={900} />
+            <PublicFileImg
+              src={heroImage.src}
+              alt={heroImage.alt}
+              width={1600}
+              height={900}
+              priority
+              sizes="(max-width: 1024px) 100vw, 42vw"
+            />
           </div>
         </div>
       </MotionReveal>

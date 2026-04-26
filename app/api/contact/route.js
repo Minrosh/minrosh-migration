@@ -12,6 +12,7 @@ import { findOrCreateCustomerByIdentity } from "../../../lib/admin/customers-ser
 import { dualWriteEnquiryToSupabase } from "@/lib/supabase/enquiries-dual-write";
 import { API_ERROR_CODES, apiFail, apiOk, requestContextFromRequest } from "@/lib/api/response";
 import { hCaptchaEnabledOnServer, verifyHCaptchaToken } from "@/lib/security/hcaptcha";
+import { consultationChargeAmountCents, createStripeCheckoutSession, stripeEnabled } from "@/lib/payments/stripe";
 
 export async function POST(request) {
   const context = requestContextFromRequest(request);
@@ -145,6 +146,8 @@ export async function POST(request) {
       referralSource: enquiryRecord.referralSource,
       referralCode: enquiryRecord.referralCode,
       utmSource: enquiryRecord.utmSource,
+      bookingType: enquiryRecord.bookingType,
+      consultationOffer: enquiryRecord.consultationOffer,
       quizCompleted: Boolean(String(enquiryRecord.quizSummary || "").trim()),
       quizCompletionDepth: String(enquiryRecord.quizSummary || "").trim() ? 10 : 0,
       consultationRequested: Boolean(enquiryRecord.preferredDate && enquiryRecord.preferredTime),
@@ -167,6 +170,7 @@ export async function POST(request) {
     processing.sheetSync = "failed";
   }
   let calendarResult = { created: false };
+  let checkoutUrl = "";
   let availabilityResult = { available: true, checked: false };
   const hasConsultationSlot =
     validated.value.preferredDate && validated.value.preferredTime && validated.value.email;
@@ -196,6 +200,32 @@ export async function POST(request) {
         ? "Enquiry saved, but calendar booking could not be created."
       : undefined;
 
+  if (hasConsultationSlot && stripeEnabled()) {
+    try {
+      const amountCents = consultationChargeAmountCents(
+        enquiryRecord.consultationDurationMins,
+        enquiryRecord.consultationOffer
+      );
+      if (amountCents > 0) {
+        const session = await createStripeCheckoutSession({
+          amountCents,
+          customerEmail: enquiryRecord.email,
+          customerName: `${enquiryRecord.firstName} ${enquiryRecord.lastName}`.trim(),
+          metadata: {
+            enquiryId: enquiryRecord.id,
+            bookingType: enquiryRecord.bookingType || "video",
+            offer: enquiryRecord.consultationOffer || "first_15_free",
+          },
+        });
+        if (session.ok) {
+          checkoutUrl = session.url;
+        }
+      }
+    } catch {
+      checkoutUrl = "";
+    }
+  }
+
   try {
     const mailResult = await sendContactEmails(enquiryRecord);
     return apiOk({
@@ -209,6 +239,7 @@ export async function POST(request) {
       meetUrl: calendarResult.meetUrl || undefined,
       leadDriveFolderId: enquiryRecord.leadDriveFolderId || undefined,
       leadDriveFolderUrl: enquiryRecord.leadDriveFolderUrl || undefined,
+      checkoutUrl: checkoutUrl || undefined,
       processing,
       warning:
         mailResult.reason === "smtp_not_configured"
@@ -226,6 +257,7 @@ export async function POST(request) {
       meetUrl: calendarResult.meetUrl || undefined,
       leadDriveFolderId: enquiryRecord.leadDriveFolderId || undefined,
       leadDriveFolderUrl: enquiryRecord.leadDriveFolderUrl || undefined,
+      checkoutUrl: checkoutUrl || undefined,
       processing,
       warning: "Enquiry saved, but email delivery could not be completed. We will still review your message.",
     }, context);

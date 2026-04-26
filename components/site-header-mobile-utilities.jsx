@@ -5,6 +5,7 @@ import Link from "next/link";
 import { TOPBAR_DESTINATION_LINKS } from "@/lib/destination-topbar-links";
 import { listPublicSocialIcons } from "@/lib/social-public";
 import { SiteSocialIcons } from "./site-social-icons";
+import { AccessibilityPreferences } from "./accessibility-preferences";
 
 function IconMail() {
   return (
@@ -58,6 +59,7 @@ export function SiteHeaderMobileUtilities({ brand }) {
         </div>
       </details>
       <div className="site-header__utility-actions">
+        <AccessibilityPreferences />
         <Link className="site-header__icon-btn" href="/contact" aria-label="Open contact page for email enquiries">
           <IconMail />
         </Link>

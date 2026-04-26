@@ -49,6 +49,9 @@ function validateLeadForm(form, mode) {
     if (!String(form.preferredTime || "").trim()) {
       errors.preferredTime = "Please choose a preferred time.";
     }
+    if (!String(form.bookingType || "").trim()) {
+      errors.bookingType = "Please choose consultation type.";
+    }
   }
   if (!form.privacyPolicyAccepted) {
     errors.privacyPolicyAccepted = "Please confirm you have read the Privacy Policy before submitting.";
@@ -69,6 +72,8 @@ const initialForm = {
   preferredDate: "",
   preferredTime: "",
   consultationDurationMins: "45",
+  bookingType: "video",
+  consultationOffer: "first_15_free",
   timeZone: "Australia/Brisbane",
   message: "",
   privacyPolicyAccepted: false,
@@ -130,6 +135,7 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
       ? [
           ["firstName", "lastName", "email", "phone"],
           ["preferredCountry", "mainNeed", "preferredDate", "preferredTime", "consultationDurationMins", "timeZone"],
+          ["bookingType", "consultationOffer"],
           ["message", "privacyPolicyAccepted"],
         ]
       : [
@@ -333,6 +339,8 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
           referralSource: String(form.referralSource || "").trim(),
           referralCode: String(form.referralCode || "").trim(),
           utmSource: String(form.utmSource || "").trim(),
+          bookingType: String(form.bookingType || "video").trim(),
+          consultationOffer: String(form.consultationOffer || "first_15_free").trim(),
         }),
       });
       const rawText = await response.text();
@@ -371,7 +379,7 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
       setState({
         status: "success",
         message: data.consultationBooked
-          ? `Consultation booked successfully.${data.meetUrl ? ` Meet link: ${data.meetUrl}` : ""}${syncNote}`
+          ? `Consultation booked successfully.${data.meetUrl ? ` Meet link: ${data.meetUrl}` : ""}${data.checkoutUrl ? ` Secure payment: ${data.checkoutUrl}` : ""}${syncNote}`
           : (data.warning || "Your enquiry has been received. We will review it and respond shortly.") + syncNote,
       });
       if (typeof window !== "undefined") {
@@ -579,6 +587,32 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
                 <option value="Australia/Brisbane">Australia/Brisbane (AEST)</option>
                 <option value="Asia/Colombo">Asia/Colombo (Sri Lanka)</option>
                 <option value="Australia/Sydney">Australia/Sydney</option>
+              </select>
+            </label>
+            <label className={fieldErrors.bookingType ? "has-error" : ""} hidden={mobileStepper && !visibleFields?.has("bookingType")}>
+              <span>Consultation type</span>
+              <select
+                name="bookingType"
+                value={form.bookingType}
+                onChange={handleChange}
+                aria-invalid={fieldErrors.bookingType ? "true" : undefined}
+                aria-describedby={fieldErrors.bookingType ? "err-bookingType" : undefined}
+              >
+                <option value="video">Video consultation (Google Meet)</option>
+                <option value="phone">Phone consultation</option>
+                <option value="in_person">In-person consultation</option>
+              </select>
+              {fieldErrors.bookingType ? (
+                <span className="field-error" id="err-bookingType" role="alert">
+                  {fieldErrors.bookingType}
+                </span>
+              ) : null}
+            </label>
+            <label hidden={mobileStepper && !visibleFields?.has("consultationOffer")}>
+              <span>Consultation offer</span>
+              <select name="consultationOffer" value={form.consultationOffer} onChange={handleChange}>
+                <option value="first_15_free">First 15 minutes free</option>
+                <option value="standard">Standard consultation</option>
               </select>
             </label>
           </>

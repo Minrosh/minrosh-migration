@@ -24,12 +24,21 @@ export function SitePublicStickyHeader({ backdropModifier, className = "", child
   }, []);
 
   useEffect(() => {
+    let rafId = 0;
     function onScroll() {
-      setScrolled(window.scrollY > 18);
+      if (rafId) return;
+      rafId = window.requestAnimationFrame(() => {
+        rafId = 0;
+        const next = window.scrollY > 18;
+        setScrolled((prev) => (prev === next ? prev : next));
+      });
     }
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (rafId) window.cancelAnimationFrame(rafId);
+    };
   }, []);
 
   const tone = backdropModifier.includes("neutral") ? "neutral" : "au";
