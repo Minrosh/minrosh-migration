@@ -75,7 +75,7 @@ export default function MeetTheTeamPage() {
             </div>
             <div className="content-hero__media" aria-hidden="true">
               <PublicFileImg
-                src="/images/brisbane-skyline.jpg"
+                src="/images/brisbane-skyline.v2.webp"
                 alt="MinRosh team operations context in Brisbane"
                 width={1600}
                 height={900}

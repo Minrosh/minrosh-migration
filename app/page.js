@@ -1,13 +1,26 @@
 import siteData from "../data/site.json";
 import newsData from "../data/news.json";
+import dynamic from "next/dynamic";
+import Image from "next/image";
 import { SiteShell } from "../components/site-shell";
-import { PublicFileImg } from "../components/public-file-img";
-import { HomeSmartNavigatorIsland } from "../components/home-smart-navigator-island";
-import { HomeVisaComparisonFlowchart } from "../components/home-visa-comparison-flowchart";
 import { UltraMaximumLayout } from "../components/ultra-maximum-layout";
 import { MotionReveal, MotionStagger, MotionItem } from "../components/ui/motion-wrapper";
 import Link from "next/link";
 import { TrackedAnchor, TrackedLink } from "../components/tracked-link";
+
+const HomeSmartNavigatorIsland = dynamic(
+  () => import("../components/home-smart-navigator-island").then((mod) => mod.HomeSmartNavigatorIsland),
+  {
+    loading: () => <div className="min-h-[360px] rounded-[1.9rem] bg-brand-plum/5" aria-hidden="true" />,
+  }
+);
+
+const HomeVisaComparisonFlowchart = dynamic(
+  () => import("../components/home-visa-comparison-flowchart").then((mod) => mod.HomeVisaComparisonFlowchart),
+  {
+    loading: () => <section className="ultra-snap-section bg-white" aria-hidden="true" />,
+  }
+);
 
 export default function HomePage() {
   return (
@@ -22,12 +35,15 @@ export default function HomePage() {
         {/* HERO SECTION - SNAPPY ANIMATIONS */}
         <section className="ultra-snap-section relative overflow-hidden bg-brand-cream/20">
           <div className="absolute inset-0 z-0 opacity-[0.03]">
-            <PublicFileImg 
-              src="/images/hero-sydney-real.jpg" 
-              alt="" 
+            <Image
+              src="/images/hero-sydney-real.v2.webp"
+              alt=""
               className="h-full w-full object-cover grayscale"
+              width={1920}
+              height={1280}
+              priority
+              fetchPriority="high"
               sizes="100vw"
-              fetchPriority="low"
             />
           </div>
           

@@ -15,12 +15,14 @@ const siteData = getHomeSiteData(siteDataStatic);
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
+  display: "swap",
 });
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
   variable: "--font-display",
   preload: false,
+  display: "swap",
 });
 
 export const viewport = {
@@ -53,7 +55,7 @@ export const metadata = {
     type: "website",
     images: [
       {
-        url: "/images/hero-sydney-real.jpg",
+        url: "/images/hero-sydney-real.v2.webp",
         width: 1800,
         height: 1200,
         alt: "Sydney Harbour with ferries on the water and the Opera House",
@@ -65,7 +67,7 @@ export const metadata = {
     title: "Migration Agent Brisbane | MinRosh Migration",
     description:
       "Expert visa help in Brisbane for skilled migration, partner visas, student visas, and employer-sponsored pathways.",
-    images: ["/images/hero-sydney-real.jpg"],
+    images: ["/images/hero-sydney-real.v2.webp"],
   },
   robots: {
     index: true,

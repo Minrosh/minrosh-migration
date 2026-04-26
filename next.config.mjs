@@ -11,9 +11,8 @@ const nextConfig = {
   output: "standalone",
   poweredByHeader: false,
   compress: true,
-  // Local UI assets use <img> via PublicFileImg (see components/public-file-img.js), not next/image.
   images: {
-    unoptimized: true,
+    formats: ["image/avif", "image/webp"],
   },
   async redirects() {
     return [
@@ -32,6 +31,16 @@ const nextConfig = {
   },
   async headers() {
     return [
+      {
+        source: "/images/:path*",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
+        ],
+      },
+      {
+        source: "/_next/static/:path*",
+        headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
+      },
       {
         source: "/:path*",
         headers: [

@@ -31,7 +31,7 @@ export function ContentPage({
   currentPath = "",
   /** Optional regulatory / compliance callout (e.g. TSMIT). */
   alertBanner = null,
-  heroImage = { src: "/images/brisbane-skyline.jpg", alt: "Brisbane skyline and riverfront" },
+  heroImage = { src: "/images/brisbane-skyline.v2.webp", alt: "Brisbane skyline and riverfront" },
   ctaTitle = "",
   ctaBody = "",
   /** Optional tools/widgets in the aside (e.g. TSMIT calculator). */

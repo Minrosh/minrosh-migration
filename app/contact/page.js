@@ -106,7 +106,7 @@ export default function ContactPage() {
             </div>
             <div className="content-hero__media" aria-hidden="true">
               <PublicFileImg
-                src="/images/brisbane-skyline.jpg"
+                src="/images/brisbane-skyline.v2.webp"
                 alt="Brisbane skyline and riverfront"
                 width={1600}
                 height={900}
@@ -120,7 +120,7 @@ export default function ContactPage() {
           <div className="relative overflow-hidden rounded-[2rem] border border-brand-plum/10 bg-white shadow-lux">
             <div className="h-56 lg:h-72">
               <PublicFileImg
-                src="/images/brisbane-skyline.jpg"
+                src="/images/brisbane-skyline.v2.webp"
                 alt="Calm Brisbane skyline view"
                 width={1600}
                 height={900}

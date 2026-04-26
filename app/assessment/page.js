@@ -95,7 +95,7 @@ export default function AssessmentPage() {
             </div>
             <div className="content-hero__media" aria-hidden="true">
               <PublicFileImg
-                src="/images/brisbane-skyline.jpg"
+                src="/images/brisbane-skyline.v2.webp"
                 alt="Brisbane skyline and riverfront"
                 width={1600}
                 height={900}

@@ -504,7 +504,7 @@ a {
       rgba(253, 251, 247, 0.72) 58%,
       rgba(245, 228, 236, 0.55) 100%
     ),
-    url("/images/hero-sydney-real.jpg") center 42% / cover no-repeat;
+    url("/images/hero-sydney-real.v2.webp") center 42% / cover no-repeat;
 }
 
 .site-header__media--neutral::before {
@@ -520,7 +520,7 @@ a {
       rgba(244, 236, 248, 0.93) 40%,
       rgba(232, 224, 238, 0.9) 100%
     ),
-    url("/images/team-office-real.jpg") center 22% / cover no-repeat;
+    url("/images/team-office-real.v2.webp") center 22% / cover no-repeat;
 }
 
 .site-header__chrome {
@@ -1162,7 +1162,7 @@ a.brand:hover .brand__mark {
   content: "";
   position: absolute;
   inset: 0;
-  background: url("/images/hero-sydney-real.jpg") center/cover no-repeat;
+  background: url("/images/hero-sydney-real.v2.webp") center/cover no-repeat;
   opacity: 0.08;
   z-index: 0;
   pointer-events: none;
@@ -1474,7 +1474,7 @@ a.brand:hover .brand__mark {
   inset: 0;
   background:
     linear-gradient(125deg, rgba(255, 255, 255, 0.92), rgba(255, 250, 245, 0.9)),
-    url("/images/hero-sydney-real.jpg") center/cover no-repeat;
+    url("/images/hero-sydney-real.v2.webp") center/cover no-repeat;
   opacity: 0.3;
   z-index: 0;
   pointer-events: none;
@@ -4125,7 +4125,7 @@ a.brand:hover .brand__mark {
   padding: 12px var(--content-pad) 40px;
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(255, 250, 245, 0.98)),
-    url("/images/brisbane-skyline.jpg") center/cover no-repeat;
+    url("/images/brisbane-skyline.v2.webp") center/cover no-repeat;
 }
 
 .site-footer__inner {

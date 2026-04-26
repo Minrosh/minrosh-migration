@@ -49,7 +49,7 @@ export function SiteShell({
           >
             <span className="brand__mark" aria-hidden="true">
               <PublicFileImg
-                src="/images/minrosh-logo.png"
+                src="/images/minrosh-logo.v2.webp"
                 alt=""
                 width={46}
                 height={46}
