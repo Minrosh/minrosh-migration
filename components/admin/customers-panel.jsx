@@ -66,6 +66,8 @@ export function CustomersPanel() {
   const [plainBootstrap, setPlainBootstrap] = useState(null);
   const [marketingConsentCreate, setMarketingConsentCreate] = useState(true);
   const [createError, setCreateError] = useState("");
+  const [duplicatePairs, setDuplicatePairs] = useState([]);
+  const [duplicateLoading, setDuplicateLoading] = useState(false);
   const listFetchStartedRef = useRef(false);
 
   useEffect(() => {
@@ -127,6 +129,26 @@ export function CustomersPanel() {
   useEffect(() => {
     load();
   }, [load]);
+
+  const loadDuplicateCandidates = useCallback(() => {
+    setDuplicateLoading(true);
+    fetch("/api/admin/customers?duplicates=1")
+      .then(async (r) => ({ res: r, payload: await parseJsonResponseSafe(r) }))
+      .then(({ res, payload }) => {
+        if (!res.ok) {
+          setDuplicatePairs([]);
+          return;
+        }
+        const d = payload?.data && typeof payload.data === "object" ? payload.data : payload;
+        setDuplicatePairs(Array.isArray(d.pairs) ? d.pairs : []);
+      })
+      .catch(() => setDuplicatePairs([]))
+      .finally(() => setDuplicateLoading(false));
+  }, []);
+
+  useEffect(() => {
+    loadDuplicateCandidates();
+  }, [loadDuplicateCandidates]);
 
   const columns = useMemo(
     () => [
@@ -369,6 +391,64 @@ export function CustomersPanel() {
               </Button>
             </div>
           </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <CardTitle>Duplicate candidates</CardTitle>
+            <CardDescription>
+              Potential duplicates based on customer name/email similarity. Merge from details where appropriate.
+            </CardDescription>
+          </div>
+          <Button type="button" variant="outline" size="sm" onClick={loadDuplicateCandidates} disabled={duplicateLoading}>
+            {duplicateLoading ? "Refreshing…" : "Refresh"}
+          </Button>
+        </CardHeader>
+        <CardContent>
+          {duplicatePairs.length === 0 ? (
+            <p className="text-sm text-muted-foreground">No duplicate candidates detected.</p>
+          ) : (
+            <div className="space-y-2">
+              {duplicatePairs.slice(0, 8).map((pair, index) => (
+                <div
+                  key={`${pair?.a?.id || "a"}-${pair?.b?.id || "b"}-${index}`}
+                  className="flex flex-col gap-3 rounded-md border border-border p-3 sm:flex-row sm:items-center sm:justify-between"
+                >
+                  <div className="space-y-1">
+                    <p className="text-sm font-medium">
+                      {pair?.a?.name || "Unknown"} <span className="text-muted-foreground">vs</span>{" "}
+                      {pair?.b?.name || "Unknown"}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      {pair?.a?.email || "—"} • {pair?.b?.email || "—"}
+                    </p>
+                  </div>
+                  <div className="flex gap-2">
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="outline"
+                      onClick={() => setDetailId(pair?.a?.id || null)}
+                      disabled={!pair?.a?.id}
+                    >
+                      Open A
+                    </Button>
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="outline"
+                      onClick={() => setDetailId(pair?.b?.id || null)}
+                      disabled={!pair?.b?.id}
+                    >
+                      Open B
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>

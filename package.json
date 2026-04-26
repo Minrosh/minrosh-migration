@@ -25,6 +25,7 @@
     "test:unit": "vitest run",
     "test:e2e": "playwright test",
     "test:nav": "node scripts/ui-nav-audit.mjs",
+    "routes:verify": "node scripts/reindex-verify.mjs",
     "reindex:verify": "node scripts/reindex-verify.mjs",
     "audit:production": "npm audit --production",
     "verify:ci": "npm run lint && npm run test:unit && npm run build && CI=true npm run test:e2e && npm run audit:production",

@@ -66,6 +66,17 @@ const nav = [
     ),
   },
   {
+    href: "/admin/crm-insights",
+    label: "CRM Insights",
+    group: "CRM",
+    icon: (
+      <Icon>
+        <path d="M3 3v18h18" />
+        <path d="M7 14l3-3 3 2 5-6" />
+      </Icon>
+    ),
+  },
+  {
     href: "/admin/leads",
     label: "Leads",
     group: "CRM",
@@ -288,12 +299,12 @@ export function AdminShell({ children }) {
   }
 
   const asideClass =
-    "fixed left-0 top-0 z-40 flex h-screen w-56 flex-col border-r border-border bg-card shadow-sm transition-transform max-md:w-[min(100vw-3rem,16rem)]";
+    "fixed left-0 top-0 z-40 flex h-screen w-56 flex-col border-r border-border/80 bg-card/95 backdrop-blur-md shadow-sm transition-transform max-md:w-[min(100vw-3rem,16rem)]";
 
   const navGroups = ["Dashboard", "CRM", "Finance", "Content", "Admin"];
   const compactAllowedByGroup = {
     Dashboard: new Set(["Overview"]),
-    CRM: new Set(["CRM", "Customers", "Leads"]),
+    CRM: new Set(["CRM", "CRM Insights", "Customers", "Leads"]),
     Finance: new Set(["Invoices", "Quotes"]),
     Content: new Set(["Intelligence", "News"]),
     Admin: new Set(["Users", "Audit Log"]),
@@ -320,7 +331,7 @@ export function AdminShell({ children }) {
       <aside
         className={cn(asideClass, "max-md:-translate-x-full", mobileNavOpen && "max-md:translate-x-0")}
       >
-        <div className="border-b border-border p-4">
+        <div className="border-b border-border p-4 bg-gradient-to-r from-primary/5 to-transparent">
           <Link href="/" className="text-lg font-semibold text-primary" onClick={() => setMobileNavOpen(false)}>
             MinRosh Admin
           </Link>
@@ -360,7 +371,7 @@ export function AdminShell({ children }) {
                         className={cn(
                           "flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors",
                           active
-                            ? "bg-primary text-primary-foreground"
+                            ? "bg-primary text-primary-foreground shadow-sm ring-1 ring-primary/40"
                             : "text-muted-foreground hover:bg-muted hover:text-foreground",
                         )}
                         onClick={() => setMobileNavOpen(false)}

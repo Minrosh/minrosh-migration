@@ -10,17 +10,17 @@ const path = "/meet-the-team";
 const coFounders = [
   {
     name: "Roshan Samarawickrema",
-    role: "Co-founder & Director",
+    role: "Director",
     responsibilities: "Responsible for business planning and IT infrastructure.",
     imageSrc: "/images/team/roshan-samarawickrema.v1.webp",
-    alt: "Roshan Samarawickrema, Co-founder & Director of MinRosh Migration",
+    alt: "Roshan Samarawickrema, Director of MinRosh Migration",
   },
   {
     name: "Minoli Bandaranayake",
-    role: "Co-founder & Director",
+    role: "Founder & Director",
     responsibilities: "Responsible for migration planning and education consultations.",
     imageSrc: "/images/team/minoli-bandaranayake.v1.webp",
-    alt: "Minoli Bandaranayake, Co-founder & Director of MinRosh Migration",
+    alt: "Minoli Bandaranayake, Founder and Director of MinRosh Migration",
   },
 ];
 
@@ -49,9 +49,9 @@ const consultants = [
 ];
 
 export const metadata = buildMetadata({
-  title: "Meet the Team | Co-founders",
+  title: "Meet the Team | Leadership",
   description:
-    "Meet Roshan Samarawickrema and Minoli Bandaranayake, the co-founders of MinRosh Migration, and learn how the wider team supports your migration journey.",
+    "Meet Roshan Samarawickrema (Director) and Minoli Bandaranayake (Founder & Director) at MinRosh Migration, and learn how the wider team supports your migration journey.",
   path,
   keywords: ["migration team Brisbane", "migration consultant profiles", "MinRosh team"],
 });
@@ -67,9 +67,9 @@ export default function MeetTheTeamPage() {
           ]),
           webPageSpeakableJsonLd({
             path,
-            title: "Meet the Co-founders and Team | MinRosh Migration",
+            title: "Meet the Leadership and Team | MinRosh Migration",
             description:
-              "Co-founder bios for Roshan Samarawickrema and Minoli Bandaranayake, plus the wider advisory support team.",
+              "Leadership bios for Roshan Samarawickrema and Minoli Bandaranayake, plus the wider advisory support team.",
           }),
         ]}
       />
@@ -106,7 +106,7 @@ export default function MeetTheTeamPage() {
         <section className="tools-hub" aria-label="Co-founders">
           <div className="mb-6 sm:mb-8">
             <p className="section-label">Leadership</p>
-            <h2 className="text-3xl font-black tracking-tight text-brand-plum sm:text-4xl">Co-founders & Directors</h2>
+            <h2 className="text-3xl font-black tracking-tight text-brand-plum sm:text-4xl">Founder, Director & Leadership</h2>
           </div>
           <ul className="tools-hub__grid">
             {coFounders.map((person) => (
