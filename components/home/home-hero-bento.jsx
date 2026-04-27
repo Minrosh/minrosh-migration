@@ -104,7 +104,7 @@ export function HomeHeroBento({ siteData, trustNote }) {
         </motion.div>
 
         <motion.div className="grid gap-6 lg:col-span-6 lg:grid-rows-[minmax(0,1fr)_auto]" {...fadeUp(0.08)}>
-          <div className="relative min-h-[260px] overflow-hidden rounded-3xl border border-brand-plum/10 bg-zinc-100 shadow-lux-lg transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-[0_24px_70px_rgba(61,36,50,0.14)] sm:min-h-[300px] lg:min-h-[340px]">
+          <div className="relative min-h-[260px] overflow-hidden rounded-3xl border border-brand-plum/10 bg-brand-cream/70 shadow-lux-lg transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-[0_24px_70px_rgba(61,36,50,0.14)] sm:min-h-[300px] lg:min-h-[340px]">
             <motion.div
               className="absolute inset-0"
               animate={reduceMotion ? undefined : { scale: [1.02, 1.08, 1.02], x: [0, -8, 0] }}

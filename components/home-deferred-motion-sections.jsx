@@ -17,7 +17,7 @@ export function HomeDeferredMotionSections() {
       <section className="ultra-snap-section bg-brand-plum text-white overflow-hidden relative">
         <div className="absolute top-0 right-0 w-[400px] sm:w-[800px] h-[400px] sm:h-[800px] bg-brand-rose/10 rounded-full blur-[80px] sm:blur-[120px] -z-0 translate-x-1/2 -translate-y-1/2" />
         <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-black/20 to-transparent -z-0" />
-        <div className="container mx-auto px-4 relative z-10 py-8 md:py-16">
+        <div className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 items-center">
             <MotionReveal y={20}>
               <div className="flex flex-col justify-center h-full text-center lg:text-left">
@@ -55,7 +55,7 @@ export function HomeDeferredMotionSections() {
       </section>
 
       <section className="ultra-snap-section bg-white">
-        <div className="container mx-auto px-4 py-8 md:py-16">
+        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
           <MotionReveal y={20}>
             <h2 className="text-center text-3xl font-black text-brand-plum tracking-tighter mb-10 sm:mb-16 sm:text-5xl">
               Core Visa Engines.
@@ -140,7 +140,7 @@ export function HomeDeferredMotionSections() {
         <div className="blur-orb bg-brand-rose/20 top-[-20%] left-[-20%]" />
         <div className="blur-orb bg-brand-gold/10 bottom-[-20%] right-[-20%]" />
 
-        <div className="container mx-auto px-4 text-center relative z-10 py-16">
+        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 text-center relative z-10 py-16 lg:py-24">
           <MotionReveal y={20}>
             <p className="text-brand-gold font-black uppercase tracking-[0.5em] text-[10px] sm:text-xs mb-6">
               Initiate Pathway
@@ -156,11 +156,11 @@ export function HomeDeferredMotionSections() {
                 id="footer-cta-assessment"
                 href="/assessment"
                 eventName="cta_click"
-                eventParams={{ cta_id: "footer_assessment", cta_location: "home_footer", destination: "/assessment" }}
-                aria-label="Start assessment from homepage footer"
-                className="btn bg-white px-10 py-5 sm:px-20 sm:py-10 text-xl sm:text-3xl font-black text-brand-plum shadow-[0_30px_100px_rgba(255,255,255,0.15)] transition-all hover:scale-110 active:scale-95"
+                eventParams={{ cta_id: "footer_check_eligibility", cta_location: "home_footer", destination: "/assessment" }}
+                aria-label="Check eligibility from homepage footer"
+                className="btn min-h-[48px] bg-white px-10 py-5 sm:px-20 sm:py-10 text-xl sm:text-3xl font-black text-brand-plum shadow-[0_30px_100px_rgba(255,255,255,0.15)] transition-all hover:scale-110 active:scale-95"
               >
-                Start My Assessment
+                Check Eligibility in 2 Minutes
               </TrackedLink>
             </div>
           </MotionReveal>

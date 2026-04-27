@@ -16,10 +16,10 @@ export function TrustProofStrip({ siteData }) {
 
   return (
     <section
-      className="border-t border-slate-200/80 bg-[#f3f4f6] pb-12 pt-16 sm:pb-16 sm:pt-20"
+      className="border-t border-brand-plum/10 bg-white py-16 lg:py-24"
       aria-label="Key facts and credentials"
     >
-      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+      <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-3 sm:gap-8">
           {stats.map((stat, index) => (
             <motion.div
@@ -36,10 +36,10 @@ export function TrustProofStrip({ siteData }) {
           ))}
         </div>
 
-        <div className="mt-12 flex flex-wrap justify-center gap-x-8 gap-y-4 border-t border-slate-200/90 pt-10 text-sm font-medium text-slate-600">
+        <div className="mt-12 flex flex-wrap justify-center gap-x-8 gap-y-4 border-t border-brand-plum/10 pt-10 text-sm font-medium text-brand-plum/70">
           {TRUST_POINTS.map((point) => (
             <div key={point} className="flex items-center gap-2">
-              <span className="text-brand-rose" aria-hidden>
+              <span className="text-brand-gold" aria-hidden>
                 ✓
               </span>
               <span>{point}</span>

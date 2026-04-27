@@ -49,7 +49,7 @@ export default function HomePage() {
             />
           </div>
           
-          <div className="container relative z-10 mx-auto px-4 text-center pt-8 pb-12 md:pt-12 md:pb-20">
+          <div className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 text-center pt-8 pb-12 md:pt-12 md:pb-20">
             <MotionReveal delay={0} y={10}>
               <div className="inline-flex items-center gap-3 rounded-full bg-white/60 px-5 py-2 text-[10px] sm:text-xs font-extrabold text-brand-rose shadow-xl backdrop-blur-xl mb-8 border border-white animate-float">
                 <span className="flex h-2 w-2 rounded-full bg-brand-rose shadow-[0_0_10px_#9b4a6c] animate-pulse" />
@@ -63,7 +63,7 @@ export default function HomePage() {
                   Migration Agent Brisbane
                 </span>
                 <br />
-                <span className="text-brand-plum/90 font-display italic text-2xl sm:text-4xl md:text-5xl">Without the Guesswork.</span>
+                <span className="text-brand-plum/90 font-display italic text-2xl sm:text-4xl md:text-5xl">Skilled, Partner and Student Visa Clarity.</span>
               </h1>
             </MotionReveal>
             
@@ -79,11 +79,11 @@ export default function HomePage() {
                   id="hero-cta-assessment"
                   href="/assessment" 
                   eventName="cta_click"
-                  eventParams={{ cta_id: "hero_assessment", cta_location: "home_hero", destination: "/assessment" }}
-                  aria-label="Start free assessment from homepage hero"
+                  eventParams={{ cta_id: "hero_check_eligibility", cta_location: "home_hero", destination: "/assessment" }}
+                  aria-label="Check eligibility from homepage hero"
                   className="btn bg-brand-plum px-8 py-4 text-base sm:text-lg font-black text-white shadow-xl transition-all hover:-translate-y-1 active:scale-95 group"
                 >
-                  Start Expert Assessment
+                  Check Eligibility in 2 Minutes
                   <span className="ml-2 inline-block transition-transform group-hover:translate-x-2">→</span>
                 </TrackedLink>
               </div>
@@ -101,7 +101,7 @@ export default function HomePage() {
                 >
                   Chat on WhatsApp
                 </TrackedAnchor>
-                .
+                {" "}Fast response for urgent eligibility questions.
               </p>
             </MotionReveal>
 
@@ -123,7 +123,7 @@ export default function HomePage() {
 
         {/* THE INTELLIGENT ISLAND */}
         <section className="ultra-snap-section bg-white relative">
-          <div className="container mx-auto px-4 relative z-10 py-8 md:py-16">
+          <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10 py-8 md:py-16">
             <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
               <div className="w-full lg:w-1/3 text-center lg:text-left">
                 <MotionReveal y={20}>

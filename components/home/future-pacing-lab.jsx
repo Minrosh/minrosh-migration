@@ -56,7 +56,7 @@ export function FuturePacingLab({ data }) {
               setTrackId(track.id);
               setCityId(track.cities?.[0]?.id || "");
             }}
-            className={`rounded-full border px-4 py-2 text-sm font-semibold transition ${
+            className={`min-h-[48px] rounded-full border px-4 py-2 text-sm font-semibold transition ${
               track.id === currentTrack.id
                 ? "border-brand-rose bg-brand-rose text-white"
                 : "border-brand-plum/15 bg-white text-brand-plum/80 hover:border-brand-rose/40"
@@ -130,7 +130,7 @@ export function FuturePacingLab({ data }) {
                 key={city.id}
                 type="button"
                 onClick={() => setCityId(city.id)}
-                className={`w-full rounded-2xl border px-4 py-3 text-left transition ${
+                className={`w-full min-h-[48px] rounded-2xl border px-4 py-3 text-left transition ${
                   city.id === currentCity.id
                     ? "border-brand-rose bg-brand-rose text-white"
                     : "border-brand-plum/15 bg-white text-brand-plum/80 hover:border-brand-rose/40"

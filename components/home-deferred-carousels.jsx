@@ -30,7 +30,7 @@ export function HomeDeferredCarousels({ newsItems = [] }) {
   return (
     <>
       <section className="ultra-snap-section bg-brand-cream/30 overflow-hidden">
-        <div className="container mx-auto px-4 py-8 md:py-16">
+        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
           <MotionReveal className="text-center mb-12" y={20}>
             <p className="text-brand-rose font-black uppercase tracking-[0.3em] text-[10px] sm:text-xs mb-3">
               Client Trust
@@ -45,7 +45,7 @@ export function HomeDeferredCarousels({ newsItems = [] }) {
               {TESTIMONIALS.map((item) => (
                 <div key={`${item.name}-${item.visa}`} className="flex-none w-[85%] sm:w-[450px] snap-center">
                   <div className="glass-card p-8 sm:p-10 h-full shadow-xl transition-all hover:shadow-2xl border-white/40">
-                    <div className="flex text-yellow-400 gap-1 mb-6">★★★★★</div>
+                    <div className="flex text-brand-gold gap-1 mb-6">★★★★★</div>
                     <p className="text-lg sm:text-xl font-bold text-brand-plum italic mb-8 leading-relaxed">
                       &quot;{item.quote}&quot;
                     </p>
@@ -66,7 +66,7 @@ export function HomeDeferredCarousels({ newsItems = [] }) {
       </section>
 
       <section className="ultra-snap-section bg-white">
-        <div className="container mx-auto px-4 py-8 md:py-16">
+        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
           <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
             <MotionReveal y={20}>
               <p className="text-brand-rose font-black uppercase tracking-[0.3em] text-[10px] sm:text-xs mb-3">

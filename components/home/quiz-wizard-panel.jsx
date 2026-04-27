@@ -250,12 +250,12 @@ export function QuizWizardPanel({ isActive, onGoToContact, resultSkeleton }) {
           <h2 className="text-3xl md:text-4xl font-extrabold text-brand-plum mb-4 tracking-tight leading-tight">
             Your AI concierge intake, one calm question at a time
           </h2>
-          <p className="text-lg text-slate-600 mb-4">
+          <p className="text-lg text-brand-plum/70 mb-4">
             This wizard is designed to feel closer to a real intake review while still remaining
             preliminary guidance. Always confirm points and eligibility against current Department of
             Home Affairs rules.
           </p>
-          <div className="flex items-center justify-center gap-6 text-sm font-medium text-slate-500 mt-6">
+          <div className="flex items-center justify-center gap-6 text-sm font-medium text-brand-plum/60 mt-6">
              <div className="flex items-center gap-2"><span className="text-brand-rose">✓</span> Takes 2 minutes</div>
              <div className="flex items-center gap-2"><span className="text-brand-rose">✓</span> No sign-up required</div>
              <div className="flex items-center gap-2"><span className="text-brand-rose">✓</span> 100% Privacy Protected</div>
@@ -267,10 +267,10 @@ export function QuizWizardPanel({ isActive, onGoToContact, resultSkeleton }) {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
           
           {/* Left Panel: The Questions */}
-          <section className="lg:col-span-8 bg-white border border-slate-200 shadow-xl rounded-3xl overflow-hidden flex flex-col">
+          <section className="lg:col-span-8 bg-white border border-brand-plum/15 shadow-xl rounded-3xl overflow-hidden flex flex-col">
             
             {/* Header & Progress */}
-            <div className="bg-slate-50/80 border-b border-slate-100 p-6 sm:p-8 relative">
+            <div className="bg-brand-cream/45 border-b border-brand-plum/10 p-6 sm:p-8 relative">
               <motion.div
                 key={`step-head-${currentQuizStep.id}`}
                 initial={{ opacity: 0, y: 8 }}
@@ -280,15 +280,15 @@ export function QuizWizardPanel({ isActive, onGoToContact, resultSkeleton }) {
               >
                 <div>
                   <p className="text-brand-rose text-sm font-bold uppercase tracking-wider mb-1">{currentQuizStep.label}</p>
-                  <h3 className="text-2xl font-extrabold text-slate-900">{currentQuizStep.title}</h3>
+                  <h3 className="text-2xl font-extrabold text-brand-plum">{currentQuizStep.title}</h3>
                 </div>
-                <div className="bg-white px-4 py-2 rounded-xl shadow-sm border border-slate-100 text-brand-plum font-bold">
-                  Step {quizStepIndex + 1} <span className="text-slate-400 font-medium">/ {quizSteps.length}</span>
+                <div className="bg-white px-4 py-2 rounded-xl shadow-sm border border-brand-plum/10 text-brand-plum font-bold">
+                  Step {quizStepIndex + 1} <span className="text-brand-plum/40 font-medium">/ {quizSteps.length}</span>
                 </div>
               </motion.div>
               
               {/* Animated Progress Bar */}
-              <div className="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden mt-6 shadow-inner relative z-10">
+              <div className="w-full bg-brand-plum/15 h-2.5 rounded-full overflow-hidden mt-6 shadow-inner relative z-10">
                 <div 
                   className="h-full bg-gradient-to-r from-brand-rose via-brand-plum to-brand-gold transition-all duration-700 ease-out rounded-full relative"
                   style={{ width: `${quizStepProgress}%` }}
@@ -312,27 +312,27 @@ export function QuizWizardPanel({ isActive, onGoToContact, resultSkeleton }) {
                 exit={{ opacity: 0, x: -22 }}
                 transition={{ duration: 0.22 }}
               >
-              <p className="text-lg text-slate-700 mb-8 font-medium leading-relaxed">{currentQuizStep.description}</p>
+              <p className="text-lg text-brand-plum/80 mb-8 font-medium leading-relaxed">{currentQuizStep.description}</p>
 
               <div className="space-y-4">
                 {currentQuizStep.id === "basics" ? (
                   <div className="space-y-8">
                     <label className="block w-full">
-                      <span className="block text-slate-800 font-bold mb-3 text-lg">Occupation / Field</span>
+                      <span className="block text-brand-plum font-bold mb-3 text-lg">Occupation / Field</span>
                       <input
                         type="text"
                         value={quizForm.occupationName}
                         onChange={(event) => setQuizValue("occupationName", event.target.value)}
                         placeholder="e.g. Software Engineer"
-                        className="w-full text-lg p-4 rounded-xl border-2 border-slate-200 focus:border-brand-rose focus:ring-4 focus:ring-brand-rose/20 outline-none transition-all shadow-sm"
+                        className="w-full text-lg p-4 rounded-xl border-2 border-brand-plum/15 focus:border-brand-rose focus:ring-4 focus:ring-brand-rose/20 outline-none transition-all shadow-sm"
                       />
                     </label>
                     <label className="block w-full">
-                      <span className="block text-slate-800 font-bold mb-3 text-lg">Age</span>
+                      <span className="block text-brand-plum font-bold mb-3 text-lg">Age</span>
                       <select
                         value={quizForm.age}
                         onChange={(event) => setQuizValue("age", event.target.value)}
-                        className="w-full text-lg p-4 rounded-xl border-2 border-slate-200 focus:border-brand-rose focus:ring-4 focus:ring-brand-rose/20 outline-none transition-all shadow-sm bg-white"
+                        className="w-full text-lg p-4 rounded-xl border-2 border-brand-plum/15 focus:border-brand-rose focus:ring-4 focus:ring-brand-rose/20 outline-none transition-all shadow-sm bg-white"
                       >
                         <option value="" disabled>Choose your age range...</option>
                         {quizOptions.age.map((option) => (
@@ -344,7 +344,7 @@ export function QuizWizardPanel({ isActive, onGoToContact, resultSkeleton }) {
                     </label>
                     
                     <div>
-                      <span className="block text-slate-800 font-bold mb-3 text-lg">Is your occupation on the skilled list?</span>
+                      <span className="block text-brand-plum font-bold mb-3 text-lg">Is your occupation on the skilled list?</span>
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                         {quizOptions.occupationStatus.map((option) => (
                           <button
@@ -353,7 +353,7 @@ export function QuizWizardPanel({ isActive, onGoToContact, resultSkeleton }) {
                             className={`p-4 rounded-xl border-2 text-left transition-all duration-300 font-bold ${
                               quizForm.occupation === option.value 
                                 ? "border-brand-rose bg-brand-rose/10 text-brand-plum shadow-md ring-2 ring-brand-rose/30 scale-[1.02]" 
-                                : "border-slate-200 text-slate-600 hover:border-brand-rose/50 hover:bg-slate-50 hover:shadow-sm"
+                                : "border-brand-plum/15 text-brand-plum/70 hover:border-brand-rose/50 hover:bg-brand-cream/45 hover:shadow-sm"
                             }`}
                             onClick={() => setQuizValue("occupation", option.value)}
                           >
@@ -367,7 +367,7 @@ export function QuizWizardPanel({ isActive, onGoToContact, resultSkeleton }) {
                     </div>
 
                     <div>
-                      <span className="block text-slate-800 font-bold mb-3 text-lg">
+                      <span className="block text-brand-plum font-bold mb-3 text-lg">
                         Which sector best describes your main occupation or training?
                       </span>
                       <div className="grid grid-cols-1 gap-3">
@@ -378,7 +378,7 @@ export function QuizWizardPanel({ isActive, onGoToContact, resultSkeleton }) {
                             className={`p-4 rounded-xl border-2 text-left transition-all duration-300 font-bold ${
                               quizForm.occupationSector === option.value 
                                 ? "border-brand-rose bg-brand-rose/10 text-brand-plum shadow-md ring-2 ring-brand-rose/30 scale-[1.02]" 
-                                : "border-slate-200 text-slate-600 hover:border-brand-rose/50 hover:bg-slate-50 hover:shadow-sm"
+                                : "border-brand-plum/15 text-brand-plum/70 hover:border-brand-rose/50 hover:bg-brand-cream/45 hover:shadow-sm"
                             }`}
                             onClick={() => setQuizValue("occupationSector", option.value)}
                           >
@@ -422,7 +422,7 @@ export function QuizWizardPanel({ isActive, onGoToContact, resultSkeleton }) {
                           className={`p-5 rounded-2xl border-2 text-left transition-all duration-300 ${
                             quizForm[fieldName] === option.value 
                               ? "border-brand-rose bg-brand-rose/5 text-brand-plum shadow-md ring-2 ring-brand-rose/20 scale-[1.01]" 
-                              : "border-slate-200 text-slate-700 hover:border-brand-plum/40 hover:bg-slate-50 hover:shadow-sm"
+                              : "border-brand-plum/15 text-brand-plum/75 hover:border-brand-plum/40 hover:bg-brand-cream/45 hover:shadow-sm"
                           }`}
                           onClick={() => setQuizValue(fieldName, option.value)}
                         >
@@ -445,13 +445,13 @@ export function QuizWizardPanel({ isActive, onGoToContact, resultSkeleton }) {
             </div>
 
             {/* Footer Actions */}
-            <div className="bg-slate-50 border-t border-slate-100 p-6 sm:px-10 py-6 flex items-center justify-between">
+            <div className="bg-brand-cream/45 border-t border-brand-plum/10 p-6 sm:px-10 py-6 flex items-center justify-between">
               <button
                 type="button"
-                className={`px-6 py-3 rounded-xl font-bold transition-all ${
+                className={`min-h-[48px] px-6 py-3 rounded-xl font-bold transition-all ${
                   quizStepIndex === 0 
-                  ? "text-slate-400 bg-slate-200/50 cursor-not-allowed" 
-                  : "text-slate-700 bg-white border border-slate-300 hover:bg-slate-100 hover:text-brand-plum shadow-sm"
+                  ? "text-brand-plum/40 bg-brand-plum/10 cursor-not-allowed" 
+                  : "text-brand-plum/75 bg-white border border-brand-plum/20 hover:bg-brand-cream/60 hover:text-brand-plum shadow-sm"
                 }`}
                 onClick={goToPreviousQuizStep}
                 disabled={quizStepIndex === 0}
@@ -462,9 +462,9 @@ export function QuizWizardPanel({ isActive, onGoToContact, resultSkeleton }) {
               {quizStepIndex < quizSteps.length - 1 ? (
                 <button
                   type="button"
-                  className={`px-8 py-3 rounded-xl font-bold text-lg shadow-lg transition-all flex items-center gap-2 ${
+                  className={`min-h-[48px] px-8 py-3 rounded-xl font-bold text-lg shadow-lg transition-all flex items-center gap-2 ${
                     !canAdvance 
-                    ? "text-white/70 bg-slate-400 cursor-not-allowed shadow-none" 
+                    ? "text-white/70 bg-brand-plum/45 cursor-not-allowed shadow-none" 
                     : "text-white bg-brand-rose hover:bg-brand-plum shadow-brand-rose/40 hover:shadow-brand-plum/40 hover:-translate-y-0.5"
                   }`}
                   onClick={goToNextQuizStep}
@@ -475,9 +475,9 @@ export function QuizWizardPanel({ isActive, onGoToContact, resultSkeleton }) {
               ) : (
                 <button
                   type="button"
-                  className={`px-8 py-3 rounded-xl font-bold text-lg shadow-xl transition-all flex items-center gap-2 ${
+                  className={`min-h-[48px] px-8 py-3 rounded-xl font-bold text-lg shadow-xl transition-all flex items-center gap-2 ${
                     !quizComplete 
-                    ? "text-white/70 bg-slate-400 cursor-not-allowed shadow-none" 
+                    ? "text-white/70 bg-brand-plum/45 cursor-not-allowed shadow-none" 
                     : "text-white bg-gradient-to-r from-brand-plum to-brand-rose hover:scale-105 shadow-brand-rose/50"
                   }`}
                   onClick={() => {
@@ -521,7 +521,7 @@ export function QuizWizardPanel({ isActive, onGoToContact, resultSkeleton }) {
               
               <div className="flex items-center gap-3 mb-6">
                 <span className="w-8 h-8 rounded-full bg-brand-cream flex items-center justify-center text-brand-rose font-bold">★</span>
-                <p className="text-slate-500 font-bold uppercase tracking-wider text-sm">Live Estimate</p>
+                <p className="text-brand-plum/55 font-bold uppercase tracking-wider text-sm">Live Estimate</p>
               </div>
 
               {quizResult && quizComplete && resultSkeletonActive ? (
@@ -538,28 +538,28 @@ export function QuizWizardPanel({ isActive, onGoToContact, resultSkeleton }) {
                   
                   {/* Traffic Light Status */}
                   <div className={`p-5 rounded-2xl mb-6 shadow-inner border-l-4 ${
-                    quizResult.trafficLight === 'green' ? 'bg-green-50 border-green-500' :
-                    quizResult.trafficLight === 'amber' ? 'bg-amber-50 border-amber-500' :
-                    'bg-red-50 border-red-500'
+                    quizResult.trafficLight === 'green' ? 'bg-brand-cream/60 border-brand-gold' :
+                    quizResult.trafficLight === 'amber' ? 'bg-brand-gold/15 border-brand-gold' :
+                    'bg-brand-rose/10 border-brand-rose'
                   }`}>
-                    <strong className="block text-lg mb-1 text-slate-900">{quizResult.trafficLightLabel}</strong>
-                    <p className="text-sm text-slate-700 leading-relaxed">{quizResult.trafficLightDescription}</p>
+                    <strong className="block text-lg mb-1 text-brand-plum">{quizResult.trafficLightLabel}</strong>
+                    <p className="text-sm text-brand-plum/75 leading-relaxed">{quizResult.trafficLightDescription}</p>
                   </div>
 
                   {quizResult.greenPrioritySector ? (
-                    <p className="inline-block px-3 py-1.5 rounded-full bg-green-100 text-green-800 font-bold text-xs mb-4">
+                    <p className="inline-block px-3 py-1.5 rounded-full bg-brand-gold/20 text-brand-plum font-bold text-xs mb-4">
                       2026 market · Green / priority occupation band
                     </p>
                   ) : null}
                   
                   {/* Info Row: Pathway and SID */}
-                  <div className="space-y-3 mb-8 bg-slate-50 p-4 rounded-xl border border-slate-100">
+                  <div className="space-y-3 mb-8 bg-brand-cream/45 p-4 rounded-xl border border-brand-plum/10">
                     <div>
-                      <span className="text-slate-500 text-sm font-semibold block">Pathway strength</span>
+                      <span className="text-brand-plum/55 text-sm font-semibold block">Pathway strength</span>
                       <strong className="text-brand-plum">{quizResult.pathwayStrengthLabel}</strong>
                     </div>
                     <div>
-                      <span className="text-slate-500 text-sm font-semibold block">SID Stream</span>
+                      <span className="text-brand-plum/55 text-sm font-semibold block">SID Stream</span>
                       <strong className="text-brand-plum">
                         {quizResult.sidStreamLabel}
                         {quizResult.goldenTicketSector && !quizResult.priorityProcessingBadge
@@ -572,7 +572,7 @@ export function QuizWizardPanel({ isActive, onGoToContact, resultSkeleton }) {
                   {/* Dynamic Action Required List */}
                   <ul className="space-y-2 mb-8">
                     {quizResult.messages.map((message) => (
-                      <li key={message} className="flex items-start text-sm text-slate-700 font-medium">
+                      <li key={message} className="flex items-start text-sm text-brand-plum/75 font-medium">
                         <span className="text-brand-rose mr-2 mt-0.5">•</span>
                         {message}
                       </li>
@@ -584,20 +584,20 @@ export function QuizWizardPanel({ isActive, onGoToContact, resultSkeleton }) {
                     <div className="mb-6 p-4 bg-brand-cream/50 rounded-xl border border-brand-gold/30 relative overflow-hidden">
                       <div className="absolute top-0 right-0 w-16 h-16 bg-brand-gold/10 rounded-bl-full -z-10"></div>
                       <span className="block text-brand-rose font-bold text-xs uppercase mb-2">2026 Market Insight</span>
-                      <p className="text-sm text-slate-800 font-medium">{quizResult.marketInsight}</p>
+                      <p className="text-sm text-brand-plum/80 font-medium">{quizResult.marketInsight}</p>
                     </div>
                   ) : null}
 
-                  <hr className="my-6 border-slate-200" />
+                  <hr className="my-6 border-brand-plum/15" />
 
-                  <div className="mb-8 rounded-2xl border border-slate-200 bg-white p-4">
+                  <div className="mb-8 rounded-2xl border border-brand-plum/15 bg-white p-4">
                     <button
                       type="button"
-                      className="flex w-full items-center justify-between text-left"
+                      className="flex w-full min-h-[48px] items-center justify-between text-left"
                       onClick={() => setShowBreakdown((current) => !current)}
                       aria-expanded={showBreakdown}
                     >
-                      <h4 className="text-lg font-bold text-slate-900">Points Breakdown</h4>
+                      <h4 className="text-lg font-bold text-brand-plum">Points Breakdown</h4>
                       <span className="text-sm font-semibold text-brand-rose">
                         {showBreakdown ? "Hide details" : "Show details"}
                       </span>
@@ -613,7 +613,7 @@ export function QuizWizardPanel({ isActive, onGoToContact, resultSkeleton }) {
                         >
                           {quizResult.pointsBreakdown.map((item) => (
                             <li key={item.label} className="flex items-center justify-between text-sm">
-                              <span className="text-slate-600">{item.label}</span>
+                              <span className="text-brand-plum/70">{item.label}</span>
                               <strong className="rounded-md bg-brand-cream px-2 py-1 text-brand-plum">{item.points} pts</strong>
                             </li>
                           ))}
@@ -639,7 +639,7 @@ export function QuizWizardPanel({ isActive, onGoToContact, resultSkeleton }) {
 
                   <button
                     type="button"
-                    className="w-full py-4 bg-brand-plum text-white font-bold rounded-xl shadow-lg shadow-brand-plum/30 hover:-translate-y-1 hover:bg-brand-rose transition-all duration-300 mb-4"
+                    className="w-full min-h-[48px] py-4 bg-brand-plum text-white font-bold rounded-xl shadow-lg shadow-brand-plum/30 hover:-translate-y-1 hover:bg-brand-rose transition-all duration-300 mb-4"
                     onClick={() => {
                       trackEvent("quiz_get_full_report_clicked", { points_score: quizResult?.score || 0 });
                       onGoToContact?.();
@@ -650,29 +650,29 @@ export function QuizWizardPanel({ isActive, onGoToContact, resultSkeleton }) {
 
                   <div className="flex gap-2">
                     <button 
-                      className="w-1/2 py-2.5 text-slate-600 font-semibold bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors text-sm"
+                      className="w-1/2 min-h-[48px] py-2.5 text-brand-plum/75 font-semibold bg-brand-cream/70 hover:bg-brand-cream rounded-lg transition-colors text-sm"
                       onClick={() => copySummaryToClipboard()}
                     >
                       {copySummaryState === "copied" ? "✓ Copied" : "Copy text"}
                     </button>
                     <button 
-                      className="w-1/2 py-2.5 text-brand-rose font-semibold bg-brand-rose/10 hover:bg-brand-rose/20 rounded-lg transition-colors text-sm"
+                      className="w-1/2 min-h-[48px] py-2.5 text-brand-rose font-semibold bg-brand-rose/10 hover:bg-brand-rose/20 rounded-lg transition-colors text-sm"
                       onClick={() => downloadSummaryFile()}
                     >
                       Save summary (.txt)
                     </button>
                   </div>
-                  <p className="text-xs text-center text-slate-400 mt-4 leading-relaxed">
+                  <p className="text-xs text-center text-brand-plum/45 mt-4 leading-relaxed">
                     Records are prefilled when contacting us. Not official migration advice.
                   </p>
                 </div>
               ) : !quizComplete ? (
                 <div className="text-center py-10 opacity-70">
-                  <div className="w-16 h-16 mx-auto bg-slate-100 rounded-full flex items-center justify-center mb-4">
+                  <div className="w-16 h-16 mx-auto bg-brand-cream rounded-full flex items-center justify-center mb-4">
                      <span className="text-2xl opacity-30">🔒</span>
                   </div>
-                  <h3 className="text-xl font-bold text-slate-800 mb-2">Build your profile</h3>
-                  <p className="text-sm text-slate-500 leading-relaxed max-w-xs mx-auto">
+                  <h3 className="text-xl font-bold text-brand-plum mb-2">Build your profile</h3>
+                  <p className="text-sm text-brand-plum/60 leading-relaxed max-w-xs mx-auto">
                     Complete each step on the left to unlock your estimated points, Skills in Demand context, and a 2026 market insight.
                   </p>
                 </div>

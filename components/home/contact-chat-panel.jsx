@@ -334,7 +334,7 @@ export function ContactChatPanel({ siteData, isActive }) {
             className="sr-only"
             style={{ position: "absolute", left: "-9999px", width: 1, height: 1, overflow: "hidden" }}
           />
-          <button type="submit" className="btn btn-primary" disabled={contactState.status === "loading"}>
+          <button type="submit" className="btn btn-primary min-h-[48px]" disabled={contactState.status === "loading"}>
             {contactState.status === "loading" ? "Sending..." : "Submit enquiry"}
           </button>
           {contactState.message ? (
@@ -375,7 +375,7 @@ export function ContactChatPanel({ siteData, isActive }) {
               onChange={(event) => setChatInput(event.target.value)}
               placeholder="Ask about skilled migration, employer sponsorship, student pathways, or next steps."
             />
-            <button type="submit" className="btn btn-primary" disabled={chatState.loading}>
+            <button type="submit" className="btn btn-primary min-h-[48px]" disabled={chatState.loading}>
               {chatState.loading ? "Thinking..." : "Send"}
             </button>
           </form>

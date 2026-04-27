@@ -152,8 +152,8 @@ export function PathwaySequenceAnimated() {
   return (
     <div className="relative z-10 rounded-[2rem] border border-white/60 bg-white/85 p-5 shadow-2xl backdrop-blur-2xl sm:p-6">
       <p className="mb-3 text-sm font-bold uppercase tracking-wider text-brand-rose">Migration subway map</p>
-      <h3 className="mb-2 text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl">Choose your likely route</h3>
-      <p className="mb-5 text-sm font-medium text-slate-600 sm:text-base">
+      <h3 className="mb-2 text-2xl font-extrabold tracking-tight text-brand-plum sm:text-3xl">Choose your likely route</h3>
+      <p className="mb-5 text-sm font-medium text-brand-plum/70 sm:text-base">
         Hover or tap a route to preview the years ahead and the evidence milestones that matter.
       </p>
 
@@ -165,7 +165,7 @@ export function PathwaySequenceAnimated() {
             onMouseEnter={() => setActiveRouteId(route.id)}
             onFocus={() => setActiveRouteId(route.id)}
             onClick={() => setActiveRouteId(route.id)}
-            className={`rounded-full border px-4 py-2 text-sm font-bold transition ${
+            className={`min-h-[48px] rounded-full border px-4 py-2 text-sm font-bold transition ${
               route.id === activeRouteId
                 ? "border-brand-rose bg-brand-rose text-white"
                 : "border-brand-plum/20 bg-white text-brand-plum hover:border-brand-rose/50"
@@ -232,7 +232,7 @@ export function PathwaySequenceAnimated() {
       <div className="mb-5 rounded-2xl border border-brand-plum/10 bg-brand-cream/35 p-4">
         <p className="text-xs font-semibold uppercase tracking-[0.12em] text-brand-plum/60">Future pacing drill-down</p>
         <h4 className="mt-1 text-lg font-bold text-brand-plum">{activeNode?.title}</h4>
-        <p className="mt-1 text-sm text-slate-600">{activeNode?.hint}</p>
+        <p className="mt-1 text-sm text-brand-plum/70">{activeNode?.hint}</p>
         {activeNode?.risk ? (
           <p className="mt-2 rounded-xl border border-brand-rose/20 bg-brand-rose/5 px-3 py-2 text-xs font-medium text-brand-plum/80">
             Risk signal: {activeNode.risk}
@@ -254,7 +254,7 @@ export function PathwaySequenceAnimated() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="rounded-full border border-brand-plum/20 bg-white px-3 py-1.5 text-xs font-semibold text-brand-plum transition hover:border-brand-plum/45"
+                className="inline-flex min-h-[48px] items-center rounded-full border border-brand-plum/20 bg-white px-3 py-1.5 text-xs font-semibold text-brand-plum transition hover:border-brand-plum/45"
               >
                 {item.label}
               </Link>
@@ -289,7 +289,7 @@ export function PathwaySequenceAnimated() {
               </span>
               <div>
                 <h4 className="font-bold text-brand-plum">{node.title}</h4>
-                <p className="mt-1 text-sm text-slate-600">{node.hint}</p>
+                <p className="mt-1 text-sm text-brand-plum/70">{node.hint}</p>
                 <p className="mt-2 text-xs font-semibold uppercase tracking-[0.12em] text-brand-rose">
                   Future pacing marker: {routeProgress[index]}% of your journey map
                 </p>

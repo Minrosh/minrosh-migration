@@ -43,7 +43,7 @@ export function HomeDiscoverStrip() {
 
   return (
     <section
-      className="relative isolate overflow-hidden border-b border-brand-plum/8 bg-gradient-to-b from-white via-zinc-50/80 to-brand-cream/50 px-4 py-10 sm:px-6 md:py-14"
+      className="relative isolate overflow-hidden border-b border-brand-plum/8 bg-gradient-to-b from-white via-brand-cream/40 to-brand-cream/50 px-4 py-10 sm:px-6 md:py-14"
       aria-labelledby="home-discover-heading"
     >
       <div
@@ -66,7 +66,7 @@ export function HomeDiscoverStrip() {
             <Link
               key={item.href}
               href={item.href}
-              className="inline-flex min-h-[40px] items-center rounded-full border border-brand-plum/12 bg-white/95 px-4 py-2 text-sm font-semibold text-brand-plum/90 shadow-sm shadow-brand-plum/5 outline-none ring-offset-2 ring-offset-white transition hover:-translate-y-0.5 hover:border-brand-rose/35 hover:bg-brand-cream/80 hover:shadow-md focus-visible:ring-2 focus-visible:ring-brand-rose/40"
+              className="inline-flex min-h-[48px] items-center rounded-full border border-brand-plum/12 bg-white/95 px-4 py-2 text-sm font-semibold text-brand-plum/90 shadow-sm shadow-brand-plum/5 outline-none ring-offset-2 ring-offset-white transition hover:-translate-y-0.5 hover:border-brand-rose/35 hover:bg-brand-cream/80 hover:shadow-md focus-visible:ring-2 focus-visible:ring-brand-rose/40"
             >
               {item.label}
             </Link>
@@ -75,16 +75,16 @@ export function HomeDiscoverStrip() {
 
         <div className="mx-auto mt-10 max-w-3xl md:mt-12">
           <div className="rounded-[1.75rem] border border-brand-plum/10 bg-white p-1 shadow-[0_24px_64px_-14px_rgba(61,36,50,0.14)] sm:p-1.5">
-            <div className="flex rounded-[1.35rem] bg-zinc-100/90 p-1 sm:mx-0">
+            <div className="flex rounded-[1.35rem] bg-brand-cream/80 p-1 sm:mx-0">
               <Link
                 href="/#quiz"
-                className="flex-1 rounded-[1.1rem] bg-white px-3 py-2.5 text-center text-sm font-bold text-brand-plum shadow-sm outline-none ring-offset-2 ring-offset-white transition hover:text-brand-rose focus-visible:ring-2 focus-visible:ring-brand-rose/40 sm:py-3"
+                className="flex-1 min-h-[48px] rounded-[1.1rem] bg-white px-3 py-2.5 text-center text-sm font-bold text-brand-plum shadow-sm outline-none ring-offset-2 ring-offset-white transition hover:text-brand-rose focus-visible:ring-2 focus-visible:ring-brand-rose/40 sm:py-3"
               >
                 Pathway quiz
               </Link>
               <Link
                 href="/assessment"
-                className="flex-1 rounded-[1.1rem] px-3 py-2.5 text-center text-sm font-semibold text-brand-plum/65 outline-none ring-offset-2 ring-offset-zinc-100 transition hover:bg-white/70 hover:text-brand-plum focus-visible:ring-2 focus-visible:ring-brand-rose/40 sm:py-3"
+                className="flex-1 min-h-[48px] rounded-[1.1rem] px-3 py-2.5 text-center text-sm font-semibold text-brand-plum/65 outline-none ring-offset-2 ring-offset-brand-cream transition hover:bg-white/70 hover:text-brand-plum focus-visible:ring-2 focus-visible:ring-brand-rose/40 sm:py-3"
               >
                 Free assessment
               </Link>
@@ -116,7 +116,7 @@ export function HomeDiscoverStrip() {
                 <Link
                   href="/#smart-navigator"
                   onClick={openSmartNavigator}
-                  className="inline-flex min-h-[48px] items-center justify-center rounded-xl bg-orange-500 px-5 py-3 text-center text-sm font-semibold text-white no-underline shadow-md shadow-orange-500/25 outline-none ring-offset-2 ring-offset-white transition hover:bg-orange-400 hover:no-underline focus-visible:ring-2 focus-visible:ring-orange-300"
+                  className="inline-flex min-h-[48px] items-center justify-center rounded-xl bg-brand-rose px-5 py-3 text-center text-sm font-semibold text-white no-underline shadow-md shadow-brand-rose/25 outline-none ring-offset-2 ring-offset-white transition hover:bg-brand-plum hover:no-underline focus-visible:ring-2 focus-visible:ring-brand-rose/40"
                 >
                   Run Smart Navigator
                 </Link>

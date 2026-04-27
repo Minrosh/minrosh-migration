@@ -72,7 +72,7 @@ export function ServiceDecisionEngine({ services = [] }) {
             key={item.id}
             type="button"
             onClick={() => setIntent(item.id)}
-            className={`rounded-full border px-4 py-2 text-sm font-semibold transition ${
+            className={`min-h-[48px] rounded-full border px-4 py-2 text-sm font-semibold transition ${
               intent === item.id
                 ? "border-brand-rose bg-brand-rose text-white"
                 : "border-brand-plum/15 bg-white text-brand-plum/80 hover:border-brand-rose/40"
@@ -127,7 +127,10 @@ export function ServiceDecisionEngine({ services = [] }) {
                 <li key={item}>• {item}</li>
               ))}
             </ul>
-            <Link href={service.href} className="mt-4 inline-flex text-sm font-semibold text-brand-rose hover:underline">
+            <Link
+              href={service.href}
+              className="mt-4 inline-flex min-h-[48px] items-center text-sm font-semibold text-brand-rose hover:underline"
+            >
               Open pathway →
             </Link>
             {index === 0 ? (
@@ -143,7 +146,7 @@ export function ServiceDecisionEngine({ services = [] }) {
         <button
           type="button"
           onClick={() => setShowAll((v) => !v)}
-          className="text-sm font-semibold text-brand-rose hover:underline"
+          className="inline-flex min-h-[48px] items-center text-sm font-semibold text-brand-rose hover:underline"
         >
           {showAll ? "Hide full service catalogue" : "Show full service catalogue"}
         </button>

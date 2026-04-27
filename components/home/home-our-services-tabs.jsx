@@ -134,7 +134,7 @@ export function HomeOurServicesTabs({ services, visualHighlights }) {
                           <p className="text-[0.94rem] font-normal leading-relaxed text-white/90">{service.summary}</p>
                           <button
                             type="button"
-                            className="mt-3 rounded-xl border border-white/20 bg-black/25 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-brand-gold transition hover:bg-black/40"
+                            className="mt-3 min-h-[48px] rounded-xl border border-white/20 bg-black/25 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-brand-gold transition hover:bg-black/40"
                             onClick={(event) => {
                               event.preventDefault();
                               setExpandedHref((current) => (current === service.href ? "" : service.href));
