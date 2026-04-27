@@ -1,0 +1,29 @@
+# Project Standards: Modern, SEO-Optimized, High-UX Web Development
+
+## 1. Design & UX Standards
+- Always use **Tailwind CSS** for styling; prioritize a clean, minimalist aesthetic with ample whitespace.
+- Implement **ShadcnUI** components for consistent, accessible UI elements.
+- Ensure 100% responsiveness. Mobile-first approach is mandatory.
+- Add micro-interactions: provide hover states, active states, and smooth transitions for all buttons/links.
+- Use **Loading Skeletons** for any asynchronous data fetching to prevent layout shift.
+
+## 2. SEO & Performance
+- Use strictly **Semantic HTML** (e.g., `<main>`, `<section>`, `<article>`, `<aside>`).
+- Every page component must include unique Meta Titles, Meta Descriptions, and OpenGraph tags.
+- Images must use modern formats (WebP/AVIF) and include descriptive `alt` text.
+- Optimize for **Core Web Vitals**: Minimize Third-party scripts and prioritize "Lazy Loading" for off-screen content.
+
+## 3. Code Quality
+- Follow the "Clean Code" principles: descriptive naming, small functions, and DRY (Don't Repeat Yourself).
+- Use TypeScript for type safety; avoid 'any' at all costs.
+- Implement error boundaries and "Empty States" for all data-driven components.
+
+## 4. Accessibility (A11y)
+- Maintain a minimum AA contrast ratio.
+- Ensure all interactive elements are keyboard-navigable.
+- Add ARIA labels where semantic HTML is insufficient.
+
+## 5. MinRosh product defaults (do not regress)
+- **Light theme first:** Public marketing UI defaults to a **light** surface (`brand-cream` / white, plum/rose/gold accents). Use **localized** darker panels or imagery only for contrast (e.g. one hero card, a footer band), not a full-site `zinc-950` canvas unless explicitly requested.
+- **Next.js metadata:** Prefer `export const metadata` / `generateMetadata` and `lib/seo.js` `buildMetadata()` over hand-written `<head>` tags.
+- **Admin:** Do not break `app/admin/` or `app/admin/admin.css`; scope marketing-only CSS so it does not override `.admin-root`.

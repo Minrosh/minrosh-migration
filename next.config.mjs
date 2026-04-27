@@ -5,18 +5,24 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  serverExternalPackages: ["tesseract.js"],
+  serverExternalPackages: ["tesseract.js", "@resvg/resvg-js"],
   // Avoid wrong root when a package-lock.json exists above the app (e.g. in $HOME).
   outputFileTracingRoot: path.join(__dirname),
   output: "standalone",
   poweredByHeader: false,
   compress: true,
-  // Local UI assets use <img> via PublicFileImg (see components/public-file-img.js), not next/image.
   images: {
-    unoptimized: true,
+    formats: ["image/avif", "image/webp"],
+    minimumCacheTTL: 31536000,
   },
   async redirects() {
     return [
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "www.minroshmigration.com.au" }],
+        destination: "https://minroshmigration.com.au/:path*",
+        permanent: true,
+      },
       {
         source: "/migration-from-sri-lanka",
         destination: "/migration-sri-lanka-to-australia",
@@ -27,6 +33,24 @@ const nextConfig = {
   async headers() {
     return [
       {
+        source: "/images/:path*",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
+        ],
+      },
+      {
+        source: "/fonts/:path*",
+        headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
+      },
+      {
+        source: "/_next/static/:path*",
+        headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
+      },
+      {
+        source: "/_next/image",
+        headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
+      },
+      {
         source: "/:path*",
         headers: [
           { key: "X-Content-Type-Options", value: "nosniff" },
@@ -36,20 +60,7 @@ const nextConfig = {
             key: "Permissions-Policy",
             value: "camera=(), microphone=(), geolocation=()",
           },
-          {
-            key: "Content-Security-Policy",
-            value: [
-              "default-src 'self'",
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://maps.googleapis.com https://maps.gstatic.com",
-              "style-src 'self' 'unsafe-inline'",
-              "img-src 'self' data: blob: https:",
-              "font-src 'self' data:",
-              "connect-src 'self' https://api.openai.com https://generativelanguage.googleapis.com https://www.google-analytics.com https://region1.google-analytics.com https://www.googletagmanager.com https://maps.googleapis.com https://maps.gstatic.com",
-              "frame-ancestors 'none'",
-              "base-uri 'self'",
-              "form-action 'self'",
-            ].join("; "),
-          },
+          /* CSP is set per-request in middleware (nonces + strict-dynamic). See lib/csp/build-csp-header.js */
         ],
       },
     ];

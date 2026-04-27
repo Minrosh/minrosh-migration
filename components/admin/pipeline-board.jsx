@@ -16,6 +16,20 @@ const stageLabels = {
   lost: "Lost",
 };
 
+async function parseJsonResponseSafe(response) {
+  const rawText = await response.text();
+  try {
+    return rawText ? JSON.parse(rawText) : {};
+  } catch {
+    return {};
+  }
+}
+
+function contextualError(operation, message, fallback) {
+  const detail = String(message || fallback || "Unexpected error").trim();
+  return `${operation}: ${detail}`;
+}
+
 export function PipelineBoard() {
   const [opportunities, setOpportunities] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -23,13 +37,24 @@ export function PipelineBoard() {
   const [msg, setMsg] = useState("");
 
   const load = useCallback(() => {
+    setMsg("");
     fetch("/api/admin/opportunities")
-      .then((r) => r.json())
-      .then((d) => {
+      .then(async (r) => ({ res: r, payload: await parseJsonResponseSafe(r) }))
+      .then(({ res, payload }) => {
+        const d = payload?.data && typeof payload.data === "object" ? payload.data : payload;
+        const errorMessage = payload?.error?.message || payload?.error || d?.error;
+        if (!res.ok) {
+          setOpportunities([]);
+          setMsg(contextualError("Load pipeline", errorMessage, "Could not load pipeline board."));
+          return;
+        }
         setOpportunities(d.opportunities || []);
-        setLoading(false);
       })
-      .catch(() => setLoading(false));
+      .catch(() => {
+        setOpportunities([]);
+        setMsg(contextualError("Load pipeline", "", "Network error while loading pipeline board."));
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   useEffect(() => {
@@ -48,18 +73,25 @@ export function PipelineBoard() {
 
   async function moveToStage(opp, newStage) {
     setMsg("");
-    const res = await fetch("/api/admin/opportunities", {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: opp.id, stage: newStage, expectedVersion: opp.version }),
-    });
-    const data = await res.json().catch(() => ({}));
-    if (!res.ok) {
-      setMsg(data.error || "Could not update stage");
+    try {
+      const res = await fetch("/api/admin/opportunities", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: opp.id, stage: newStage, expectedVersion: opp.version }),
+      });
+      const data = await parseJsonResponseSafe(res);
+      const payload = data;
+      const body = payload?.data && typeof payload.data === "object" ? payload.data : payload;
+      const errorMessage = payload?.error?.message || payload?.error || body?.error;
+      if (!res.ok) {
+        setMsg(contextualError("Move opportunity stage", errorMessage, "Could not update stage"));
+        load();
+        return;
+      }
       load();
-      return;
+    } catch {
+      setMsg(contextualError("Move opportunity stage", "", "Network error while updating stage."));
     }
-    load();
   }
 
   function onDragStart(e, opp) {

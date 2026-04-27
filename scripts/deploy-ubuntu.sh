@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 # Run on the Ubuntu server from your project root (e.g. ~/minrosh-migration).
-# Prerequisites: Node 20+, PM2, git, and a .env or exported vars with ADMIN_PASSWORD, SMTP_*, etc.
+# Prerequisites: Node >= 20.19 (see .nvmrc), PM2, git, and .env with ADMIN_SESSION_SECRET (required), ADMIN_PASSWORD or bcrypt auth, SMTP_*, etc.
+#
+# Prefer one command (pull/build/PM2 + log flush) so pasted lines are not concatenated:
+#   cd ~/minrosh-migration && ./deploy-server.sh
+#   bash scripts/update-server.sh
 #
 # Git: pulls origin/$DEPLOY_GIT_BRANCH (default: main). Example staging from develop:
 #   DEPLOY_GIT_BRANCH=develop ./scripts/deploy-ubuntu.sh
@@ -9,6 +13,42 @@ set -euo pipefail
 
 ROOT="${1:-$HOME/minrosh-migration}"
 cd "$ROOT"
+ENV_FILE="$ROOT/.env"
+
+set_env_value() {
+  local key="$1"
+  local value="$2"
+  if grep -q "^${key}=" "$ENV_FILE"; then
+    sed -i "s|^${key}=.*|${key}=${value}|" "$ENV_FILE"
+  else
+    printf "\n%s=%s\n" "$key" "$value" >> "$ENV_FILE"
+  fi
+}
+
+reload_runtime_for_env() {
+  echo "==> Reload runtime to apply env changes"
+  # PM2 restart --update-env can reuse persisted env and miss fresh .env merges from ecosystem.config.js.
+  # Always rebuild the process from ecosystem so MAINTENANCE_MODE changes are guaranteed.
+  pm2 delete minrosh-next || true
+  pm2 start ecosystem.config.js
+  pm2 save
+}
+
+disable_maintenance_mode() {
+  set_env_value "MAINTENANCE_MODE" "false"
+  reload_runtime_for_env
+  echo "==> Maintenance mode disabled"
+}
+
+on_deploy_error() {
+  trap - ERR
+  echo "==> Deploy failed; keeping maintenance mode enabled so visitors see service status"
+  set_env_value "MAINTENANCE_MODE" "true"
+  reload_runtime_for_env
+  echo "==> Maintenance mode remains enabled until a successful deploy clears it."
+}
+
+trap on_deploy_error ERR
 
 if [[ -f "$HOME/package-lock.json" ]] && [[ "$HOME" != "$ROOT" ]]; then
   echo "!!! WARNING: $HOME/package-lock.json exists."
@@ -27,19 +67,33 @@ else
   git pull --ff-only origin "$DEPLOY_GIT_BRANCH"
 fi
 
-echo "==> Install & build"
-npm ci
-npm run build
-
-if [[ ! -f "$ROOT/.env" ]]; then
-  echo "ERROR: $ROOT/.env is missing."
+if [[ ! -f "$ENV_FILE" ]]; then
+  echo "ERROR: $ROOT/.env is missing. Create it (see .env.example) before deploy."
   exit 1
 fi
 
-echo "==> Preflight secret checks"
-# Session signing: explicit secret preferred; app also accepts ADMIN_PASSWORD (see lib/admin/session.js).
-if ! grep -qE '^ADMIN_SESSION_SECRET=.' "$ROOT/.env" && ! grep -qE '^ADMIN_PASSWORD=.' "$ROOT/.env"; then
-  echo "ERROR: Set ADMIN_SESSION_SECRET or ADMIN_PASSWORD in .env (non-empty value)."
+echo "==> Enable maintenance mode before upgrade"
+set_env_value "MAINTENANCE_MODE" "true"
+reload_runtime_for_env
+echo "==> Maintenance mode enabled"
+
+echo "==> Preflight secret checks (before install/build)"
+# Cookie HMAC requires ADMIN_SESSION_SECRET (never ADMIN_PASSWORD). Edge middleware cannot sign cookies without it.
+if ! grep -qE '^ADMIN_SESSION_SECRET=.' "$ROOT/.env"; then
+  echo ""
+  echo "ERROR: $ROOT/.env must set ADMIN_SESSION_SECRET (non-empty) for admin session cookie signing."
+  echo "  This is separate from ADMIN_PASSWORD — use a long random value, not your login password."
+  echo ""
+  echo "  Fix on this server:"
+  echo "    1) Generate a secret, e.g.:"
+  echo "         cd \"$ROOT\" && node scripts/generate-admin-session-secret.mjs"
+  echo "       (or: openssl rand -base64 48)"
+  echo "    2) Add one line to $ROOT/.env (or fix an empty ADMIN_SESSION_SECRET= line):"
+  echo "         ADMIN_SESSION_SECRET=<paste output, no spaces>"
+  echo "    3) Re-run: bash scripts/update-server.sh"
+  echo ""
+  echo "  Note: changing this value invalidates existing admin cookies — sign in again after deploy."
+  echo ""
   exit 1
 fi
 if ! grep -qE '^NURTURE_CRON_SECRET=.' "$ROOT/.env"; then
@@ -48,6 +102,38 @@ fi
 if ! grep -qE '^GOOGLE_FORM_WEBHOOK_SECRET=.' "$ROOT/.env"; then
   echo "WARNING: GOOGLE_FORM_WEBHOOK_SECRET unset or empty — Google Form webhook will reject until set."
 fi
+if ! grep -qE '^INTELLIGENCE_CRON_SECRET=.' "$ROOT/.env"; then
+  echo "WARNING: INTELLIGENCE_CRON_SECRET unset or empty — POST /api/cron/intelligence-scan will reject; daily digest cron cannot run until set (see scripts/intelligence-daily-cron.sh)."
+fi
+
+# After git pull, .nvmrc is present: prefer project Node (>=20.19 clears npm EBADENGINE for some deps).
+export NVM_DIR="${NVM_DIR:-$HOME/.nvm}"
+if [[ -s "$NVM_DIR/nvm.sh" ]] && [[ -f "$ROOT/.nvmrc" ]]; then
+  # shellcheck disable=SC1091
+  source "$NVM_DIR/nvm.sh"
+  nvm install
+  nvm use
+  # Prepend the real nvm version bin (do not rely on `nvm which current` when an IDE injects another `node` first on PATH).
+  _nvm_ver="$(sed '/^#/d;/^[[:space:]]*$/d' "$ROOT/.nvmrc" | head -1 | tr -d "[:space:]")"
+  _nvm_bin="$NVM_DIR/versions/node/v${_nvm_ver}/bin"
+  if [[ -x "$_nvm_bin/node" ]]; then
+    export PATH="$_nvm_bin:$PATH"
+  fi
+  unset _nvm_ver _nvm_bin
+  hash -r 2>/dev/null || true
+fi
+echo "==> deploy: Node $(node -v) ($(command -v node))"
+if ! node -e "const [a,b]=process.versions.node.split('.').map(Number);process.exit(a>20||(a===20&&b>=19)?0:1)" 2>/dev/null; then
+  echo "WARNING: Node is below 20.19 — install nvm + use .nvmrc, or upgrade system Node (see package.json engines)."
+fi
+
+echo "==> Install & build"
+npm ci
+# Fail fast if critical brand/hero assets are missing or placeholder-sized.
+node scripts/verify-required-assets.mjs
+echo "==> Clean previous Next build artifacts"
+rm -rf .next
+npm run build
 
 if [[ ! -f "$ROOT/.next/standalone/server.js" ]]; then
   echo "ERROR: $ROOT/.next/standalone/server.js is missing after build."
@@ -70,9 +156,19 @@ echo "==> Writable runtime data under standalone (enquiries, customers, invoices
 mkdir -p .next/standalone/data
 chmod -R u+rwX .next/standalone/data
 
-echo "==> Reload PM2 from ecosystem (.env merge guaranteed)"
-pm2 delete minrosh-next || true
-pm2 start ecosystem.config.js
-pm2 save
+echo "==> Disable maintenance mode before booting the new build"
+set_env_value "MAINTENANCE_MODE" "false"
+reload_runtime_for_env
+echo "==> Maintenance mode disabled"
 
-echo "==> Done. Put SMTP_*, ADMIN_PASSWORD, etc. in $ROOT/.env — PM2 loads them from ecosystem.config.js."
+if [[ "${SKIP_REINDEX_VERIFY:-}" == "1" ]]; then
+  echo "==> Skipping reindex:verify (SKIP_REINDEX_VERIFY=1)"
+else
+  echo "==> Crawl signal check (/, /sitemap.xml, /robots.txt). Override base: SITE_URL=https://… npm run reindex:verify"
+  (cd "$ROOT" && npm run reindex:verify) || echo "WARNING: reindex:verify failed (network, DNS, or SITE_URL). See docs/SEARCH-CONSOLE-REINDEX.md"
+fi
+
+echo "==> Done. Keep SMTP_*, ADMIN_SESSION_SECRET, ADMIN_PASSWORD, etc. in $ROOT/.env — PM2 loads them from ecosystem.config.js."
+echo "==> After deploy: if forms show Server Action errors, hard-refresh the site (Ctrl+Shift+R) so the browser loads new /_next/static chunks."
+echo "==> SEO: submit/refresh sitemap + Request indexing for priority URLs in Google Search Console — docs/SEARCH-CONSOLE-REINDEX.md"
+trap - ERR

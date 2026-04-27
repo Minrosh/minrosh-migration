@@ -1,0 +1,38 @@
+[
+  {
+    "id": "ENQ-DEMO-1001",
+    "firstName": "Amelia",
+    "lastName": "Perera",
+    "email": "amelia.perera@example.com",
+    "phone": "0478 100 542",
+    "preferredCountry": "Australia",
+    "mainNeed": "Skilled Migration",
+    "message": "I want to understand whether I should focus on subclass 189 or nomination first.",
+    "quizSummary": "Estimated points: 82. Strong English but nomination may improve competitiveness.",
+    "createdAt": "2026-03-25T09:30:00.000Z"
+  },
+  {
+    "id": "ENQ-DEMO-1002",
+    "firstName": "Dilan",
+    "lastName": "Fernando",
+    "email": "dilan.fernando@example.com",
+    "phone": "0481 706 474",
+    "preferredCountry": "Australia",
+    "mainNeed": "Student Pathway",
+    "message": "I need help with course selection, student visa timing, and longer-term options after study.",
+    "quizSummary": "",
+    "createdAt": "2026-03-27T02:15:00.000Z"
+  },
+  {
+    "id": "ENQ-DEMO-1003",
+    "firstName": "Sophie",
+    "lastName": "Khan",
+    "email": "sophie.khan@example.com",
+    "phone": "0478 100 542",
+    "preferredCountry": "Australia",
+    "mainNeed": "Family / Complex Case",
+    "message": "We need advice on a partner application and the right evidence strategy before we move forward.",
+    "quizSummary": "",
+    "createdAt": "2026-03-30T06:45:00.000Z"
+  }
+]

@@ -11,12 +11,17 @@ export const metadata = buildMetadata({
   title: guideData.metaTitle,
   description: guideData.metaDescription,
   path: guideData.path,
-  keywords: ["Skilled migration Australia points guide", "Skilled migration points system"],
+  keywords: [
+    "Skilled migration Australia points guide",
+    "65 points Australia",
+    "SkillSelect help",
+    "EOI strategy",
+  ],
 });
 
 export default function SkilledMigrationGuidePage() {
   return (
-    <SiteShell siteData={siteData} currentPath="">
+    <SiteShell siteData={siteData} currentPath={guideData.path}>
       <StructuredData
         data={breadcrumbJsonLd([
           { name: "Home", path: "/" },
@@ -42,6 +47,8 @@ export default function SkilledMigrationGuidePage() {
           { href: "/skilled-migration", label: "Skilled Migration" },
           { href: guideData.path, label: "Guide" },
         ]}
+        officialResources={guideData.officialResources ?? []}
+        currentPath={guideData.path}
         sections={guideData.sections}
         faq={guideData.faq}
         related={[

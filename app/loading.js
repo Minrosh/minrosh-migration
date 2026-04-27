@@ -6,7 +6,7 @@ export default function Loading() {
       <section className="loading-screen__card">
         <div className="loading-screen__mark">
           <PublicFileImg
-            src="/images/minrosh-logo.jpg"
+            src="/images/minrosh-logo.v2.webp"
             alt="MinRosh Migration logo"
             width={72}
             height={72}

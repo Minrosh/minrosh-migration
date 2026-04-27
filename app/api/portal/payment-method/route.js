@@ -1,4 +1,5 @@
 import { getInvoiceByPortalToken } from "@/lib/admin/invoices-service";
+import { stripeEnabled } from "@/lib/payments/stripe";
 
 function tokenFromRequest(request) {
   const auth = String(request.headers.get("authorization") || "");
@@ -12,8 +13,10 @@ export async function GET(request) {
     return Response.json({ error: "Unauthorized" }, { status: 401 });
   }
   return Response.json({
-    supported: ["bank_transfer"],
-    message: "Card storage is disabled. Pay by bank transfer using invoice instructions.",
+    supported: stripeEnabled() ? ["bank_transfer", "card_checkout"] : ["bank_transfer"],
+    message: stripeEnabled()
+      ? "Card checkout is available per invoice payment link. Stored cards remain disabled."
+      : "Card storage is disabled. Pay by bank transfer using invoice instructions.",
   });
 }
 

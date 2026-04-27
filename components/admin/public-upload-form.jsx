@@ -2,11 +2,24 @@
 
 import { useCallback, useEffect, useState } from "react";
 
+async function parseJsonResponseSafe(response) {
+  const rawText = await response.text();
+  try {
+    return rawText ? JSON.parse(rawText) : {};
+  } catch {
+    return {};
+  }
+}
+
 export function PublicUploadForm({ token }) {
   const [status, setStatus] = useState("");
   const [loading, setLoading] = useState(false);
   const [docs, setDocs] = useState([]);
   const [portalStatus, setPortalStatus] = useState(null);
+  const [requirements, setRequirements] = useState([]);
+  const [templates, setTemplates] = useState([]);
+  const [timeline, setTimeline] = useState([]);
+  const [selectedRequirement, setSelectedRequirement] = useState("");
   const [gate, setGate] = useState("loading");
   const [phoneLast4, setPhoneLast4] = useState("");
   const [otpCode, setOtpCode] = useState("");
@@ -14,7 +27,7 @@ export function PublicUploadForm({ token }) {
 
   const refreshDocuments = useCallback(async () => {
     const res = await fetch(`/api/upload/${token}`, { credentials: "include" });
-    const data = await res.json().catch(() => ({}));
+    const data = await parseJsonResponseSafe(res);
     if (res.status === 410) {
       setGate("expired");
       setStatus(data.error || "This link has expired.");
@@ -40,6 +53,9 @@ export function PublicUploadForm({ token }) {
     setGate("ok");
     setStatus("");
     setPortalStatus(data?.customer?.portalStatus || null);
+    setRequirements(Array.isArray(data?.customer?.documentRequirements) ? data.customer.documentRequirements : []);
+    setTemplates(Array.isArray(data?.customer?.templates) ? data.customer.templates : []);
+    setTimeline(Array.isArray(data?.customer?.timeline) ? data.customer.timeline : []);
     const serverDocs = Array.isArray(data?.customer?.documents) ? data.customer.documents : [];
     setDocs((prev) => (serverDocs.length ? serverDocs : prev));
   }, [token]);
@@ -56,7 +72,7 @@ export function PublicUploadForm({ token }) {
         method: "POST",
         credentials: "include",
       });
-      const data = await res.json().catch(() => ({}));
+      const data = await parseJsonResponseSafe(res);
       if (!res.ok) {
         setStatus(data.error || "Could not send code.");
         setOtpBusy(false);
@@ -80,7 +96,7 @@ export function PublicUploadForm({ token }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ code: otpCode.replace(/\D/g, "") }),
       });
-      const data = await res.json().catch(() => ({}));
+      const data = await parseJsonResponseSafe(res);
       if (!res.ok) {
         setStatus(data.error || "Verification failed.");
         setOtpBusy(false);
@@ -106,9 +122,12 @@ export function PublicUploadForm({ token }) {
     setLoading(true);
     try {
       const fd = new FormData();
+      if (selectedRequirement) {
+        fd.append("requirementId", selectedRequirement);
+      }
       Array.from(list).forEach((file) => fd.append("files", file));
       const res = await fetch(`/api/upload/${token}`, { method: "POST", body: fd, credentials: "include" });
-      const data = await res.json().catch(() => ({}));
+      const data = await parseJsonResponseSafe(res);
       if (res.status === 401 || res.status === 403 || res.status === 410) {
         setStatus(data.error || "Upload blocked.");
         if (res.status === 410) setGate("expired");
@@ -227,6 +246,40 @@ export function PublicUploadForm({ token }) {
         Drag and drop files here, or choose below. PDFs and images only — up to 15&nbsp;MB per file, up to 20 files
         at once. This link expires 72 hours after it was issued unless your agent sends a new one.
       </p>
+      {templates.length ? (
+        <div className="rounded-md border border-slate-200 bg-slate-50 p-3 text-sm text-slate-700">
+          <p className="font-semibold">Document templates and guides</p>
+          <ul className="mt-2 list-disc space-y-1 pl-5">
+            {templates.map((item) => (
+              <li key={item.id}>
+                <a className="underline" href={item.href} target="_blank" rel="noreferrer">
+                  {item.title}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
+      {requirements.length ? (
+        <div className="rounded-md border border-slate-200 bg-white p-3 text-sm text-slate-700">
+          <p className="font-semibold">Document checklist</p>
+          <ul className="mt-2 space-y-2">
+            {requirements.map((item) => (
+              <li key={item.id} className="flex items-start justify-between gap-3 border-b border-slate-100 pb-2 last:border-b-0">
+                <div>
+                  <p className="font-medium text-slate-900">
+                    {item.title} {item.required ? <span className="text-rose-600">*</span> : null}
+                  </p>
+                  {item.notes ? <p className="text-xs text-slate-500">{item.notes}</p> : null}
+                </div>
+                <span className="rounded-full bg-slate-100 px-2 py-1 text-[11px] font-semibold uppercase tracking-wide">
+                  {item.status || "pending"}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
       {portalStatus ? (
         <div className="rounded-md border border-emerald-200 bg-emerald-50 p-3 text-sm text-slate-800">
           <p className="font-semibold text-emerald-900">Visa application status: {portalStatus.status}</p>
@@ -235,6 +288,21 @@ export function PublicUploadForm({ token }) {
           {portalStatus.note ? <p className="mt-1">{portalStatus.note}</p> : null}
         </div>
       ) : null}
+      <label className="block text-sm font-medium text-slate-700">
+        Document category
+        <select
+          value={selectedRequirement}
+          onChange={(event) => setSelectedRequirement(event.target.value)}
+          className="mt-2 block w-full rounded border border-slate-300 px-3 py-2 text-sm text-slate-900"
+        >
+          <option value="">General document</option>
+          {requirements.map((item) => (
+            <option key={item.id} value={item.id}>
+              {item.title}
+            </option>
+          ))}
+        </select>
+      </label>
       <label className="block text-sm font-medium text-slate-700">
         PDF or images (max 15MB each, max 20 files)
         <input
@@ -277,6 +345,20 @@ export function PublicUploadForm({ token }) {
           </ul>
         )}
       </div>
+      {timeline.length ? (
+        <div className="rounded-md bg-slate-50 p-3 text-sm text-slate-700">
+          <p className="font-semibold">Recent timeline</p>
+          <ul className="mt-2 space-y-2">
+            {timeline.slice(0, 10).map((item, index) => (
+              <li key={`${item.at}-${index}`} className="border-l-2 border-slate-200 pl-3">
+                <p className="text-xs uppercase tracking-wide text-slate-500">{item.action}</p>
+                <p>{item.detail || "Status update"}</p>
+                {item.at ? <p className="text-xs text-slate-500">{new Date(item.at).toLocaleString()}</p> : null}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
     </form>
   );
 }

@@ -4,7 +4,19 @@
  * Renders a normal <img> for paths under /public (e.g. /images/...).
  * Use this instead of next/image for local SVGs/JPEGs so the browser loads the URL directly.
  */
-export function PublicFileImg({ src, alt = "", width, height, className, priority }) {
+export function PublicFileImg({
+  src,
+  alt = "",
+  width,
+  height,
+  className,
+  priority = false,
+  sizes,
+  fetchPriority,
+  decoding,
+}) {
+  const resolvedFetchPriority = fetchPriority || (priority ? "high" : "auto");
+  const resolvedDecoding = decoding || (priority ? "sync" : "async");
   return (
     <img
       src={src}
@@ -13,8 +25,9 @@ export function PublicFileImg({ src, alt = "", width, height, className, priorit
       height={height}
       className={className}
       loading={priority ? "eager" : "lazy"}
-      {...(priority ? { fetchPriority: "high" } : {})}
-      decoding="async"
+      fetchPriority={resolvedFetchPriority}
+      decoding={resolvedDecoding}
+      {...(sizes ? { sizes } : {})}
     />
   );
 }

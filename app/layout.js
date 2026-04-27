@@ -1,26 +1,32 @@
 import { Inter, Playfair_Display } from "next/font/google";
+import { headers } from "next/headers";
 import "./globals.css";
 import siteDataStatic from "../data/site.json";
 import { getHomeSiteData } from "../lib/home-site-data";
 import { StructuredData } from "../components/structured-data";
-import { AIConciergeLazy } from "../components/ai-concierge-lazy";
+import { GlobalClientWidgets } from "../components/global-client-widgets";
 import { GoogleAnalytics } from "../components/google-analytics";
 import { businessJsonLd } from "../lib/seo";
+import { ScrollRestorer } from "../components/scroll-restorer";
+import { PWARegister } from "../components/pwa-register";
 
 const siteData = getHomeSiteData(siteDataStatic);
 
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
+  display: "swap",
 });
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
   variable: "--font-display",
+  preload: false,
+  display: "swap",
 });
 
 export const viewport = {
-  themeColor: "#1e1b4b",
+  themeColor: "#fbf8f4",
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
@@ -29,11 +35,11 @@ export const viewport = {
 export const metadata = {
   metadataBase: new URL("https://minroshmigration.com.au"),
   title: {
-    default: "MinRosh Migration",
+    default: "Migration Agent Brisbane | Skilled, Partner & Student Visa Help | MinRosh Migration",
     template: "%s | MinRosh Migration",
   },
   description:
-    "Brisbane-based migration guidance for skilled migration, partner visas, student visas, and employer-sponsored pathways.",
+    "Migration Agent in Australia for skilled migration, partner visas, student visas, and employer-sponsored pathways.",
   keywords: [
     "MinRosh Migration",
     "Australian migration guidance",
@@ -42,14 +48,14 @@ export const metadata = {
   openGraph: {
     title: "MinRosh Migration",
     description:
-      "Brisbane-based migration guidance for skilled migration, student visas, partner visas, and employer-sponsored pathways.",
+      "Migration Agent in Australia for skilled migration, student visas, partner visas, and employer-sponsored pathways.",
     url: "https://minroshmigration.com.au",
     siteName: "MinRosh Migration",
     locale: "en_AU",
     type: "website",
     images: [
       {
-        url: "/images/hero-sydney-real.jpg",
+        url: "/images/hero-sydney-real.v2.webp",
         width: 1800,
         height: 1200,
         alt: "Sydney Harbour with ferries on the water and the Opera House",
@@ -61,7 +67,7 @@ export const metadata = {
     title: "Migration Agent Brisbane | MinRosh Migration",
     description:
       "Expert visa help in Brisbane for skilled migration, partner visas, student visas, and employer-sponsored pathways.",
-    images: ["/images/hero-sydney-real.jpg"],
+    images: ["/images/hero-sydney-real.v2.webp"],
   },
   robots: {
     index: true,
@@ -71,23 +77,35 @@ export const metadata = {
     canonical: "/",
   },
   icons: {
-    icon: "/images/minrosh-logo.jpg",
-    shortcut: "/images/minrosh-logo.jpg",
-    apple: "/images/minrosh-logo.jpg",
+    icon: "/images/minrosh-logo.v2.webp",
+    shortcut: "/images/minrosh-logo.v2.webp",
+    apple: "/images/minrosh-logo.v2.webp",
   },
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  const h = await headers();
+  const nonce = String(h.get("x-csp-nonce") || "").trim();
+  const publicSiteData = {
+    ...siteData,
+    brand: {
+      ...siteData.brand,
+      email: "",
+    },
+  };
+
   return (
     <html lang="en-AU">
-      <body className={`${inter.variable} ${playfair.variable}`}>
-        <GoogleAnalytics />
+      <body className={`${inter.variable} ${playfair.variable} immersive-theme`}>
+        <ScrollRestorer />
+        <PWARegister />
+        <GoogleAnalytics nonce={nonce} />
         <a href="#main-content" className="skip-link">
           Skip to content
         </a>
-        <StructuredData data={businessJsonLd(siteData)} />
+        <StructuredData data={businessJsonLd(siteData)} nonce={nonce} />
         {children}
-        <AIConciergeLazy siteData={siteData} />
+        <GlobalClientWidgets siteData={publicSiteData} />
       </body>
     </html>
   );

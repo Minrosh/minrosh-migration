@@ -1,5 +1,9 @@
-import newsData from "../../../data/news.json";
+import { getNewsData } from "@/lib/news-data";
+import { apiOk, requestContextFromRequest } from "@/lib/api/response";
 
-export async function GET() {
-  return Response.json(newsData);
+export const dynamic = "force-dynamic";
+
+export async function GET(request) {
+  const context = requestContextFromRequest(request);
+  return apiOk(getNewsData(), context);
 }

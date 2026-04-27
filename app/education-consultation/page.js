@@ -4,6 +4,21 @@ import { SiteShell } from "../../components/site-shell";
 import { StructuredData } from "../../components/structured-data";
 import { buildMetadata, breadcrumbJsonLd, faqJsonLd } from "../../lib/seo";
 
+const educationOfficialResources = [
+  {
+    label: "Department of Home Affairs — visa listing",
+    href: "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing",
+  },
+  {
+    label: "Department of Home Affairs — Visa Finder (study)",
+    href: "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-finder/study",
+  },
+  {
+    label: "Studying in Australia (Home Affairs)",
+    href: "https://immi.homeaffairs.gov.au/visas/studying",
+  },
+];
+
 const faq = [
   {
     question: "What is education consultation in a migration context?",
@@ -42,11 +57,13 @@ export default function EducationConsultationPage() {
       <ContentPage
         eyebrow="Education Consultation"
         title="Education consultation for students planning study with long-term direction"
-        intro="MinRosh Migration supports students and families who need more than just a course list. We help connect study plans, student visa timing, financial preparation, and future migration thinking into one clearer pathway."
+        intro="MinRosh Migration supports students and families who need more than just a course list. We help connect study plans, student visa timing, financial preparation, and future migration thinking into one clearer pathway. Student visa criteria and charges are published on the Department of Home Affairs visa listing — always confirm the official subclass page before you commit to an intake."
         breadcrumbs={[
           { href: "/", label: "Home" },
           { href: "/education-consultation", label: "Education Consultation" },
         ]}
+        officialResources={educationOfficialResources}
+        currentPath="/education-consultation"
         sections={[
           {
             title: "What education consultation usually covers",
@@ -87,6 +104,10 @@ export default function EducationConsultationPage() {
               "English test status and target intake period",
               "Budget range and preferred destination options",
             ],
+          },
+          {
+            title: "Using the official visa catalogue with course planning",
+            body: "Course marketing materials are not the same as visa criteria. Use the visa listing to open the student visa subclass page relevant to you, note financial and English evidence themes, then compare institution offers against those realities. MinRosh helps you translate official requirements into a practical document and timing plan.",
           },
         ]}
         faq={faq}

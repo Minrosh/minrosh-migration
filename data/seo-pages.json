@@ -3,14 +3,41 @@
     "skilledMigration": {
       "path": "/skilled-migration",
       "title": "Skilled Migration Australia",
-      "metaTitle": "Skilled Migration Australia | 189, 190 & 491 Guidance | MinRosh",
-      "metaDescription": "Explore skilled migration Australia options including subclass 189, 190, and 491 pathways with Brisbane-based guidance on points, EOI strategy, nomination, and supporting evidence.",
-      "headline": "Skilled Migration Australia guidance for 189, 190, and 491 pathways",
-      "intro": "Australia offers strong long-term opportunities for skilled workers, but the migration process can feel unclear without a proper strategy. At MinRosh Migration, we help applicants understand skilled migration Australia pathways with a focus on timing, points competitiveness, occupation fit, and the quality of their supporting documents before they make big decisions. Always confirm eligibility, visa charges, and document rules on the Department of Home Affairs website, because immigration law and policy change over time.",
+      "metaTitle": "Skilled Migration Australia (189/190/491) | Brisbane Consultation | MinRosh",
+      "metaDescription": "Need help with subclass 189, 190, or 491? Get Brisbane-based skilled migration guidance on points, EOI strategy, state nomination, and document readiness before lodgement.",
+      "keywords": [
+        "skilled migration Australia",
+        "subclass 189 visa",
+        "subclass 190 visa",
+        "subclass 491 visa",
+        "190 visa guidance",
+        "491 visa help",
+        "65 points Australia",
+        "SkillSelect help",
+        "EOI strategy",
+        "EOI SkillSelect guidance",
+        "state nomination Australia",
+        "skilled visa consultation Brisbane",
+        "189 visa Australia",
+        "190 visa Australia",
+        "491 visa Australia",
+        "Australia points test",
+        "SkillSelect EOI"
+      ],
+      "headline": "Skilled Migration Australia (189/190/491) with practical strategy before you lodge",
+      "intro": "If you are planning for subclass 189, 190, or 491, the key question is competitiveness, not just eligibility. MinRosh helps you assess points strength, occupation fit, nomination options, and document readiness so you can avoid costly sequencing mistakes. Always confirm legal requirements and current settings on the Department of Home Affairs website.",
       "officialResources": [
         {
-          "label": "Department of Home Affairs — visa listing",
+          "label": "Department of Home Affairs \u2014 visa listing",
           "href": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing"
+        },
+        {
+          "label": "Department of Home Affairs \u2014 Visa Finder",
+          "href": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-finder"
+        },
+        {
+          "label": "SkillSelect / working in Australia",
+          "href": "https://immi.homeaffairs.gov.au/visas/working-in-australia/skillselect"
         }
       ],
       "sections": [
@@ -54,7 +81,7 @@
           "body": "Subclass 190 and subclass 491 often depend on state or territory nomination programs. Each jurisdiction publishes its own lists, criteria, and application workflows. Regional pathways can add points and open new options, but they also come with residence and compliance obligations that should be understood before you commit.",
           "bullets": [
             "Compare multiple states where your occupation may be eligible",
-            "Read each program’s minimum points, work requirements, and commitment rules",
+            "Read each program\u2019s minimum points, work requirements, and commitment rules",
             "Plan how nomination timing interacts with English tests and skills assessment expiry"
           ]
         },
@@ -79,6 +106,19 @@
         {
           "title": "Book a consultation for skilled migration planning",
           "body": "If you want a clearer view of your skilled migration pathway, start with a focused consultation. We can help you understand your points position, likely competitiveness, and the most practical next steps before you commit time and money to the wrong strategy."
+        },
+        {
+          "title": "Using the official visa list and Visa Finder alongside skilled planning",
+          "body": "Subclass numbers (189, 190, 491, and others) are best confirmed on the Department of Home Affairs visa listing, where descriptions and legislative references are kept current. The Visa Finder is useful when you are still comparing broad intentions (for example work versus study) and want a structured starting point. Neither tool replaces reading the specific visa page, checking instrument settings, and aligning your evidence with the pathway you intend to pursue.",
+          "bullets": [
+            "Use the visa listing to confirm the correct subclass and official criteria wording",
+            "Use Visa Finder for early orientation, then drill into the subclass that matches your facts",
+            "Cross-check lists, ceilings, and nomination settings whenever policy dates change"
+          ]
+        },
+        {
+          "title": "Common sequencing mistakes skilled applicants make",
+          "body": "Many delays come from booking English tests or skills assessments without aligning expiry dates to invitation timing, or from lodging an EOI before occupation and ANZSCO positioning are stable. Another frequent issue is assuming state nomination rules from outdated forum posts instead of each state\u2019s current program pages. MinRosh helps you sequence tests, assessments, and forms so your strongest evidence is still valid when a decision-maker needs it."
         }
       ],
       "faq": [
@@ -93,9 +133,21 @@
         {
           "question": "Do I need a skills assessment before lodging an EOI?",
           "answer": "In many skilled pathways, a positive skills assessment is a key requirement before your profile can move forward properly. The exact timing depends on the pathway and occupation."
+        },
+        {
+          "question": "Where can I verify skilled visa subclasses and criteria in Australia?",
+          "answer": "Always use the Department of Home Affairs visa listing and the specific subclass page for authoritative criteria. The Visa Finder can help narrow options, but final eligibility depends on your facts and current law and policy settings."
+        },
+        {
+          "question": "Should I use Visa Finder instead of reading the visa listing?",
+          "answer": "They work together. Visa Finder is helpful for orientation when you are unsure which stream fits. The visa listing and each subclass page are where you should confirm definitions, fees, and legal requirements before lodging."
         }
       ],
       "relatedGuides": [
+        {
+          "title": "Australian visas: official sources hub",
+          "href": "/australian-visas-official-sources"
+        },
         {
           "title": "Skilled migration Australia points guide",
           "href": "/skilled-migration-australia-points-guide"
@@ -109,10 +161,38 @@
     "partnerVisa": {
       "path": "/partner-visa-australia",
       "title": "Partner Visa Australia",
-      "metaTitle": "Partner Visa Australia | Partner Visa Guidance | MinRosh",
-      "metaDescription": "Get clear guidance on Partner Visa Australia applications, including eligibility, relationship evidence, application stages, timelines, and common refusal risks.",
-      "headline": "Partner Visa Australia guidance with clearer evidence planning",
-      "intro": "Applying for a partner visa in Australia can be complex, but the right guidance can significantly improve the quality of your application. At MinRosh Migration, we help couples understand the partner visa process, organise relationship evidence, and move forward with more confidence and less confusion.",
+      "metaTitle": "Partner Visa Australia | 820/801 & 309/100 Guidance | MinRosh",
+      "metaDescription": "Prepare a stronger partner visa application with clear evidence planning, eligibility checks, and refusal-risk reduction for onshore and offshore pathways.",
+      "keywords": [
+        "partner visa Australia",
+        "820 801 partner visa",
+        "820 visa help",
+        "801 partner visa documents",
+        "309 100 partner visa",
+        "309 visa Australia",
+        "100 visa stage 2",
+        "partner visa evidence checklist",
+        "partner visa consultation Brisbane",
+        "820 visa Australia",
+        "801 visa Australia",
+        "100 visa Australia"
+      ],
+      "headline": "Partner Visa Australia guidance with stronger evidence strategy",
+      "intro": "Preparing a partner visa is mostly about evidence quality and consistency. MinRosh helps couples structure relationship evidence, reduce refusal-risk gaps, and submit a clearer onshore or offshore application with less rework. Partner subclasses (such as 820/801 onshore or 309/100 offshore) are listed on the Department of Home Affairs visa listing\u2014always confirm current criteria and forms there before you lodge.",
+      "officialResources": [
+        {
+          "label": "Department of Home Affairs \u2014 visa listing",
+          "href": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing"
+        },
+        {
+          "label": "Department of Home Affairs \u2014 Visa Finder (family)",
+          "href": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-finder/join-family"
+        },
+        {
+          "label": "ImmiAccount",
+          "href": "https://immi.homeaffairs.gov.au/help-support/applying-online-or-on-paper/online"
+        }
+      ],
       "sections": [
         {
           "title": "What is a Partner Visa?",
@@ -130,6 +210,18 @@
         {
           "title": "Partner visa process",
           "body": "A typical process often includes collecting identity and relationship documents, preparing written statements, lodging the application, completing health and character requirements, and responding to any follow-up requests. Planning these steps properly can reduce stress and help avoid common documentation mistakes."
+        },
+        {
+          "title": "Health, character, and identity in partner pathways",
+          "body": "Most applicants will need to complete health examinations and police clearances as required, and to keep identity documents consistent across every form and upload. Timing matters: delays in health or police certificates can extend processing even when relationship evidence is strong. Always follow the current checklist published for your subclass on the Department of Home Affairs website."
+        },
+        {
+          "title": "Onshore (820/801) versus offshore (309/100) in plain language",
+          "body": "The right pathway depends on where the applicant is when they apply, visa status if already in Australia, and how evidence is best gathered. Onshore and offshore streams share similar relationship themes but differ in practical sequencing, bridging considerations, and how travel history is explained. MinRosh maps your facts to the pathway that fits and helps you avoid mixing requirements from different subclasses."
+        },
+        {
+          "title": "How the official visa list fits partner planning",
+          "body": "The Home Affairs visa listing groups partner and family-related subclasses with their official descriptions. Use it to confirm you are reading the correct visa page, then use ImmiAccount workflows for the forms that apply to your subclass. Third-party summaries go out of date quickly when forms or evidence requirements change."
         },
         {
           "title": "Why choose our migration agents?",
@@ -157,22 +249,69 @@
         {
           "question": "What documents do I need?",
           "answer": "You will usually need identity documents, relationship evidence, financial records, and supporting statements that clearly explain the history and nature of the relationship."
+        },
+        {
+          "question": "How do I confirm I am applying for the correct partner visa subclass?",
+          "answer": "Check the Department of Home Affairs visa listing for partner visas, read the specific subclass page for your situation, and use Visa Finder if you are unsure whether family migration is the right stream compared with other options."
+        },
+        {
+          "question": "Can poor health or character history affect a partner visa?",
+          "answer": "Health and character requirements apply to most partner pathways. Outcomes depend on individual circumstances and current migration health and character policy. Always obtain current official guidance and professional advice tailored to your case."
+        },
+        {
+          "question": "Should we write long statements or focus on documents?",
+          "answer": "Both matter. Statements should explain gaps and context, while documents should corroborate timelines, finances, and social recognition. Inconsistent dates between statements and records are a common weakness."
         }
       ],
       "relatedGuides": [
         {
+          "title": "Australian visas: official sources hub",
+          "href": "/australian-visas-official-sources"
+        },
+        {
           "title": "How to apply for a partner visa in Australia",
           "href": "/partner-visa-australia-guide"
+        },
+        {
+          "title": "820/801 onshore partner visa guide",
+          "href": "/partner-visa-820-801-guide"
+        },
+        {
+          "title": "309/100 offshore partner visa guide",
+          "href": "/partner-visa-309-100-guide"
         }
       ]
     },
     "studentVisa": {
       "path": "/student-visa-australia",
       "title": "Student Visa Australia",
-      "metaTitle": "Student Visa Australia | Study Visa Guidance | MinRosh",
-      "metaDescription": "Understand student visa Australia requirements including CoE, financial capacity, English readiness, processing context, and long-term migration planning.",
-      "headline": "Student Visa Australia guidance with long-term planning in mind",
-      "intro": "Planning to study in Australia is exciting, but student visa preparation still needs a careful and well-organised approach. MinRosh Migration helps students understand what documents matter, what the application process usually involves, and how study decisions may connect to longer-term migration goals.",
+      "metaTitle": "Student Visa Australia | CoE, Financials & Compliance Help | MinRosh",
+      "metaDescription": "Get practical student visa guidance on CoE, financial capacity, supporting documents, and compliant study-to-migration planning.",
+      "keywords": [
+        "student visa Australia",
+        "subclass 500 visa guidance",
+        "student visa Australia 500",
+        "CoE student visa Australia",
+        "CoE visa requirements",
+        "financial capacity student visa",
+        "student visa consultation Brisbane"
+      ],
+      "headline": "Student Visa Australia guidance for compliant study and clearer next steps",
+      "intro": "Student visa success depends on clean documentation, realistic financial evidence, and strong compliance planning. MinRosh helps you prepare your application properly while keeping future pathway options in view. Subclass 500 and related study settings are published on the Department of Home Affairs visa listing\u2014verify course, CoE, and financial requirements there as well as in your institution\u2019s instructions.",
+      "officialResources": [
+        {
+          "label": "Department of Home Affairs \u2014 visa listing",
+          "href": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing"
+        },
+        {
+          "label": "Department of Home Affairs \u2014 Visa Finder (study)",
+          "href": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-finder/study"
+        },
+        {
+          "label": "Studying in Australia (Home Affairs)",
+          "href": "https://immi.homeaffairs.gov.au/visas/studying"
+        }
+      ],
       "sections": [
         {
           "title": "Student visa requirements",
@@ -199,6 +338,14 @@
         {
           "title": "Start your journey today",
           "body": "If you want clearer guidance on your student visa pathway, a consultation can help you understand the next practical steps and the documents you should prioritise first."
+        },
+        {
+          "title": "Genuine student, course changes, and compliance",
+          "body": "Decision-makers assess whether study in Australia is a genuine primary purpose and whether your circumstances align with your CoE and education provider records. Course changes, deferrals, and reduced study loads can have visa implications. Plan with both your institution\u2019s rules and your visa conditions in view, and keep a clear paper trail for any change in enrolment or address."
+        },
+        {
+          "title": "Linking study to longer-term migration goals",
+          "body": "Many students also explore skilled or employer-sponsored pathways later. Those pathways have separate eligibility rules and should not be assumed from enrolment alone. Use the official visa listing to understand what each future subclass requires, and treat study as a compliance-first chapter with optional migration upside rather than the reverse."
         }
       ],
       "faq": [
@@ -213,9 +360,21 @@
         {
           "question": "Can I work while studying?",
           "answer": "Student visa holders can usually work within the visa conditions that apply to them, but the exact limits and requirements should always be checked carefully."
+        },
+        {
+          "question": "Where should I verify subclass 500 requirements?",
+          "answer": "Use the Department of Home Affairs visa listing and the student visa (subclass 500) page for authoritative criteria, then align your documents with your Confirmation of Enrolment and financial evidence expectations."
+        },
+        {
+          "question": "Is Visa Finder enough to choose a course or provider?",
+          "answer": "Visa Finder helps orient you toward study-related visa options. Course choice, provider quality, and CoE details still require your own research and compliance with student visa rules."
         }
       ],
       "relatedGuides": [
+        {
+          "title": "Australian visas: official sources hub",
+          "href": "/australian-visas-official-sources"
+        },
         {
           "title": "Student visa Australia requirements explained",
           "href": "/student-visa-australia-requirements"
@@ -225,30 +384,69 @@
     "bookConsultation": {
       "path": "/book-consultation",
       "title": "Book a Consultation",
-      "metaTitle": "Book a Consultation with a Registered Migration Agent | MinRosh",
-      "metaDescription": "Book a consultation with MinRosh Migration to discuss skilled migration, partner visas, student visas, and your next best Australian visa options.",
-      "headline": "Book a Consultation with a Registered Migration Agent",
-      "intro": "If you want advice tailored to your own background, a consultation is the best place to start. MinRosh Migration helps you understand your options, avoid costly mistakes, and move forward with a clearer action plan. Consultations are usually scheduled during business hours (AEST); we confirm details by email or phone after you enquire."
+      "metaTitle": "Book Migration Consultation | Registered Agent Brisbane | MinRosh",
+      "metaDescription": "Book a migration consultation to review your visa options, risks, and next steps across skilled, partner, student, and employer-sponsored pathways.",
+      "keywords": [
+        "book migration consultation",
+        "visa consultation Brisbane",
+        "migration consultation Australia",
+        "registered migration agent consultation"
+      ],
+      "headline": "Book a consultation and get a clearer visa action plan",
+      "intro": "A consultation gives you case-specific guidance on pathway fit, evidence gaps, and practical next steps before you commit to the wrong process. We confirm consultation times during business hours (AEST) by email or phone after your enquiry. Before you book, you may wish to browse the Department of Home Affairs visa listing or Visa Finder so your questions are grounded in the subclasses that might apply to you\u2014we will still help you interpret options against your facts.",
+      "officialResources": [
+        {
+          "label": "Department of Home Affairs \u2014 visa listing",
+          "href": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing"
+        },
+        {
+          "label": "Department of Home Affairs \u2014 Visa Finder",
+          "href": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-finder"
+        }
+      ]
     },
     "contact": {
       "path": "/contact",
       "title": "Contact MinRosh Migration",
-      "metaTitle": "Contact MinRosh Migration | Brisbane Visa Consultation",
-      "metaDescription": "Contact MinRosh Migration for Brisbane-based guidance on skilled migration, student visas, partner visas, and employer-sponsored pathways.",
-      "headline": "Contact MinRosh Migration for Brisbane-based visa guidance",
-      "intro": "If you need a clearer view of your visa options, start with a focused enquiry. MinRosh Migration supports clients in Brisbane and across Australia — including many skilled professionals from Sri Lanka — with structured migration guidance and practical next steps."
+      "metaTitle": "Contact Migration Agent Brisbane | MinRosh Migration",
+      "metaDescription": "Contact MinRosh for migration guidance in Brisbane and across Australia. Ask about skilled, partner, student, and employer-sponsored visa pathways.",
+      "keywords": [
+        "migration agent Brisbane",
+        "contact migration agent",
+        "Brisbane migration consultation",
+        "minrosh migration",
+        "immigration consultant Australia",
+        "Australian visa consultant",
+        "best migration agent Australia"
+      ],
+      "headline": "Contact MinRosh for Brisbane-based migration guidance",
+      "intro": "Send a focused enquiry if you want clear next steps on skilled, partner, student, employer-sponsored, or visitor pathways. We support clients in Brisbane and across Australia with practical planning before lodgement. For general orientation on which visa stream might match your situation, the Department of Home Affairs Visa Finder and visa listing are useful first stops\u2014then we can help you stress-test eligibility and sequencing.",
+      "officialResources": [
+        {
+          "label": "Department of Home Affairs \u2014 visa listing",
+          "href": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing"
+        },
+        {
+          "label": "Department of Home Affairs \u2014 Visa Finder",
+          "href": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-finder"
+        }
+      ]
     },
     "sriLankaMigration": {
       "path": "/migration-sri-lanka-to-australia",
       "title": "Migration from Sri Lanka to Australia",
       "metaTitle": "Migration from Sri Lanka to Australia | Skilled PR Pathways | MinRosh",
       "metaDescription": "Plan Australian skilled migration, PR, and study pathways from Sri Lanka with Brisbane-based MARA-registered guidance. Points, skills assessment, and realistic next steps explained in plain English.",
-      "headline": "Migration from Sri Lanka to Australia — skilled, study, and family pathways",
-      "intro": "Many Sri Lankan professionals explore Australian permanent residence through skilled points-tested visas (subclasses 189, 190, and 491), employer-sponsored routes where eligible, or study pathways that align with longer-term goals. Rules, lists, and thresholds change — always verify eligibility on the Department of Home Affairs website. MinRosh Migration helps you sequence skills assessment, English testing, Expression of Interest strategy, and nomination planning so you avoid costly mistakes.",
+      "headline": "Migration from Sri Lanka to Australia \u2014 skilled, study, and family pathways",
+      "intro": "Many Sri Lankan professionals explore Australian permanent residence through skilled points-tested visas (subclasses 189, 190, and 491), employer-sponsored routes where eligible, or study pathways that align with longer-term goals. Rules, lists, and thresholds change \u2014 always verify eligibility on the Department of Home Affairs website. MinRosh Migration helps you sequence skills assessment, English testing, Expression of Interest strategy, and nomination planning so you avoid costly mistakes.",
       "officialResources": [
         {
-          "label": "Department of Home Affairs — visa listing",
+          "label": "Department of Home Affairs \u2014 visa listing",
           "href": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing"
+        },
+        {
+          "label": "Department of Home Affairs \u2014 Visa Finder",
+          "href": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-finder"
         },
         {
           "label": "SkillSelect / EOI information",
@@ -258,7 +456,7 @@
       "sections": [
         {
           "title": "Why Sri Lankan applicants focus on skilled migration",
-          "body": "Strong English-educated professionals, ICT, engineering, healthcare, and trades skills often map well to Australian skilled lists when aligned with ANZSCO and a positive skills assessment. The challenge is rarely “whether a pathway exists” — it is whether your profile is competitive for invitation rounds, state nomination, or employer-sponsored streams that fit your timing.",
+          "body": "Strong English-educated professionals, ICT, engineering, healthcare, and trades skills often map well to Australian skilled lists when aligned with ANZSCO and a positive skills assessment. The challenge is rarely \u201cwhether a pathway exists\u201d \u2014 it is whether your profile is competitive for invitation rounds, state nomination, or employer-sponsored streams that fit your timing.",
           "bullets": [
             "Clarify the right ANZSCO code and assessing authority before you invest in tests",
             "Treat 65 points as a legal minimum, not a guarantee of invitation",
@@ -267,7 +465,7 @@
         },
         {
           "title": "Typical sequence from Sri Lanka or offshore",
-          "body": "Most skilled routes start with occupation choice, skills assessment evidence, English scores, then EOI submission where applicable. If you are already in Australia on another visa, sequencing can differ — but consistency across employment references, tax documents, and forms always matters.",
+          "body": "Most skilled routes start with occupation choice, skills assessment evidence, English scores, then EOI submission where applicable. If you are already in Australia on another visa, sequencing can differ \u2014 but consistency across employment references, tax documents, and forms always matters.",
           "bullets": [
             "Gather qualification and employment evidence that matches nominated duties",
             "Compare 189 independent, 190 state, and 491 regional nomination realistically",
@@ -276,21 +474,25 @@
         },
         {
           "title": "Study pathways and graduate routes",
-          "body": "Some clients strengthen their profile through Australian study, but course choice should align with visa conditions, genuine student requirements, and any longer-term migration goals. This is not a shortcut — it is a structured plan with compliance obligations.",
+          "body": "Some clients strengthen their profile through Australian study, but course choice should align with visa conditions, genuine student requirements, and any longer-term migration goals. This is not a shortcut \u2014 it is a structured plan with compliance obligations.",
           "bullets": [
-            "Separate “popular courses” from pathways that match your occupation story",
+            "Separate \u201cpopular courses\u201d from pathways that match your occupation story",
             "Understand work limits and course attendance conditions before you commit",
             "Book an education consultation if study is part of your strategy"
           ]
         },
         {
           "title": "How MinRosh Migration can help",
-          "body": "MinRosh provides registered migration guidance from Brisbane for clients across Australia and offshore. We focus on plain-language strategy, document consistency, and next-step sequencing rather than generic promises.",
+          "body": "MinRosh provides Migration Agent in Australia guidance for clients across Australia and offshore. We focus on plain-language strategy, document consistency, and next-step sequencing rather than generic promises.",
           "bullets": [
             "Skilled points and nomination positioning",
             "Employer-sponsored and Skills in Demand context where relevant",
             "Partner, student, and complex case triage"
           ]
+        },
+        {
+          "title": "Family and visitor options from Sri Lanka",
+          "body": "Not every goal is skilled PR on the first application. Some families explore partner or parent pathways where eligible, or short-term visitor visas for specific purposes. Each subclass on the Home Affairs visa listing has different evidence and risk profiles. MinRosh helps you compare realistic sequences rather than assuming one headline pathway fits everyone."
         }
       ],
       "faq": [
@@ -305,9 +507,17 @@
         {
           "question": "Do I need a migration agent?",
           "answer": "You are not required to use an agent, but professional guidance can reduce errors in occupation choice, evidence, and sequencing. Always choose a registered migration agent listed on OMARA if you seek regulated advice."
+        },
+        {
+          "question": "How do I check which Australian visa subclasses exist for my goal?",
+          "answer": "Start with the Department of Home Affairs visa listing and Visa Finder, then read the specific subclass pages for criteria that match your education, work history, and family situation."
         }
       ],
       "relatedGuides": [
+        {
+          "title": "Australian visas: official sources hub",
+          "href": "/australian-visas-official-sources"
+        },
         {
           "title": "Skilled migration Australia points guide",
           "href": "/skilled-migration-australia-points-guide"
@@ -326,19 +536,35 @@
       "keywords": [
         "employer sponsored visa Australia",
         "Skills in Demand visa Australia",
+        "SID visa Australia",
         "TSMIT Australia",
         "482 visa guidance",
-        "186 visa consultation Brisbane"
+        "186 visa consultation Brisbane",
+        "482 visa Australia"
       ],
       "eyebrow": "Employer-Sponsored Visas",
-      "headline": "Employer-sponsored visa guidance with clearer worker-side strategy",
-      "intro": "Employer sponsorship can be a practical pathway for some applicants, especially where direct PR is not the strongest immediate route. MinRosh helps workers understand whether sponsorship is realistic, what to prepare first, and how it fits into the bigger migration strategy.",
+      "headline": "Employer-sponsored visa guidance with realistic worker-side planning",
+      "intro": "If you are exploring employer sponsorship, timing and role-fit matter as much as eligibility. MinRosh helps you assess whether sponsorship is realistic, what to prepare first, and how it compares with other visa pathways.",
       "alertBanner": {
         "title": "TSMIT and Skills in Demand (SID)",
-        "body": "The Temporary Skilled Migration Income Threshold (TSMIT) is updated over time (including typical indexation from 1 July each financial year). Sponsored roles must meet the threshold and Skills in Demand settings that apply when the nomination is assessed — figures in blog posts or forums go out of date quickly. Always confirm the current TSMIT, occupation list, and stream (Specialist / Core / Essential) on the Department of Home Affairs website before you rely on any number.",
+        "body": "The Temporary Skilled Migration Income Threshold (TSMIT) is updated over time (including typical indexation from 1 July each financial year). Sponsored roles must meet the threshold and Skills in Demand settings that apply when the nomination is assessed \u2014 figures in blog posts or forums go out of date quickly. Always confirm the current TSMIT, occupation list, and stream (Specialist / Core / Essential) on the Department of Home Affairs website before you rely on any number.",
         "href": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing",
         "linkLabel": "Department of Home Affairs visa listing"
       },
+      "officialResources": [
+        {
+          "label": "Department of Home Affairs \u2014 visa listing",
+          "href": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing"
+        },
+        {
+          "label": "Department of Home Affairs \u2014 Visa Finder (work)",
+          "href": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-finder/work"
+        },
+        {
+          "label": "Working in Australia (Home Affairs)",
+          "href": "https://immi.homeaffairs.gov.au/visas/working-in-australia"
+        }
+      ],
       "sections": [
         {
           "title": "How employer-sponsored visas usually work",
@@ -361,12 +587,47 @@
         {
           "title": "When a consultation makes sense",
           "body": "A consultation is useful if you already have an employer conversation underway, if your skilled points profile is not yet strong enough for direct PR, or if you need help understanding whether sponsorship is a realistic path at all."
+        },
+        {
+          "title": "How employer-sponsored subclasses appear on the official visa list",
+          "body": "Australia publishes employer-sponsored and temporary work-related subclasses alongside other streams on the same visa listing. Names and legislative bases can change over time, so treat subclass numbers and official descriptions as the source of truth. MinRosh helps workers interpret sponsorship conversations against the subclass that actually applies, including nomination, visa application, and condition issues that sit outside HR\u2019s control."
+        },
+        {
+          "title": "Worker-side evidence that often matters",
+          "body": "Beyond the sponsorship itself, decision-makers still assess whether the applicant meets visa criteria such as skills, English, health, and character. Employment history, qualifications, and identity documents should align with the nominated occupation and the employer\u2019s statements. Weak personal evidence can undermine an otherwise willing sponsor."
+        }
+      ],
+      "faq": [
+        {
+          "question": "Does an employer offer guarantee a work visa?",
+          "answer": "No. Sponsorship is only one part of the process. The applicant must still meet visa criteria, and the nomination and visa stages must align with current law and policy settings published by the Department of Home Affairs."
+        },
+        {
+          "question": "Where can I read official descriptions of sponsored visas?",
+          "answer": "Use the Department of Home Affairs visa listing and the specific subclass page for the visa you are considering. Visa Finder can help if you are comparing multiple work-related options."
+        },
+        {
+          "question": "Should I accept a job title that does not match my skills assessment?",
+          "answer": "Occupation alignment is central to many sponsored pathways. A mismatch between nominated duties, ANZSCO positioning, and your evidence can create risk. Seek structured advice before relying on an informal job offer."
         }
       ],
       "related": [
-        { "href": "/skilled-migration", "title": "Skilled Migration" },
-        { "href": "/assessment", "title": "Free Assessment" },
-        { "href": "/contact", "title": "Contact MinRosh" }
+        {
+          "href": "/australian-visas-official-sources",
+          "title": "Australian visas: official sources hub"
+        },
+        {
+          "href": "/skilled-migration",
+          "title": "Skilled Migration"
+        },
+        {
+          "href": "/assessment",
+          "title": "Free Assessment"
+        },
+        {
+          "href": "/contact",
+          "title": "Contact MinRosh"
+        }
       ]
     },
     "visitorVisas": {
@@ -377,11 +638,26 @@
       "keywords": [
         "visitor visa Australia",
         "tourist visa Australia guidance",
+        "tourist visa consultation",
         "visitor visa consultation Brisbane"
       ],
       "eyebrow": "Visitor Visas",
-      "headline": "Visitor visa guidance with stronger document and travel-purpose positioning",
-      "intro": "Visitor visa applications benefit from more than a basic form submission. MinRosh helps applicants understand what documents matter most, how to explain the purpose of travel clearly, and where avoidable refusal risks may exist before they move forward.",
+      "headline": "Visitor visa guidance with clearer travel-purpose and evidence planning",
+      "intro": "Visitor visa outcomes are often shaped by how clearly your travel purpose and supporting documents are presented. MinRosh helps you identify evidence gaps early and prepare a cleaner application strategy. Visitor streams (including subclass 600 family of visas) are described on the Department of Home Affairs visa listing\u2014confirm the stream that matches your purpose before you lodge.",
+      "officialResources": [
+        {
+          "label": "Department of Home Affairs \u2014 visa listing",
+          "href": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing"
+        },
+        {
+          "label": "Department of Home Affairs \u2014 Visa Finder (visit)",
+          "href": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-finder/visit"
+        },
+        {
+          "label": "Visiting Australia (Home Affairs)",
+          "href": "https://immi.homeaffairs.gov.au/visas/visiting"
+        }
+      ],
       "sections": [
         {
           "title": "Visitor visa guidance in practical terms",
@@ -404,12 +680,47 @@
         {
           "title": "When to contact us",
           "body": "A consultation is a good next step if you are concerned about refusal risks, prior visa history, or whether your current documents present a strong enough visitor case."
+        },
+        {
+          "title": "Using Visa Finder for tourism, business visitor, or family visits",
+          "body": "The Visa Finder visit pathway helps narrow which visitor-related option might suit your stated purpose. You should still read the specific visa page on the official listing for funds, stay length, and condition rules. Visitor visas are not a substitute for work rights or long-term migration planning."
+        },
+        {
+          "title": "Prior refusals, long stays, and complex travel history",
+          "body": "If you have prior refusals, long previous stays, or gaps in employment, your application may need a clearer narrative and stronger ties evidence. Generic cover letters rarely fix underlying credibility issues. MinRosh helps you decide what to explain, what to evidence, and when a different pathway may be more realistic."
+        }
+      ],
+      "faq": [
+        {
+          "question": "How much money do I need to show for a visitor visa?",
+          "answer": "There is no single number for every applicant. You should show funds and ties that are credible for your itinerary, stay length, and personal circumstances, consistent with official guidance for the visitor stream you select."
+        },
+        {
+          "question": "Can I use the visa listing to pick tourist versus sponsored family visitor streams?",
+          "answer": "Yes. The visa listing groups visitor subclasses and explains each stream at a high level. Read the stream that matches your situation and confirm requirements on the subclass page before lodging."
+        },
+        {
+          "question": "Will a visitor visa let me work in Australia?",
+          "answer": "Visitor visas are for temporary stays with strict conditions. Work is generally not permitted unless a specific visa and condition set allows it. Always check your grant notice and official condition descriptions."
         }
       ],
       "related": [
-        { "href": "/assessment", "title": "Free Assessment" },
-        { "href": "/book-consultation", "title": "Book Consultation" },
-        { "href": "/contact", "title": "Contact MinRosh" }
+        {
+          "href": "/australian-visas-official-sources",
+          "title": "Australian visas: official sources hub"
+        },
+        {
+          "href": "/assessment",
+          "title": "Free Assessment"
+        },
+        {
+          "href": "/book-consultation",
+          "title": "Book Consultation"
+        },
+        {
+          "href": "/contact",
+          "title": "Contact MinRosh"
+        }
       ]
     },
     "updatesHub": {
@@ -424,18 +735,129 @@
       ],
       "sectionLabel": "Updates Hub",
       "headline": "Official immigration news board for the destination systems MinRosh tracks",
-      "intro": "This updates hub is designed to help clients and prospective applicants monitor official immigration developments while also accessing MinRosh guidance and next steps."
+      "intro": "This updates hub is designed to help clients and prospective applicants monitor official immigration developments while also accessing MinRosh guidance and next steps. For Australia, always cross-check subclass and policy changes against the Department of Home Affairs visa listing and your specific visa page\u2014news summaries are a pointer, not a substitute for primary sources.",
+      "officialResources": [
+        {
+          "label": "Department of Home Affairs \u2014 visa listing",
+          "href": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing"
+        },
+        {
+          "label": "Department of Home Affairs \u2014 Visa Finder",
+          "href": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-finder"
+        }
+      ]
     }
   },
   "guidePages": {
+    "australianVisasOfficialSources": {
+      "path": "/australian-visas-official-sources",
+      "title": "Australian Visas: Official Sources and How to Use Them (2026)",
+      "metaTitle": "Australian Visas Official Sources | Visa Listing & Visa Finder | MinRosh",
+      "metaDescription": "Learn how to use the Department of Home Affairs visa listing and Visa Finder with MinRosh service pages for skilled, partner, student, employer-sponsored, and visitor pathways\u2014without mistaking summaries for law.",
+      "keywords": [
+        "Australian visa list",
+        "Department of Home Affairs visas",
+        "Visa Finder Australia",
+        "subclass visa Australia",
+        "verify visa requirements Australia"
+      ],
+      "headline": "Australian visas: official sources, Visa Finder, and how MinRosh pages fit together",
+      "intro": "Australia publishes its visa subclasses and high-level descriptions on the Department of Home Affairs website. The visa listing is the authoritative catalogue; the Visa Finder helps when you are unsure which stream matches your goal. This hub explains how to use those tools responsibly alongside MinRosh\u2019s pathway pages. It is general information only\u2014always confirm eligibility, fees, and forms on Home Affairs before you lodge.",
+      "published": "2026-04-18",
+      "officialResources": [
+        {
+          "label": "Department of Home Affairs \u2014 visa listing",
+          "href": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing"
+        },
+        {
+          "label": "Department of Home Affairs \u2014 Visa Finder",
+          "href": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-finder"
+        },
+        {
+          "label": "Visa Finder disclaimer (Home Affairs)",
+          "href": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-finder/visa-finder-disclaimer"
+        },
+        {
+          "label": "ImmiAccount",
+          "href": "https://immi.homeaffairs.gov.au/help-support/applying-online-or-on-paper/online"
+        },
+        {
+          "label": "VEVO \u2014 check visa details",
+          "href": "https://immi.homeaffairs.gov.au/visas/already-have-a-visa/check-visa-details-and-conditions"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Why the visa listing matters more than blog tables",
+          "body": "Subclass numbers, visa names, and legislative references change over time. The visa listing on immi.homeaffairs.gov.au is maintained as the primary catalogue for Australian visas. Third-party articles can be useful for orientation, but they go stale when instrument settings or fees change. Build your serious planning around the official subclass page and current forms in ImmiAccount.",
+          "bullets": [
+            "Treat the listing as the index, then open the specific subclass for criteria",
+            "Re-check before lodgement whenever your case crosses a financial year or policy date",
+            "Use VEVO after a grant to confirm conditions that apply to you"
+          ]
+        },
+        {
+          "title": "When to use Visa Finder versus reading the listing directly",
+          "body": "Visa Finder is strongest when you have a general intention\u2014visit, study, work, join family\u2014but several subclasses might apply. It walks you through questions and suggests options. It does not replace reading the legal criteria for the visa you intend to apply for, and the Department publishes a disclaimer explaining limitations. If you already know your subclass, go straight to that page on the listing and skip redundant steps."
+        },
+        {
+          "title": "Map of Australian streams and MinRosh service pages",
+          "body": "Skilled and points-tested planning aligns with MinRosh\u2019s skilled migration overview and points guide. Partner and family evidence planning aligns with partner visa services and the onshore/offshore guides. Study aligns with student visa services and the requirements guide. Employer-backed work aligns with employer-sponsored guidance. Short stays align with visitor visa guidance. Use this hub to jump between official verification and the MinRosh pages that explain strategy and evidence in plain language."
+        },
+        {
+          "title": "Visit, study, work, and family at a glance",
+          "body": "Visitor streams cover tourism, business visits, and approved family sponsors in different ways\u2014check the visitor section of the listing. Study usually centres on the student visa subclass shown on the listing. Work includes temporary and permanent employer-sponsored subclasses plus independent skilled pathways. Family includes partner and other family subclasses with very different evidence rules. Do not assume similar names mean similar criteria."
+        },
+        {
+          "title": "Fees, processing, documents, and refusals",
+          "body": "After you identify a subclass, budget using the fees and charges information linked from the official site and your specific visa page. Processing indicators are benchmarks, not promises. Document consistency is covered in MinRosh\u2019s checklist guide. If something has gone wrong, refusal and review rights depend on the decision\u2014see the refusal guide and seek timely advice."
+        },
+        {
+          "title": "Next steps with MinRosh",
+          "body": "Use the free assessment when you want a structured first pass, or book a consultation when you already know your subclass and need sequencing, evidence, or risk review. Bring screenshots or notes from the official subclass page so your discussion stays anchored to current published criteria."
+        }
+      ],
+      "faq": [
+        {
+          "question": "Does MinRosh replace the Department of Home Affairs website?",
+          "answer": "No. MinRosh provides regulated migration guidance and practical strategy. Legal criteria, forms, and charges are always confirmed on the Department of Home Affairs website."
+        },
+        {
+          "question": "Can Visa Finder tell me if I will get a visa?",
+          "answer": "No tool can guarantee an outcome. Visa Finder helps explore options; the subclass page and your personal circumstances determine eligibility and risk."
+        },
+        {
+          "question": "Where should I click first if I am completely new?",
+          "answer": "Open the visa listing to see the full catalogue, then either drill into a subclass you have already heard about or start with Visa Finder if you need help narrowing streams."
+        },
+        {
+          "question": "How do I verify a subclass number someone mentioned online?",
+          "answer": "Search the Department of Home Affairs visa listing for that subclass, open the official page, and read the current summary and linked legislative instruments rather than relying on forum shorthand."
+        }
+      ],
+      "relatedService": {
+        "title": "Book a consultation",
+        "href": "/book-consultation"
+      }
+    },
     "partnerVisaGuide": {
       "path": "/partner-visa-australia-guide",
       "title": "How to Apply for a Partner Visa in Australia (2026 Guide)",
       "metaTitle": "How to Apply for a Partner Visa in Australia (2026 Guide)",
       "metaDescription": "A practical 2026 guide to applying for a partner visa in Australia, covering relationship evidence, application steps, common refusal risks, and how professional guidance can help.",
       "headline": "How to Apply for a Partner Visa in Australia (2026 Guide)",
-      "intro": "Applying for a partner visa in Australia can feel overwhelming when you are balancing relationship evidence, official forms, and long processing timeframes. This guide outlines the main stages, the evidence themes that matter, and the common issues that can weaken an application before it is lodged.",
+      "intro": "Applying for a partner visa in Australia can feel overwhelming when you are balancing relationship evidence, official forms, and long processing timeframes. This guide outlines the main stages, the evidence themes that matter, and the common issues that can weaken an application before it is lodged. Always confirm the partner subclass that applies to you on the Department of Home Affairs visa listing before relying on any summary.",
       "published": "2026-04-01",
+      "officialResources": [
+        {
+          "label": "Department of Home Affairs \u2014 visa listing",
+          "href": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing"
+        },
+        {
+          "label": "Department of Home Affairs \u2014 Visa Finder (join family)",
+          "href": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-finder/join-family"
+        }
+      ],
       "sections": [
         {
           "title": "What is a partner visa?",
@@ -452,6 +874,10 @@
         {
           "title": "Common reasons partner visa applications are refused",
           "body": "Weak or inconsistent evidence, incomplete documents, and conflicting information across forms and statements are frequent problems. A clear evidence strategy can help reduce those risks."
+        },
+        {
+          "title": "Cross-checking forms with the official subclass page",
+          "body": "Partner visas often involve detailed forms and uploads in ImmiAccount. Field labels and document expectations can change. Use the official partner visa subclass page from the visa listing as your checklist for definitions, then align every answer with your evidence bundle so dates, names, and addresses match across bank files, leases, and statements."
         }
       ],
       "faq": [
@@ -462,6 +888,130 @@
         {
           "question": "What if our relationship evidence is limited?",
           "answer": "Some couples have less conventional evidence than others, but the application still needs a coherent, credible explanation supported by whatever documentation is reasonably available."
+        },
+        {
+          "question": "Should I use Visa Finder if I already know I want a partner visa?",
+          "answer": "If you are confident partner migration is the right stream, go directly to the partner subclass pages linked from the visa listing. Visa Finder is more useful when you are still comparing family options."
+        }
+      ],
+      "relatedService": {
+        "title": "Partner Visa Australia guidance",
+        "href": "/partner-visa-australia"
+      }
+    },
+    "partnerVisaOnshoreGuide": {
+      "path": "/partner-visa-820-801-guide",
+      "title": "820/801 Partner Visa Australia Guide (Onshore)",
+      "metaTitle": "820/801 Partner Visa Australia Guide | Onshore Evidence Help | MinRosh",
+      "metaDescription": "Need 820 visa help? Learn how onshore 820/801 partner visa applications work, what documents to prioritise, and how to prepare stronger evidence.",
+      "keywords": [
+        "820 visa help",
+        "801 partner visa documents",
+        "820 801 partner visa Australia"
+      ],
+      "headline": "820/801 Partner Visa Guide (Onshore): evidence and application sequence",
+      "intro": "This guide is for couples applying onshore under the 820/801 pathway. It explains where 820 visa help is most useful, how to prepare 801 partner visa documents over time, and how to reduce evidence inconsistencies before lodgement. Confirm current subclass descriptions on the Department of Home Affairs visa listing before lodging.",
+      "published": "2026-04-17",
+      "officialResources": [
+        {
+          "label": "Department of Home Affairs \u2014 visa listing",
+          "href": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing"
+        },
+        {
+          "label": "Department of Home Affairs \u2014 Visa Finder",
+          "href": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-finder"
+        }
+      ],
+      "sections": [
+        {
+          "title": "What the 820/801 pathway usually involves",
+          "body": "The 820 stage is generally the temporary onshore stage, followed by the 801 permanent stage when eligibility is met. Application strength depends heavily on document quality and consistency across your relationship history."
+        },
+        {
+          "title": "820 visa help: where applicants most often struggle",
+          "body": "Common issues include incomplete relationship timelines, inconsistent statements, and weak financial or social evidence. A structured evidence plan helps reduce rework and follow-up requests."
+        },
+        {
+          "title": "801 partner visa documents to prepare early",
+          "body": "Many applicants benefit from organising updated cohabitation, financial, and social-recognition evidence progressively rather than rushing near review time."
+        },
+        {
+          "title": "Bridging and visa status while 820 is assessed",
+          "body": "Onshore applicants must understand how their current substantive visa, any bridging visa, and work or study conditions interact while a decision is pending. Conditions are visible in VEVO after grants. This guide does not replace legal or migration advice for complex immigration history\u2014seek tailored guidance where schedule 3 or other barriers may apply."
+        }
+      ],
+      "faq": [
+        {
+          "question": "What is the difference between partner visa 820 and 801?",
+          "answer": "820 is generally the temporary onshore stage and 801 is the later permanent stage, subject to eligibility and ongoing relationship evidence."
+        },
+        {
+          "question": "What documents are important for 801 stage review?",
+          "answer": "Updated evidence usually includes ongoing relationship, shared living and finances, social recognition, and consistency across statements and records."
+        },
+        {
+          "question": "Where do I verify onshore partner visa criteria?",
+          "answer": "Use the Department of Home Affairs visa listing to open the partner visa subclass pages that match onshore lodgement, and read the current eligibility and document guidance published there."
+        }
+      ],
+      "relatedService": {
+        "title": "Partner Visa Australia guidance",
+        "href": "/partner-visa-australia"
+      }
+    },
+    "partnerVisaOffshoreGuide": {
+      "path": "/partner-visa-309-100-guide",
+      "title": "309/100 Partner Visa Australia Guide (Offshore)",
+      "metaTitle": "309/100 Partner Visa Australia Guide | Offshore Preparation | MinRosh",
+      "metaDescription": "Understand 309 visa Australia requirements and 100 visa stage 2 planning with practical offshore partner visa preparation guidance.",
+      "keywords": [
+        "309 visa Australia",
+        "100 visa stage 2",
+        "309 100 partner visa offshore"
+      ],
+      "headline": "309/100 Partner Visa Guide (Offshore): practical preparation before lodgement",
+      "intro": "If you are applying offshore, this guide explains core 309 visa Australia preparation steps and how to approach 100 visa stage 2 evidence planning with a cleaner long-term strategy. Verify offshore partner subclasses and travel requirements on the Department of Home Affairs visa listing.",
+      "published": "2026-04-17",
+      "officialResources": [
+        {
+          "label": "Department of Home Affairs \u2014 visa listing",
+          "href": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing"
+        },
+        {
+          "label": "Department of Home Affairs \u2014 Visa Finder",
+          "href": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-finder"
+        }
+      ],
+      "sections": [
+        {
+          "title": "How the 309/100 offshore pathway works",
+          "body": "The 309 stage is generally the temporary offshore stage, followed by 100 visa stage 2 when permanent-stage eligibility is met. Clear and consistent evidence remains central at both stages."
+        },
+        {
+          "title": "309 visa Australia: common evidence risks",
+          "body": "Offshore applicants often face gaps in timelines, travel-history explanation, and relationship evidence consistency. Strong preparation reduces avoidable delays."
+        },
+        {
+          "title": "Planning early for 100 visa stage 2",
+          "body": "Do not wait until the final review period. Maintain organised evidence of ongoing relationship, financial ties, and social recognition from early in the pathway."
+        },
+        {
+          "title": "Travel history and offshore credibility",
+          "body": "Offshore cases often need a clear explanation of how the relationship continued across countries and time zones. Flight records, joint travel, and communication logs can help\u2014but they should support a coherent story, not replace statements where context is needed."
+        }
+      ],
+      "faq": [
+        {
+          "question": "What is 100 visa stage 2?",
+          "answer": "It is generally the permanent-stage review after the temporary offshore stage, where ongoing relationship evidence remains important."
+        },
+        {
+          "question": "Can I improve my offshore partner case before lodgement?",
+          "answer": "Yes. Strong timeline clarity, coherent statements, and evidence consistency can materially improve application quality."
+        },
+        {
+          "question": "How do I confirm I am in the offshore partner subclass?",
+          "answer": "Compare your situation with the partner visa subclasses listed on the Department of Home Affairs visa listing and read the offshore pathway description on the official subclass page."
         }
       ],
       "relatedService": {
@@ -475,8 +1025,18 @@
       "metaTitle": "Student Visa Australia Requirements Explained (2026)",
       "metaDescription": "Understand student visa Australia requirements in 2026, including CoE, financial capacity, English readiness, processing times, and common preparation mistakes.",
       "headline": "Student Visa Australia Requirements Explained (2026)",
-      "intro": "Planning to study in Australia involves more than enrolling in a course. Student visa applicants also need to understand financial capacity, evidence quality, English readiness, and how their documents fit together into a credible application.",
+      "intro": "Planning to study in Australia involves more than enrolling in a course. Student visa applicants also need to understand financial capacity, evidence quality, English readiness, and how their documents fit together into a credible application. Use the Department of Home Affairs visa listing to open the current student visa subclass page and confirm requirements that apply to your passport and course level.",
       "published": "2026-03-21",
+      "officialResources": [
+        {
+          "label": "Department of Home Affairs \u2014 visa listing",
+          "href": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing"
+        },
+        {
+          "label": "Department of Home Affairs \u2014 Visa Finder (study)",
+          "href": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-finder/study"
+        }
+      ],
       "sections": [
         {
           "title": "Basic student visa requirements",
@@ -493,6 +1053,10 @@
         {
           "title": "Tips for a cleaner application",
           "body": "Apply early, organise documents before submitting, and make sure the overall application story is consistent. If your long-term goal includes migration beyond study, that strategy should be understood clearly from the start."
+        },
+        {
+          "title": "Using Visa Finder when you are choosing between study and skilled routes",
+          "body": "Some applicants are unsure whether to pursue study first or a skilled pathway. Visa Finder can surface different visa families, but each pathway has different compliance and evidence expectations. Treat any automated suggestion as a prompt to read the official subclass pages, not as a decision."
         }
       ],
       "faq": [
@@ -503,6 +1067,10 @@
         {
           "question": "How much money do I need to show?",
           "answer": "Financial expectations vary and should be checked carefully against current requirements and your own application profile."
+        },
+        {
+          "question": "Where are student visa charges published?",
+          "answer": "Visa application charges and related pricing are published with the visa on the Department of Home Affairs website. Always confirm the current schedule before budgeting."
         }
       ],
       "relatedService": {
@@ -516,8 +1084,22 @@
       "metaTitle": "Skilled Migration Australia Points Guide (2026)",
       "metaDescription": "Learn how the skilled migration Australia points system works in 2026, why 65 points is not always enough, and how nomination and English results can strengthen your profile.",
       "headline": "Skilled Migration Australia Points Guide (2026)",
-      "intro": "Australia's skilled migration points system can look simple on paper, but invitation competitiveness is rarely that straightforward. This guide explains the role of core points factors, why invitation rounds often sit above the minimum threshold, and where applicants commonly find additional points.",
+      "intro": "Australia's skilled migration points system can look simple on paper, but invitation competitiveness is rarely that straightforward. This guide explains the role of core points factors, why invitation rounds often sit above the minimum threshold, and where applicants commonly find additional points. Skilled subclasses and SkillSelect references should always be checked on the Department of Home Affairs visa listing.",
       "published": "2026-03-08",
+      "officialResources": [
+        {
+          "label": "Department of Home Affairs \u2014 visa listing",
+          "href": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing"
+        },
+        {
+          "label": "Department of Home Affairs \u2014 Visa Finder (work)",
+          "href": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-finder/work"
+        },
+        {
+          "label": "SkillSelect",
+          "href": "https://immi.homeaffairs.gov.au/visas/working-in-australia/skillselect"
+        }
+      ],
       "sections": [
         {
           "title": "How the points system works",
@@ -534,6 +1116,10 @@
         {
           "title": "Why structured planning matters",
           "body": "Points planning works best when it is tied to realistic timing around English testing, skills assessment, and EOI preparation instead of being treated as a simple checklist."
+        },
+        {
+          "title": "Reading invitation dynamics without overfitting",
+          "body": "Historical invitation data can inform whether your occupation tends to clear at certain point levels, but future rounds are not guaranteed to repeat. Pair competitiveness analysis with official list settings for your nominated occupation and any state program rules you intend to rely on."
         }
       ],
       "faq": [
@@ -544,6 +1130,10 @@
         {
           "question": "Can state nomination improve my chances?",
           "answer": "Yes. State or regional nomination can increase your total score and may open more realistic pathways depending on your profile."
+        },
+        {
+          "question": "How do I know which skilled visa subclasses use points?",
+          "answer": "Open the skilled migration subclasses on the Department of Home Affairs visa listing and read each page\u2019s criteria. Visa Finder can suggest work-related options, but points rules are spelled out on the official subclass pages."
         }
       ],
       "relatedService": {
@@ -557,8 +1147,18 @@
       "metaTitle": "Australia Visa Fees and Costs Guide (2026)",
       "metaDescription": "Understand typical Australia visa costs in 2026, including government charges, skills assessment, English tests, health checks, police checks, and document preparation planning.",
       "headline": "Australia Visa Fees and Costs Guide (2026)",
-      "intro": "Visa costs are not only government application charges. Most applicants also face related costs such as English tests, skills assessment, health checks, police certificates, and certified documents. This guide helps you plan costs in realistic stages.",
+      "intro": "Visa costs are not only government application charges. Most applicants also face related costs such as English tests, skills assessment, health checks, police certificates, and certified documents. This guide helps you plan costs in realistic stages. Always confirm the current visa application charge on the Department of Home Affairs pricing tools linked from your subclass page on the visa listing.",
       "published": "2026-04-08",
+      "officialResources": [
+        {
+          "label": "Department of Home Affairs \u2014 visa listing",
+          "href": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing"
+        },
+        {
+          "label": "Department of Home Affairs \u2014 Visa Finder",
+          "href": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-finder"
+        }
+      ],
       "sections": [
         {
           "title": "What visa costs usually include",
@@ -575,6 +1175,10 @@
         {
           "title": "Plan in stages, not one number",
           "body": "A staged budget works better than relying on one headline figure. Split your plan into early-stage readiness costs, pre-lodgement costs, and post-invitation or post-lodgement costs so you can make better decisions as your case progresses."
+        },
+        {
+          "title": "Surcharges, second applicants, and payment timing",
+          "body": "Some visas attract additional charges depending on age, secondary applicants, or payment channel. The official subclass page and ImmiAccount payment screens show what applies at lodgement. Planning for dependents and health assessments early avoids surprise costs after you have already committed to tests or assessments."
         }
       ],
       "faq": [
@@ -585,6 +1189,10 @@
         {
           "question": "Can I pay everything at once?",
           "answer": "Most applicants pay in stages. Budgeting by milestones is usually safer than committing all spending at the start."
+        },
+        {
+          "question": "Where is the official visa application charge listed?",
+          "answer": "Open your subclass from the Department of Home Affairs visa listing and follow the links to current pricing and payment information published by the Department."
         }
       ],
       "relatedService": {
@@ -598,8 +1206,18 @@
       "metaTitle": "Australia Visa Processing Times Guide (2026)",
       "metaDescription": "Learn how Australian visa processing times work in 2026, why timelines vary, and how better preparation can reduce avoidable delays.",
       "headline": "Australia Visa Processing Times Guide (2026)",
-      "intro": "Processing times depend on pathway, application quality, demand, and external checks. This guide explains how timelines are usually shaped and what applicants can do to reduce avoidable delays.",
+      "intro": "Processing times depend on pathway, application quality, demand, and external checks. This guide explains how timelines are usually shaped and what applicants can do to reduce avoidable delays. For published processing indicators, use the tools linked from the Department of Home Affairs visa listing for your subclass.",
       "published": "2026-04-08",
+      "officialResources": [
+        {
+          "label": "Department of Home Affairs \u2014 visa listing",
+          "href": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing"
+        },
+        {
+          "label": "Department of Home Affairs \u2014 Visa Finder",
+          "href": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-finder"
+        }
+      ],
       "sections": [
         {
           "title": "Why processing times vary",
@@ -616,6 +1234,10 @@
         {
           "title": "Use official processing information carefully",
           "body": "Published processing indicators are useful as a broad benchmark, not a promise. Always interpret them with your own case profile in mind."
+        },
+        {
+          "title": "Global processing shifts and your subclass queue",
+          "body": "Departmental resources and policy priorities can shift global processing speeds even when your personal documents are strong. Track the subclass you lodged under on the official listing and any departmental announcements rather than comparing unrelated visa types on social media."
         }
       ],
       "faq": [
@@ -626,6 +1248,10 @@
         {
           "question": "What should I do if my case is taking longer than expected?",
           "answer": "Review whether all required actions are complete, check for follow-up requests, and seek professional review if there are unresolved complexity factors."
+        },
+        {
+          "question": "Where do I find official processing indicators?",
+          "answer": "Navigate from the Department of Home Affairs visa listing to your subclass page and follow the Department\u2019s links to current processing information for that visa."
         }
       ],
       "relatedService": {
@@ -639,8 +1265,18 @@
       "metaTitle": "Australia Visa Document Checklist Guide (2026)",
       "metaDescription": "Use this practical 2026 document checklist guide for Australian visa planning: identity, qualifications, employment, financial, health, and character evidence.",
       "headline": "Australia Visa Document Checklist Guide (2026)",
-      "intro": "A strong visa application relies on consistency across your document set. This guide outlines practical checklist categories and explains how to prepare evidence in a cleaner order.",
+      "intro": "A strong visa application relies on consistency across your document set. This guide outlines practical checklist categories and explains how to prepare evidence in a cleaner order. Final document requirements are always tied to the visa subclass you lodge\u2014confirm them on the Department of Home Affairs visa listing before you certify or translate files.",
       "published": "2026-04-08",
+      "officialResources": [
+        {
+          "label": "Department of Home Affairs \u2014 visa listing",
+          "href": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing"
+        },
+        {
+          "label": "Department of Home Affairs \u2014 Visa Finder",
+          "href": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-finder"
+        }
+      ],
       "sections": [
         {
           "title": "Identity and civil documents",
@@ -657,6 +1293,10 @@
         {
           "title": "Health, character, and financial readiness",
           "body": "Depending on your visa stream, health checks, police certificates, and financial evidence may be needed at different stages. Map expiry windows so key documents stay valid when needed."
+        },
+        {
+          "title": "Matching uploads to ImmiAccount questions",
+          "body": "Online forms often ask for evidence in a specific order or filename convention. Prepare a mapping table: each form answer should point to one or more supporting files. Orphans and duplicates confuse case officers and slow requests for further information."
         }
       ],
       "faq": [
@@ -667,6 +1307,10 @@
         {
           "question": "Do scanned copies need certification?",
           "answer": "Certification expectations vary by authority and context. Use official instructions for your pathway before finalising document packs."
+        },
+        {
+          "question": "Does every visa use the same checklist?",
+          "answer": "No. Checklists differ by subclass and personal circumstances. Use the official subclass page from the visa listing as the authoritative source, then apply this guide\u2019s categories to organise what you gather."
         }
       ],
       "relatedService": {
@@ -680,8 +1324,18 @@
       "metaTitle": "Australia vs Canada Migration Guide (2026)",
       "metaDescription": "Compare Australia and Canada migration pathways in 2026: skilled routes, study options, processing dynamics, and practical decision factors before you commit.",
       "headline": "Australia vs Canada Migration Guide (2026)",
-      "intro": "Australia and Canada are both strong migration destinations, but pathway mechanics differ. This guide helps you compare practical factors such as route structure, evidence readiness, cost planning, and timeline risk before making a major commitment.",
+      "intro": "Australia and Canada are both strong migration destinations, but pathway mechanics differ. This guide helps you compare practical factors such as route structure, evidence readiness, cost planning, and timeline risk before making a major commitment. For Australia, keep the Department of Home Affairs visa listing open in parallel so comparisons stay anchored to current subclasses.",
       "published": "2026-04-08",
+      "officialResources": [
+        {
+          "label": "Department of Home Affairs \u2014 visa listing (Australia)",
+          "href": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing"
+        },
+        {
+          "label": "Department of Home Affairs \u2014 Visa Finder",
+          "href": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-finder"
+        }
+      ],
       "sections": [
         {
           "title": "How the systems differ at a high level",
@@ -698,6 +1352,10 @@
         {
           "title": "Decision framework before committing",
           "body": "Use a practical framework: profile competitiveness, documentation readiness, budget runway, timeline flexibility, and pathway fallback options. A side-by-side review reduces emotional decisions based on headline trends."
+        },
+        {
+          "title": "Australia: subclass-first thinking",
+          "body": "Australia\u2019s system is organised around visa subclasses with specific criteria and charges. When comparing to Canada, list the Australian subclasses that might fit you from the official listing, then compare effort and risk for each rather than comparing vague labels like \u201cPR\u201d between countries."
         }
       ],
       "faq": [
@@ -708,10 +1366,144 @@
         {
           "question": "Should I choose by processing time alone?",
           "answer": "No. Processing speed is only one factor. Pathway suitability, cost exposure, and evidence readiness are often more important for long-term outcomes."
+        },
+        {
+          "question": "Where do I start if I lean toward Australia?",
+          "answer": "Use the Department of Home Affairs Visa Finder or visa listing to identify plausible subclasses, then read each official page before locking in a multi-year plan."
         }
       ],
       "relatedService": {
         "title": "Book a country-comparison consultation",
+        "href": "/book-consultation"
+      }
+    },
+    "visaRefusalAppealGuide": {
+      "path": "/visa-refusal-help-australia-and-aat-migration-appeal-guide",
+      "title": "Visa Refusal Help Australia and AAT Migration Appeal Guide (2026)",
+      "metaTitle": "Visa Refusal Help Australia | AAT Migration Appeal Guide | MinRosh",
+      "metaDescription": "Understand visa refusal help Australia options, AAT migration appeal basics, timelines, evidence strategy, and when to seek registered migration support.",
+      "keywords": [
+        "visa refusal help Australia",
+        "AAT migration appeal",
+        "migration review strategy Australia"
+      ],
+      "headline": "Visa refusal help Australia: practical next steps and AAT migration appeal context",
+      "intro": "If your visa has been refused, your next move should be structured and time-sensitive. This guide explains common refusal pathways, what AAT migration appeal usually involves, and how to prepare a clearer evidence strategy before taking action. Review rights and forms depend on the visa subclass shown on your refusal\u2014cross-check the official subclass page via the Department of Home Affairs visa listing.",
+      "published": "2026-04-17",
+      "officialResources": [
+        {
+          "label": "Department of Home Affairs \u2014 visa listing",
+          "href": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing"
+        },
+        {
+          "label": "Department of Home Affairs \u2014 Visa Finder",
+          "href": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-finder"
+        }
+      ],
+      "sections": [
+        {
+          "title": "What to do immediately after a refusal",
+          "body": "Start by reviewing the refusal notice carefully, especially review rights, deadlines, and reasons cited. Missing a review deadline can close options quickly, so early triage is critical."
+        },
+        {
+          "title": "Visa refusal help Australia in practical terms",
+          "body": "Effective refusal planning usually means identifying evidentiary gaps, legal misunderstandings, and inconsistencies in the original application. A structured review can help determine whether reconsideration, fresh application strategy, or review rights are more realistic."
+        },
+        {
+          "title": "AAT migration appeal: what applicants should know",
+          "body": "An AAT migration appeal (where review rights exist) generally requires timely filing, coherent submissions, and stronger supporting evidence than the original application. Applicants should focus on credibility, consistency, and addressing refusal reasons directly."
+        },
+        {
+          "title": "How MinRosh supports complex refusal matters",
+          "body": "MinRosh provides registered migration guidance for complex cases, including refusal triage and practical next-step planning. Where legal representation by an Australian legal practitioner is required, applicants should seek an immigration lawyer Australia with appropriate legal practice credentials."
+        },
+        {
+          "title": "Reading the refusal against the published criteria",
+          "body": "Print the refusal reasons beside the eligibility criteria from the official subclass page. Highlight each factual finding the decision-maker relied on, then map evidence you can add or correct. This method reduces emotional responses and focuses effort on gaps that actually matter for review or a fresh application."
+        }
+      ],
+      "faq": [
+        {
+          "question": "Can every refusal go to AAT review?",
+          "answer": "No. Review rights depend on the visa type, decision context, and legislation in force. Always check the refusal notice and current official guidance."
+        },
+        {
+          "question": "Is refusal help only for appeals?",
+          "answer": "Not always. Some cases are stronger with a fresh strategy and better evidence rather than review. The right approach depends on deadlines, facts, and available rights."
+        },
+        {
+          "question": "Should I re-lodge the same visa immediately?",
+          "answer": "Not without analysing why the refusal occurred. Repeating the same evidence bundle often produces the same outcome. Compare refusal reasons with the official criteria for that subclass on the Department of Home Affairs website."
+        }
+      ],
+      "relatedService": {
+        "title": "Contact MinRosh for refusal-case triage",
+        "href": "/contact"
+      }
+    },
+    "immigrationLawyerVsAgentGuide": {
+      "path": "/immigration-lawyer-australia-vs-registered-migration-agent-guide",
+      "title": "Immigration Lawyer Australia vs Registered Migration Agent Guide (2026)",
+      "metaTitle": "Immigration Lawyer Australia vs Migration Agent | MinRosh Guide",
+      "metaDescription": "Learn the difference between an immigration lawyer Australia and a registered migration agent, including scope, when each is relevant, and how to choose support.",
+      "keywords": [
+        "immigration lawyer Australia",
+        "registered migration agent",
+        "Australian visa consultant",
+        "immigration consultant Australia",
+        "best migration agent Australia"
+      ],
+      "headline": "Immigration lawyer Australia vs registered migration agent: how to choose",
+      "intro": "People often compare immigration lawyer Australia and registered migration agent options when planning a visa strategy. This guide explains practical differences so you can choose the right support model for your case. Regardless of who assists you, eligibility must still be verified on the Department of Home Affairs visa listing for your subclass.",
+      "published": "2026-04-17",
+      "officialResources": [
+        {
+          "label": "Department of Home Affairs \u2014 visa listing",
+          "href": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing"
+        },
+        {
+          "label": "OMARA \u2014 search the register",
+          "href": "https://www.mara.gov.au/search-the-register-of-migration-agents/"
+        }
+      ],
+      "sections": [
+        {
+          "title": "What a registered migration agent usually handles",
+          "body": "A registered migration agent can provide regulated migration advice and application strategy within migration practice settings. Many applicants use this model for skilled, partner, student, and employer-sponsored pathways."
+        },
+        {
+          "title": "When an immigration lawyer Australia may be appropriate",
+          "body": "Some matters involving litigation, complex judicial review, or broader legal disputes may require an Australian legal practitioner. In those cases, applicants should seek an immigration lawyer Australia with relevant legal practice authority."
+        },
+        {
+          "title": "How to evaluate an Australian visa consultant",
+          "body": "Check registration status, practical pathway experience, communication clarity, and whether the adviser explains limitations honestly. The best migration agent Australia for your case is the one with fit, transparency, and structured planning."
+        },
+        {
+          "title": "Practical decision framework before you engage support",
+          "body": "Start with case complexity, review rights, deadlines, evidence quality, and your target visa pathway. Then choose support based on competence and regulatory fit rather than marketing claims."
+        },
+        {
+          "title": "Who reads the official visa criteria?",
+          "body": "Both lawyers and registered migration agents should anchor advice in published law and policy. Clients benefit when advisers walk them through the Department of Home Affairs subclass page, not only slide decks. If an adviser cannot point to official criteria for your subclass, treat that as a red flag."
+        }
+      ],
+      "faq": [
+        {
+          "question": "Is a migration agent the same as an immigration lawyer?",
+          "answer": "No. They are different professional pathways with different scopes and regulatory frameworks. The right choice depends on your case complexity and the type of representation required."
+        },
+        {
+          "question": "How do I verify a registered migration agent?",
+          "answer": "Use the official OMARA register and check current registration details before engaging any adviser for migration assistance."
+        },
+        {
+          "question": "Should my adviser help me use Visa Finder?",
+          "answer": "Visa Finder is a public Department tool. A good adviser helps you interpret results against your facts and the official subclass pages rather than outsourcing thinking to an automated questionnaire."
+        }
+      ],
+      "relatedService": {
+        "title": "Book a migration consultation",
         "href": "/book-consultation"
       }
     }

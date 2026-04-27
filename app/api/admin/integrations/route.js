@@ -1,11 +1,13 @@
 import { verifyAdminRequest, adminJsonUnauthorized } from "@/lib/admin/auth-route";
+import { apiOk, requestContextFromRequest } from "@/lib/api/response";
 import {
   googleServiceAccountCredentialsPath,
   readGoogleServiceAccountCredentialsFromEnv,
 } from "@/lib/google-service-account-private-key";
 
-export async function GET() {
-  if (!(await verifyAdminRequest())) return adminJsonUnauthorized();
+export async function GET(request) {
+  const context = requestContextFromRequest(request);
+  if (!(await verifyAdminRequest())) return adminJsonUnauthorized(request);
 
   const credPath = googleServiceAccountCredentialsPath();
   const creds = readGoogleServiceAccountCredentialsFromEnv();
@@ -71,9 +73,9 @@ export async function GET() {
   });
 
   const requiredMissing = checks.filter((c) => c.required && !c.configured).map((c) => c.key);
-  return Response.json({
+  return apiOk({
     checks,
     requiredMissing,
     ready: requiredMissing.length === 0,
-  });
+  }, context);
 }

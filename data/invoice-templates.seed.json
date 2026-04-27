@@ -4,11 +4,15 @@
       "id": "tpl-default-au",
       "name": "Default AU Tax Invoice",
       "currency": "AUD",
-      "defaultTerms": "Payment due within 7 days.",
+      "defaultTerms": "1. Professional fees are for consultancy services and exclude Department of Home Affairs charges unless stated. 2. Payment is required within 14 days of the invoice date. 3. Professional fees are generally non-refundable once work has commenced.",
       "issuer": {
-        "businessName": "MinRosh Migration",
-        "abn": "00 000 000 000",
-        "email": "accounts@example.com"
+        "businessName": "MINROSH IMMIGRATION AND EDUCATION CONSULTANT PTY LTD",
+        "abn": "78 682 019 754",
+        "acn": "682 019 754",
+        "address": "26 Geranium Drive, Springfield Lakes QLD 4300",
+        "phone": "0478100542",
+        "email": "info@minroshmigration.com.au",
+        "logoPath": "/images/minrosh-logo.png"
       },
       "lineDefaults": []
     }

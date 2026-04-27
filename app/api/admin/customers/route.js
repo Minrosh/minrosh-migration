@@ -1,5 +1,6 @@
 import { verifyAdminRequest, adminJsonUnauthorized, requireAdminWrite } from "@/lib/admin/auth-route";
 import { appendAudit } from "@/lib/admin/audit";
+import { AUDIT_ACTIONS } from "@/lib/admin/audit-actions";
 import { sanitizeCustomerForAdminDetail, toCustomerListRow } from "@/lib/admin/customer-dto";
 import { readCustomers } from "@/lib/admin/json-store";
 import { deleteCustomerUploadFolder } from "@/lib/admin/uploads-storage";
@@ -14,30 +15,47 @@ import {
 } from "@/lib/admin/customers-service";
 import { getClientIp } from "@/lib/security/request-ip";
 import { createVisaExpiryReminder } from "@/lib/google-calendar";
+import { API_ERROR_CODES, apiFail, apiOk, requestContextFromRequest } from "@/lib/api/response";
 
 export async function GET(request) {
-  if (!(await verifyAdminRequest())) return adminJsonUnauthorized();
+  const context = requestContextFromRequest(request);
+  if (!(await verifyAdminRequest())) return adminJsonUnauthorized(request);
   const { searchParams } = new URL(request.url);
   if (searchParams.get("duplicates") === "1") {
-    return Response.json({ pairs: findDuplicateCustomerCandidates() });
+    return apiOk({ pairs: findDuplicateCustomerCandidates() }, context);
   }
   const limit = Math.min(500, Math.max(1, Number(searchParams.get("limit")) || 200));
   const offset = Math.max(0, Number(searchParams.get("offset")) || 0);
+  const statusParam = String(searchParams.get("status") || "").trim().toLowerCase();
+  const qRaw = String(searchParams.get("q") || searchParams.get("search") || "").trim();
+  const q = qRaw.toLowerCase();
+
   const { customers } = readCustomers();
-  const list = Array.isArray(customers) ? customers : [];
+  let list = Array.isArray(customers) ? [...customers] : [];
+  if (["current", "past", "prospective"].includes(statusParam)) {
+    list = list.filter((c) => String(c.status || "").toLowerCase() === statusParam);
+  }
+  if (qRaw) {
+    list = list.filter((c) => {
+      const name = String(c.name || "").toLowerCase();
+      const email = String(c.email || "").toLowerCase();
+      return name.includes(q) || email.includes(q);
+    });
+  }
   const total = list.length;
   const slice = list.slice(offset, offset + limit).map((c) => toCustomerListRow(c)).filter(Boolean);
-  return Response.json({ customers: slice, total, limit, offset });
+  return apiOk({ customers: slice, total, limit, offset }, context);
 }
 
 export async function POST(request) {
+  const context = requestContextFromRequest(request);
   const denied = await requireAdminWrite(request);
   if (denied) return denied;
   let body;
   try {
     body = await request.json();
   } catch {
-    return Response.json({ error: "Invalid JSON" }, { status: 400 });
+    return apiFail({ code: API_ERROR_CODES.VALIDATION_FAILED, message: "Invalid JSON", status: 400 }, context);
   }
   const action = body?.action;
   const ip = getClientIp(request);
@@ -46,27 +64,28 @@ export async function POST(request) {
     const winnerId = String(body.winnerId || "").trim();
     const loserId = String(body.loserId || "").trim();
     if (!winnerId || !loserId) {
-      return Response.json({ error: "winnerId and loserId required" }, { status: 400 });
+      return apiFail({ code: API_ERROR_CODES.VALIDATION_FAILED, message: "winnerId and loserId required", status: 400 }, context);
     }
     const result = mergeCustomers(winnerId, loserId);
     if (!result.ok) {
-      return Response.json({ error: result.error || "Merge failed" }, { status: 400 });
+      return apiFail({ code: API_ERROR_CODES.VALIDATION_FAILED, message: result.error || "Merge failed", status: 400 }, context);
     }
-    appendAudit("customer_merge", winnerId, { ip, route: "POST /api/admin/customers merge" });
-    return Response.json({ customer: toCustomerListRow(result.customer) });
+    appendAudit(AUDIT_ACTIONS.CUSTOMER_MERGE, winnerId, { ip, route: "POST /api/admin/customers merge", requestId: context.requestId });
+    return apiOk({ customer: toCustomerListRow(result.customer) }, context);
   }
 
   if (action === "regenerateToken") {
     const regen = regenerateMagicLink(body.id);
-    if (!regen) return Response.json({ error: "Not found" }, { status: 404 });
-    appendAudit("customer_magic_regenerate", regen.customer.id, {
+    if (!regen) return apiFail({ code: API_ERROR_CODES.NOT_FOUND, message: "Not found", status: 404 }, context);
+    appendAudit(AUDIT_ACTIONS.CUSTOMER_MAGIC_REGENERATE, regen.customer.id, {
       ip,
       route: "POST /api/admin/customers regenerateToken",
+      requestId: context.requestId,
     });
-    return Response.json({
+    return apiOk({
       customer: sanitizeCustomerForAdminDetail(regen.customer),
       magicUploadToken: regen.plainToken,
-    });
+    }, context);
   }
 
   const { customer: row, plainToken } = addCustomer({
@@ -75,24 +94,25 @@ export async function POST(request) {
     status: body.status,
     marketingConsent: body.marketingConsent,
   });
-  appendAudit("customer_create", row.id, { ip, route: "POST /api/admin/customers" });
-  return Response.json({
+  appendAudit(AUDIT_ACTIONS.CUSTOMER_CREATE, row.id, { ip, route: "POST /api/admin/customers", requestId: context.requestId });
+  return apiOk({
     customer: toCustomerListRow(row),
     magicUploadToken: plainToken,
-  });
+  }, context);
 }
 
 export async function PATCH(request) {
+  const context = requestContextFromRequest(request);
   const denied = await requireAdminWrite(request);
   if (denied) return denied;
   let body;
   try {
     body = await request.json();
   } catch {
-    return Response.json({ error: "Invalid JSON" }, { status: 400 });
+    return apiFail({ code: API_ERROR_CODES.VALIDATION_FAILED, message: "Invalid JSON", status: 400 }, context);
   }
   const { id, ...rest } = body;
-  if (!id) return Response.json({ error: "id required" }, { status: 400 });
+  if (!id) return apiFail({ code: API_ERROR_CODES.VALIDATION_FAILED, message: "id required", status: 400 }, context);
   const allowed = new Set([
     "name",
     "email",
@@ -111,6 +131,7 @@ export async function PATCH(request) {
     "country",
     "tags",
     "socialProfiles",
+    "caseClosedAt",
   ]);
   const patch = {};
   for (const key of allowed) {
@@ -135,13 +156,23 @@ export async function PATCH(request) {
       patch[key] = Array.isArray(rest[key]) ? rest[key].map((t) => String(t).trim().slice(0, 40)).filter(Boolean).slice(0, 30) : [];
     } else if (key === "socialProfiles") {
       patch[key] = rest[key] && typeof rest[key] === "object" ? rest[key] : {};
+    } else if (key === "caseClosedAt") {
+      if (rest[key] === null || rest[key] === "") {
+        patch.caseClosedAt = null;
+      } else {
+        const v = String(rest[key]).trim().slice(0, 40);
+        if (!Number.isFinite(Date.parse(v))) {
+          return apiFail({ code: API_ERROR_CODES.VALIDATION_FAILED, message: "caseClosedAt must be a valid ISO date-time string", status: 400 }, context);
+        }
+        patch.caseClosedAt = v;
+      }
     }
   }
   if (Object.keys(patch).length === 0) {
-    return Response.json({ error: "No valid fields to update" }, { status: 400 });
+    return apiFail({ code: API_ERROR_CODES.VALIDATION_FAILED, message: "No valid fields to update", status: 400 }, context);
   }
   const row = updateCustomer(id, patch);
-  if (!row) return Response.json({ error: "Not found" }, { status: 404 });
+  if (!row) return apiFail({ code: API_ERROR_CODES.NOT_FOUND, message: "Not found", status: 404 }, context);
   if (patch.visaExpiryDate && /^\d{4}-\d{2}-\d{2}$/.test(patch.visaExpiryDate)) {
     try {
       await createVisaExpiryReminder({
@@ -154,22 +185,23 @@ export async function PATCH(request) {
     }
   }
   const ip = getClientIp(request);
-  appendAudit("customer_update", id, { ip, route: "PATCH /api/admin/customers" });
-  return Response.json({ customer: toCustomerListRow(row) });
+  appendAudit(AUDIT_ACTIONS.CUSTOMER_UPDATE, id, { ip, route: "PATCH /api/admin/customers", requestId: context.requestId });
+  return apiOk({ customer: toCustomerListRow(row) }, context);
 }
 
 export async function DELETE(request) {
+  const context = requestContextFromRequest(request);
   const denied = await requireAdminWrite(request);
   if (denied) return denied;
   const { searchParams } = new URL(request.url);
   const id = searchParams.get("id");
-  if (!id) return Response.json({ error: "id required" }, { status: 400 });
+  if (!id) return apiFail({ code: API_ERROR_CODES.VALIDATION_FAILED, message: "id required", status: 400 }, context);
   const ip = getClientIp(request);
   const existing = findCustomerById(id);
   if (existing) {
     deleteCustomerUploadFolder(existing);
   }
   deleteCustomer(id);
-  appendAudit("customer_delete", id, { ip, route: "DELETE /api/admin/customers" });
-  return Response.json({ ok: true });
+  appendAudit(AUDIT_ACTIONS.CUSTOMER_DELETE, id, { ip, route: "DELETE /api/admin/customers", requestId: context.requestId });
+  return apiOk({ deleted: true }, context);
 }

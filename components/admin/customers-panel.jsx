@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
   useReactTable,
@@ -19,6 +19,8 @@ import { AdminTableSkeleton } from "@/components/admin/admin-table-skeleton";
 
 const columnHelper = createColumnHelper();
 
+const PAGE_SIZE = 20;
+
 const TABS = ["current", "past", "prospective"];
 
 function parseTab(value) {
@@ -31,11 +33,31 @@ function statusVariant(s) {
   return "warning";
 }
 
+async function parseJsonResponseSafe(response) {
+  const rawText = await response.text();
+  try {
+    return rawText ? JSON.parse(rawText) : {};
+  } catch {
+    return {};
+  }
+}
+
+function contextualError(operation, message, fallback) {
+  const detail = String(message || fallback || "Unexpected error").trim();
+  return `${operation}: ${detail}`;
+}
+
 export function CustomersPanel() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [customers, setCustomers] = useState([]);
+  const [listTotal, setListTotal] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [listBusy, setListBusy] = useState(false);
+  const [listError, setListError] = useState("");
+  const [searchInput, setSearchInput] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [page, setPage] = useState(0);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState("prospective");
@@ -43,36 +65,90 @@ export function CustomersPanel() {
   const [detailId, setDetailId] = useState(null);
   const [plainBootstrap, setPlainBootstrap] = useState(null);
   const [marketingConsentCreate, setMarketingConsentCreate] = useState(true);
+  const [createError, setCreateError] = useState("");
+  const [duplicatePairs, setDuplicatePairs] = useState([]);
+  const [duplicateLoading, setDuplicateLoading] = useState(false);
+  const listFetchStartedRef = useRef(false);
 
   useEffect(() => {
     const t = parseTab(searchParams.get("tab"));
     if (t) setTab(t);
   }, [searchParams]);
 
+  useEffect(() => {
+    const t = setTimeout(() => {
+      setDebouncedSearch(searchInput.trim());
+      setPage(0);
+    }, 300);
+    return () => clearTimeout(t);
+  }, [searchInput]);
+
+  useLayoutEffect(() => {
+    setPage(0);
+  }, [tab]);
+
   const load = useCallback(() => {
-    fetch("/api/admin/customers")
-      .then((r) => r.json())
-      .then((d) => {
+    if (!listFetchStartedRef.current) {
+      listFetchStartedRef.current = true;
+      setLoading(true);
+    } else {
+      setListBusy(true);
+    }
+    setListError("");
+    const params = new URLSearchParams({
+      status: tab,
+      limit: String(PAGE_SIZE),
+      offset: String(page * PAGE_SIZE),
+    });
+    if (debouncedSearch) params.set("q", debouncedSearch);
+    fetch(`/api/admin/customers?${params.toString()}`)
+      .then(async (r) => ({ res: r, payload: await parseJsonResponseSafe(r) }))
+      .then(({ res, payload }) => {
+        const d = payload?.data && typeof payload.data === "object" ? payload.data : payload;
+        const errorMessage = payload?.error?.message || payload?.error || d?.error;
+        if (!res.ok) {
+          setCustomers([]);
+          setListTotal(0);
+          setListError(contextualError("Load customers", errorMessage, "Could not load customers."));
+          return;
+        }
         setCustomers(d.customers || []);
-        setLoading(false);
+        setListTotal(typeof d.total === "number" ? d.total : 0);
       })
-      .catch(() => setLoading(false));
-  }, []);
+      .catch(() => {
+        setCustomers([]);
+        setListTotal(0);
+        setListError(contextualError("Load customers", "", "Network error while loading customers."));
+      })
+      .finally(() => {
+        setLoading(false);
+        setListBusy(false);
+      });
+  }, [tab, debouncedSearch, page]);
 
   useEffect(() => {
     load();
   }, [load]);
 
-  useEffect(() => {
-    if (detailId && !customers.some((c) => c.id === detailId)) {
-      setDetailId(null);
-    }
-  }, [customers, detailId]);
+  const loadDuplicateCandidates = useCallback(() => {
+    setDuplicateLoading(true);
+    fetch("/api/admin/customers?duplicates=1")
+      .then(async (r) => ({ res: r, payload: await parseJsonResponseSafe(r) }))
+      .then(({ res, payload }) => {
+        if (!res.ok) {
+          setDuplicatePairs([]);
+          return;
+        }
+        const d = payload?.data && typeof payload.data === "object" ? payload.data : payload;
+        setDuplicatePairs(Array.isArray(d.pairs) ? d.pairs : []);
+      })
+      .catch(() => setDuplicatePairs([]))
+      .finally(() => setDuplicateLoading(false));
+  }, []);
 
-  const filtered = useMemo(
-    () => customers.filter((c) => c.status === tab),
-    [customers, tab]
-  );
+  useEffect(() => {
+    loadDuplicateCandidates();
+  }, [loadDuplicateCandidates]);
 
   const columns = useMemo(
     () => [
@@ -117,28 +193,44 @@ export function CustomersPanel() {
   );
 
   const table = useReactTable({
-    data: filtered,
+    data: customers,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
 
+  const pageStart = listTotal === 0 ? 0 : page * PAGE_SIZE + 1;
+  const pageEnd = Math.min(listTotal, (page + 1) * PAGE_SIZE);
+  const canPrev = page > 0;
+  const canNext = (page + 1) * PAGE_SIZE < listTotal;
+
   async function createCustomer(e) {
     e.preventDefault();
-    const res = await fetch("/api/admin/customers", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, status, marketingConsent: marketingConsentCreate }),
-    });
-    const d = await res.json().catch(() => ({}));
-    setName("");
-    setEmail("");
-    setStatus("prospective");
-    setMarketingConsentCreate(true);
-    if (d.customer?.id && d.magicUploadToken) {
-      setPlainBootstrap({ id: d.customer.id, token: d.magicUploadToken });
-      setDetailId(d.customer.id);
+    setCreateError("");
+    try {
+      const res = await fetch("/api/admin/customers", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, status, marketingConsent: marketingConsentCreate }),
+      });
+      const payload = await parseJsonResponseSafe(res);
+      const d = payload?.data && typeof payload.data === "object" ? payload.data : payload;
+      const errorMessage = payload?.error?.message || payload?.error || d?.error;
+      if (!res.ok) {
+        setCreateError(contextualError("Create customer", errorMessage, "Could not create customer."));
+        return;
+      }
+      setName("");
+      setEmail("");
+      setStatus("prospective");
+      setMarketingConsentCreate(true);
+      if (d.customer?.id && d.magicUploadToken) {
+        setPlainBootstrap({ id: d.customer.id, token: d.magicUploadToken });
+        setDetailId(d.customer.id);
+      }
+      load();
+    } catch {
+      setCreateError(contextualError("Create customer", "", "Network error while creating customer."));
     }
-    load();
   }
 
   if (loading) {
@@ -210,6 +302,7 @@ export function CustomersPanel() {
             </label>
             <Button type="submit">Create</Button>
           </form>
+          {createError ? <p className="mt-3 text-sm text-destructive">{createError}</p> : null}
         </CardContent>
       </Card>
 
@@ -227,39 +320,135 @@ export function CustomersPanel() {
         </TabsList>
       </Tabs>
       <Card className="mt-4">
-        <CardContent className="overflow-x-auto pt-6">
-          <table className="w-full text-sm">
-            <thead>
-              {table.getHeaderGroups().map((hg) => (
-                <tr key={hg.id} className="border-b text-left">
-                  {hg.headers.map((h) => (
-                    <th key={h.id} className="p-2 font-semibold">
-                      {flexRender(h.column.columnDef.header, h.getContext())}
-                    </th>
-                  ))}
-                </tr>
-              ))}
-            </thead>
-            <tbody>
-              {table.getRowModel().rows.length === 0 ? (
-                <tr>
-                  <td colSpan={5} className="p-4 text-muted-foreground">
-                    No customers in this tab.
-                  </td>
-                </tr>
-              ) : (
-                table.getRowModel().rows.map((row) => (
-                  <tr key={row.id} className="border-b border-border/60">
-                    {row.getVisibleCells().map((cell) => (
-                      <td key={cell.id} className="p-2 align-top">
-                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                      </td>
+        <CardHeader className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div className="space-y-1.5">
+            <CardTitle className="text-base">Directory</CardTitle>
+            <CardDescription>
+              Filter by name or email as you type. Results are paged ({PAGE_SIZE} per page) for each status tab.
+            </CardDescription>
+          </div>
+          <div className="w-full space-y-2 sm:w-72">
+            <Label htmlFor="customers-search">Search</Label>
+            <Input
+              id="customers-search"
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+              placeholder="Name or email…"
+              autoComplete="off"
+            />
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {listError ? <p className="text-sm text-destructive">{listError}</p> : null}
+          <div className={`relative overflow-x-auto rounded-md border border-border ${listBusy ? "opacity-60" : ""}`}>
+            <table className="w-full text-sm">
+              <thead>
+                {table.getHeaderGroups().map((hg) => (
+                  <tr key={hg.id} className="border-b text-left">
+                    {hg.headers.map((h) => (
+                      <th key={h.id} className="p-2 font-semibold">
+                        {flexRender(h.column.columnDef.header, h.getContext())}
+                      </th>
                     ))}
                   </tr>
-                ))
-              )}
-            </tbody>
-          </table>
+                ))}
+              </thead>
+              <tbody>
+                {table.getRowModel().rows.length === 0 ? (
+                  <tr>
+                    <td colSpan={5} className="p-4 text-muted-foreground">
+                      {debouncedSearch
+                        ? "No customers match this search in this tab."
+                        : "No customers in this tab."}
+                    </td>
+                  </tr>
+                ) : (
+                  table.getRowModel().rows.map((row) => (
+                    <tr key={row.id} className="border-b border-border/60">
+                      {row.getVisibleCells().map((cell) => (
+                        <td key={cell.id} className="p-2 align-top">
+                          {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                        </td>
+                      ))}
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+          <div className="flex flex-col gap-3 border-t border-border pt-4 sm:flex-row sm:items-center sm:justify-between">
+            <p className="text-sm text-muted-foreground">
+              {listTotal === 0
+                ? "No rows."
+                : `Showing ${pageStart}–${pageEnd} of ${listTotal}`}
+            </p>
+            <div className="flex flex-wrap gap-2">
+              <Button type="button" variant="outline" size="sm" disabled={!canPrev || listBusy} onClick={() => setPage((p) => Math.max(0, p - 1))}>
+                Previous
+              </Button>
+              <Button type="button" variant="outline" size="sm" disabled={!canNext || listBusy} onClick={() => setPage((p) => p + 1)}>
+                Next
+              </Button>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <CardTitle>Duplicate candidates</CardTitle>
+            <CardDescription>
+              Potential duplicates based on customer name/email similarity. Merge from details where appropriate.
+            </CardDescription>
+          </div>
+          <Button type="button" variant="outline" size="sm" onClick={loadDuplicateCandidates} disabled={duplicateLoading}>
+            {duplicateLoading ? "Refreshing…" : "Refresh"}
+          </Button>
+        </CardHeader>
+        <CardContent>
+          {duplicatePairs.length === 0 ? (
+            <p className="text-sm text-muted-foreground">No duplicate candidates detected.</p>
+          ) : (
+            <div className="space-y-2">
+              {duplicatePairs.slice(0, 8).map((pair, index) => (
+                <div
+                  key={`${pair?.a?.id || "a"}-${pair?.b?.id || "b"}-${index}`}
+                  className="flex flex-col gap-3 rounded-md border border-border p-3 sm:flex-row sm:items-center sm:justify-between"
+                >
+                  <div className="space-y-1">
+                    <p className="text-sm font-medium">
+                      {pair?.a?.name || "Unknown"} <span className="text-muted-foreground">vs</span>{" "}
+                      {pair?.b?.name || "Unknown"}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      {pair?.a?.email || "—"} • {pair?.b?.email || "—"}
+                    </p>
+                  </div>
+                  <div className="flex gap-2">
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="outline"
+                      onClick={() => setDetailId(pair?.a?.id || null)}
+                      disabled={!pair?.a?.id}
+                    >
+                      Open A
+                    </Button>
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="outline"
+                      onClick={() => setDetailId(pair?.b?.id || null)}
+                      disabled={!pair?.b?.id}
+                    >
+                      Open B
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>

@@ -41,6 +41,7 @@ export default function SriLankaMigrationPage() {
           { href: pageData.path, label: pageData.title },
         ]}
         officialResources={pageData.officialResources ?? []}
+        currentPath={pageData.path}
         sections={pageData.sections}
         faq={pageData.faq}
         heroImage={{

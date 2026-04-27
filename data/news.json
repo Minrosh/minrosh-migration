@@ -1,74 +1,98 @@
 [
   {
+    "id": "news-seed-001",
+    "slug": "migration-sri-lanka-australia-2026",
     "date": "2026-04-07",
     "country": "Australia",
     "source": "MinRosh Migration",
     "sourceUrl": "https://minroshmigration.com.au/migration-sri-lanka-to-australia",
-    "href": "/migration-sri-lanka-to-australia",
+    "href": "/immigration-news/migration-sri-lanka-australia-2026",
     "title": "Planning migration from Sri Lanka to Australia (2026)",
-    "summary": "A practical read for skilled professionals comparing points-tested visas, employer-sponsored routes, and study pathways — with official Home Affairs links and next-step sequencing."
+    "summary": "A practical read for skilled professionals comparing points-tested visas, employer-sponsored routes, and study pathways — with official Home Affairs links and next-step sequencing.",
+    "body": "A practical read for skilled professionals comparing points-tested visas, employer-sponsored routes, and study pathways — with official Home Affairs links and next-step sequencing.\n\nMinRosh publishes these notes for orientation only. Confirm requirements on the official source linked below before acting."
   },
   {
+    "id": "news-seed-002",
+    "slug": "partner-visa-australia-2026-guide",
     "date": "2026-04-01",
     "country": "Australia",
     "source": "Department of Home Affairs",
-    "sourceUrl": "https://immi.homeaffairs.gov.au/news-media",
-    "href": "/partner-visa-australia-guide",
+    "sourceUrl": "https://immi.homeaffairs.gov.au/visas/partner-and-family-visas",
+    "href": "/immigration-news/partner-visa-australia-2026-guide",
     "title": "How to apply for a partner visa in Australia (2026 guide)",
-    "summary": "Applying for a partner visa in Australia can be complex. MinRosh Migration helps applicants understand relationship evidence, documentation, health and character checks, and common reasons partner visa applications are delayed or refused."
+    "summary": "Applying for a partner visa in Australia can be complex. MinRosh Migration helps applicants understand relationship evidence, documentation, health and character checks, and common reasons partner visa applications are delayed or refused.",
+    "body": "Applying for a partner visa in Australia can be complex. MinRosh Migration helps applicants understand relationship evidence, documentation, health and character checks, and common reasons partner visa applications are delayed or refused.\n\nMinRosh publishes these notes for orientation only. Confirm requirements on the official source linked below before acting."
   },
   {
+    "id": "news-seed-003",
+    "slug": "student-visa-australia-requirements-2026",
     "date": "2026-03-21",
     "country": "Australia",
     "source": "Department of Home Affairs",
-    "sourceUrl": "https://immi.homeaffairs.gov.au/news-media",
-    "href": "/student-visa-australia-requirements",
+    "sourceUrl": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/student",
+    "href": "/immigration-news/student-visa-australia-requirements-2026",
     "title": "Student visa Australia requirements explained (2026)",
-    "summary": "Planning to study in Australia? This guide explains Confirmation of Enrolment, financial capacity, English requirements, processing timelines, and how a student visa can connect to a longer-term migration strategy."
+    "summary": "Planning to study in Australia? This guide explains Confirmation of Enrolment, financial capacity, English requirements, processing timelines, and how a student visa can connect to a longer-term migration strategy.",
+    "body": "Planning to study in Australia? This guide explains Confirmation of Enrolment, financial capacity, English requirements, processing timelines, and how a student visa can connect to a longer-term migration strategy.\n\nMinRosh publishes these notes for orientation only. Confirm requirements on the official source linked below before acting."
   },
   {
+    "id": "news-seed-004",
+    "slug": "skilled-migration-australia-points-2026",
     "date": "2026-03-08",
     "country": "Australia",
     "source": "Department of Home Affairs",
-    "sourceUrl": "https://immi.homeaffairs.gov.au/news-media",
-    "href": "/skilled-migration-australia-points-guide",
+    "sourceUrl": "https://immi.homeaffairs.gov.au/visas/working-in-australia/skill-occupation-list",
+    "href": "/immigration-news/skilled-migration-australia-points-2026",
     "title": "Skilled migration Australia points system and invitation trends",
-    "summary": "While 65 points is the legal minimum for an Expression of Interest, real invitation rounds can require stronger profiles depending on occupation ceilings, English scores, and state nomination opportunities."
+    "summary": "While 65 points is the legal minimum for an Expression of Interest, real invitation rounds can require stronger profiles depending on occupation ceilings, English scores, and state nomination opportunities.",
+    "body": "While 65 points is the legal minimum for an Expression of Interest, real invitation rounds can require stronger profiles depending on occupation ceilings, English scores, and state nomination opportunities.\n\nMinRosh publishes these notes for orientation only. Confirm requirements on the official source linked below before acting."
   },
   {
+    "id": "news-seed-005",
+    "slug": "canada-integrity-fraud-prevention-2026",
     "date": "2026-03-03",
     "country": "Canada",
     "source": "Immigration, Refugees and Citizenship Canada",
     "sourceUrl": "https://www.canada.ca/en/immigration-refugees-citizenship/news/2025/03/strengthening-immigration-and-stopping-fraud.html",
-    "href": "/contact",
+    "href": "/immigration-news/canada-integrity-fraud-prevention-2026",
     "title": "Canada immigration integrity and fraud-prevention measures",
-    "summary": "Official Canadian updates continue to emphasise fraud prevention, application integrity, and stronger penalties for dishonest immigration representation."
+    "summary": "Official Canadian updates continue to emphasise fraud prevention, application integrity, and stronger penalties for dishonest immigration representation.",
+    "body": "Official Canadian updates continue to emphasise fraud prevention, application integrity, and stronger penalties for dishonest immigration representation.\n\nMinRosh publishes these notes for orientation only. Confirm requirements on the official source linked below before acting."
   },
   {
+    "id": "news-seed-006",
+    "slug": "canada-border-system-2026",
     "date": "2026-01-21",
     "country": "Canada",
     "source": "Immigration, Refugees and Citizenship Canada",
     "sourceUrl": "https://www.canada.ca/en/immigration-refugees-citizenship/news/2025/01/measures-to-strengthen-border-security-and-canadas-immigration-system.html",
-    "href": "/skilled-migration",
+    "href": "/immigration-news/canada-border-system-2026",
     "title": "Canada border security and immigration-system integrity changes",
-    "summary": "IRCC has continued publishing measures tied to border security, study permit integrity, and broader immigration-system control."
+    "summary": "IRCC has continued publishing measures tied to border security, study permit integrity, and broader immigration-system control.",
+    "body": "IRCC has continued publishing measures tied to border security, study permit integrity, and broader immigration-system control.\n\nMinRosh publishes these notes for orientation only. Confirm requirements on the official source linked below before acting."
   },
   {
+    "id": "news-seed-007",
+    "slug": "uk-eta-travel-permission-2025",
     "date": "2025-11-24",
     "country": "United Kingdom",
     "source": "UK Visas and Immigration",
     "sourceUrl": "https://www.gov.uk/government/news/no-permission-no-travel-uk-set-to-enforce-eta-scheme",
-    "href": "/contact",
+    "href": "/immigration-news/uk-eta-travel-permission-2025",
     "title": "UK ETA enforcement and travel permission updates",
-    "summary": "UK immigration changes continue to affect visitors, travellers, and applicants who need to understand ETA and digital-permission requirements."
+    "summary": "UK immigration changes continue to affect visitors, travellers, and applicants who need to understand ETA and digital-permission requirements.",
+    "body": "UK immigration changes continue to affect visitors, travellers, and applicants who need to understand ETA and digital-permission requirements.\n\nMinRosh publishes these notes for orientation only. Confirm requirements on the official source linked below before acting."
   },
   {
+    "id": "news-seed-008",
+    "slug": "nz-visa-fraud-partnerships-2025",
     "date": "2025-11-17",
     "country": "New Zealand",
     "source": "Immigration New Zealand",
     "sourceUrl": "https://www.immigration.govt.nz/about-us/news-centre/new-zealand-joins-international-partners-to-fight-visa-fraud/",
-    "href": "/contact",
+    "href": "/immigration-news/nz-visa-fraud-partnerships-2025",
     "title": "New Zealand joins international partners to fight visa fraud",
-    "summary": "Immigration New Zealand has continued publishing guidance and announcements around visa fraud prevention and official-source awareness."
+    "summary": "Immigration New Zealand has continued publishing guidance and announcements around visa fraud prevention and official-source awareness.",
+    "body": "Immigration New Zealand has continued publishing guidance and announcements around visa fraud prevention and official-source awareness.\n\nMinRosh publishes these notes for orientation only. Confirm requirements on the official source linked below before acting."
   }
 ]

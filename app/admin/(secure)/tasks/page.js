@@ -12,7 +12,8 @@ export default function TasksPage() {
   function load() {
     fetch("/api/admin/tasks?openOnly=1")
       .then((r) => r.json())
-      .then((d) => {
+      .then((payload) => {
+        const d = payload?.data && typeof payload.data === "object" ? payload.data : payload;
         setTasks(d.tasks || []);
         setLoading(false);
       })

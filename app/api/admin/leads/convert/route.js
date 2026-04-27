@@ -1,9 +1,13 @@
 import { verifyAdminRequest, adminJsonUnauthorized, requireAdminWrite } from "@/lib/admin/auth-route";
 import { appendAudit } from "@/lib/admin/audit";
+import { AUDIT_ACTIONS } from "@/lib/admin/audit-actions";
+import { API_ERROR_CODES, apiFail, apiOk, requestContextFromRequest } from "@/lib/api/response";
 import { getClientIp } from "@/lib/security/request-ip";
 import { convertLeadToOpportunity } from "@/lib/crm/leads-service";
 
 export async function POST(request) {
+  const context = requestContextFromRequest(request);
+  if (!(await verifyAdminRequest())) return adminJsonUnauthorized(request);
   const denied = await requireAdminWrite(request);
   if (denied) return denied;
   let body = {};
@@ -13,12 +17,12 @@ export async function POST(request) {
     /* empty body */
   }
   const leadId = String(body.leadId || "").trim();
-  if (!leadId) return Response.json({ error: "leadId required" }, { status: 400 });
+  if (!leadId) return apiFail({ code: API_ERROR_CODES.VALIDATION_FAILED, message: "leadId required", status: 400 }, context);
   const result = convertLeadToOpportunity(leadId, { title: body.title, value: body.value });
   if (!result.ok) {
-    return Response.json({ error: result.error || "convert_failed" }, { status: 400 });
+    return apiFail({ code: API_ERROR_CODES.VALIDATION_FAILED, message: result.error || "convert_failed", status: 400 }, context);
   }
   const ip = getClientIp(request);
-  appendAudit("crm_lead_convert", leadId, { ip, route: "POST /api/admin/leads/convert" });
-  return Response.json(result);
+  appendAudit(AUDIT_ACTIONS.CRM_LEAD_CONVERT, leadId, { ip, route: "POST /api/admin/leads/convert", requestId: context.requestId });
+  return apiOk(result, context);
 }

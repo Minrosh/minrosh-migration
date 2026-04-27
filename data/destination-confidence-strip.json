@@ -1,0 +1,59 @@
+{
+  "default": {
+    "title": "Decision Confidence Strip",
+    "summary": "A quick confidence signal to keep your next move structured and low-risk.",
+    "metrics": [
+      { "id": "readiness", "label": "Readiness", "value": 66 },
+      { "id": "evidence", "label": "Evidence clarity", "value": 62 },
+      { "id": "timing", "label": "Timing confidence", "value": 58 }
+    ],
+    "proof": [
+      "Official-source-first routing",
+      "Milestone-led execution",
+      "Risk checks before spend"
+    ],
+    "nextMilestones": [
+      "Lock your target stream and backup stream",
+      "Turn unknowns into dated tasks",
+      "Book a strategy review only after pre-check"
+    ]
+  },
+  "australia": {
+    "title": "Australia Confidence Strip",
+    "summary": "Designed to reduce pathway drift while improving invitation or evidence readiness.",
+    "metrics": [
+      { "id": "readiness", "label": "Readiness", "value": 74 },
+      { "id": "evidence", "label": "Evidence clarity", "value": 71 },
+      { "id": "timing", "label": "Timing confidence", "value": 68 }
+    ],
+    "proof": [
+      "Points + nomination pathways compared",
+      "Partner/student alternatives mapped",
+      "Checklist-first progression"
+    ],
+    "nextMilestones": [
+      "Complete profile triage with evidence matrix",
+      "Prioritize the highest-leverage document gaps",
+      "Set a 14-day execution sprint"
+    ]
+  },
+  "canada": {
+    "title": "Canada Confidence Strip",
+    "summary": "Built for policy-aware decisions where fallback planning matters.",
+    "metrics": [
+      { "id": "readiness", "label": "Readiness", "value": 63 },
+      { "id": "evidence", "label": "Evidence clarity", "value": 60 },
+      { "id": "timing", "label": "Timing confidence", "value": 56 }
+    ],
+    "proof": [
+      "Policy-shift aware sequencing",
+      "Fallback plan included early",
+      "Document friction reduced"
+    ],
+    "nextMilestones": [
+      "Validate eligibility assumptions against official sources",
+      "Prepare backup pathway with deadlines",
+      "Run a no-risk evidence readiness check"
+    ]
+  }
+}

@@ -6,6 +6,20 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
+async function parseJsonResponseSafe(response) {
+  const rawText = await response.text();
+  try {
+    return rawText ? JSON.parse(rawText) : {};
+  } catch {
+    return {};
+  }
+}
+
+function contextualError(operation, message, fallback) {
+  const detail = String(message || fallback || "Unexpected error").trim();
+  return `${operation}: ${detail}`;
+}
+
 function Icon({ children, className }) {
   return (
     <svg
@@ -28,6 +42,7 @@ const nav = [
   {
     href: "/admin",
     label: "Overview",
+    group: "Dashboard",
     icon: (
       <Icon>
         <rect width="7" height="9" x="3" y="3" rx="1" />
@@ -40,6 +55,7 @@ const nav = [
   {
     href: "/admin/crm",
     label: "CRM",
+    group: "CRM",
     icon: (
       <Icon>
         <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
@@ -50,8 +66,20 @@ const nav = [
     ),
   },
   {
+    href: "/admin/crm-insights",
+    label: "CRM Insights",
+    group: "CRM",
+    icon: (
+      <Icon>
+        <path d="M3 3v18h18" />
+        <path d="M7 14l3-3 3 2 5-6" />
+      </Icon>
+    ),
+  },
+  {
     href: "/admin/leads",
     label: "Leads",
+    group: "CRM",
     icon: (
       <Icon>
         <path d="M12 2v4" />
@@ -63,6 +91,7 @@ const nav = [
   {
     href: "/admin/pipeline",
     label: "Pipeline",
+    group: "CRM",
     icon: (
       <Icon>
         <rect x="3" y="3" width="7" height="7" rx="1" />
@@ -75,6 +104,7 @@ const nav = [
   {
     href: "/admin/inbox",
     label: "Inbox",
+    group: "CRM",
     icon: (
       <Icon>
         <path d="M22 12h-6l-2 3h-4l-2-3H2" />
@@ -85,6 +115,7 @@ const nav = [
   {
     href: "/admin/tasks",
     label: "Tasks",
+    group: "CRM",
     icon: (
       <Icon>
         <path d="M9 11l3 3L22 4" />
@@ -95,6 +126,7 @@ const nav = [
   {
     href: "/admin/automations",
     label: "Automations",
+    group: "CRM",
     icon: (
       <Icon>
         <path d="M12 2v4" />
@@ -112,6 +144,7 @@ const nav = [
   {
     href: "/admin/intelligence",
     label: "Intelligence",
+    group: "Content",
     icon: (
       <Icon>
         <path d="M12 2a7 7 0 0 0-7 7c0 2.1.92 3.99 2.38 5.27.4.35.62.85.62 1.38V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-1.35c0-.53.23-1.03.63-1.39A7 7 0 0 0 19 9a7 7 0 0 0-7-7Z" />
@@ -121,8 +154,22 @@ const nav = [
     ),
   },
   {
+    href: "/admin/news",
+    label: "News",
+    group: "Content",
+    icon: (
+      <Icon>
+        <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2" />
+        <path d="M18 14h-8" />
+        <path d="M15 18h-5" />
+        <path d="M10 6h8v4h-8V6Z" />
+      </Icon>
+    ),
+  },
+  {
     href: "/admin/reports",
     label: "Reports",
+    group: "Admin",
     icon: (
       <Icon>
         <path d="M3 3v18h18" />
@@ -135,6 +182,7 @@ const nav = [
   {
     href: "/admin/quotes",
     label: "Quotes",
+    group: "Finance",
     icon: (
       <Icon>
         <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
@@ -145,6 +193,7 @@ const nav = [
   {
     href: "/admin/invoices",
     label: "Invoices",
+    group: "Finance",
     icon: (
       <Icon>
         <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
@@ -155,6 +204,7 @@ const nav = [
   {
     href: "/admin/customers",
     label: "Customers",
+    group: "CRM",
     icon: (
       <Icon>
         <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
@@ -165,6 +215,7 @@ const nav = [
   {
     href: "/admin/success-stories",
     label: "Success Stories",
+    group: "Content",
     icon: (
       <Icon>
         <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
@@ -172,8 +223,22 @@ const nav = [
     ),
   },
   {
+    href: "/admin/users",
+    label: "Users",
+    group: "Admin",
+    icon: (
+      <Icon>
+        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+        <circle cx="9" cy="7" r="4" />
+        <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+      </Icon>
+    ),
+  },
+  {
     href: "/admin/audit",
     label: "Audit Log",
+    group: "Admin",
     icon: (
       <Icon>
         <path d="M15 12h-5" />
@@ -189,6 +254,9 @@ export function AdminShell({ children }) {
   const pathname = usePathname();
   const router = useRouter();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [compactNav, setCompactNav] = useState(true);
+  const [passwordMessage, setPasswordMessage] = useState("");
+  const [passwordMessageType, setPasswordMessageType] = useState("info");
 
   async function logout() {
     await fetch("/api/admin/logout", { method: "POST" });
@@ -197,6 +265,8 @@ export function AdminShell({ children }) {
   }
 
   async function changePassword() {
+    setPasswordMessage("");
+    setPasswordMessageType("info");
     const currentPassword = prompt("Enter current admin password:");
     if (!currentPassword) return;
     const newPassword = prompt("Enter new admin password (min 8 chars):");
@@ -207,22 +277,41 @@ export function AdminShell({ children }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ currentPassword, newPassword }),
       });
-      const data = await res.json().catch(() => ({}));
+      const payload = await parseJsonResponseSafe(res);
+      const data = payload?.data && typeof payload.data === "object" ? payload.data : payload;
       if (!res.ok) {
-        alert(data.error || "Could not update password.");
+        setPasswordMessage(
+          contextualError(
+            "Change password",
+            payload?.error?.message || payload?.error || data?.error,
+            "Could not update password."
+          )
+        );
+        setPasswordMessageType("error");
         return;
       }
-      alert("Admin password updated successfully.");
+      setPasswordMessage("Change password: Admin password updated successfully.");
+      setPasswordMessageType("success");
     } catch {
-      alert("Network error while updating password.");
+      setPasswordMessage(contextualError("Change password", "", "Network error while updating password."));
+      setPasswordMessageType("error");
     }
   }
 
   const asideClass =
-    "fixed left-0 top-0 z-40 flex h-screen w-56 flex-col border-r border-border bg-card shadow-sm transition-transform max-md:w-[min(100vw-3rem,16rem)]";
+    "fixed left-0 top-0 z-40 flex h-screen w-56 flex-col border-r border-border/80 bg-card/95 backdrop-blur-md shadow-sm transition-transform max-md:w-[min(100vw-3rem,16rem)]";
+
+  const navGroups = ["Dashboard", "CRM", "Finance", "Content", "Admin"];
+  const compactAllowedByGroup = {
+    Dashboard: new Set(["Overview"]),
+    CRM: new Set(["CRM", "CRM Insights", "Customers", "Leads"]),
+    Finance: new Set(["Invoices", "Quotes"]),
+    Content: new Set(["Intelligence", "News"]),
+    Admin: new Set(["Users", "Audit Log"]),
+  };
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex h-screen overflow-hidden">
       <button
         type="button"
         className="fixed left-3 top-3 z-50 flex h-10 w-10 items-center justify-center rounded-md border border-border bg-card shadow md:hidden"
@@ -242,34 +331,72 @@ export function AdminShell({ children }) {
       <aside
         className={cn(asideClass, "max-md:-translate-x-full", mobileNavOpen && "max-md:translate-x-0")}
       >
-        <div className="border-b border-border p-4">
+        <div className="border-b border-border p-4 bg-gradient-to-r from-primary/5 to-transparent">
           <Link href="/" className="text-lg font-semibold text-primary" onClick={() => setMobileNavOpen(false)}>
             MinRosh Admin
           </Link>
           <p className="text-xs text-muted-foreground">CRM workspace</p>
         </div>
         <nav className="flex flex-1 flex-col gap-1 overflow-y-auto p-3">
-          {nav.map((item) => {
-            const active = pathname === item.href;
+          <div className="mb-2 flex items-center justify-between px-3">
+            <p className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground/80">Navigation</p>
+            <button
+              type="button"
+              className="text-[11px] font-medium text-primary hover:underline"
+              onClick={() => setCompactNav((v) => !v)}
+            >
+              {compactNav ? "Show all" : "Compact"}
+            </button>
+          </div>
+          {navGroups.map((group) => {
+            const items = nav.filter((item) => {
+              if (item.group !== group) return false;
+              if (!compactNav) return true;
+              const allow = compactAllowedByGroup[group];
+              return allow ? allow.has(item.label) : true;
+            });
+            if (items.length === 0) return null;
             return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={cn(
-                  "flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors",
-                  active
-                    ? "bg-primary text-primary-foreground"
-                    : "text-muted-foreground hover:bg-muted hover:text-foreground",
-                )}
-                onClick={() => setMobileNavOpen(false)}
-              >
-                {item.icon}
-                {item.label}
-              </Link>
+              <div key={group} className="mb-2">
+                <p className="px-3 pb-1 pt-2 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground/80">
+                  {group}
+                </p>
+                <div className="flex flex-col gap-1">
+                  {items.map((item) => {
+                    const active = pathname === item.href;
+                    return (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        className={cn(
+                          "flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors",
+                          active
+                            ? "bg-primary text-primary-foreground shadow-sm ring-1 ring-primary/40"
+                            : "text-muted-foreground hover:bg-muted hover:text-foreground",
+                        )}
+                        onClick={() => setMobileNavOpen(false)}
+                      >
+                        {item.icon}
+                        {item.label}
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
             );
           })}
         </nav>
         <div className="border-t border-border p-3">
+          {passwordMessage ? (
+            <p
+              className={cn(
+                "mb-2 text-xs",
+                passwordMessageType === "error" ? "text-destructive" : "text-emerald-600"
+              )}
+            >
+              {passwordMessage}
+            </p>
+          ) : null}
           <Button
             variant="secondary"
             className="mb-2 w-full justify-start gap-2"
@@ -299,7 +426,7 @@ export function AdminShell({ children }) {
           </Link>
         </div>
       </aside>
-      <main className="min-w-0 flex-1 p-4 pt-16 md:ml-56 md:p-8 md:pt-8">{children}</main>
+      <main className="min-w-0 flex-1 overflow-y-auto p-4 pt-16 md:ml-56 md:p-8 md:pt-8">{children}</main>
     </div>
   );
 }

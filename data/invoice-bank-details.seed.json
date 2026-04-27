@@ -1,8 +1,9 @@
 {
-  "accountName": "",
-  "bsb": "",
-  "accountNumberMasked": "",
+  "accountName": "MINROSH IMMIGRATION AND EDUCATION CONSULTANT PTY LTD",
+  "bsb": "064-087",
+  "accountNumber": "10335779",
+  "accountNumberMasked": "****5779",
   "swift": "",
-  "bankName": "",
+  "bankName": "Commonwealth Bank (CBA)",
   "paymentReferencePrefix": "INV"
 }

@@ -20,7 +20,7 @@ export const metadata = buildMetadata({
 
 export default function CountryComparisonGuidePage() {
   return (
-    <SiteShell siteData={siteData} currentPath="">
+    <SiteShell siteData={siteData} currentPath={guideData.path}>
       <StructuredData
         data={breadcrumbJsonLd([
           { name: "Home", path: "/" },
@@ -45,6 +45,8 @@ export default function CountryComparisonGuidePage() {
           { href: "/", label: "Home" },
           { href: guideData.path, label: "Australia vs Canada Guide" },
         ]}
+        officialResources={guideData.officialResources ?? []}
+        currentPath={guideData.path}
         sections={guideData.sections}
         faq={guideData.faq}
         related={[

@@ -9,8 +9,43 @@ import { SiteSocialIcons } from "./site-social-icons";
 /**
  * Client island: brand + stats, optional middle columns (nav), newsletter last.
  */
-export function SiteFooterInteractive({ siteData, initialStats, children }) {
+export function SiteFooterInteractive({ brand, initialStats, children }) {
   const [stats, setStats] = useState(initialStats);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function refreshStats() {
+      try {
+        const response = await fetch("/api/stats", { cache: "no-store" });
+        if (!response.ok) return;
+        const rawText = await response.text();
+        let payload;
+        try {
+          payload = rawText ? JSON.parse(rawText) : {};
+        } catch {
+          return;
+        }
+        const data = payload?.data && typeof payload.data === "object" ? payload.data : payload;
+        if (cancelled) return;
+        setStats((current) => ({
+          ...current,
+          enquiryCount: Number.isFinite(data?.enquiryCount) ? data.enquiryCount : current.enquiryCount,
+          newsletterCount: Number.isFinite(data?.newsletterCount)
+            ? data.newsletterCount
+            : current.newsletterCount,
+          updatesCount: Number.isFinite(data?.updatesCount) ? data.updatesCount : current.updatesCount,
+        }));
+      } catch {
+        // Keep server-rendered initial stats if refresh fails.
+      }
+    }
+
+    refreshStats();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   useEffect(() => {
     function handleEnquiryCreated() {
@@ -25,21 +60,23 @@ export function SiteFooterInteractive({ siteData, initialStats, children }) {
       <div className="site-footer__brand-col">
         <Link href="/" className="brand footer-brand" aria-label="Go to MinRosh homepage">
           <span className="brand__mark" aria-hidden="true">
-            <PublicFileImg src="/images/minrosh-logo.jpg" alt="" width={60} height={60} />
+            <PublicFileImg src="/images/minrosh-logo.png" alt="" width={60} height={60} />
           </span>
           <span className="brand__text">
-            <strong>{siteData.brand.name}</strong>
+            <strong>{brand.name}</strong>
             <span>Unlock New Horizons for better tomorrow</span>
           </span>
         </Link>
         <p className="site-footer__summary">
-          Clear migration and education guidance for Brisbane and Australia-wide clients.
+          Clear migration and education guidance for clients across Australia (and destination hubs worldwide).
         </p>
         <div className="site-footer__quick-contact">
-          <a href={`mailto:${siteData.brand.email}`}>{siteData.brand.email}</a>
-          <a href={`tel:${siteData.brand.phone.replace(/\s+/g, "")}`}>{siteData.brand.phone}</a>
+          <Link href="/contact" aria-label="Open contact page for email enquiries">
+            Email support via contact page
+          </Link>
+          <a href={`tel:${brand.phone.replace(/\s+/g, "")}`}>{brand.phone}</a>
         </div>
-        <SiteSocialIcons brand={siteData.brand} variant="footer" />
+        <SiteSocialIcons brand={brand} variant="footer" />
         <div className="site-footer__stats">
           <div className="site-footer__stat">
             <strong>{stats.enquiryCount}</strong>

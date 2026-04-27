@@ -7,8 +7,10 @@ data/customers.json
 data/invoices.json
 data/audit-log.json
 data/success-stories.json
+data/social-image-cache/
 data/admin-auth.json
 data/admin-sessions.json
+data/admin-users.json
 storage/uploads/*
 !storage/uploads/.gitkeep
 data-newsletter.json
@@ -18,3 +20,13 @@ data-newsletter.json
 .secrets/
 public/uploads/*
 !public/uploads/.gitkeep
+
+# Local / runtime CRM & nurture mirrors (tracked seeds use *.seed.json)
+data/crm-leads.json
+data/crm-tasks.json
+data/crm-automations.json
+data/nurture-queue.json
+
+# Tooling noise
+codex_out.txt
+test-results/

@@ -1,11 +1,13 @@
 import Link from "next/link";
 import { PublicFileImg } from "./public-file-img";
-import { SiteTopbar } from "./site-topbar";
 import { SiteFooter } from "./site-footer";
 import { SiteHeaderNav } from "./site-header-nav";
+import { SitePublicStickyHeader } from "./site-public-sticky-header";
+import { SiteHeaderMobileUtilities } from "./site-header-mobile-utilities";
 import { getFooterStats } from "../lib/site-stats";
 import { getDestinationNavLinks } from "../lib/destination-nav";
 import { GLOBAL_HEADER_PRIMARY_LINKS } from "../lib/public-indexable-routes";
+import { buildWhatsAppUrl, WHATSAPP_LEAD_MESSAGE } from "../lib/whatsapp-prefill";
 
 const globalPrimaryLinks = GLOBAL_HEADER_PRIMARY_LINKS;
 
@@ -22,6 +24,8 @@ export function SiteShell({
   headerBackdrop = "au",
 }) {
   const footerStats = getFooterStats();
+  const primaryWhatsAppUrl = buildWhatsAppUrl(siteData.brand.whatsapp, WHATSAPP_LEAD_MESSAGE);
+  const publicBrand = { ...siteData.brand, email: "" };
   const navLinks = destinationContext
     ? getDestinationNavLinks(destinationContext.slug)
     : globalPrimaryLinks;
@@ -33,13 +37,19 @@ export function SiteShell({
 
   return (
     <div className="portal-shell">
-      <SiteTopbar siteData={siteData} />
-      <header className={`site-header site-header--backdrop ${backdropModifier}`}>
+      <SitePublicStickyHeader
+        backdropModifier={backdropModifier}
+        className="site-header--marketing"
+      >
         <div className="site-header__inner">
-          <Link href={brandHref} className="brand" aria-label={brandAria}>
+          <Link
+            href={brandHref}
+            className="brand hover:scale-105 transition-transform duration-300"
+            aria-label={brandAria}
+          >
             <span className="brand__mark" aria-hidden="true">
               <PublicFileImg
-                src="/images/minrosh-logo.jpg"
+                src="/images/minrosh-logo.v2.webp"
                 alt=""
                 width={46}
                 height={46}
@@ -47,14 +57,21 @@ export function SiteShell({
               />
             </span>
             <span className="brand__text">
-              <strong>{siteData.brand.name}</strong>
+              <strong className="brand__name text-brand-plum">
+                {siteData.brand.name}
+              </strong>
             </span>
           </Link>
-          <SiteHeaderNav navLinks={navLinks} currentPath={currentPath} />
+          <SiteHeaderNav
+            navLinks={navLinks}
+            currentPath={currentPath}
+            enableVisaMega={!destinationContext}
+          />
         </div>
-      </header>
+        <SiteHeaderMobileUtilities brand={publicBrand} />
+      </SitePublicStickyHeader>
 
-      <main id="main-content" className="portal-main">{children}</main>
+      <main id="main-content" className="portal-main portal-main--immersive">{children}</main>
       <SiteFooter siteData={siteData} initialStats={footerStats} />
     </div>
   );

@@ -4,6 +4,7 @@ import { ContentPage } from "../../components/content-page";
 import { SiteShell } from "../../components/site-shell";
 import { StructuredData } from "../../components/structured-data";
 import { buildMetadata, breadcrumbJsonLd, faqJsonLd } from "../../lib/seo";
+import { HubClusterNavigator } from "../../components/seo/hub-cluster-navigator";
 
 const pageData = seoPages.servicePages.skilledMigration;
 
@@ -11,7 +12,7 @@ export const metadata = buildMetadata({
   title: pageData.metaTitle,
   description: pageData.metaDescription,
   path: pageData.path,
-  keywords: ["Skilled Migration Australia", "Subclass 189", "Subclass 190", "Subclass 491"],
+  keywords: pageData.keywords,
 });
 
 export default function SkilledMigrationPage() {
@@ -32,16 +33,35 @@ export default function SkilledMigrationPage() {
           { href: "/", label: "Home" },
           { href: pageData.path, label: "Skilled Migration" },
         ]}
+        currentPath={pageData.path}
         officialResources={pageData.officialResources ?? []}
         sections={pageData.sections}
         faq={pageData.faq}
+        mainLead={<HubClusterNavigator category="skilled" currentPath={pageData.path} />}
         heroImage={{
-          src: "/images/hero-sydney-real.jpg",
+          src: "/images/hero-sydney-real.v2.webp",
           alt: "Sydney Harbour — Australian skilled migration context",
         }}
+        summary="Skilled migration allows qualified professionals to move to Australia based on their points, occupation, and state demand. Key steps include Skills Assessment, English testing, and an Expression of Interest (EOI)."
+        takeaways={[
+          "Verify your occupation on the latest priority list",
+          "Calculate your points profile for 189/190 subclasses",
+          "Map your skills assessment and English test sequence"
+        ]}
         related={[
           ...pageData.relatedGuides,
-          { href: "/contact", title: "Contact MinRosh Migration" },
+          {
+            href: "/skilled-migration-australia-points-guide",
+            title: "Points Test Guide",
+          },
+          {
+            href: "/australia-visa-fees-and-costs-guide",
+            title: "Visa Fees & Costs",
+          },
+          {
+            href: "/australian-visas-official-sources",
+            title: "Official Sources",
+          },
         ]}
       />
     </SiteShell>

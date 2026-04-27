@@ -14,6 +14,7 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { scoreLeadPriority, isHotGreenSkilledLead } from "@/lib/admin/lead-priority";
 import { AdminTableSkeleton } from "@/components/admin/admin-table-skeleton";
+import { EnquiryDetailDrawer } from "@/components/admin/enquiry-detail-drawer";
 
 const columnHelper = createColumnHelper();
 
@@ -23,17 +24,28 @@ function priorityBadgeVariant(band) {
   return "outline";
 }
 
+async function parseJsonResponseSafe(response) {
+  const rawText = await response.text();
+  try {
+    return rawText ? JSON.parse(rawText) : {};
+  } catch {
+    return {};
+  }
+}
+
 export function CrmPanel() {
   const [enquiries, setEnquiries] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [detailEnquiry, setDetailEnquiry] = useState(null);
   const [subject, setSubject] = useState("Update from MinRosh Migration");
   const [text, setText] = useState("");
   const [sendMsg, setSendMsg] = useState("");
 
   useEffect(() => {
     fetch("/api/admin/enquiries")
-      .then((r) => r.json())
-      .then((d) => {
+      .then((r) => parseJsonResponseSafe(r))
+      .then((payload) => {
+        const d = payload?.data && typeof payload.data === "object" ? payload.data : payload;
         setEnquiries(d.enquiries || []);
         setLoading(false);
       })
@@ -42,6 +54,15 @@ export function CrmPanel() {
 
   const columns = useMemo(
     () => [
+      columnHelper.display({
+        id: "actions",
+        header: "Actions",
+        cell: ({ row }) => (
+          <Button type="button" variant="outline" size="sm" onClick={() => setDetailEnquiry(row.original)}>
+            View details
+          </Button>
+        ),
+      }),
       columnHelper.accessor("createdAt", { header: "Received", cell: (i) => i.getValue()?.slice(0, 19) || "—" }),
       columnHelper.accessor("firstName", {
         header: "Name",
@@ -93,16 +114,18 @@ export function CrmPanel() {
 
   async function sendBroadcast() {
     setSendMsg("");
-    const payload = { subject, text };
+    const requestPayload = { subject, text };
     let res = await fetch("/api/admin/broadcast", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
+      body: JSON.stringify(requestPayload),
     });
-    let d = await res.json();
-    if (res.status === 409 && d.needsBroadcastConfirmation) {
+    let responsePayload = await parseJsonResponseSafe(res);
+    let d = responsePayload?.data && typeof responsePayload.data === "object" ? responsePayload.data : responsePayload;
+    let details = responsePayload?.error?.details && typeof responsePayload.error.details === "object" ? responsePayload.error.details : d;
+    if (res.status === 409 && details.needsBroadcastConfirmation) {
       const ok = window.confirm(
-        `This broadcast goes to ${d.recipientCount} prospective contacts. Send anyway?`
+        `This broadcast goes to ${details.recipientCount} prospective contacts. Send anyway?`
       );
       if (!ok) {
         setSendMsg("Large broadcast cancelled.");
@@ -111,11 +134,13 @@ export function CrmPanel() {
       res = await fetch("/api/admin/broadcast", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...payload, broadcastConfirmed: true }),
+        body: JSON.stringify({ ...requestPayload, broadcastConfirmed: true }),
       });
-      d = await res.json();
+      responsePayload = await parseJsonResponseSafe(res);
+      d = responsePayload?.data && typeof responsePayload.data === "object" ? responsePayload.data : responsePayload;
+      details = responsePayload?.error?.details && typeof responsePayload.error.details === "object" ? responsePayload.error.details : d;
     }
-    if (!res.ok) setSendMsg(d.error || d.hint || "Failed");
+    if (!res.ok) setSendMsg(responsePayload?.error?.message || responsePayload?.error || details?.hint || d?.hint || "Failed");
     else setSendMsg(`Sent to ${d.sent} prospective contact(s).`);
   }
 
@@ -128,7 +153,7 @@ export function CrmPanel() {
             <CardDescription>Loading latest submissions…</CardDescription>
           </CardHeader>
           <CardContent>
-            <AdminTableSkeleton rows={7} cols={7} />
+            <AdminTableSkeleton rows={7} cols={8} />
           </CardContent>
         </Card>
       </div>
@@ -205,6 +230,8 @@ export function CrmPanel() {
           {sendMsg ? <p className="text-sm text-muted-foreground">{sendMsg}</p> : null}
         </CardContent>
       </Card>
+
+      <EnquiryDetailDrawer enquiry={detailEnquiry} open={Boolean(detailEnquiry)} onClose={() => setDetailEnquiry(null)} />
     </div>
   );
 }

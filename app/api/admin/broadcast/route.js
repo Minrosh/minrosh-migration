@@ -1,6 +1,8 @@
 import nodemailer from "nodemailer";
 import { requireAdminWrite } from "@/lib/admin/auth-route";
 import { appendAudit } from "@/lib/admin/audit";
+import { AUDIT_ACTIONS } from "@/lib/admin/audit-actions";
+import { API_ERROR_CODES, apiFail, apiOk, requestContextFromRequest } from "@/lib/api/response";
 import { readCustomers } from "@/lib/admin/json-store";
 import { isMarketingSuppressedEmail } from "@/lib/newsletter";
 import { rateLimitAllow } from "@/lib/security/rate-limit";
@@ -23,22 +25,23 @@ function getMailTransport() {
 }
 
 export async function POST(request) {
+  const context = requestContextFromRequest(request);
   const denied = await requireAdminWrite(request);
   if (denied) return denied;
 
   const ip = getClientIp(request);
   if (!rateLimitAllow(`admin-broadcast:${ip}`, { windowMs: 60 * 60 * 1000, max: 8 })) {
-    return Response.json({ error: "Too many broadcast requests. Try again later." }, { status: 429 });
+    return apiFail({ code: API_ERROR_CODES.RATE_LIMITED, message: "Too many broadcast requests. Try again later.", status: 429 }, context);
   }
   if (!rateLimitAllow(`admin-broadcast-day:${ip}`, { windowMs: 24 * 60 * 60 * 1000, max: 15 })) {
-    return Response.json({ error: "Daily broadcast limit reached. Try again tomorrow." }, { status: 429 });
+    return apiFail({ code: API_ERROR_CODES.RATE_LIMITED, message: "Daily broadcast limit reached. Try again tomorrow.", status: 429 }, context);
   }
 
   let body;
   try {
     body = await request.json();
   } catch {
-    return Response.json({ error: "Invalid JSON" }, { status: 400 });
+    return apiFail({ code: API_ERROR_CODES.VALIDATION_FAILED, message: "Invalid JSON", status: 400 }, context);
   }
 
   const SUBJECT_MAX = 200;
@@ -48,16 +51,16 @@ export async function POST(request) {
   const subject = String(body.subject || "").trim();
   const text = String(body.text || "").trim();
   if (!subject || !text) {
-    return Response.json({ error: "subject and text required" }, { status: 400 });
+    return apiFail({ code: API_ERROR_CODES.VALIDATION_FAILED, message: "subject and text required", status: 400 }, context);
   }
   if (/[\r\n]/.test(subject)) {
-    return Response.json({ error: "Subject cannot contain line breaks." }, { status: 400 });
+    return apiFail({ code: API_ERROR_CODES.VALIDATION_FAILED, message: "Subject cannot contain line breaks.", status: 400 }, context);
   }
   if (subject.length > SUBJECT_MAX) {
-    return Response.json({ error: `Subject too long (max ${SUBJECT_MAX} characters).` }, { status: 400 });
+    return apiFail({ code: API_ERROR_CODES.VALIDATION_FAILED, message: `Subject too long (max ${SUBJECT_MAX} characters).`, status: 400 }, context);
   }
   if (text.length > TEXT_MAX) {
-    return Response.json({ error: `Message too long (max ${TEXT_MAX} characters).` }, { status: 400 });
+    return apiFail({ code: API_ERROR_CODES.VALIDATION_FAILED, message: `Message too long (max ${TEXT_MAX} characters).`, status: 400 }, context);
   }
 
   const { customers } = readCustomers();
@@ -74,24 +77,28 @@ export async function POST(request) {
 
   const unique = [...new Set(emails)];
   if (!unique.length) {
-    return Response.json({ error: "No prospective customer emails", sent: 0 });
+    return apiFail({ code: API_ERROR_CODES.NOT_FOUND, message: "No prospective customer emails", status: 404 }, context);
   }
 
   if (unique.length >= LARGE_MIN && body.broadcastConfirmed !== true) {
-    return Response.json(
+    return apiFail(
       {
-        error: "Large send requires confirmation.",
-        recipientCount: unique.length,
-        needsBroadcastConfirmation: true,
-        hint: "Resend the same JSON with broadcastConfirmed: true after reviewing recipients.",
+        code: API_ERROR_CODES.CONFLICT,
+        message: "Large send requires confirmation.",
+        status: 409,
+        details: {
+          recipientCount: unique.length,
+          needsBroadcastConfirmation: true,
+          hint: "Resend the same JSON with broadcastConfirmed: true after reviewing recipients.",
+        },
       },
-      { status: 409 }
+      context
     );
   }
 
   const transporter = getMailTransport();
   if (!transporter) {
-    return Response.json({ error: "SMTP not configured" }, { status: 503 });
+    return apiFail({ code: API_ERROR_CODES.UPSTREAM_ERROR, message: "SMTP not configured", status: 503 }, context);
   }
 
   const smtpFrom = process.env.SMTP_FROM || process.env.SMTP_USER;
@@ -113,10 +120,11 @@ export async function POST(request) {
       : undefined,
   });
 
-  appendAudit("broadcast_prospective", `${unique.length} recipients`, {
+  appendAudit(AUDIT_ACTIONS.BROADCAST_PROSPECTIVE, `${unique.length} recipients`, {
     ip,
     route: "POST /api/admin/broadcast",
+    requestId: context.requestId,
   });
   logSecurityEvent("broadcast_sent", { recipientCount: unique.length, ip });
-  return Response.json({ ok: true, sent: unique.length });
+  return apiOk({ sent: unique.length }, context);
 }

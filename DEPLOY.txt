@@ -1,0 +1,12 @@
+MinRosh Ubuntu server — use exactly ONE of the lines below (do not join lines).
+
+One line (recommended):
+  cd ~/minrosh-migration && git pull origin main && ./deploy-server.sh
+
+After repo is up to date, you can shorten to:
+  cd ~/minrosh-migration && ./deploy-server.sh
+
+Same flow via npm (from repo root):
+  cd ~/minrosh-migration && npm run deploy:server
+
+Wrong (missing space or &&): cd ~/minrosh-migrationgit pull...

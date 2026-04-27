@@ -4,6 +4,7 @@ import { ContentPage } from "../../components/content-page";
 import { SiteShell } from "../../components/site-shell";
 import { StructuredData } from "../../components/structured-data";
 import { buildMetadata, breadcrumbJsonLd, faqJsonLd } from "../../lib/seo";
+import { HubClusterNavigator } from "../../components/seo/hub-cluster-navigator";
 
 const pageData = seoPages.servicePages.partnerVisa;
 
@@ -11,7 +12,7 @@ export const metadata = buildMetadata({
   title: pageData.metaTitle,
   description: pageData.metaDescription,
   path: pageData.path,
-  keywords: ["Partner Visa Australia", "Partner visa agent", "Spouse visa Australia"],
+  keywords: pageData.keywords,
 });
 
 export default function PartnerVisaPage() {
@@ -32,11 +33,26 @@ export default function PartnerVisaPage() {
           { href: "/", label: "Home" },
           { href: pageData.path, label: "Partner Visa" },
         ]}
+        officialResources={pageData.officialResources ?? []}
+        currentPath={pageData.path}
         sections={pageData.sections}
         faq={pageData.faq}
+        mainLead={<HubClusterNavigator category="partner" currentPath={pageData.path} />}
+        summary="Partner visas allow spouses or de facto partners of Australian citizens or PRs to live in Australia. The process focuses on proving a genuine and continuing relationship across financial, social, and household categories."
+        takeaways={[
+          "Gather relationship evidence (financial, social, household)",
+          "Determine if onshore (820) or offshore (309) is your path",
+          "Map your marriage or de facto history for consistency"
+        ]}
         related={[
           ...pageData.relatedGuides,
-          { href: "/contact", title: "Book a consultation" },
+          { href: "/partner-visa-820-801-guide", title: "Onshore 820/801 Guide" },
+          { href: "/partner-visa-309-100-guide", title: "Offshore 309/100 Guide" },
+          {
+            href: "/australia-visa-processing-times-guide",
+            title: "Processing Times",
+          },
+          { href: "/australian-visas-official-sources", title: "Official Sources" },
         ]}
       />
     </SiteShell>

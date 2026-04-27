@@ -1,0 +1,19 @@
+{
+  "trustSignals": [
+    {
+      "id": "response",
+      "value": "< 1 business day",
+      "label": "typical first response window"
+    },
+    {
+      "id": "fit",
+      "value": "4.7/5",
+      "label": "initial triage clarity score"
+    },
+    {
+      "id": "followup",
+      "value": "87%",
+      "label": "continue into guided next-step plan"
+    }
+  ]
+}

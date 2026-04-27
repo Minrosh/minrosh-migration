@@ -15,10 +15,6 @@ export function CountryCoverage({ countries }) {
           <p className="section-label">Countries We Cover</p>
           <h2>Advice pathways for four major destination systems</h2>
         </div>
-        <p className="process-section__lead">
-          This restores the broader MinRosh destination coverage from the earlier site versions,
-          while keeping Australia as the main conversion focus.
-        </p>
       </div>
 
       <div className="country-tabs">

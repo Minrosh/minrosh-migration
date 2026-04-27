@@ -4,18 +4,41 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
+async function parseJsonResponseSafe(response) {
+  const rawText = await response.text();
+  try {
+    return rawText ? JSON.parse(rawText) : {};
+  } catch {
+    return {};
+  }
+}
+
 export default function AutomationsPage() {
   const [rules, setRules] = useState([]);
   const [raw, setRaw] = useState("[]");
   const [msg, setMsg] = useState("");
 
   useEffect(() => {
+    setMsg("");
     fetch("/api/admin/automations")
-      .then((r) => r.json())
-      .then((d) => {
+      .then(async (r) => ({ res: r, payload: await parseJsonResponseSafe(r) }))
+      .then(({ res, payload }) => {
+        const d = payload?.data && typeof payload.data === "object" ? payload.data : payload;
+        const errorMessage = payload?.error?.message || payload?.error || d?.error;
+        if (!res.ok) {
+          setRules([]);
+          setRaw("[]");
+          setMsg(errorMessage || "Could not load automations.");
+          return;
+        }
         const rulesJson = JSON.stringify(d.rules || [], null, 2);
         setRules(d.rules || []);
         setRaw(rulesJson);
+      })
+      .catch(() => {
+        setRules([]);
+        setRaw("[]");
+        setMsg("Network error while loading automations.");
       });
   }, []);
 
@@ -34,7 +57,9 @@ export default function AutomationsPage() {
       body: JSON.stringify({ rules: parsed }),
     });
     if (!res.ok) {
-      setMsg("Save failed");
+      const payload = await parseJsonResponseSafe(res);
+      const d = payload?.data && typeof payload.data === "object" ? payload.data : payload;
+      setMsg(payload?.error?.message || payload?.error || d?.error || "Save failed");
       return;
     }
     setMsg("Saved.");

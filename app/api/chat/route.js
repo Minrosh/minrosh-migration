@@ -8,6 +8,7 @@ import {
   CHAT_MAX_TOTAL_CONTENT_CHARS,
   chatDailyQuotaAllow,
 } from "@/lib/security/chat-limits";
+import { API_ERROR_CODES, apiFail, apiOk, requestContextFromRequest } from "@/lib/api/response";
 
 const systemPrompt = `You are the MinRosh Migration Assistant for minroshmigration.com.au.
 
@@ -86,28 +87,30 @@ function chatProvider() {
 }
 
 export async function POST(request) {
+  const context = requestContextFromRequest(request);
   const provider = chatProvider();
   if (!provider) {
-    return Response.json(
+    return apiFail(
       {
-        error:
-          "Live assistant is not configured. Set GEMINI_API_KEY (Google AI Studio) or OPENAI_API_KEY on the server.",
         code: "AI_PROVIDER_NOT_CONFIGURED",
+        message:
+          "Live assistant is not configured. Set GEMINI_API_KEY (Google AI Studio) or OPENAI_API_KEY on the server.",
+        status: 503,
       },
-      { status: 503 }
+      context
     );
   }
 
   const ip = getClientIp(request);
   if (!rateLimitAllow(`chat:${ip}`, { windowMs: 15 * 60 * 1000, max: 40 })) {
-    return Response.json({ error: "Too many requests. Try again later." }, { status: 429 });
+    return apiFail({ code: API_ERROR_CODES.RATE_LIMITED, message: "Too many requests. Try again later.", status: 429 }, context);
   }
 
   const cl = request.headers.get("content-length");
   if (cl) {
     const n = Number(cl);
     if (Number.isFinite(n) && n > CHAT_MAX_BODY_BYTES) {
-      return Response.json({ error: "Request too large." }, { status: 413 });
+      return apiFail({ code: API_ERROR_CODES.VALIDATION_FAILED, message: "Request too large.", status: 413 }, context);
     }
   }
 
@@ -115,26 +118,26 @@ export async function POST(request) {
   try {
     rawText = await request.text();
   } catch {
-    return Response.json({ error: "Invalid request." }, { status: 400 });
+    return apiFail({ code: API_ERROR_CODES.VALIDATION_FAILED, message: "Invalid request.", status: 400 }, context);
   }
   if (Buffer.byteLength(rawText, "utf8") > CHAT_MAX_BODY_BYTES) {
-    return Response.json({ error: "Request too large." }, { status: 413 });
+    return apiFail({ code: API_ERROR_CODES.VALIDATION_FAILED, message: "Request too large.", status: 413 }, context);
   }
 
   let body;
   try {
     body = JSON.parse(rawText);
   } catch {
-    return Response.json({ error: "Invalid JSON body." }, { status: 400 });
+    return apiFail({ code: API_ERROR_CODES.VALIDATION_FAILED, message: "Invalid JSON body.", status: 400 }, context);
   }
 
   const normalized = normalizeMessages(body?.messages);
   if (!normalized.ok) {
-    return Response.json({ error: normalized.error }, { status: 400 });
+    return apiFail({ code: API_ERROR_CODES.VALIDATION_FAILED, message: normalized.error, status: 400 }, context);
   }
 
   if (!chatDailyQuotaAllow(ip)) {
-    return Response.json({ error: "Daily assistant limit reached. Try again tomorrow." }, { status: 429 });
+    return apiFail({ code: API_ERROR_CODES.RATE_LIMITED, message: "Daily assistant limit reached. Try again tomorrow.", status: 429 }, context);
   }
 
   const model = pickModel(body?.model);
@@ -152,12 +155,16 @@ export async function POST(request) {
         signal: controller.signal,
       });
       if (!result.ok) {
-        return Response.json(
-          { error: result.error || "Gemini error.", code: "GEMINI_ERROR" },
-          { status: result.status >= 400 && result.status < 600 ? result.status : 502 }
+        return apiFail(
+          {
+            code: "GEMINI_ERROR",
+            message: result.error || "Gemini error.",
+            status: result.status >= 400 && result.status < 600 ? result.status : 502,
+          },
+          context
         );
       }
-      return Response.json(result.body, { status: 200 });
+      return apiOk(result.body, context, { status: 200 });
     }
 
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
@@ -175,12 +182,22 @@ export async function POST(request) {
     });
 
     const data = await response.json();
-    return Response.json(data, { status: response.status });
+    if (!response.ok) {
+      return apiFail(
+        {
+          code: API_ERROR_CODES.UPSTREAM_ERROR,
+          message: String(data?.error?.message || data?.error || `openai_error_${response.status}`),
+          status: response.status,
+        },
+        context
+      );
+    }
+    return apiOk(data, context, { status: response.status });
   } catch (error) {
     if (error?.name === "AbortError") {
-      return Response.json({ error: "AI request timed out. Please try again." }, { status: 504 });
+      return apiFail({ code: API_ERROR_CODES.UPSTREAM_ERROR, message: "AI request timed out. Please try again.", status: 504 }, context);
     }
-    return Response.json({ error: "AI assistant is currently unavailable." }, { status: 502 });
+    return apiFail({ code: API_ERROR_CODES.UPSTREAM_ERROR, message: "AI assistant is currently unavailable.", status: 502 }, context);
   } finally {
     clearTimeout(timeout);
   }

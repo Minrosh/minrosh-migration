@@ -7,6 +7,7 @@ import {
   findCustomerByMagicToken,
   mergePassportOcrHints,
   setCustomerDriveFolder,
+  updateCustomerDocumentRequirements,
 } from "@/lib/admin/customers-service";
 import { ensureUploadsDir } from "@/lib/admin/json-store";
 import { getPrivateCustomerDir } from "@/lib/admin/uploads-storage";
@@ -24,6 +25,12 @@ import {
 import { detectBinaryMime, isAllowedStoredMime } from "@/lib/security/upload-validation";
 import { getPortalStatusForCustomer } from "@/lib/google-sheets";
 import { isGoogleServiceAccountConfigured } from "@/lib/google-service-account-private-key";
+import {
+  buildPortalTimeline,
+  defaultRequirementsForCustomer,
+  mergeRequirements,
+  templateLibraryForCustomer,
+} from "@/lib/client-portal/document-center";
 
 const MAX_FILES = 20;
 const MAX_BYTES_PER_FILE = 15 * 1024 * 1024;
@@ -43,7 +50,7 @@ function collectUploadFiles(formData) {
   return [];
 }
 
-async function saveOneFile({ file, customer, folder }) {
+async function saveOneFile({ file, customer, folder, requirementId }) {
   const original = safeFileName(file.name);
   const storedName = `${Date.now()}-${randomUUID().slice(0, 8)}-${original}`;
   const driveEnabled = isGoogleServiceAccountConfigured();
@@ -93,6 +100,7 @@ async function saveOneFile({ file, customer, folder }) {
         mime: detected,
         uploadedAt: new Date().toISOString(),
         folder,
+        requirementId: requirementId || "",
         storage: "drive",
         driveFileId: uploaded.fileId,
         driveFileUrl: uploaded.fileUrl || "",
@@ -136,6 +144,7 @@ async function saveOneFile({ file, customer, folder }) {
     mime: detected,
     uploadedAt: new Date().toISOString(),
     folder,
+    requirementId: requirementId || "",
   };
   addDocumentToCustomer(customer.id, doc);
   appendAudit("client_document_upload", `${customer.id} → ${doc.filename}`);
@@ -206,6 +215,7 @@ export async function POST(request, { params }) {
 
   const formData = await request.formData();
   const files = collectUploadFiles(formData);
+  const requirementId = String(formData.get("requirementId") || "").trim();
 
   if (files.length === 0) {
     return Response.json({ error: "Add at least one file" }, { status: 400 });
@@ -221,7 +231,7 @@ export async function POST(request, { params }) {
   const errors = [];
 
   for (const file of files) {
-    const result = await saveOneFile({ file, customer, folder });
+    const result = await saveOneFile({ file, customer, folder, requirementId });
     if (result.error) {
       errors.push(result.error);
     } else {
@@ -289,11 +299,18 @@ export async function GET(request, { params }) {
   }
 
   const listDocs = process.env.UPLOAD_GET_LISTS_DOCS === "true";
+  const mergedRequirements = mergeRequirements(customer.documentRequirements, defaultRequirementsForCustomer(customer));
+  if (JSON.stringify(mergedRequirements) !== JSON.stringify(customer.documentRequirements || [])) {
+    updateCustomerDocumentRequirements(customer.id, mergedRequirements);
+  }
   return Response.json({
     customer: {
       id: customer.id,
       name: customer.name,
       portalStatus,
+      templates: templateLibraryForCustomer(customer),
+      documentRequirements: mergedRequirements,
+      timeline: buildPortalTimeline(customer),
       documents: listDocs ? withClientUrls(token, customer) : [],
     },
   });

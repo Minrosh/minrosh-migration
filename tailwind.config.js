@@ -5,9 +5,8 @@ module.exports = {
     preflight: false,
   },
   content: [
-    "./app/admin/**/*.{js,jsx}",
-    "./components/admin/**/*.{js,jsx}",
-    "./components/ui/**/*.{js,jsx}",
+    "./app/**/*.{js,jsx,ts,tsx}",
+    "./components/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
     extend: {
@@ -41,6 +40,38 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        brand: {
+          plum: "#3d2432",
+          rose: "#9b4a6c",
+          gold: "#caa64d",
+          cream: "#fbf8f4",
+        },
+      },
+      keyframes: {
+        shimmer: {
+          "100%": { transform: "translateX(100%)" }
+        },
+        "fade-up": {
+          "0%": { opacity: "0", transform: "translateY(14px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        "float-slow": {
+          "0%, 100%": { transform: "translateY(0px)" },
+          "50%": { transform: "translateY(-10px)" },
+        },
+      },
+      animation: {
+        "fade-up": "fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both",
+        "fade-up-delay": "fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.12s both",
+        "float-slow": "float-slow 9s cubic-bezier(0.76, 0, 0.24, 1) infinite",
+      },
+      transitionTimingFunction: {
+        "expo-lux": "cubic-bezier(0.76, 0, 0.24, 1)",
+      },
+      boxShadow: {
+        glow: "0 0 0 1px rgba(255,255,255,0.12), 0 25px 80px rgba(155,74,108,0.28)",
+        lux: "0 8px 40px rgba(61, 36, 50, 0.07), 0 2px 8px rgba(61, 36, 50, 0.04)",
+        "lux-lg": "0 20px 60px rgba(61, 36, 50, 0.1), 0 4px 16px rgba(61, 36, 50, 0.05)",
       },
       borderRadius: {
         lg: "var(--radius)",

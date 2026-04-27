@@ -1,0 +1,440 @@
+{
+  "australia": {
+    "eyebrow": "Lifestyle primer",
+    "title": "Australia beyond the visa checklist",
+    "lead": "Sunlight, long commutes in the big capitals, and strong coffee culture shape daily life. Use these planning tiles to picture cash flow, first-month admin, and how city pace differs from regional towns.",
+    "disclaimer": "Figures are illustrative planning ranges for migrants and students—not quotes, averages from a single source, or financial advice. Always verify rent, tax, and fees in the suburb you are considering.",
+    "costOfLiving": {
+      "currency": "AUD",
+      "symbol": "$",
+      "period": "per month (single person, illustrative)",
+      "income": { "label": "After-tax income", "min": 2200, "max": 14000, "step": 50, "default": 5200 },
+      "rentPresets": [
+        { "id": "sydney-melbourne-inner", "label": "Sydney / Melbourne inner", "rent": 2400 },
+        { "id": "capital-middle", "label": "Capital city middle ring", "rent": 1900 },
+        { "id": "regional-city", "label": "Regional city (e.g. Newcastle, Geelong)", "rent": 1400 },
+        { "id": "regional-town", "label": "Smaller regional town", "rent": 1100 }
+      ],
+      "rentSlider": { "label": "Rent (adjust preset)", "min": 600, "max": 4000, "step": 25, "default": 1900 },
+      "groceries": { "label": "Groceries & household", "min": 280, "max": 1200, "step": 10, "default": 520 },
+      "transport": { "label": "Transport (fuel, Opal, rego share)", "min": 80, "max": 800, "step": 10, "default": 260 },
+      "contextNote": "Healthcare carries Medicare levy context once you are on eligible visas; private cover is common while settling."
+    },
+    "dayInLife": [
+      { "time": "06:30", "title": "Light before heat", "body": "Early walk or gym—summer mornings are the kindest window before the sun climbs.", "accent": "dawn" },
+      { "time": "08:15", "title": "Commute calculus", "body": "Train or bus in capitals; regional life often means a shorter drive and easier parking.", "accent": "transit" },
+      { "time": "12:45", "title": "Lunch strip", "body": "Laneway cafes in Melbourne, harbour views in Sydney, food courts near campuses everywhere.", "accent": "food" },
+      { "time": "17:30", "title": "After work", "body": "Beach swim, river ride, or quiet suburb—distance to nature varies sharply by postcode.", "accent": "nature" },
+      { "time": "20:00", "title": "Admin hour", "body": "Banks close early; many tasks move to apps. Keep PDFs of visa grants and IDs ready.", "accent": "admin" },
+      { "time": "22:30", "title": "Quiet curfew", "body": "Noise rules differ by council; apartment blocks often have stricter evening norms than houses.", "accent": "rest" }
+    ],
+    "arrivalChecklist": {
+      "title": "First-month arrival rhythm",
+      "subtitle": "Order varies by visa; use this as a conversation starter with your planner, not a legal sequence.",
+      "groups": [
+        {
+          "id": "tax",
+          "title": "Tax file number (TFN)",
+          "icon": "document",
+          "steps": [
+            { "label": "Gather passport and visa grant", "detail": "You apply online through the ATO; processing is usually quick when details match immigration records." },
+            { "label": "Keep TFN private", "detail": "Only employers, banks, and your super fund need it—avoid sharing in casual chats or unsecured forms." }
+          ]
+        },
+        {
+          "id": "bank",
+          "title": "Bank account",
+          "icon": "bank",
+          "steps": [
+            { "label": "Compare everyday vs migrant-friendly packs", "detail": "Some banks offer limited-ID onboarding before you have local proof of address." },
+            { "label": "Plan proof-of-address path", "detail": "Lease letter, utility bill, or university correspondence—requirements differ by institution." }
+          ]
+        },
+        {
+          "id": "licence",
+          "title": "Driving & ID",
+          "icon": "car",
+          "steps": [
+            { "label": "Recognised licence window", "detail": "States set how long you may drive on an overseas licence; after that, local tests apply." },
+            { "label": "ID for rentals", "detail": "Passport plus secondary ID speeds up real-estate portals and police checks." }
+          ]
+        },
+        {
+          "id": "connect",
+          "title": "Phone & internet",
+          "icon": "wifi",
+          "steps": [
+            { "label": "Prepaid SIM first", "detail": "Airport kiosks work in a pinch; compare data caps before locking a contract." },
+            { "label": "NBN vs 5G home", "detail": "Rental properties vary—confirm what is included before buying hardware." }
+          ]
+        }
+      ]
+    },
+    "cityVsRegional": {
+      "title": "City vs regional living (practical lens)",
+      "columns": ["Major capital", "Regional centre"],
+      "rows": [
+        { "aspect": "Rent pressure", "city": "Higher for comparable proximity to CBD and campuses.", "regional": "Often lower; watch limited stock in boom towns." },
+        { "aspect": "Jobs & networking", "city": "More verticals and meetups; competition is fiercer.", "regional": "Smaller market; personal referrals carry more weight." },
+        { "aspect": "Transport", "city": "Strong trains/trams; tolls and parking sting.", "regional": "Car dependency rises; fuel and maintenance matter more." },
+        { "aspect": "Pace & services", "city": "24-hour options, dense cultural calendar.", "regional": "Quieter evenings; some specialist services require travel." }
+      ]
+    }
+  },
+  "new-zealand": {
+    "eyebrow": "Lifestyle primer",
+    "title": "New Zealand: wind, walks, and wet winters",
+    "lead": "Life skews outdoors when weather allows. Housing stress exists in Auckland and Wellington; South Island towns trade salary bands for space.",
+    "disclaimer": "Illustrative figures for orientation only. Verify with local listings and official fee schedules.",
+    "costOfLiving": {
+      "currency": "NZD",
+      "symbol": "$",
+      "period": "per month (single person, illustrative)",
+      "income": { "label": "After-tax income", "min": 2800, "max": 12000, "step": 50, "default": 4800 },
+      "rentPresets": [
+        { "id": "auckland-inner", "label": "Auckland central-ish", "rent": 2200 },
+        { "id": "wellington", "label": "Wellington", "rent": 2000 },
+        { "id": "christchurch", "label": "Christchurch / Dunedin", "rent": 1500 },
+        { "id": "regional-nz", "label": "Provincial town", "rent": 1200 }
+      ],
+      "rentSlider": { "label": "Rent (adjust preset)", "min": 700, "max": 3500, "step": 25, "default": 2000 },
+      "groceries": { "label": "Groceries & household", "min": 300, "max": 1100, "step": 10, "default": 480 },
+      "transport": { "label": "Transport (fuel, buses, ferry)", "min": 100, "max": 700, "step": 10, "default": 240 },
+      "contextNote": "Earthquake and weather resilience show up in insurance and heating bills—ask locals about actual winter costs."
+    },
+    "dayInLife": [
+      { "time": "07:00", "title": "Coast or commute", "body": "Ferries in Wellington, motorways in Auckland—choose housing with realistic wind and rain tolerance.", "accent": "transit" },
+      { "time": "12:30", "title": "Café density", "body": "Excellent flat whites; lunch lines move fast near CBD towers.", "accent": "food" },
+      { "time": "17:45", "title": "Trail time", "body": "Regional parks fill after work; always pack a layer—the temperature drops fast.", "accent": "nature" },
+      { "time": "19:30", "title": "DIY culture", "body": "Trades can book out; learning basic maintenance saves stress in older villas.", "accent": "admin" },
+      { "time": "21:00", "title": "Quiet evenings", "body": "Retail hours end earlier than many global cities—plan groceries accordingly.", "accent": "rest" },
+      { "time": "22:00", "title": "Stargazing south", "body": "Clear nights in the South Island are spectacular; light pollution is low outside main towns.", "accent": "dawn" }
+    ],
+    "arrivalChecklist": {
+      "title": "Settling in Aotearoa",
+      "subtitle": "Practical admin varies by visa category—confirm with official INZ guidance.",
+      "groups": [
+        {
+          "id": "ird",
+          "title": "IRD number",
+          "icon": "document",
+          "steps": [
+            { "label": "Apply once you have an address path", "detail": "Employers need your IRD for PAYE; banks may ask during account opening." }
+          ]
+        },
+        {
+          "id": "bank-nz",
+          "title": "Banking",
+          "icon": "bank",
+          "steps": [
+            { "label": "Proof stack", "detail": "Passport, visa, and proof of address—student halls often issue letters for this." }
+          ]
+        },
+        {
+          "id": "licence-nz",
+          "title": "Driving",
+          "icon": "car",
+          "steps": [
+            { "label": "Conversion rules", "detail": "Some countries convert cleanly; others require theory or practical tests after a grace period." }
+          ]
+        },
+        {
+          "id": "health",
+          "title": "Health cover",
+          "icon": "wifi",
+          "steps": [
+            { "label": "Eligible vs visitor", "detail": "Understand what is covered before you skip travel insurance overlap windows." }
+          ]
+        }
+      ]
+    },
+    "cityVsRegional": {
+      "title": "Auckland vs provincial New Zealand",
+      "columns": ["Auckland / Wellington", "Provincial"],
+      "rows": [
+        { "aspect": "Housing", "city": "Tighter vacancy, higher rent for similar quality.", "regional": "More space; some towns have limited rental choice." },
+        { "aspect": "Income bands", "city": "Higher nominal salaries in corporate roles.", "regional": "Lower rents can offset smaller pay packets." },
+        { "aspect": "Weather", "city": "Windy corridors, humidity in Auckland summers.", "regional": "Cooler winters inland; heating costs can surprise." },
+        { "aspect": "Community", "city": "Diverse diaspora networks.", "regional": "Smaller circles; integration can feel faster if you join local clubs." }
+      ]
+    }
+  },
+  "canada": {
+    "eyebrow": "Lifestyle primer",
+    "title": "Canada: seasons define the budget",
+    "lead": "Winter gear, heating, and transit passes are non-negotiable line items. Cities feel North American in pace; suburbs stretch driving distances.",
+    "disclaimer": "Illustrative CAD amounts for planning conversations only. Provinces set health coverage and tax differently.",
+    "costOfLiving": {
+      "currency": "CAD",
+      "symbol": "$",
+      "period": "per month (single person, illustrative)",
+      "income": { "label": "After-tax income", "min": 2600, "max": 13000, "step": 50, "default": 5000 },
+      "rentPresets": [
+        { "id": "toronto-van", "label": "Toronto / Vancouver core", "rent": 2300 },
+        { "id": "montreal-calgary", "label": "Montréal / Calgary", "rent": 1600 },
+        { "id": "mid-city", "label": "Ottawa / Edmonton", "rent": 1500 },
+        { "id": "smaller", "label": "Smaller city", "rent": 1100 }
+      ],
+      "rentSlider": { "label": "Rent (adjust preset)", "min": 600, "max": 3800, "step": 25, "default": 1600 },
+      "groceries": { "label": "Groceries & household", "min": 280, "max": 1000, "step": 10, "default": 450 },
+      "transport": { "label": "Transport (pass, winter tires fund)", "min": 90, "max": 750, "step": 10, "default": 220 },
+      "contextNote": "Add a winter buffer: clothing, higher utilities, and occasional rideshare spikes during storms."
+    },
+    "dayInLife": [
+      { "time": "07:10", "title": "Skyway or subway", "body": "PATH in Toronto, Métro in Montréal—learn underground routes before February.", "accent": "transit" },
+      { "time": "12:00", "title": "Food halls", "body": "Multicultural lunch scenes are a highlight; tipping culture affects your cash flow.", "accent": "food" },
+      { "time": "17:15", "title": "Cold snap reality", "body": "Commute times stretch with snow; remote-friendly employers help sanity.", "accent": "admin" },
+      { "time": "19:00", "title": "Community ice", "body": "Skating rinks and climbing gyms replace beach culture for many newcomers.", "accent": "nature" },
+      { "time": "21:30", "title": "Quiet bylaws", "body": "Snow clearing and noise rules are strict—good neighbour habits matter.", "accent": "rest" },
+      { "time": "23:00", "title": "Northern summer", "body": "Long daylight hours in June—energy bills flip later in the year.", "accent": "dawn" }
+    ],
+    "arrivalChecklist": {
+      "title": "First Canadian milestones",
+      "subtitle": "Provinces issue health cards and driver licences—timelines differ.",
+      "groups": [
+        {
+          "id": "sin",
+          "title": "SIN (Social Insurance Number)",
+          "icon": "document",
+          "steps": [
+            { "label": "Service Canada", "detail": "Book or queue with passport and permit that shows work/study conditions." }
+          ]
+        },
+        {
+          "id": "bank-ca",
+          "title": "Banking & credit",
+          "icon": "bank",
+          "steps": [
+            { "label": "Credit history gap", "detail": "Secured cards help; keep rent receipts for future references." }
+          ]
+        },
+        {
+          "id": "licence-ca",
+          "title": "Provincial licence",
+          "icon": "car",
+          "steps": [
+            { "label": "Exchange vs test", "detail": "Some countries swap licences; others restart the graduated system." }
+          ]
+        },
+        {
+          "id": "health-province",
+          "title": "Provincial health card",
+          "icon": "wifi",
+          "steps": [
+            { "label": "Waiting periods", "detail": "Private insurance may be required during the gap—read the fine print." }
+          ]
+        }
+      ]
+    },
+    "cityVsRegional": {
+      "title": "Metro vs smaller Canadian city",
+      "columns": ["Major metro", "Smaller city"],
+      "rows": [
+        { "aspect": "Rent", "city": "High in Toronto/Vancouver corridors.", "regional": "Lower headline rent; heating and car costs may rise." },
+        { "aspect": "Transit", "city": "Robust networks where funded.", "regional": "Car almost essential; winter maintenance is real." },
+        { "aspect": "Language", "city": "English/French mix by region—Montréal rewards French effort.", "regional": "English may dominate outside Québec, but check locally." },
+        { "aspect": "Community", "city": "Huge diaspora hubs.", "regional": "Volunteer orgs become social lifelines faster." }
+      ]
+    }
+  },
+  "united-kingdom": {
+    "eyebrow": "Lifestyle primer",
+    "title": "United Kingdom: compact cities, layered history",
+    "lead": "Walkability is high in many centres, but energy bills and council tax bite. Learn the postcode personality before you sign a lease.",
+    "disclaimer": "GBP figures are illustrative planning aids only. London is its own economy compared with the rest of the UK.",
+    "costOfLiving": {
+      "currency": "GBP",
+      "symbol": "£",
+      "period": "per month (single person, illustrative)",
+      "income": { "label": "After-tax income", "min": 1800, "max": 11000, "step": 50, "default": 3600 },
+      "rentPresets": [
+        { "id": "london-zone2", "label": "London (zone 2–3 share)", "rent": 1400 },
+        { "id": "london-studio", "label": "London studio", "rent": 1900 },
+        { "id": "manchester-bristol", "label": "Manchester / Bristol", "rent": 1100 },
+        { "id": "regional-uk", "label": "Regional city", "rent": 800 }
+      ],
+      "rentSlider": { "label": "Rent (adjust preset)", "min": 450, "max": 3200, "step": 25, "default": 1100 },
+      "groceries": { "label": "Groceries & household", "min": 200, "max": 900, "step": 10, "default": 320 },
+      "transport": { "label": "Transport (Oyster/rail + occasional taxi)", "min": 80, "max": 500, "step": 5, "default": 160 },
+      "contextNote": "Council tax band sits outside this calculator—add it mentally when comparing flats."
+    },
+    "dayInLife": [
+      { "time": "07:45", "title": "Tube crush or canal jog", "body": "Peak Northern line vs leafy towpaths—your postcode sets the vibe.", "accent": "transit" },
+      { "time": "13:00", "title": "Meal deal culture", "body": "Supermarkets compete on £4 lunch bundles; independents shine on weekends.", "accent": "food" },
+      { "time": "18:00", "title": "Pub as living room", "body": "Social life clusters locally; learn last-orders timing in your borough.", "accent": "nature" },
+      { "time": "20:30", "title": "Paperwork evening", "body": "NHS app, bank switches, and council portals—keep PDFs organised.", "accent": "admin" },
+      { "time": "22:15", "title": "Thin walls", "body": "Victorian conversions mean sound travels—headphones are essential.", "accent": "rest" },
+      { "time": "06:00", "title": "Winter dark", "body": "Vitamin D and bright lamps help short daylight months.", "accent": "dawn" }
+    ],
+    "arrivalChecklist": {
+      "title": "UK arrival anchors",
+      "subtitle": "Rules depend on visa route—use GOV.UK for authoritative sequencing.",
+      "groups": [
+        {
+          "id": "share-code",
+          "title": "Right to work / rent checks",
+          "icon": "document",
+          "steps": [
+            { "label": "Share codes", "detail": "Employers and landlords verify digitally—know how to generate and refresh them." }
+          ]
+        },
+        {
+          "id": "bank-uk",
+          "title": "Bank account",
+          "icon": "bank",
+          "steps": [
+            { "label": "Proof cascade", "detail": "Council tax letter, utility bill, or university letter—each bank differs." }
+          ]
+        },
+        {
+          "id": "ni",
+          "title": "NI number",
+          "icon": "wifi",
+          "steps": [
+            { "label": "Interview slots", "detail": "Book early; payroll can start before the number arrives in some cases." }
+          ]
+        },
+        {
+          "id": "gp",
+          "title": "GP registration",
+          "icon": "car",
+          "steps": [
+            { "label": "Catchment areas", "detail": "Register near home; some surgeries cap new patients." }
+          ]
+        }
+      ]
+    },
+    "cityVsRegional": {
+      "title": "London vs rest of UK",
+      "columns": ["London", "Regional UK"],
+      "rows": [
+        { "aspect": "Rent vs salary", "city": "High rent; salaries bump but not always proportionally.", "regional": "Lower rent; some sectors pay a London weighting remotely." },
+        { "aspect": "Transport", "city": "Oyster + legs; ULEZ and congestion add costs if driving.", "regional": "Buses dominate; intercity trains pricey without railcards." },
+        { "aspect": "Culture", "city": "Infinite listings; sensory overload is real.", "regional": "Strong local scenes; travel to London for big gigs." },
+        { "aspect": "Weather morale", "city": "Grey stretches feel long between buildings.", "regional": "Coast and peaks closer for weekend resets." }
+      ]
+    }
+  },
+  "student-australia": {
+    "eyebrow": "Student life lens",
+    "title": "Studying in Australia: cash, campus, and coast",
+    "lead": "Share houses, casual work caps, and semester intensity shape a different spreadsheet from skilled migrants. Picture a realistic week before you choose a city.",
+    "disclaimer": "Illustrative student-style budgets only. Course fees, OSHC, and Genuine Student requirements sit on official Department pages—this panel does not replace them.",
+    "costOfLiving": {
+      "currency": "AUD",
+      "symbol": "$",
+      "period": "per month (student-style, illustrative)",
+      "income": { "label": "Part-time & casual income (after tax)", "min": 0, "max": 4500, "step": 50, "default": 1400 },
+      "rentPresets": [
+        { "id": "share-inner", "label": "Share house near campus", "rent": 950 },
+        { "id": "share-outer", "label": "Share house outer suburbs", "rent": 750 },
+        { "id": "student-hall", "label": "Purpose-built student room", "rent": 1200 },
+        { "id": "studio-tight", "label": "Studio / tight solo", "rent": 1600 }
+      ],
+      "rentSlider": { "label": "Rent (adjust preset)", "min": 400, "max": 2200, "step": 25, "default": 950 },
+      "groceries": { "label": "Groceries & basics", "min": 200, "max": 800, "step": 10, "default": 380 },
+      "transport": { "label": "Concession transport & rides", "min": 40, "max": 400, "step": 10, "default": 120 },
+      "contextNote": "Remember OSHC, textbooks, and society fees separately—they swing totals more than coffee."
+    },
+    "dayInLife": [
+      { "time": "08:30", "title": "Lecture sprint", "body": "Back-to-back tutorials—carry snacks; campus food queues spike between classes.", "accent": "transit" },
+      { "time": "11:00", "title": "Library deep work", "body": "Air-con battles in summer; bookmark silent floors early.", "accent": "admin" },
+      { "time": "14:30", "title": "Shift overlap", "body": "Retail and hospo shifts often start mid-afternoon—plan commute buffers.", "accent": "food" },
+      { "time": "18:00", "title": "Group assignment", "body": "Timezone pain for teammates overseas; shared docs save version chaos.", "accent": "nature" },
+      { "time": "21:00", "title": "Cheap eats crawl", "body": "Suburb night markets vs CBD dining—learn the student specials map.", "accent": "rest" },
+      { "time": "23:30", "title": "Quiet hours", "body": "Share-house noise rules keep friendships intact during exam weeks.", "accent": "dawn" }
+    ],
+    "arrivalChecklist": {
+      "title": "Student arrival rhythm",
+      "subtitle": "Check your CoE, visa conditions, and institution orientation pack alongside this list.",
+      "groups": [
+        {
+          "id": "coe",
+          "title": "Enrolment & CoE",
+          "icon": "document",
+          "steps": [
+            { "label": "Match dates", "detail": "Course start, visa grant, and flight landing should align with orientation expectations." }
+          ]
+        },
+        {
+          "id": "oshc",
+          "title": "OSHC & health",
+          "icon": "wifi",
+          "steps": [
+            { "label": "Coverage window", "detail": "Know what is excluded; keep digital cards on your phone." }
+          ]
+        },
+        {
+          "id": "bank-au-stu",
+          "title": "Bank & phone",
+          "icon": "bank",
+          "steps": [
+            { "label": "Campus pop-ups", "detail": "Orientation week often hosts banks and telcos—compare before you commit." }
+          ]
+        },
+        {
+          "id": "work-rights",
+          "title": "Work condition awareness",
+          "icon": "car",
+          "steps": [
+            { "label": "Hours caps", "detail": "Track policy updates; payslips should reflect lawful hours." }
+          ]
+        }
+      ]
+    },
+    "cityVsRegional": {
+      "title": "Campus city vs regional campus",
+      "columns": ["Big campus city", "Regional university town"],
+      "rows": [
+        { "aspect": "Rent & share houses", "city": "More listings; higher baseline rent.", "regional": "Tighter market; car-sharing circles matter." },
+        { "aspect": "Casual jobs", "city": "More shifts, more competition.", "regional": "Fewer employers; reliability becomes your brand." },
+        { "aspect": "Social density", "city": "Clubs and diaspora societies abound.", "regional": "Smaller cohorts; deeper friendships if you lean in." },
+        { "aspect": "Nature access", "city": "Weekend trips to beaches or ranges.", "regional": "Nature on the doorstep; fewer late-night amenities." }
+      ]
+    }
+  },
+  "global-pathways": {
+    "eyebrow": "Compare at a glance",
+    "title": "Four destinations, four daily rhythms",
+    "lead": "When you are torn between hubs, contrast lifestyle friction—not only points tables. Tap a country hub below for the full primer.",
+    "disclaimer": "Qualitative snapshot for planning conversations. Numbers are broad bands, not rankings.",
+    "compareCards": [
+      {
+        "slug": "australia",
+        "name": "Australia",
+        "href": "/destinations/australia",
+        "rentBand": "High in Sydney/Melbourne; regional offsets possible",
+        "climateVibe": "Hot summers, mild winters in the north; south has cooler winters",
+        "transport": "Strong CBD trains; car common regionally",
+        "jobFeel": "Skills lists drive narratives; hospitality always hiring in cities"
+      },
+      {
+        "slug": "canada",
+        "name": "Canada",
+        "href": "/destinations/canada",
+        "rentBand": "Toronto/Vancouver premium; heating adds winter cost",
+        "climateVibe": "Cold winters; short glorious summers",
+        "transport": "Metro cities strong; suburbs car-heavy",
+        "jobFeel": "Provincial nominations shape opportunities"
+      },
+      {
+        "slug": "united-kingdom",
+        "name": "United Kingdom",
+        "href": "/destinations/united-kingdom",
+        "rentBand": "London is an outlier; regional cities gentler",
+        "climateVibe": "Mild but grey; daylight swings sharply",
+        "transport": "Walk + rail; driving less central in London",
+        "jobFeel": "Sponsor licence roles concentrated in certain sectors"
+      },
+      {
+        "slug": "new-zealand",
+        "name": "New Zealand",
+        "href": "/destinations/new-zealand",
+        "rentBand": "Auckland/Wellington pressure; South Island varies",
+        "climateVibe": "Wind + rain; quick weather changes",
+        "transport": "Ferries and buses; car outside main corridors",
+        "jobFeel": "Smaller market; who you know matters sooner"
+      }
+    ]
+  }
+}

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import { buildWhatsAppUrl, WHATSAPP_LEAD_MESSAGE } from "@/lib/whatsapp-prefill";
+import { trackEvent } from "@/lib/client-analytics";
 
 /** Inline **bold** segments (Gemini/OpenAI often emit this). */
 function formatBoldSegments(text) {
@@ -108,8 +109,11 @@ function AssistantMessageBody({ text }) {
   );
 }
 
+let messageCounter = 0;
+
 function nextMessageId() {
-  return `m-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
+  messageCounter += 1;
+  return `m-${messageCounter}`;
 }
 
 /** Shown before any user message; after chat starts, prompts update from last user text. */
@@ -244,17 +248,31 @@ function parseChatResponse(rawText, response) {
       ok: false,
       kind: "parse",
       message:
-        "The assistant returned an unreadable response. Check that GEMINI_API_KEY is set in .env, run npm run build, and pm2 restart — or try again shortly.",
+        "We could not read the assistant’s reply (temporary network or format issue). Please try again, or use WhatsApp or Book above.",
     };
   }
 
-  const reply = data?.choices?.[0]?.message?.content?.trim();
+  if (data && data.ok === false && data.error) {
+    const err = data.error;
+    const code = typeof err === "object" ? err.code : undefined;
+    const msg =
+      typeof err === "string"
+        ? err
+        : err?.message || "The assistant is temporarily unavailable. Please try again shortly.";
+    return { ok: false, kind: "api", code, message: msg };
+  }
+
+  const envelopeData = data?.data && typeof data.data === "object" ? data.data : data;
+  const reply = envelopeData?.choices?.[0]?.message?.content?.trim();
   if (reply) return { ok: true, reply };
 
   const err = data?.error;
+  const code = data?.error?.code || data?.code;
   const serverMsg =
-    typeof err === "string" ? err : err?.message || data?.message || `Request failed (${response.status})`;
-  return { ok: false, kind: "api", code: data?.code, message: serverMsg };
+    typeof err === "string"
+      ? err
+      : err?.message || envelopeData?.error || data?.message || `Request failed (${response.status})`;
+  return { ok: false, kind: "api", code, message: serverMsg };
 }
 
 export function AIConcierge({ siteData }) {
@@ -269,7 +287,7 @@ export function AIConcierge({ siteData }) {
       id: "welcome",
       role: "assistant",
       content:
-        "Ask about skilled migration, student or partner visas, or education planning. I give practical next steps—not legal advice.",
+        "Hello! I can help you understand skilled migration, student or partner visa options. I provide practical orientation and next-step planning—not formal legal advice. What can I clarify for you today?",
     },
   ]);
   const [input, setInput] = useState("");
@@ -291,6 +309,20 @@ export function AIConcierge({ siteData }) {
     scrollLogToEnd();
   }, [messages, loading, open, scrollLogToEnd]);
 
+  /** Lets CSS hide bottom fixed CTAs and tighten panel height so messages are not covered. */
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+    const cls = "ai-concierge-panel-open";
+    if (open) {
+      document.body.classList.add(cls);
+    } else {
+      document.body.classList.remove(cls);
+    }
+    return () => {
+      document.body.classList.remove(cls);
+    };
+  }, [open]);
+
   function setSoftNotice(text, tone = "info") {
     setNotice(text ? { text, tone } : { text: "", tone: "info" });
   }
@@ -298,6 +330,11 @@ export function AIConcierge({ siteData }) {
   async function sendMessage(text) {
     const trimmed = text.trim();
     if (!trimmed) return;
+
+    trackEvent("ai_chat_message_send", {
+      source: "ai_concierge",
+      message_length: trimmed.length,
+    });
 
     if (suggestionsRef.current) {
       suggestionsRef.current.open = false;
@@ -356,7 +393,9 @@ export function AIConcierge({ siteData }) {
       setSoftNotice(
         parsed.kind === "parse"
           ? parsed.message
-          : "Live AI was unavailable, so this is fixed guidance on our site—not a model reply.",
+          : parsed.message && parsed.kind === "api"
+            ? parsed.message
+            : "Live assistant was unavailable just now — below is general guidance from our site, not an AI reply. Try again or use Book / WhatsApp.",
         "soft"
       );
     } catch (err) {
@@ -393,13 +432,33 @@ export function AIConcierge({ siteData }) {
         <div className="ai-concierge">
           <div className="ai-concierge__head">
             <div>
-              <strong>AI Concierge</strong>
-              <span>Guidance only — not legal or migration advice</span>
+              <strong>Ask MinRosh</strong>
+              <span>General information — not formal migration advice</span>
             </div>
-            <button type="button" onClick={() => setOpen(false)} aria-label="Close AI Concierge">
+            <button type="button" onClick={() => setOpen(false)} aria-label="Close Ask MinRosh">
               ×
             </button>
           </div>
+
+          <div className="ai-concierge__cta-row" aria-label="Quick actions">
+            <Link href="/book-consultation" className="ai-concierge__cta-chip">
+              Book
+            </Link>
+            <Link href="/contact" className="ai-concierge__cta-chip">
+              Contact
+            </Link>
+            <a className="ai-concierge__cta-chip" href={waFloat} target="_blank" rel="noreferrer">
+              WhatsApp
+            </a>
+          </div>
+
+          <details className="ai-concierge__legal">
+            <summary>About this assistant</summary>
+            <p className="ai-concierge__legal-text">
+              Replies are orientation only. Visa decisions need current official rules and often a
+              registered migration agent.
+            </p>
+          </details>
 
           <details ref={suggestionsRef} className="ai-concierge__suggestions">
             <summary>Suggested questions</summary>
@@ -449,10 +508,10 @@ export function AIConcierge({ siteData }) {
 
           <form className="ai-concierge__form" onSubmit={handleSubmit}>
             <textarea
-              rows={2}
+              rows={1}
               value={input}
               onChange={(event) => setInput(event.target.value)}
-              placeholder="Type your question…"
+              placeholder="Ask your question…"
             />
             <button type="submit" className="btn btn-primary" disabled={loading}>
               {loading ? "Sending…" : "Send"}
@@ -497,10 +556,17 @@ export function AIConcierge({ siteData }) {
         <button
           type="button"
           className="floating-tools__ai"
-          onClick={() => setOpen((current) => !current)}
+          onClick={() =>
+            setOpen((current) => {
+              const next = !current;
+              trackEvent(next ? "ai_chat_open" : "ai_chat_close", { source: "floating_button" });
+              return next;
+            })
+          }
           aria-expanded={open ? "true" : "false"}
+          aria-label={open ? "Close Ask MinRosh chat" : "Open Ask MinRosh chat"}
         >
-          AI Concierge
+          Ask MinRosh
         </button>
       </div>
     </div>

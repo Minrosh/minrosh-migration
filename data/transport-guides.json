@@ -1,0 +1,89 @@
+{
+  "australia": {
+    "eyebrow": "Move around",
+    "title": "Public transport & driving, city by city",
+    "lead": "Weekly commute costs below are fictional planning bands (single zone or modest drive) — tune them to your suburb and campus or office postcode.",
+    "disclaimer": "Verify fares, tolls, and licence recognition with state transport authorities before you rely on any figure here.",
+    "currency": "AUD",
+    "symbol": "$",
+    "licenceBlurb": "Each state sets how long you may drive on a valid overseas licence before requiring a local licence. Heavy vehicles and medical standards add extra rules.",
+    "officialLinks": [
+      { "label": "NSW — driving on an overseas licence", "href": "https://www.nsw.gov.au/driving-boating-and-transport/driver-and-rider-licences/new-to-nsw" },
+      { "label": "VicRoads — overseas licences", "href": "https://www.vicroads.vic.gov.au/licences/overseas-licences" },
+      { "label": "Queensland — driving with another licence", "href": "https://www.qld.gov.au/transport/licensing/driver-licensing" }
+    ],
+    "cities": [
+      { "id": "sydney", "name": "Sydney", "modeMix": "Train, light rail, bus, ferry on Opal", "weeklyCommuteIllustrative": 58, "licenceNote": "Check NSW recognition and 3-month rules for your country." },
+      { "id": "melbourne", "name": "Melbourne", "modeMix": "Tram grid + Metro trains + bus", "weeklyCommuteIllustrative": 52, "licenceNote": "Hook turns and tram-only lanes surprise newcomers—practice off-peak." },
+      { "id": "brisbane", "name": "Brisbane", "modeMix": "RiverCat + busway + rail", "weeklyCommuteIllustrative": 48, "licenceNote": "Toll tunnels add up—map M1/M3 if driving daily." },
+      { "id": "perth", "name": "Perth", "modeMix": "Long north–south rail spines + bus feeders", "weeklyCommuteIllustrative": 44, "licenceNote": "Coastal sprawl means distances grow quickly—fuel budget matters." }
+    ]
+  },
+  "new-zealand": {
+    "eyebrow": "Move around",
+    "title": "Ferries, buses, and honest distances",
+    "lead": "Illustrative weekly spend on a mix of buses and occasional fuel — Auckland ferries can lift totals fast.",
+    "disclaimer": "Check Waka Kotahi and regional councils for the latest fares and road user charges.",
+    "currency": "NZD",
+    "symbol": "$",
+    "licenceBlurb": "Conversion rules depend on where your licence was issued—some countries sit out of automatic conversion lists.",
+    "officialLinks": [
+      { "label": "Waka Kotahi — driver licences", "href": "https://www.nzta.govt.nz/driver-licences/" }
+    ],
+    "cities": [
+      { "id": "auckland", "name": "Auckland", "modeMix": "AT buses, trains, ferries", "weeklyCommuteIllustrative": 46, "licenceNote": "Motorway peaks are sharp—try flexible start times." },
+      { "id": "wellington", "name": "Wellington", "modeMix": "Golden Mile walk + cable car + ferries", "weeklyCommuteIllustrative": 42, "licenceNote": "Windy narrow roads reward defensive driving courses." },
+      { "id": "christchurch", "name": "Christchurch", "modeMix": "Orbiter bus + cycling flat grids", "weeklyCommuteIllustrative": 36, "licenceNote": "Bike lanes expanded post-quake—lights and visibility still essential." }
+    ]
+  },
+  "canada": {
+    "eyebrow": "Move around",
+    "title": "Transit passes, winter detours, and plates",
+    "lead": "Weekly numbers are mock totals mixing transit pass amortisation and modest fuel — winter adds Uber spikes.",
+    "disclaimer": "Provinces issue driver licences; cities set transit fares. Confirm before you budget.",
+    "currency": "CAD",
+    "symbol": "$",
+    "licenceBlurb": "Snow tires or winter-rated tires are socially and legally expected in many provinces—budget install and storage.",
+    "officialLinks": [
+      { "label": "Government of Canada — driving as a newcomer", "href": "https://www.canada.ca/en/immigration-refugees-citizenship/services/new-immigrants/prepare-life-canada/driving.html" }
+    ],
+    "cities": [
+      { "id": "toronto", "name": "Toronto", "modeMix": "TTC subway + streetcar + GO for sprawl", "weeklyCommuteIllustrative": 54, "licenceNote": "GTA insurance premiums are notoriously high—get quotes early." },
+      { "id": "vancouver", "name": "Vancouver", "modeMix": "SkyTrain, SeaBus, bus", "weeklyCommuteIllustrative": 52, "licenceNote": "Bridge tolls mostly gone but fuel remains elevated." },
+      { "id": "montreal", "name": "Montréal", "modeMix": "STM Métro + bus + BIXI in summer", "weeklyCommuteIllustrative": 38, "licenceNote": "Winter tyres and REM expansions change commute math—follow STM notices." }
+    ]
+  },
+  "united-kingdom": {
+    "eyebrow": "Move around",
+    "title": "Railcards, zones, and the left seat",
+    "lead": "Mock weekly totals assume a mix of TfL or regional rail plus occasional taxi when late — London is its own league.",
+    "disclaimer": "ULEZ, LEZ, and clean-air zones change often—check before you buy a car.",
+    "currency": "GBP",
+    "symbol": "£",
+    "licenceBlurb": "Some licences swap for GB versions; others need theory and practical tests—DVLA guidance is definitive.",
+    "officialLinks": [
+      { "label": "GOV.UK — drive in GB on a non-GB licence", "href": "https://www.gov.uk/drive-foreign-vehicle" }
+    ],
+    "cities": [
+      { "id": "london", "name": "London", "modeMix": "Tube, bus, Elizabeth line, legs", "weeklyCommuteIllustrative": 42, "licenceNote": "Congestion and ULEZ sting if you drive daily—many migrants delay car ownership." },
+      { "id": "manchester", "name": "Manchester", "modeMix": "Metrolink trams + bus", "weeklyCommuteIllustrative": 32, "licenceNote": "Bee Network changes are rolling—watch stop relocations." },
+      { "id": "edinburgh", "name": "Edinburgh", "modeMix": "Lothian buses + compact core", "weeklyCommuteIllustrative": 30, "licenceNote": "Scotland sets its own licensing nuances—visit mygov.scot for detail." }
+    ]
+  },
+  "global-pathways": {
+    "eyebrow": "Move around",
+    "title": "How getting from A to B feels in each hub",
+    "lead": "A qualitative snapshot for people comparing countries before they deep-dive a single city guide on each destination hub.",
+    "disclaimer": "No fares quoted here—open the destination hub for illustrative weekly bands.",
+    "currency": "AUD",
+    "symbol": "$",
+    "licenceBlurb": "Every country on this site handles overseas licences differently—always read the official motor registry first.",
+    "officialLinks": [],
+    "cities": [
+      { "id": "au", "name": "Australia", "modeMix": "Opal / Myki / go card — state-by-state", "weeklyCommuteIllustrative": null, "licenceNote": "State transport sites list recognition windows." },
+      { "id": "ca", "name": "Canada", "modeMix": "City transit + inevitable winter driving", "weeklyCommuteIllustrative": null, "licenceNote": "Provincial graduated licensing may restart." },
+      { "id": "uk", "name": "United Kingdom", "modeMix": "National Rail + TfL-style metros", "weeklyCommuteIllustrative": null, "licenceNote": "Share codes for renting often pair with right-to-work checks." },
+      { "id": "nz", "name": "New Zealand", "modeMix": "Buses, ferries, and honest car dependency", "weeklyCommuteIllustrative": null, "licenceNote": "Rural roads and weather deserve respect." }
+    ]
+  }
+}

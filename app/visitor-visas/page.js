@@ -4,7 +4,7 @@ import { ContentPage } from "../../components/content-page";
 import { SiteShell } from "../../components/site-shell";
 import { StructuredData } from "../../components/structured-data";
 import { getHomeSiteData } from "../../lib/home-site-data";
-import { buildMetadata, breadcrumbJsonLd } from "../../lib/seo";
+import { buildMetadata, breadcrumbJsonLd, faqJsonLd } from "../../lib/seo";
 
 const pageData = seoPages.servicePages.visitorVisas;
 
@@ -25,6 +25,7 @@ export default function VisitorVisasPage() {
           { name: "Visitor Visas", path: pageData.path },
         ])}
       />
+      <StructuredData data={faqJsonLd(pageData.faq)} />
       <ContentPage
         eyebrow={pageData.eyebrow}
         title={pageData.headline}
@@ -33,7 +34,10 @@ export default function VisitorVisasPage() {
           { href: "/", label: "Home" },
           { href: pageData.path, label: "Visitor Visas" },
         ]}
+        officialResources={pageData.officialResources ?? []}
+        currentPath={pageData.path}
         sections={pageData.sections}
+        faq={pageData.faq}
         related={pageData.related}
       />
     </SiteShell>

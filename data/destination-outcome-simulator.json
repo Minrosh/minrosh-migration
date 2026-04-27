@@ -1,0 +1,100 @@
+{
+  "default": {
+    "default": [
+      {
+        "id": "clarity-sprint",
+        "label": "Clarity Sprint",
+        "persona": "You want the fastest route to a confident decision",
+        "timelineMonths": 2,
+        "confidenceScore": 58,
+        "wins": ["Shortlist top 2 pathways", "Map evidence checklist", "Set realistic submission date"],
+        "riskSignals": ["Missing key identity records", "No test timeline reserved"],
+        "nextAction": "Book a strategy call and lock your first 30-day execution plan."
+      },
+      {
+        "id": "steady-build",
+        "label": "Steady Build",
+        "persona": "You prefer a low-risk, structured migration runway",
+        "timelineMonths": 6,
+        "confidenceScore": 72,
+        "wins": ["Parallel document preparation", "Risk-first evidence review", "Official sources cross-check built in"],
+        "riskSignals": ["Unverified assumptions from online forums"],
+        "nextAction": "Run a gap audit and convert unknowns into dated actions."
+      }
+    ]
+  },
+  "australia": {
+    "skilled": [
+      {
+        "id": "skill-fast-track",
+        "label": "Fast-track Skilled",
+        "persona": "Experienced professional with test-ready English",
+        "timelineMonths": 4,
+        "confidenceScore": 76,
+        "wins": ["Points gap visible in one glance", "EOI sequence mapped", "State nomination pathways compared"],
+        "riskSignals": ["Skills assessment timeline uncertainty", "Occupation list volatility"],
+        "nextAction": "Validate your nominated occupation and lock an invitation strategy this week."
+      },
+      {
+        "id": "skill-risk-shield",
+        "label": "Risk-shield Skilled",
+        "persona": "Profile needs stronger evidence before high-stakes lodgement",
+        "timelineMonths": 8,
+        "confidenceScore": 64,
+        "wins": ["Evidence quality before speed", "Fallback pathways pre-designed", "Invitation competitiveness monitored monthly"],
+        "riskSignals": ["Work reference gaps", "Points threshold still evolving"],
+        "nextAction": "Prioritize evidence remediation, then enter the invitation market with a stronger file."
+      }
+    ],
+    "student": [
+      {
+        "id": "student-outcome",
+        "label": "Outcome-led Student",
+        "persona": "Student optimizing both study quality and pathway optionality",
+        "timelineMonths": 3,
+        "confidenceScore": 69,
+        "wins": ["Course-to-goal alignment tested", "Funds and documentation staged", "Post-study options visualized early"],
+        "riskSignals": ["Course selected without migration alignment"],
+        "nextAction": "Shortlist providers by outcome fit before committing to enrolment."
+      }
+    ],
+    "partner": [
+      {
+        "id": "partner-proof",
+        "label": "Evidence-first Partner",
+        "persona": "Couple seeking high-trust submission readiness",
+        "timelineMonths": 5,
+        "confidenceScore": 74,
+        "wins": ["Relationship timeline storyboarded", "Four-pillar evidence matrix complete", "Inconsistency checks before lodgement"],
+        "riskSignals": ["Contradictions across statements", "Missing social proof evidence"],
+        "nextAction": "Build a single-source relationship timeline to remove ambiguity."
+      }
+    ],
+    "default": [
+      {
+        "id": "aus-general",
+        "label": "Australia Planning Core",
+        "persona": "Applicant needing a realistic, low-noise pathway plan",
+        "timelineMonths": 4,
+        "confidenceScore": 67,
+        "wins": ["Official requirements de-risked", "Decision path simplified", "First milestone within 14 days"],
+        "riskSignals": ["Over-reliance on generic advice"],
+        "nextAction": "Run a focused pathway triage and lock your first milestone."
+      }
+    ]
+  },
+  "canada": {
+    "default": [
+      {
+        "id": "canada-trajectory",
+        "label": "Canada Trajectory",
+        "persona": "Applicant balancing speed with profile strength",
+        "timelineMonths": 5,
+        "confidenceScore": 65,
+        "wins": ["Eligibility clarity improved", "Evidence calendar built", "Fallback pathway prepared"],
+        "riskSignals": ["Profile assumptions not validated"],
+        "nextAction": "Validate profile assumptions against official guidance before committing spend."
+      }
+    ]
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "stats": [
+    {
+      "id": "pathway-shortlist",
+      "value": "Clear Direction",
+      "label": "Visitors often feel clearer after shortlist tools"
+    },
+    {
+      "id": "next-step-speed",
+      "value": "3 mins",
+      "label": "average time to pick a next step"
+    },
+    {
+      "id": "structured-intent",
+      "value": "Guided Clarity",
+      "label": "Guided sessions help convert uncertainty into practical next steps"
+    }
+  ],
+  "milestones": [
+    {
+      "id": "clarity",
+      "title": "Clarity unlocked",
+      "description": "You have already done the hardest part: choosing a direction."
+    },
+    {
+      "id": "evidence",
+      "title": "Evidence gather",
+      "description": "Use the recommended page to collect realistic requirements and costs."
+    },
+    {
+      "id": "commit",
+      "title": "Commit with confidence",
+      "description": "Book a consultation when you want a strategy tied to your timeline."
+    }
+  ]
+}

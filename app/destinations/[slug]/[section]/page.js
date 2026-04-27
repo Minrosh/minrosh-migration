@@ -1,6 +1,8 @@
 import { notFound } from "next/navigation";
 import destinations from "../../../../data/destinations.json";
 import siteData from "../../../../data/site.json";
+import outcomeSimulatorData from "../../../../data/destination-outcome-simulator.json";
+import destinationConfidenceStripData from "../../../../data/destination-confidence-strip.json";
 import { ContentPage } from "../../../../components/content-page";
 import { SiteShell } from "../../../../components/site-shell";
 import { StructuredData } from "../../../../components/structured-data";
@@ -12,6 +14,24 @@ import {
   isDestinationSectionId,
 } from "../../../../lib/destination-nav";
 import { getDestinationSectionPage } from "../../../../lib/destination-section-content";
+import { getLifestyleGuide } from "../../../../lib/lifestyle-guides";
+import { getFirst14Days, getStudentJobBoardAu, getTransportGuide } from "../../../../lib/experience-data";
+import { LifestyleExperienceBlock } from "../../../../components/lifestyle/lifestyle-experience-block";
+import { DestinationOutcomeSimulator } from "../../../../components/destination-outcome-simulator";
+import { DestinationConfidenceStrip } from "../../../../components/destination-confidence-strip";
+
+function lifestyleGuideForSection(slug, section) {
+  if (section !== "student") return null;
+  if (slug === "australia") return getLifestyleGuide("student-australia");
+  return getLifestyleGuide(slug);
+}
+
+function resolveOutcomeScenarios(slug, section) {
+  const fallback = outcomeSimulatorData.default?.default ?? [];
+  const byDestination = outcomeSimulatorData[slug] ?? {};
+  const bySection = byDestination[section] ?? byDestination.default ?? fallback;
+  return Array.isArray(bySection) && bySection.length ? bySection : fallback;
+}
 
 export function generateStaticParams() {
   return Object.keys(destinations).flatMap((slug) =>
@@ -49,6 +69,15 @@ export default async function DestinationSectionPage({ params }) {
   const hubPath = `/destinations/${slug}`;
   const path = `${hubPath}/${section}`;
   const sectionLabel = getDestinationSectionLabel(section);
+  const outcomeScenarios = resolveOutcomeScenarios(slug, section);
+  const confidenceStrip =
+    destinationConfidenceStripData[slug] ?? destinationConfidenceStripData.default ?? {};
+  const lifestyleGuide = lifestyleGuideForSection(slug, section);
+  const first14 =
+    section === "student" ? getFirst14Days(slug === "australia" ? "student-australia" : slug) : null;
+  const transport = section === "student" ? getTransportGuide(slug) : null;
+  const jobBoard =
+    section === "student" && slug === "australia" ? getStudentJobBoardAu() : null;
 
   const jsonLd = [
     breadcrumbJsonLd([
@@ -81,6 +110,31 @@ export default async function DestinationSectionPage({ params }) {
           { href: path, label: sectionLabel },
         ]}
         officialResources={data.officialResources ?? []}
+        mainLead={
+          <>
+            <DestinationOutcomeSimulator
+              destinationName={hub.name}
+              sectionLabel={sectionLabel}
+              scenarios={outcomeScenarios}
+            />
+            <DestinationConfidenceStrip
+              title={confidenceStrip.title ?? `${hub.name} Confidence Strip`}
+              summary={
+                confidenceStrip.summary ??
+                `Keep your ${sectionLabel.toLowerCase()} plan structured with confidence checks.`
+              }
+              metrics={confidenceStrip.metrics ?? []}
+              proof={confidenceStrip.proof ?? []}
+              nextMilestones={confidenceStrip.nextMilestones ?? []}
+            />
+            <LifestyleExperienceBlock
+              guide={lifestyleGuide}
+              first14={first14}
+              transport={transport}
+              jobBoard={jobBoard}
+            />
+          </>
+        }
         sections={data.sections ?? []}
         faq={data.faq ?? []}
         related={data.related ?? []}

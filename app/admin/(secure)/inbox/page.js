@@ -18,7 +18,8 @@ export default function InboxPage() {
   function loadThreads() {
     fetch("/api/admin/inbox")
       .then((r) => r.json())
-      .then((d) => {
+      .then((payload) => {
+        const d = payload?.data && typeof payload.data === "object" ? payload.data : payload;
         setConversations(d.conversations || []);
         setLoading(false);
       })
@@ -36,7 +37,10 @@ export default function InboxPage() {
     }
     fetch(`/api/admin/inbox?conversationId=${encodeURIComponent(activeId)}`)
       .then((r) => r.json())
-      .then((d) => setMessages(d.messages || []));
+      .then((payload) => {
+        const d = payload?.data && typeof payload.data === "object" ? payload.data : payload;
+        setMessages(d.messages || []);
+      });
   }, [activeId]);
 
   async function sendOut() {
@@ -56,7 +60,8 @@ export default function InboxPage() {
     loadThreads();
     if (activeId) {
       const r = await fetch(`/api/admin/inbox?conversationId=${encodeURIComponent(activeId)}`);
-      const d = await r.json();
+      const payload = await r.json();
+      const d = payload?.data && typeof payload.data === "object" ? payload.data : payload;
       setMessages(d.messages || []);
     }
   }
