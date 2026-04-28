@@ -24,6 +24,7 @@
     "test:smtp:shell": "node scripts/test-smtp.mjs",
     "test:unit": "vitest run",
     "test:e2e": "playwright test",
+    "purge:cdn": "node scripts/purge-cdn.js",
     "test:nav": "node scripts/ui-nav-audit.mjs",
     "routes:verify": "node scripts/reindex-verify.mjs",
     "reindex:verify": "node scripts/reindex-verify.mjs",
