@@ -6,16 +6,12 @@ import { usePathname, useSearchParams } from "next/navigation";
 function ScrollRestorerInner() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const query = searchParams?.toString() || "";
 
   useEffect(() => {
-    // Scroll smoothly to top on path or search param changes (e.g., tab switches)
-    // for a more premium feel and better visual structure.
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: "smooth",
-    });
-  }, [pathname, searchParams]);
+    // Reset scroll only when route/search actually changes.
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }, [pathname, query]);
 
   return null;
 }

@@ -5505,8 +5505,10 @@ body.ai-concierge-panel-open .mobile-sticky-quiz-cta {
     width: auto;
   }
 
+  html[data-menu="open"],
   body[data-menu="open"] {
     overflow: hidden;
+    overscroll-behavior: none;
   }
 }
 

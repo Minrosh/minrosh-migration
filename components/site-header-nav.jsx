@@ -2,6 +2,7 @@
 
 import { Fragment, useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { SiteVisasMegaMenu } from "./site-visas-mega-menu";
 
 /** Collapsed into desktop mega menu when `enableVisaMega` is true. */
@@ -16,13 +17,22 @@ export function SiteHeaderNav({ navLinks, currentPath, enableVisaMega = false })
   const [currentHash, setCurrentHash] = useState("");
   const menuToggleRef = useRef(null);
   const navRef = useRef(null);
+  const pathname = usePathname();
 
   useEffect(() => {
-    document.body.dataset.menu = menuOpen ? "open" : "closed";
+    const menuState = menuOpen ? "open" : "closed";
+    document.documentElement.dataset.menu = menuState;
+    document.body.dataset.menu = menuState;
     return () => {
+      document.documentElement.dataset.menu = "closed";
       document.body.dataset.menu = "closed";
     };
   }, [menuOpen]);
+
+  useEffect(() => {
+    // Route changes should always reset drawer state + scroll lock.
+    setMenuOpen(false);
+  }, [pathname]);
 
   useEffect(() => {
     if (!menuOpen) return;
