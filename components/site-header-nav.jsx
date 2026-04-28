@@ -80,7 +80,7 @@ export function SiteHeaderNav({ navLinks, currentPath, enableVisaMega = false })
       <button
         ref={menuToggleRef}
         type="button"
-        className="menu-toggle"
+        className="menu-toggle touch-manipulation"
         aria-expanded={menuOpen ? "true" : "false"}
         aria-controls="site-header-primary-nav"
         aria-label={menuOpen ? "Close menu" : "Open menu"}
