@@ -9,6 +9,7 @@ import { GoogleAnalytics } from "../components/google-analytics";
 import { businessJsonLd } from "../lib/seo";
 import { ScrollRestorer } from "../components/scroll-restorer";
 import { PWARegister } from "../components/pwa-register";
+import { RuntimeChunkRecovery } from "../components/runtime-chunk-recovery";
 
 const siteData = getHomeSiteData(siteDataStatic);
 
@@ -98,6 +99,7 @@ export default async function RootLayout({ children }) {
     <html lang="en-AU">
       <body className={`${inter.variable} ${playfair.variable} immersive-theme`}>
         <ScrollRestorer />
+        <RuntimeChunkRecovery />
         <PWARegister />
         <GoogleAnalytics nonce={nonce} />
         <a href="#main-content" className="skip-link">

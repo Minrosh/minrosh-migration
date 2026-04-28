@@ -1,4 +1,4 @@
-const CACHE_NAME = "minrosh-static-v2";
+const CACHE_NAME = "minrosh-static-v3";
 const PRECACHE_URLS = ["/manifest.webmanifest", "/images/minrosh-logo.png"];
 
 self.addEventListener("install", (event) => {
@@ -26,18 +26,28 @@ self.addEventListener("fetch", (event) => {
   const isNavigationRequest =
     event.request.mode === "navigate" ||
     (event.request.headers.get("accept") || "").includes("text/html");
-  const isStaticAsset =
+  const isImageOrManifestAsset =
     isSameOrigin &&
     (requestUrl.pathname.startsWith("/images/") ||
-      requestUrl.pathname.startsWith("/_next/static/") ||
       requestUrl.pathname === "/manifest.webmanifest");
+  const isNextStaticAsset =
+    isSameOrigin && requestUrl.pathname.startsWith("/_next/static/");
 
   if (isNavigationRequest) {
     event.respondWith(fetch(event.request).catch(() => caches.match(event.request)));
     return;
   }
 
-  if (!isStaticAsset) return;
+  /*
+   * Cache-first for versioned Next static files can pin stale runtimes/chunk maps
+   * across deployments. Let the network be source-of-truth to avoid chunk mismatch.
+   */
+  if (isNextStaticAsset) {
+    event.respondWith(fetch(event.request));
+    return;
+  }
+
+  if (!isImageOrManifestAsset) return;
 
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
