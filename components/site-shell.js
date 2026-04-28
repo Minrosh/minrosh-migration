@@ -68,7 +68,7 @@ export function SiteShell({
             enableVisaMega={!destinationContext}
           />
         </div>
-        <SiteHeaderMobileUtilities brand={publicBrand} />
+        <SiteHeaderMobileUtilities brand={publicBrand} whatsappHref={primaryWhatsAppUrl} />
       </SitePublicStickyHeader>
 
       <main id="main-content" className="portal-main portal-main--immersive">{children}</main>
