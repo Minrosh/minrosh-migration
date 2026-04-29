@@ -75,7 +75,7 @@ export function HomeDeferredMotionSections() {
                 </div>
                 <Link
                   href="/skilled-migration"
-                  className="mt-6 font-black text-brand-rose flex items-center gap-2 group-hover:gap-4 transition-all underline decoration-2 underline-offset-8"
+                  className="mt-6 inline-flex min-h-[48px] touch-manipulation items-center font-black text-brand-rose gap-2 group-hover:gap-4 transition-all underline decoration-2 underline-offset-8"
                 >
                   View Skilled Hub <span>→</span>
                 </Link>
@@ -94,7 +94,7 @@ export function HomeDeferredMotionSections() {
                 </div>
                 <Link
                   href="/partner-visa-australia"
-                  className="mt-6 font-black text-brand-rose flex items-center gap-2 group-hover:gap-4 transition-all underline decoration-2 underline-offset-8"
+                  className="mt-6 inline-flex min-h-[48px] touch-manipulation items-center font-black text-brand-rose gap-2 group-hover:gap-4 transition-all underline decoration-2 underline-offset-8"
                 >
                   Partner Hub <span>→</span>
                 </Link>
@@ -113,7 +113,7 @@ export function HomeDeferredMotionSections() {
                 </div>
                 <Link
                   href="/student-visa-australia"
-                  className="mt-6 font-black text-brand-plum flex items-center gap-2 group-hover:gap-4 transition-all underline decoration-2 underline-offset-8"
+                  className="mt-6 inline-flex min-h-[48px] touch-manipulation items-center font-black text-brand-plum gap-2 group-hover:gap-4 transition-all underline decoration-2 underline-offset-8"
                 >
                   Student Hub <span>→</span>
                 </Link>

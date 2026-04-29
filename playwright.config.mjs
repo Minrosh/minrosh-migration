@@ -15,9 +15,8 @@ export default defineConfig({
   },
   projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
   webServer: {
-    // Match production (ecosystem.config.js): cwd = .next/standalone, node server.js
-    command:
-      "bash -lc 'cd .next/standalone && PORT=4173 HOSTNAME=127.0.0.1 node server.js'",
+    // Build standalone output, then run from repo root to avoid cwd-dependent failures.
+    command: "bash -lc 'npm run build && PORT=4173 HOSTNAME=127.0.0.1 node .next/standalone/server.js'",
     url: baseURL,
     /** Local dev: reuse an already-running server on :4173. CI: always start fresh. */
     reuseExistingServer: !process.env.CI,

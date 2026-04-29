@@ -79,7 +79,7 @@ export function HomeDeferredCarousels({ newsItems = [] }) {
             <MotionReveal delay={0.1} y={10}>
               <Link
                 href="/immigration-news"
-                className="font-black text-brand-plum underline decoration-2 underline-offset-8 hover:text-brand-rose transition-colors"
+                className="inline-flex min-h-[48px] touch-manipulation items-center font-black text-brand-plum underline decoration-2 underline-offset-8 hover:text-brand-rose transition-colors"
               >
                 View all news <span>→</span>
               </Link>
