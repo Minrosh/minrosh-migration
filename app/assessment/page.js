@@ -74,7 +74,7 @@ export default function AssessmentPage() {
                   eventName="cta_click"
                   eventParams={{ cta_id: "assessment_primary_quiz", cta_location: "assessment_hero", destination: "/#quiz" }}
                   aria-label="Open points wizard from assessment page"
-                  className="btn btn-primary"
+                  className="btn btn-primary min-h-[48px] touch-manipulation"
                 >
                   Open 2026 Points Wizard
                 </TrackedLink>

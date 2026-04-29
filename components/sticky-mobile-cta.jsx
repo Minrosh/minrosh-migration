@@ -33,13 +33,13 @@ export function StickyMobileCTA() {
         >
           <Link
             href="/assessment"
-            className="flex flex-1 items-center justify-center rounded-xl bg-brand-rose py-4 text-xs font-black uppercase tracking-widest text-white shadow-lg shadow-brand-rose/20 transition-transform active:scale-95"
+            className="flex min-h-[48px] flex-1 touch-manipulation items-center justify-center rounded-xl bg-brand-rose px-4 py-4 text-xs font-black uppercase tracking-widest text-white shadow-lg shadow-brand-rose/20 transition-transform active:scale-95"
           >
             Free Assessment
           </Link>
           <Link
             href="/book-consultation"
-            className="flex flex-1 items-center justify-center rounded-xl border border-brand-plum/10 bg-brand-plum/5 py-4 text-xs font-black uppercase tracking-widest text-brand-plum transition-transform active:scale-95"
+            className="flex min-h-[48px] flex-1 touch-manipulation items-center justify-center rounded-xl border border-brand-plum/10 bg-brand-plum/5 px-4 py-4 text-xs font-black uppercase tracking-widest text-brand-plum transition-transform active:scale-95"
           >
             Book Now
           </Link>

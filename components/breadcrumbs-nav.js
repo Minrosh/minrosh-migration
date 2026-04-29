@@ -17,7 +17,7 @@ export function BreadcrumbsNav({ items, currentPath = "" }) {
   const here = normalizePathname(currentPath);
 
   return (
-    <nav className="breadcrumbs" aria-label="Breadcrumb">
+    <nav className="breadcrumbs mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8" aria-label="Breadcrumb">
       <ol className="breadcrumbs__list">
         {items.map((item, index) => {
           const isLast = index === items.length - 1;

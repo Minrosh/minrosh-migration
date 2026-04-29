@@ -70,17 +70,17 @@ export default async function ImmigrationNewsArticlePage({ params }) {
             {article.sourceUrl ? (
               <a
                 href={article.sourceUrl}
-                className="btn btn-primary"
+                className="btn btn-primary min-h-[48px] touch-manipulation"
                 target="_blank"
                 rel="noreferrer noopener"
               >
                 Open official announcement
               </a>
             ) : null}
-            <Link href="/book-consultation" className="btn btn-ghost">
+            <Link href="/book-consultation" className="btn btn-ghost min-h-[48px] touch-manipulation">
               Book a consultation
             </Link>
-            <Link href="/immigration-news" className="btn btn-ghost">
+            <Link href="/immigration-news" className="btn btn-ghost min-h-[48px] touch-manipulation">
               All news
             </Link>
           </div>

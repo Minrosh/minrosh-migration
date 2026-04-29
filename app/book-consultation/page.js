@@ -55,7 +55,7 @@ export default function BookConsultationPage() {
               eventName="cta_click"
               eventParams={{ cta_id: "book_primary_consultation", cta_location: "book_hero", destination: "#consultation-enquiry-form" }}
               aria-label="Jump to consultation booking form"
-              className="btn btn-primary"
+              className="btn btn-primary min-h-[48px] touch-manipulation"
             >
               Book consultation now
             </TrackedLink>
