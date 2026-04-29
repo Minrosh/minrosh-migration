@@ -50,7 +50,7 @@ export function DestinationRouteGraph({ destinationName, nodes = [], routes = []
                 setActiveRouteId(route.id);
                 setActiveNodeId(route.nodeIds?.[0] ?? null);
               }}
-              className={`rounded-full border px-4 py-2 text-sm font-semibold transition ${
+              className={`min-h-[48px] touch-manipulation rounded-full border px-4 py-2 text-sm font-semibold transition ${
                 selected
                   ? "border-brand-plum bg-brand-plum text-white"
                   : "border-brand-plum/20 bg-white text-brand-plum/80 hover:border-brand-plum/40"
@@ -102,7 +102,7 @@ export function DestinationRouteGraph({ destinationName, nodes = [], routes = []
               >
                 <button
                   type="button"
-                  className={`mx-auto block h-3.5 w-3.5 rounded-full ring-offset-2 transition ${
+                  className={`mx-auto block min-h-[48px] min-w-[48px] touch-manipulation rounded-full ring-offset-2 transition ${
                     selected ? "ring-2 ring-brand-plum/45" : ""
                   } ${TONE_CLASS[node.tone] || "bg-brand-plum"}`}
                   onClick={() => setActiveNodeId(node.id)}
@@ -157,7 +157,7 @@ export function DestinationRouteGraph({ destinationName, nodes = [], routes = []
               <Link
                 key={item.href}
                 href={item.href}
-                className="rounded-full border border-brand-plum/20 bg-white px-3 py-1.5 text-xs font-semibold text-brand-plum/80 transition hover:border-brand-plum/45"
+                className="inline-flex min-h-[48px] touch-manipulation items-center rounded-full border border-brand-plum/20 bg-white px-3 py-1.5 text-xs font-semibold text-brand-plum/80 transition hover:border-brand-plum/45"
               >
                 {item.label}
               </Link>

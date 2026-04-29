@@ -64,7 +64,7 @@ export function ExitIntentPopup() {
         >
           <button
             onClick={() => setIsVisible(false)}
-            className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-full bg-zinc-100 text-zinc-500 transition hover:bg-zinc-200 hover:text-zinc-800"
+            className="absolute right-4 top-4 flex h-12 w-12 touch-manipulation items-center justify-center rounded-full bg-brand-cream text-brand-plum/70 transition hover:bg-brand-plum/10 hover:text-brand-plum"
             aria-label="Close popup"
           >
             <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -72,7 +72,7 @@ export function ExitIntentPopup() {
             </svg>
           </button>
           
-          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-orange-100 text-orange-500">
+          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-brand-gold/20 text-brand-gold">
             <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
@@ -92,7 +92,7 @@ export function ExitIntentPopup() {
           </Link>
           <button
             onClick={() => setIsVisible(false)}
-            className="mt-4 text-sm font-semibold text-brand-plum/50 transition hover:text-brand-plum"
+            className="mt-4 inline-flex min-h-[48px] touch-manipulation items-center justify-center text-sm font-semibold text-brand-plum/50 transition hover:text-brand-plum"
           >
             No thanks, I&apos;ll figure it out myself
           </button>

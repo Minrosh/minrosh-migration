@@ -701,7 +701,7 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
         <motion.button
           whileTap={{ scale: 0.98 }}
           type="submit"
-          className="btn btn-primary w-full py-5 text-lg font-black shadow-xl hover:-translate-y-1 transition-all"
+          className="btn btn-primary min-h-[48px] touch-manipulation w-full py-5 text-lg font-black shadow-xl hover:-translate-y-1 transition-all"
           disabled={state.status === "loading"}
         >
           {state.status === "loading"

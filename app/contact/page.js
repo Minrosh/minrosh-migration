@@ -69,7 +69,7 @@ export default function ContactPage() {
                   eventName="cta_click"
                   eventParams={{ cta_id: "contact_primary_enquiry", cta_location: "contact_hero", destination: "#contact-enquiry-form" }}
                   aria-label="Jump to contact enquiry form"
-                  className="btn btn-primary"
+                  className="btn btn-primary min-h-[48px] touch-manipulation"
                 >
                   Send focused enquiry
                 </TrackedLink>
@@ -147,7 +147,7 @@ export default function ContactPage() {
                     eventName="cta_click"
                     eventParams={{ cta_id: "contact_panel_whatsapp", cta_location: "contact_panel", destination: "whatsapp" }}
                     aria-label="Chat on WhatsApp from contact panel"
-                    className="btn btn-primary flex flex-1 items-center justify-center gap-3 py-6 text-lg"
+                    className="btn btn-primary flex min-h-[48px] flex-1 touch-manipulation items-center justify-center gap-3 py-6 text-lg"
                   >
                     <span className="text-2xl">💬</span>
                     Chat on WhatsApp

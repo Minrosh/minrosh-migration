@@ -114,7 +114,10 @@ export default function ToolsPage() {
                 <article className="tools-hub__card bento-hover">
                   <h3>{card.title}</h3>
                   <p>{card.body}</p>
-                  <Link href={card.href} className="btn btn-primary tools-hub__card-cta">
+                  <Link
+                    href={card.href}
+                    className="btn btn-primary tools-hub__card-cta min-h-[48px] touch-manipulation"
+                  >
                     {card.cta}
                   </Link>
                 </article>

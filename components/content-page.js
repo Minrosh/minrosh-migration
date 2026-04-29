@@ -109,7 +109,7 @@ export function ContentPage({
       </MotionReveal>
 
       {summary ? (
-        <div className="container mx-auto px-4 mt-8">
+        <div className="mx-auto mt-8 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="p-8 rounded-[2rem] bg-brand-plum/5 border border-brand-plum/10 border-dashed relative overflow-hidden group">
             <div className="absolute top-0 right-0 p-8 opacity-[0.03] group-hover:opacity-[0.06] transition-opacity">
               <span className="text-8xl font-black italic">!</span>
@@ -261,10 +261,10 @@ export function ContentPage({
             <h3>{ctaTitle || personalizedCta.title}</h3>
             <GlossaryParagraph text={ctaBody || personalizedCta.body} />
             <div className="content-aside-card__actions">
-              <Link href="/book-consultation" className="btn btn-primary">
+              <Link href="/book-consultation" className="btn btn-primary min-h-[48px] touch-manipulation">
                 Book Consultation
               </Link>
-              <Link href="/assessment" className="btn btn-ghost">
+              <Link href="/assessment" className="btn btn-ghost min-h-[48px] touch-manipulation">
                 Free Assessment
               </Link>
             </div>
