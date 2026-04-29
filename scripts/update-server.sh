@@ -18,18 +18,66 @@
 #   export CLOUDFLARE_PURGE_EVERYTHING=true
 #   bash scripts/update-server.sh
 #
-# Maintenance mode is automated by scripts/deploy-ubuntu.sh:
-#   - sets MAINTENANCE_MODE=true and reloads PM2 before build
-#   - builds the new standalone app
-#   - sets MAINTENANCE_MODE=false before booting the new app
-#   - keeps maintenance ON when deploy fails
+# Maintenance mode behavior for this script:
+#   - force ON at the start of update-server.sh
+#   - keep ON while pre-upgrade checks, git/build/deploy, CDN purge, and smoke checks run
+#   - set OFF only at the very end on success
+#   - keep ON when any step fails
 
 set -euo pipefail
 
 ROOT="${1:-$HOME/minrosh-migration}"
+ENV_FILE="$ROOT/.env"
 
 cd "$ROOT"
 echo "==> update-server: ROOT=$ROOT"
+
+set_env_value() {
+  local key="$1"
+  local value="$2"
+  if grep -q "^${key}=" "$ENV_FILE"; then
+    sed -i "s|^${key}=.*|${key}=${value}|" "$ENV_FILE"
+  else
+    printf "\n%s=%s\n" "$key" "$value" >> "$ENV_FILE"
+  fi
+}
+
+reload_runtime_for_env() {
+  pm2 delete minrosh-next || true
+  pm2 start ecosystem.config.js
+  pm2 save
+}
+
+enable_maintenance_mode() {
+  set_env_value "MAINTENANCE_MODE" "true"
+  touch "$ROOT/maintenance.lock"
+  echo "==> update-server: enabling maintenance mode"
+  reload_runtime_for_env
+}
+
+disable_maintenance_mode() {
+  set_env_value "MAINTENANCE_MODE" "false"
+  rm -f "$ROOT/maintenance.lock" || true
+  echo "==> update-server: disabling maintenance mode"
+  reload_runtime_for_env
+}
+
+on_update_error() {
+  trap - ERR
+  echo "==> update-server: failure detected; maintenance mode remains ON" >&2
+  set_env_value "MAINTENANCE_MODE" "true"
+  touch "$ROOT/maintenance.lock"
+  reload_runtime_for_env
+  exit 1
+}
+
+if [[ ! -f "$ENV_FILE" ]]; then
+  echo "ERROR: $ENV_FILE is missing. Create it before running update-server.sh." >&2
+  exit 1
+fi
+
+trap on_update_error ERR
+enable_maintenance_mode
 
 echo "==> update-server: running pre-upgrade safety checks"
 bash "$ROOT/scripts/pre-upgrade.sh" "$ROOT"
@@ -64,7 +112,8 @@ for path in "/" "/student-visa-australia" "/contact" "/assessment" "/book-consul
   fi
 done
 
-rm -f "$ROOT/maintenance.lock" || true
+disable_maintenance_mode
 pm2 flush minrosh-next || true
 
+trap - ERR
 echo "==> update-server: done"

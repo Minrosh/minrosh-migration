@@ -72,10 +72,14 @@ if [[ ! -f "$ENV_FILE" ]]; then
   exit 1
 fi
 
-echo "==> Enable maintenance mode before upgrade"
-set_env_value "MAINTENANCE_MODE" "true"
-reload_runtime_for_env
-echo "==> Maintenance mode enabled"
+if [[ "${DEPLOY_MAINTENANCE_MANAGED_EXTERNALLY:-}" == "1" ]]; then
+  echo "==> Maintenance mode is managed by caller; skipping internal enable/disable"
+else
+  echo "==> Enable maintenance mode before upgrade"
+  set_env_value "MAINTENANCE_MODE" "true"
+  reload_runtime_for_env
+  echo "==> Maintenance mode enabled"
+fi
 
 echo "==> Preflight secret checks (before install/build)"
 # Cookie HMAC requires ADMIN_SESSION_SECRET (never ADMIN_PASSWORD). Edge middleware cannot sign cookies without it.
@@ -156,10 +160,14 @@ echo "==> Writable runtime data under standalone (enquiries, customers, invoices
 mkdir -p .next/standalone/data
 chmod -R u+rwX .next/standalone/data
 
-echo "==> Disable maintenance mode before booting the new build"
-set_env_value "MAINTENANCE_MODE" "false"
-reload_runtime_for_env
-echo "==> Maintenance mode disabled"
+if [[ "${DEPLOY_MAINTENANCE_MANAGED_EXTERNALLY:-}" == "1" ]]; then
+  echo "==> Maintenance mode still ON (managed by caller)"
+else
+  echo "==> Disable maintenance mode before booting the new build"
+  set_env_value "MAINTENANCE_MODE" "false"
+  reload_runtime_for_env
+  echo "==> Maintenance mode disabled"
+fi
 
 if [[ "${SKIP_REINDEX_VERIFY:-}" == "1" ]]; then
   echo "==> Skipping reindex:verify (SKIP_REINDEX_VERIFY=1)"
