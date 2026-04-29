@@ -52,6 +52,15 @@
   padding: 2rem 0;
 }
 
+@media (max-width: 920px) {
+  .ultra-snap-section {
+    min-height: auto;
+    justify-content: flex-start;
+    padding-top: 1.25rem;
+    padding-bottom: calc(6.5rem + env(safe-area-inset-bottom, 0px));
+  }
+}
+
 @media (max-width: 720px) {
   .blur-orb {
     display: none;
