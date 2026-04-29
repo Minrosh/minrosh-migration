@@ -88,7 +88,10 @@ export default function UpdatesPage() {
             button to the official announcement.
           </p>
           <p>
-            <Link href="/immigration-news" className="content-links__item immigration-news-cta-strip__link">
+            <Link
+              href="/immigration-news"
+              className="content-links__item immigration-news-cta-strip__link min-h-[48px] touch-manipulation"
+            >
               <strong>Browse all immigration news</strong>
               <span>Open news hub</span>
             </Link>
@@ -102,7 +105,11 @@ export default function UpdatesPage() {
           </p>
           <div className="content-links">
             {latestGuides.map((guide) => (
-              <Link key={guide.path} href={guide.path} className="content-links__item">
+              <Link
+                key={guide.path}
+                href={guide.path}
+                className="content-links__item min-h-[48px] touch-manipulation"
+              >
                 <strong>{guide.title}</strong>
                 <span>Open guide</span>
               </Link>

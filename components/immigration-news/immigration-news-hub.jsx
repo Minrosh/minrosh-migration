@@ -40,7 +40,7 @@ export function ImmigrationNewsHub({ items }) {
           <button
             key={f.label}
             type="button"
-            className={`news-filter ${activeFilter === f.label ? "is-active" : ""}`}
+            className={`news-filter min-h-[48px] touch-manipulation ${activeFilter === f.label ? "is-active" : ""}`}
             aria-pressed={activeFilter === f.label}
             onClick={() => setActiveFilter(f.label)}
           >
@@ -69,13 +69,16 @@ export function ImmigrationNewsHub({ items }) {
                 <h2 className="immigration-news-hub__card-title">{item.title}</h2>
                 <p className="immigration-news-hub__card-summary">{item.summary}</p>
                 <div className="immigration-news-hub__card-actions">
-                  <Link href={href} className="btn btn-primary immigration-news-hub__btn">
+                  <Link
+                    href={href}
+                    className="btn btn-primary immigration-news-hub__btn min-h-[48px] touch-manipulation"
+                  >
                     Open MinRosh note
                   </Link>
                   {item.sourceUrl ? (
                     <a
                       href={item.sourceUrl}
-                      className="btn btn-ghost immigration-news-hub__btn"
+                      className="btn btn-ghost immigration-news-hub__btn min-h-[48px] touch-manipulation"
                       target="_blank"
                       rel="noreferrer noopener"
                     >
