@@ -46,7 +46,7 @@ export function DestinationCommandCenter({ slug, destinationName, intents = [] }
               key={intent.id}
               type="button"
               onClick={() => setActiveId(intent.id)}
-              className={`rounded-full border px-4 py-2 text-sm font-semibold transition ${
+              className={`min-h-[48px] touch-manipulation rounded-full border px-4 py-2 text-sm font-semibold transition ${
                 selected
                   ? "border-brand-plum bg-brand-plum text-white"
                   : "border-brand-plum/20 bg-white text-brand-plum/80 hover:border-brand-plum/45"
@@ -117,7 +117,7 @@ export function DestinationCommandCenter({ slug, destinationName, intents = [] }
 
             <Link
               href={routeHref}
-              className="mt-5 inline-flex w-full items-center justify-center rounded-full bg-brand-plum px-5 py-2.5 text-sm font-semibold text-white transition hover:opacity-95"
+              className="mt-5 inline-flex min-h-[48px] w-full touch-manipulation items-center justify-center rounded-full bg-brand-plum px-5 py-2.5 text-sm font-semibold text-white transition hover:opacity-95"
             >
               Open recommended route
             </Link>

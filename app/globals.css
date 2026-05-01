@@ -792,7 +792,7 @@ a.brand:hover .brand__mark {
 }
 
 .btn.site-nav__cta--primary {
-  min-height: 44px;
+  min-height: 48px;
   padding: 0 18px;
   font-size: 0.875rem;
   letter-spacing: 0.01em;
@@ -820,7 +820,7 @@ a.brand:hover .brand__mark {
 }
 
 .btn.site-nav__cta--secondary {
-  min-height: 44px;
+  min-height: 48px;
   padding: 0 16px;
   font-size: 0.875rem;
   letter-spacing: 0.01em;
@@ -971,6 +971,13 @@ a.brand:hover .brand__mark {
   margin: 0 auto;
   padding: 28px var(--content-pad) 72px;
   overflow-x: clip;
+}
+
+/* Fixed mobile bottom bar (sticky-mobile-cta.jsx) is visible below the `md` breakpoint (768px). */
+@media (max-width: 767px) {
+  .portal-main {
+    padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px));
+  }
 }
 
 /* Editorial-style home rhythm: full-viewport hero moments + scroll anchors */
@@ -5500,6 +5507,15 @@ body.ai-concierge-panel-open .mobile-sticky-quiz-cta {
     width: 100%;
   }
 
+  .site-nav:not(.site-nav--static) .site-nav__link--header {
+    box-sizing: border-box;
+    min-height: 48px;
+    display: inline-flex;
+    align-items: center;
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+
   .site-nav--static .site-nav__link,
   .site-nav--static .site-nav__cta {
     width: auto;
@@ -5535,7 +5551,6 @@ body.ai-concierge-panel-open .mobile-sticky-quiz-cta {
 
   .portal-main {
     padding-top: 16px;
-    padding-bottom: 52px;
     max-width: 100%;
     box-sizing: border-box;
   }
@@ -5840,7 +5855,7 @@ body.immersive-theme {
 .portal-main--immersive {
   position: relative;
   isolation: isolate;
-  padding-top: var(--header-height, 88px);
+  padding-top: var(--site-header-chrome-height, var(--header-height, 88px));
 }
 
 .portal-main--immersive::before {
@@ -6241,7 +6256,7 @@ body.immersive-theme {
 }
 
 .content-section-anchor {
-  scroll-margin-top: calc(var(--header-height) + 16px);
+  scroll-margin-top: calc(var(--site-header-chrome-height, var(--header-height)) + 16px);
 }
 
 .content-page__toc-label {
@@ -6333,7 +6348,7 @@ body.immersive-theme {
   margin: 20px 0 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(260px, 100%), 1fr));
   gap: 18px;
 }
 

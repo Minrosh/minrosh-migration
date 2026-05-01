@@ -104,16 +104,30 @@
       {
         "title": "Compliance and transition planning",
         "body": "Student planning should include attendance, funds continuity, and a realistic transition path if you later explore work or residence routes."
+      },
+      {
+        "title": "Offer of place and fee structure",
+        "body": "Your offer should clearly state programme length, start dates, and payment milestones. Immigration New Zealand assesses whether the plan is credible relative to your background and funds."
+      },
+      {
+        "title": "Health, character, and onward plans",
+        "body": "Medical certificates and police clearances may be required depending on stay length and history. If you hint at long-term residence goals, ensure your study story still reads as genuine."
       }
     ],
-    "faq": [],
+    "faq": [
+      {
+        "question": "Can I work while studying in New Zealand?",
+        "answer": "Work rights depend on your visa conditions and course type. Check your approval letter and Immigration New Zealand guidance before relying on part-time income in your funds plan."
+      }
+    ],
     "related": [
       { "title": "New Zealand hub", "href": "/destinations/new-zealand" },
+      { "title": "Student cost planner", "href": "/tools/student-country-cost-planner" },
       { "title": "Education planning", "href": "/destinations/new-zealand/education" }
     ],
     "heroImage": {
       "src": "/images/brisbane-skyline.jpg",
-      "alt": "City study context"
+      "alt": "New Zealand student visa planning"
     }
   },
   "education": {

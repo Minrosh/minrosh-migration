@@ -44,7 +44,7 @@ export function DestinationCommandPalette({ destinationName, links = [], prompts
           value={query}
           onChange={(event) => setQuery(event.target.value)}
           placeholder="e.g. fastest PR path, partner proof checklist, student pathway"
-          className="w-full rounded-2xl border border-brand-plum/20 bg-white px-4 py-3 text-sm text-brand-plum outline-none transition focus:border-brand-rose focus:ring-2 focus:ring-brand-rose/20"
+          className="min-h-[48px] w-full rounded-2xl border border-brand-plum/20 bg-white px-4 py-3 text-sm text-brand-plum outline-none transition focus:border-brand-rose focus:ring-2 focus:ring-brand-rose/20"
           aria-label="Search destination routes"
         />
       </div>
@@ -56,7 +56,7 @@ export function DestinationCommandPalette({ destinationName, links = [], prompts
               key={prompt}
               type="button"
               onClick={() => setQuery(prompt)}
-              className="rounded-full border border-brand-plum/15 bg-brand-cream/40 px-3 py-1.5 text-xs font-semibold text-brand-plum/80 transition hover:border-brand-rose/40"
+              className="min-h-[48px] touch-manipulation rounded-full border border-brand-plum/15 bg-brand-cream/40 px-3 py-2 text-xs font-semibold text-brand-plum/80 transition hover:border-brand-rose/40"
             >
               {prompt}
             </button>
@@ -69,7 +69,7 @@ export function DestinationCommandPalette({ destinationName, links = [], prompts
           <Link
             key={item.href}
             href={item.href}
-            className="rounded-2xl border border-brand-plum/10 bg-white px-4 py-3 transition hover:-translate-y-0.5 hover:border-brand-rose/35 hover:shadow-md"
+            className="flex min-h-[48px] touch-manipulation flex-col justify-center rounded-2xl border border-brand-plum/10 bg-white px-4 py-3 transition hover:-translate-y-0.5 hover:border-brand-rose/35 hover:shadow-md"
           >
             <p className="text-sm font-semibold text-brand-plum">{item.label}</p>
             <p className="mt-1 text-xs text-brand-plum/65">{intentHints[item.sectionId] || "Open this route"}</p>

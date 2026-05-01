@@ -107,6 +107,14 @@
       {
         "title": "Student compliance essentials",
         "body": "Applications should clearly demonstrate funds, genuine study intent, and consistency between course choice and background."
+      },
+      {
+        "title": "DLI, province, and PGWP awareness",
+        "body": "Not every programme at a designated learning institution offers the same post-graduation work permit outcome. Province-specific policies and co-op rules should be checked before you commit to an offer."
+      },
+      {
+        "title": "Funds story for Canada",
+        "body": "IRCC expects a coherent picture of tuition deposits, living costs, and source of funds. Cross-check the planner bands on /tools with the official minimum funds table for your family size."
       }
     ],
     "faq": [
@@ -117,11 +125,12 @@
     ],
     "related": [
       { "title": "Canada hub", "href": "/destinations/canada" },
+      { "title": "Student cost planner", "href": "/tools/student-country-cost-planner" },
       { "title": "Education planning", "href": "/destinations/canada/education" }
     ],
     "heroImage": {
       "src": "/images/brisbane-skyline.jpg",
-      "alt": "Study abroad planning"
+      "alt": "Canada study permit planning"
     }
   },
   "education": {

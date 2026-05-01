@@ -73,6 +73,14 @@ export default function StudentVisaPage() {
             href: "/australia-visa-fees-and-costs-guide",
             title: "Cost of Living & Fees",
           },
+          {
+            href: "/australia-visa-processing-times-guide",
+            title: "Processing times guide",
+          },
+          {
+            href: "/tools/student-country-cost-planner",
+            title: "Student country & cost planner",
+          },
           { href: "/australian-visas-official-sources", title: "Official Sources" },
         ]}
       />

@@ -15,12 +15,16 @@ export function SitePublicStickyHeader({ backdropModifier, className = "", child
     if (!el || typeof ResizeObserver === "undefined") return;
     function sync() {
       const h = Math.ceil(el.getBoundingClientRect().height);
-      el.style.setProperty("--site-header-chrome-height", `${h}px`);
+      // Expose height on :root so siblings of <header> (e.g. main.portal-main) see the same value.
+      document.documentElement.style.setProperty("--site-header-chrome-height", `${h}px`);
     }
     sync();
     const ro = new ResizeObserver(sync);
     ro.observe(el);
-    return () => ro.disconnect();
+    return () => {
+      ro.disconnect();
+      document.documentElement.style.removeProperty("--site-header-chrome-height");
+    };
   }, []);
 
   useEffect(() => {

@@ -30,3 +30,4 @@ data/nurture-queue.json
 # Tooling noise
 codex_out.txt
 test-results/
+artifacts/

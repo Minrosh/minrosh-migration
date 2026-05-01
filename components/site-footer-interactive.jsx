@@ -13,6 +13,10 @@ export function SiteFooterInteractive({ brand, initialStats, children }) {
   const [stats, setStats] = useState(initialStats);
 
   useEffect(() => {
+    const ua = typeof navigator !== "undefined" ? navigator.userAgent || "" : "";
+    const isCrawler = /bot|crawler|spider|googlebot|bingbot|slurp|duckduckbot/i.test(ua);
+    if (isCrawler) return;
+
     let cancelled = false;
 
     async function refreshStats() {
