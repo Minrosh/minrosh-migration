@@ -35,9 +35,14 @@ export default function StudentVisaPage() {
       />
       <StructuredData data={faqJsonLd(pageData.faq)} />
       <ContentPage
+        routeAccent="student"
         eyebrow="Student Visa Australia"
         title={pageData.headline}
         intro={pageData.intro}
+        heroImage={{
+          src: "/images/team-office-real.jpg",
+          alt: "Education and visa planning context — course choice aligns with Genuine Student expectations",
+        }}
         breadcrumbs={[
           { href: "/", label: "Home" },
           { href: pageData.path, label: "Student Visa" },

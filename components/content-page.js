@@ -42,6 +42,12 @@ export function ContentPage({
   summary = null,
   /** Optional top 3 action steps for the takeaways box. */
   takeaways = [],
+  /** Full-width block directly under the hero (e.g. hub pathway cards). */
+  belowHero = null,
+  /** Extra classes on the root article (e.g. layout modifiers). */
+  articleClassName = "",
+  /** Subtle route-specific accent for service landings (hero border tone). */
+  routeAccent = "",
 }) {
   const resolvedPath = currentPath || breadcrumbs[breadcrumbs.length - 1]?.href || "";
   const personalizedCta = personalizedCtaForPath(resolvedPath);
@@ -65,8 +71,12 @@ export function ContentPage({
   const showToc = tocEntries.length >= 2;
   const faqSchema = faq.length ? faqJsonLd(faq) : null;
 
+  const articleClasses = ["content-page", articleClassName, routeAccent ? `content-page--accent-${routeAccent}` : ""]
+    .filter(Boolean)
+    .join(" ");
+
   return (
-    <article className="content-page">
+    <article className={articleClasses}>
       {faqSchema ? <StructuredData data={faqSchema} /> : null}
       {breadcrumbs.length ? (
         <BreadcrumbsNav
@@ -107,6 +117,8 @@ export function ContentPage({
           </div>
         </div>
       </MotionReveal>
+
+      {belowHero ? <div className="content-page__below-hero">{belowHero}</div> : null}
 
       {summary ? (
         <div className="mx-auto mt-8 w-full max-w-7xl px-4 sm:px-6 lg:px-8">

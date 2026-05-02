@@ -26,9 +26,14 @@ export default function PartnerVisaPage() {
       />
       <StructuredData data={faqJsonLd(pageData.faq)} />
       <ContentPage
+        routeAccent="partner"
         eyebrow="Partner Visa Australia"
         title={pageData.headline}
         intro={pageData.intro}
+        heroImage={{
+          src: "/images/brisbane-skyline.v2.webp",
+          alt: "Brisbane riverfront — partner visa evidence planning with consistent relationship documentation",
+        }}
         breadcrumbs={[
           { href: "/", label: "Home" },
           { href: pageData.path, label: "Partner Visa" },

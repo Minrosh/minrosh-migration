@@ -26,6 +26,7 @@ export default function SkilledMigrationPage() {
       />
       <StructuredData data={faqJsonLd(pageData.faq)} />
       <ContentPage
+        routeAccent="skilled"
         eyebrow="Skilled Migration Australia"
         title={pageData.headline}
         intro={pageData.intro}

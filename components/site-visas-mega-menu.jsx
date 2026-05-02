@@ -137,6 +137,9 @@ export function SiteVisasMegaMenu() {
           ))}
         </div>
         <div className="visas-mega__footer">
+          <Link href="/#popular-routes" className="visas-mega__home-popular-link">
+            View popular pathway tiles on the homepage →
+          </Link>
           <p className="visas-mega__footer-proof">Trusted flow: quiz → strategy → consultation-ready submission</p>
           {intentShortcuts.length ? (
             <div className="visas-mega__intent-shortcuts">

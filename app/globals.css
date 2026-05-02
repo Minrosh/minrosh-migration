@@ -2622,6 +2622,41 @@ a.brand:hover .brand__mark {
   overflow-x: clip;
 }
 
+.content-page__below-hero {
+  width: 100%;
+  max-width: 80rem;
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+
+@media (min-width: 640px) {
+  .content-page__below-hero {
+    padding-inline: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .content-page__below-hero {
+    padding-inline: 2rem;
+  }
+}
+
+.content-page--accent-skilled .content-hero__copy {
+  border-color: rgba(136, 19, 55, 0.22);
+}
+
+.content-page--accent-student .content-hero__copy {
+  border-color: rgba(202, 166, 77, 0.38);
+}
+
+.content-page--accent-partner .content-hero__copy {
+  border-color: rgba(139, 29, 65, 0.26);
+}
+
+.content-page--aus-visas-hub .content-hero__copy {
+  border-color: rgba(136, 19, 55, 0.14);
+}
+
 .breadcrumbs {
   display: flex;
   flex-wrap: wrap;
@@ -6864,6 +6899,23 @@ body.immersive-theme {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+}
+
+.visas-mega__home-popular-link {
+  flex: 1 1 100%;
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--brand-rose);
+  text-decoration: none;
+  transition: color 0.2s var(--ease-lux), text-underline-offset 0.2s var(--ease-lux);
+}
+
+.visas-mega__home-popular-link:hover,
+.visas-mega__home-popular-link:focus-visible {
+  color: #881337;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
 }
 
 .visas-mega__footer-proof {

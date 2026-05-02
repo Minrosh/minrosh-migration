@@ -36,7 +36,7 @@ const TILES = [
     body: "Sponsorship and nomination pathways where employer-backed routes fit your brief and timeline.",
     href: "/employer-sponsored-visas",
     cta: "Employer-sponsored visas",
-    tone: "plum",
+    tone: "burgundyOutline",
   },
   {
     title: "Visitor visas",
@@ -53,8 +53,8 @@ function tileClasses(tone) {
       return "glass-card border border-brand-gold/25 bg-brand-gold/10 text-brand-plum";
     case "rose":
       return "glass-card border border-brand-rose/25 bg-brand-rose/10 text-brand-plum";
-    case "plum":
-      return "glass-card border border-white/15 bg-brand-plum text-white";
+    case "burgundyOutline":
+      return "glass-card border-2 border-[#881337]/22 bg-white text-brand-plum shadow-sm";
     case "white":
       return "glass-card border border-brand-plum/10 bg-white text-brand-plum";
     default:
@@ -63,14 +63,14 @@ function tileClasses(tone) {
 }
 
 function linkClasses(tone) {
-  return tone === "plum"
-    ? "font-black text-brand-gold underline decoration-2 underline-offset-8"
+  return tone === "burgundyOutline"
+    ? "font-black text-[#881337] underline decoration-2 underline-offset-8 hover:text-brand-plum"
     : "font-black text-brand-rose underline decoration-2 underline-offset-8";
 }
 
 export function HomeServicesPathways() {
   return (
-    <section className="home-section bg-white" aria-labelledby="home-services-heading">
+    <section className="home-section bg-white scroll-mt-[calc(var(--site-header-chrome-height,var(--header-height,88px))+16px)]" aria-labelledby="home-services-heading" id="popular-routes">
       <div className="mx-auto min-w-0 max-w-7xl px-4 sm:px-6 lg:px-8">
         <div>
           <h2
@@ -90,18 +90,18 @@ export function HomeServicesPathways() {
             <li key={tile.href} className="min-w-0">
               <div className={`relative flex h-full min-h-full flex-col overflow-hidden rounded-2xl p-5 sm:p-8 ${tileClasses(tile.tone)}`}>
                 <span
-                  className={`absolute right-3 top-3 text-5xl font-black leading-none opacity-[0.08] sm:right-4 sm:top-4 ${tile.tone === "plum" ? "text-white" : "text-brand-plum"}`}
+                  className={`absolute right-3 top-3 text-5xl font-black leading-none opacity-[0.08] sm:right-4 sm:top-4 ${tile.tone === "burgundyOutline" ? "text-[#881337]" : "text-brand-plum"}`}
                   aria-hidden="true"
                 >
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <h3
-                  className={`text-lg font-black sm:text-xl md:text-2xl ${tile.tone === "plum" ? "text-white" : "text-brand-plum"}`}
+                  className="text-lg font-black text-brand-plum sm:text-xl md:text-2xl"
                 >
                   {tile.title}
                 </h3>
                 <p
-                  className={`mt-3 flex-1 text-sm font-medium leading-relaxed sm:text-base ${tile.tone === "plum" ? "text-brand-cream/75" : "text-brand-plum/65"}`}
+                  className="mt-3 flex-1 text-sm font-medium leading-relaxed text-brand-plum/65 sm:text-base"
                 >
                   {tile.body}
                 </p>

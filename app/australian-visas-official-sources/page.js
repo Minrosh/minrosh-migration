@@ -1,5 +1,6 @@
 import siteData from "../../data/site.json";
 import seoPages from "../../data/seo-pages.json";
+import { AustralianVisasHubLead } from "../../components/australian-visas-hub-lead";
 import { ContentPage } from "../../components/content-page";
 import { SiteShell } from "../../components/site-shell";
 import { StructuredData } from "../../components/structured-data";
@@ -38,8 +39,14 @@ export default function AustralianVisasOfficialSourcesPage() {
         intro={guideData.intro}
         breadcrumbs={[
           { href: "/", label: "Home" },
-          { href: guideData.path, label: "Official sources" },
+          { href: guideData.path, label: "Australian visas" },
         ]}
+        heroImage={{
+          src: "/images/visual-strip-destinations.jpg",
+          alt: "Australian cities and travel context — always confirm visa criteria on immi.homeaffairs.gov.au",
+        }}
+        belowHero={<AustralianVisasHubLead />}
+        articleClassName="content-page--aus-visas-hub"
         officialResources={guideData.officialResources ?? []}
         sections={guideData.sections}
         faq={guideData.faq}

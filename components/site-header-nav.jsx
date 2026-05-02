@@ -143,7 +143,11 @@ export function SiteHeaderNav({ navLinks, currentPath, enableVisaMega = false })
                   aria-current={isActive ? "page" : undefined}
                   onClick={(event) => handleNavClick(event, normalizedHref)}
                 >
-                  {link.label === "POPULAR ROUTES" && enableVisaMega ? null : link.label}
+                  {link.label === "POPULAR ROUTES" && enableVisaMega ? (
+                    <span className="sr-only">POPULAR ROUTES (opens pathway menu)</span>
+                  ) : (
+                    link.label
+                  )}
                 </Link>
                 {enableVisaMega && link.label === "POPULAR ROUTES" ? (
                   <div className="site-nav__mega-host">
