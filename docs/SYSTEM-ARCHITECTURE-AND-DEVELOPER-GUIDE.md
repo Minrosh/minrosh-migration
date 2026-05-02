@@ -110,7 +110,7 @@ flowchart TB
 
 **Routing:** Marketing routes are standard Next.js pages under `app/`. Indexable routes and sitemap helpers are centralized in `lib/public-indexable-routes.js` (used by `app/sitemap.js`).
 
-**Global chrome:** Public marketing pages use `components/site-shell.js` for a consistent sticky header and footer. The homepage (`app/page.js`) renders `components/home-page-content.jsx` inside that shell; primary nav can deep-link to in-page sections via hashes (for example `/#quiz`, `/#pathways`). Contact shortcuts in the header come from `components/site-header-meta-row.jsx` (email, phone, destination hub links, and social icons on wide viewports; mobile uses `SiteHeaderMobileUtilities`).
+**Global chrome:** Public marketing pages use `components/site-shell.js` for a consistent sticky header and footer. The homepage (`app/page.js`) renders the **UltraMaximum** stack (hero, visa comparison flowchart, Smart Navigator island, deferred motion/carousels) inside that shell—not the removed legacy tab container. Primary CTAs route to real paths such as `/assessment`, `/skilled-migration-australia-points-guide`, and `/tools/*`. Contact shortcuts in the header come from `components/site-header-meta-row.jsx` (email, phone, destination hub links, and social icons on wide viewports; mobile uses `SiteHeaderMobileUtilities`).
 
 **Notable public features (non-exhaustive):**
 

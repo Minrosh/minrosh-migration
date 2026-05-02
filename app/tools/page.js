@@ -43,10 +43,10 @@ const toolCards = [
     cta: "Start assessment",
   },
   {
-    href: "/#quiz",
-    title: "2026 points wizard",
-    body: "Walk through a detailed skilled profile on the homepage for indicative points context (always verify on Home Affairs).",
-    cta: "Open wizard",
+    href: "/assessment",
+    title: "Pathway assessment",
+    body: "Structured intake before a consultation — clarify goals and next steps (always verify skilled criteria on Home Affairs).",
+    cta: "Start assessment",
   },
   {
     href: "/skilled-migration-australia-points-guide",

@@ -50,5 +50,4 @@ function applyBrandColors(filePath) {
   console.log(`Updated colors in ${filePath}`);
 }
 
-applyBrandColors('components/home/home-tab-server.jsx');
 applyBrandColors('components/site-header-nav.jsx');

@@ -65,18 +65,22 @@ export default function AssessmentPage() {
               <h1>Start with a clearer assessment before you commit to the next step</h1>
               <p>
                 This page is designed as a conversion-first assessment entry point. It helps clients
-                understand whether they should start with the 2026 points wizard, the Smart
+                understand whether they should start with the points guide, the Smart
                 Navigator, or a direct consultation based on how clear their pathway already is.
               </p>
               <div className="content-aside-card__actions">
                 <TrackedLink
-                  href="/#quiz"
+                  href="/skilled-migration-australia-points-guide"
                   eventName="cta_click"
-                  eventParams={{ cta_id: "assessment_primary_quiz", cta_location: "assessment_hero", destination: "/#quiz" }}
-                  aria-label="Open points wizard from assessment page"
+                  eventParams={{
+                    cta_id: "assessment_primary_points_guide",
+                    cta_location: "assessment_hero",
+                    destination: "/skilled-migration-australia-points-guide",
+                  }}
+                  aria-label="Open skilled migration points guide"
                   className="btn btn-primary min-h-[48px] touch-manipulation"
                 >
-                  Open 2026 Points Wizard
+                  Open points guide
                 </TrackedLink>
               </div>
               <p className="mt-3 text-sm text-brand-plum/70">

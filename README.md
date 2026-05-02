@@ -83,8 +83,7 @@ Then run the `sudo` command PM2 prints and reboot once to verify.
 
 ## Important files
 
-- `app/page.js`: homepage route
-- `components/home-page-content.jsx`: homepage sections (quiz, pathways, services, stories) and hash navigation
+- `app/page.js`: homepage route (UltraMaximum layout, flowchart, navigator island, deferred sections)
 - `components/site-shell.js`: global header, footer, and public page chrome
 - `app/globals.css`: shared design system
 - `app/api/contact/route.js`: contact endpoint
