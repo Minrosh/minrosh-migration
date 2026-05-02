@@ -15,7 +15,8 @@ const webServer = liveUrl
       url: baseURL,
       /** Non-CI: reuse an already-running server on the chosen port. CI: always start fresh on ${port}. */
       reuseExistingServer: !process.env.CI,
-      timeout: 120_000,
+      /** Standalone production build + boot can exceed 2m on slower disks / cold cache. */
+      timeout: 300_000,
     };
 
 export default defineConfig({

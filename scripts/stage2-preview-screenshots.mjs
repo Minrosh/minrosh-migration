@@ -3,7 +3,7 @@
  * Example: PORT=4177 HOSTNAME=127.0.0.1 node .next/standalone/server.js &
  *          PREVIEW_URL=http://127.0.0.1:4177 node scripts/stage2-preview-screenshots.mjs
  */
-import { chromium } from "playwright";
+import { chromium } from "@playwright/test";
 import fs from "node:fs";
 import path from "node:path";
 
