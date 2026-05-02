@@ -29,7 +29,7 @@ export function StickyMobileCTA() {
           animate={{ y: 0 }}
           exit={{ y: 100 }}
           transition={{ type: "spring", stiffness: 260, damping: 20 }}
-          className="fixed bottom-0 left-0 right-0 z-50 flex items-center justify-between gap-2 border-t border-brand-plum/10 bg-white/95 p-3 px-4 shadow-[0_-8px_30px_rgba(0,0,0,0.08)] backdrop-blur-md md:hidden"
+          className="fixed bottom-0 left-0 right-0 z-[65] flex items-center justify-between gap-2 border-t border-brand-plum/10 bg-white/95 p-3 px-4 pb-[max(12px,env(safe-area-inset-bottom))] shadow-[0_-8px_30px_rgba(0,0,0,0.08)] backdrop-blur-md md:hidden"
         >
           <Link
             href="/assessment"

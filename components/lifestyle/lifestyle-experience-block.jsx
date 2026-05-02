@@ -102,7 +102,7 @@ function CostOfLivingCalculator({ col }) {
             type="button"
             onClick={() => applyPreset(p.rent)}
             className={cn(
-              "rounded-full border px-4 py-2.5 text-sm font-semibold transition-all duration-300 ease-out focus:outline-none focus:ring-2 focus:ring-brand-rose/40 focus:ring-offset-2",
+              "min-h-[48px] touch-manipulation rounded-full border px-4 py-2.5 text-sm font-semibold transition-all duration-300 ease-out focus:outline-none focus:ring-2 focus:ring-brand-rose/40 focus:ring-offset-2",
               rent === p.rent
                 ? "border-brand-rose bg-brand-rose text-white shadow-md"
                 : "border-brand-plum/12 bg-brand-cream/80 text-brand-plum/80 hover:-translate-y-0.5 hover:border-brand-rose/35 hover:shadow-md"

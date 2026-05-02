@@ -28,6 +28,7 @@
     "test:nav": "node scripts/ui-nav-audit.mjs",
     "routes:verify": "node scripts/reindex-verify.mjs",
     "reindex:verify": "node scripts/reindex-verify.mjs",
+    "audit:indexability": "node scripts/indexability-audit.mjs",
     "audit:production": "npm audit --production",
     "verify:ci": "npm run lint && npm run test:unit && npm run build && CI=true npm run test:e2e && npm run audit:production",
     "check": "npm run build && npm run test:unit && npm run test:contact && npm run audit:production"

@@ -28,12 +28,64 @@ Do this for high-traffic or recently changed pages (home, key hubs, new guides).
 
 Google may still show an older cached render snippet for `/` even when the live site is updated. After **material** changes to the home layout, sticky header, hero, or above-the-fold content, it is worth using **URL Inspection** on the homepage and clicking **Request indexing** once (optional; subject to Search Console quota). This does not guarantee immediate SERP updates, but it nudges recrawl of that URL.
 
-**Suggested priority list (edit to match your launch):**
+### Priority URLs (Stage 0 / marketing indexability)
+
+Use **URL Inspection** on these after major deploys or when Search Console flags coverage issues. Replace the host if you use a different production domain.
+
+**Core funnels**
 
 - `https://minroshmigration.com.au/`
+- `https://minroshmigration.com.au/student-visa-australia`
+- `https://minroshmigration.com.au/skilled-migration`
+- `https://minroshmigration.com.au/partner-visa-australia`
+- `https://minroshmigration.com.au/education-consultation`
 - `https://minroshmigration.com.au/contact`
+- `https://minroshmigration.com.au/book-consultation`
+- `https://minroshmigration.com.au/assessment`
+
+**Destination hubs**
+
 - `https://minroshmigration.com.au/destinations/australia`
-- `https://minroshmigration.com.au/immigration-news` (and any new article URLs)
+- `https://minroshmigration.com.au/destinations/canada`
+- `https://minroshmigration.com.au/destinations/united-kingdom`
+- `https://minroshmigration.com.au/destinations/new-zealand`
+
+**Tools & news**
+
+- `https://minroshmigration.com.au/tools`
+- `https://minroshmigration.com.au/tools/student-country-cost-planner`
+- `https://minroshmigration.com.au/tools/pr-pathway-explorer`
+- `https://minroshmigration.com.au/immigration-news`
+
+**High-intent guides**
+
+- `https://minroshmigration.com.au/australia-visa-fees-and-costs-guide`
+- `https://minroshmigration.com.au/australia-visa-document-checklist-guide`
+- `https://minroshmigration.com.au/migration-sri-lanka-to-australia`
+
+**Also consider after content launches**
+
+- `https://minroshmigration.com.au/contact`
+- `https://minroshmigration.com.au/updates`
+- Any new `/immigration-news/{slug}` article URLs
+
+### Stage 0 indexability audit (local / CI)
+
+After routing, sitemap, or metadata changes, run the full URL audit against production (or staging) and review the Markdown + CSV before relying on GSC alone:
+
+```bash
+npm run audit:indexability
+# or
+INDEXABILITY_BASE_URL=https://minroshmigration.com.au npm run audit:indexability
+```
+
+Optional: merge a Search Console export for per-URL `gscReason` columns:
+
+```bash
+node scripts/indexability-audit.mjs --gsc-csv=./path/to/gsc-export.csv
+```
+
+Outputs (by default): `reports/indexability-audit-stage-0.md` and `reports/indexability-audit-stage-0.csv`.
 
 ## 3. After each deploy (automated check + manual GSC)
 

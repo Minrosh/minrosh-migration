@@ -35,7 +35,7 @@ export default function HomePage() {
         </div>
 
         {/* HERO SECTION - SNAPPY ANIMATIONS */}
-        <section className="ultra-snap-section relative overflow-hidden bg-brand-cream/20">
+        <section className="ultra-snap-section relative overflow-x-clip overflow-y-visible bg-brand-cream/20 md:overflow-hidden">
           <div className="absolute inset-0 z-0 opacity-[0.03]">
             <PublicFileImg
               src="/images/hero-sydney-real.v2.webp"
@@ -53,7 +53,7 @@ export default function HomePage() {
             <MotionReveal delay={0} y={10}>
               <div className="inline-flex items-center gap-3 rounded-full bg-white/60 px-5 py-2 text-[10px] sm:text-xs font-extrabold text-brand-rose shadow-xl backdrop-blur-xl mb-8 border border-white animate-float">
                 <span className="flex h-2 w-2 rounded-full bg-brand-rose shadow-[0_0_10px_#9b4a6c] animate-pulse" />
-                MinRosh Intelligence v3.4 Active
+                Registered migration agents · Brisbane
               </div>
             </MotionReveal>
             
@@ -69,7 +69,8 @@ export default function HomePage() {
             
             <MotionReveal delay={0.1}>
               <p className="mx-auto mt-6 max-w-2xl text-base text-brand-plum/60 sm:text-lg md:text-xl leading-relaxed font-medium">
-                Strategic visa guidance powered by AI and human expertise. We define your clearest pathway before you spend a single cent on lodgement.
+                Clear visa sequencing from a Brisbane-based registered migration agent team. We map practical next
+                steps—documents, timing, and official checks—before you commit to lodgement.
               </p>
             </MotionReveal>
             
@@ -107,11 +108,14 @@ export default function HomePage() {
 
             <MotionReveal delay={0.25}>
               <div className="mt-12 flex justify-center">
-                <div className="glass-card inline-flex items-center gap-3 px-4 py-2 rounded-xl border-brand-rose/20 shadow-inner">
-                  <span className="text-[8px] font-black uppercase tracking-[0.2em] text-brand-rose">Live Activity</span>
-                  <div className="h-4 w-px bg-brand-plum/10" />
-                  <p className="text-[10px] sm:text-xs font-bold text-brand-plum/60 italic">
-                    &quot;New Skilled Migration pathway identified for Brisbane client&quot;
+                <div className="glass-card inline-flex max-w-xl flex-col gap-1 px-4 py-3 text-left rounded-xl border-brand-rose/20 shadow-inner sm:flex-row sm:items-center sm:gap-3">
+                  <span className="text-[8px] font-black uppercase tracking-[0.2em] text-brand-rose shrink-0">
+                    Typical focus
+                  </span>
+                  <div className="hidden h-4 w-px bg-brand-plum/10 sm:block" aria-hidden="true" />
+                  <p className="text-[10px] sm:text-xs font-semibold text-brand-plum/65 leading-snug">
+                    Skilled points, employer-sponsored options, and student-to-graduate sequencing—explained with
+                    official sources, not hype.
                   </p>
                 </div>
               </div>
@@ -127,17 +131,22 @@ export default function HomePage() {
             <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
               <div className="w-full lg:w-1/3 text-center lg:text-left">
                 <MotionReveal y={20}>
-                  <p className="text-brand-rose font-black uppercase tracking-[0.3em] text-[10px] sm:text-xs mb-3">Precision Routing</p>
-                  <h2 className="text-3xl font-black text-brand-plum tracking-tighter sm:text-4xl md:text-5xl">The Island.</h2>
+                  <p className="text-brand-rose font-black uppercase tracking-[0.3em] text-[10px] sm:text-xs mb-3">
+                    Pathway snapshot
+                  </p>
+                  <h2 className="text-3xl font-black text-brand-plum tracking-tighter sm:text-4xl md:text-5xl">
+                    Quick pathway check
+                  </h2>
                   <p className="mt-4 text-base sm:text-lg text-brand-plum/50 font-medium">
-                    Answer 5 questions. Get your confidence-scored roadmap.
+                    Answer a short set of questions for an indicative sense of direction—then validate with assessment
+                    or a consultation.
                   </p>
                 </MotionReveal>
               </div>
               <div className="w-full lg:w-2/3">
                 <MotionReveal delay={0.1} y={30}>
                   <div className="rounded-[2rem] sm:rounded-[3rem] shadow-[0_40px_100px_rgba(61,36,50,0.15)] p-1 bg-gradient-to-tr from-brand-rose/30 via-white to-brand-gold/30">
-                    <div className="bg-white/80 backdrop-blur-3xl rounded-[1.9rem] sm:rounded-[2.9rem] p-3 sm:p-6 shadow-inner overflow-hidden">
+                    <div className="min-w-0 max-w-full bg-white/80 backdrop-blur-3xl rounded-[1.9rem] sm:rounded-[2.9rem] p-3 sm:p-6 shadow-inner overflow-x-auto overflow-y-visible">
                       <HomeSmartNavigatorIsland />
                     </div>
                   </div>

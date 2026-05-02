@@ -56,7 +56,7 @@ export function SkilledCostTimelineCalculator() {
         <label className="text-sm font-semibold text-brand-plum/80">
           Pathway focus
           <select
-            className="mt-1 w-full rounded-xl border border-brand-plum/15 bg-white px-3 py-2"
+            className="mt-1 min-h-[48px] w-full rounded-xl border border-brand-plum/15 bg-white px-3 py-2"
             value={pathwayType}
             onChange={(event) => setPathwayType(event.target.value)}
           >
@@ -71,7 +71,7 @@ export function SkilledCostTimelineCalculator() {
             type="number"
             min={1}
             max={6}
-            className="mt-1 w-full rounded-xl border border-brand-plum/15 bg-white px-3 py-2"
+            className="mt-1 min-h-[48px] w-full rounded-xl border border-brand-plum/15 bg-white px-3 py-2"
             value={applicants}
             onChange={(event) => setApplicants(Math.max(1, Math.min(6, Number(event.target.value) || 1)))}
           />
@@ -79,15 +79,15 @@ export function SkilledCostTimelineCalculator() {
       </div>
 
       <div className="mt-3 grid gap-2">
-        <label className="inline-flex items-center gap-2 text-sm text-brand-plum/80">
+        <label className="inline-flex min-h-[48px] cursor-pointer items-center gap-3 text-sm text-brand-plum/80 touch-manipulation">
           <input type="checkbox" checked={englishTestNeeded} onChange={(event) => setEnglishTestNeeded(event.target.checked)} />
           Include English test
         </label>
-        <label className="inline-flex items-center gap-2 text-sm text-brand-plum/80">
+        <label className="inline-flex min-h-[48px] cursor-pointer items-center gap-3 text-sm text-brand-plum/80 touch-manipulation">
           <input type="checkbox" checked={skillsAssessmentNeeded} onChange={(event) => setSkillsAssessmentNeeded(event.target.checked)} />
           Include skills assessment
         </label>
-        <label className="inline-flex items-center gap-2 text-sm text-brand-plum/80">
+        <label className="inline-flex min-h-[48px] cursor-pointer items-center gap-3 text-sm text-brand-plum/80 touch-manipulation">
           <input type="checkbox" checked={consultationSupport} onChange={(event) => setConsultationSupport(event.target.checked)} />
           Include guided consultation support
         </label>
@@ -104,7 +104,7 @@ export function SkilledCostTimelineCalculator() {
         </p>
       </div>
 
-      <button type="button" className="btn btn-primary mt-4" onClick={handleTrackCalculation}>
+      <button type="button" className="btn btn-primary mt-4 min-h-[48px] touch-manipulation" onClick={handleTrackCalculation}>
         Track this scenario
       </button>
     </section>

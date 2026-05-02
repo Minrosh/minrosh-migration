@@ -21,7 +21,7 @@ export function DestinationConfidenceStrip({ title, summary, metrics = [], proof
         </div>
         <button
           type="button"
-          className="rounded-full border border-brand-plum/20 px-4 py-2 text-sm font-semibold text-brand-plum transition hover:border-brand-plum/45"
+          className="min-h-[48px] touch-manipulation rounded-full border border-brand-plum/20 px-4 py-2 text-sm font-semibold text-brand-plum transition hover:border-brand-plum/45"
           onClick={() => setShowPlan((current) => !current)}
           aria-expanded={showPlan}
         >

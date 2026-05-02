@@ -19,6 +19,18 @@ export const metadata = buildMetadata({
 
 const toolCards = [
   {
+    href: "/tools/student-country-cost-planner",
+    title: "Student country & cost planner",
+    body: "Indicative tuition and living bands across Australia, Canada, the UK, and New Zealand for early budgeting — not eligibility advice.",
+    cta: "Open planner",
+  },
+  {
+    href: "/tools/pr-pathway-explorer",
+    title: "PR pathway explorer",
+    body: "Illustrative sequencing for how study or offshore skilled routes are usually discussed in Australia — orientation only.",
+    cta: "Explore pathways",
+  },
+  {
     href: "/australian-visas-official-sources",
     title: "Visa list & official sources hub",
     body: "How to use the Department of Home Affairs visa listing and Visa Finder with MinRosh pathway pages — without mistaking summaries for law.",

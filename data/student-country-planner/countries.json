@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "countries": [
+    {
+      "id": "australia",
+      "label": "Australia",
+      "currency": "AUD",
+      "tuitionAnnualLow": 22000,
+      "tuitionAnnualHigh": 52000,
+      "livingMonthlyLow": 1700,
+      "livingMonthlyHigh": 2800,
+      "officialNote": "Use Department of Home Affairs student visa financial requirements for your cohort; figures here are indicative planning bands only."
+    },
+    {
+      "id": "canada",
+      "label": "Canada",
+      "currency": "CAD",
+      "tuitionAnnualLow": 18000,
+      "tuitionAnnualHigh": 45000,
+      "livingMonthlyLow": 1400,
+      "livingMonthlyHigh": 2400,
+      "officialNote": "IRCC publishes minimum funds for study permits by location and family size — treat planner output as orientation, not a funds guarantee."
+    },
+    {
+      "id": "united-kingdom",
+      "label": "United Kingdom",
+      "currency": "GBP",
+      "tuitionAnnualLow": 14000,
+      "tuitionAnnualHigh": 38000,
+      "livingMonthlyLow": 1100,
+      "livingMonthlyHigh": 2000,
+      "officialNote": "GOV.UK maintenance amounts for the Student route change; verify the current published figure before budgeting lodgement."
+    },
+    {
+      "id": "new-zealand",
+      "label": "New Zealand",
+      "currency": "NZD",
+      "tuitionAnnualLow": 22000,
+      "tuitionAnnualHigh": 42000,
+      "livingMonthlyLow": 1500,
+      "livingMonthlyHigh": 2400,
+      "officialNote": "Immigration New Zealand sets funds and fees expectations per application type — align any budget story with their checklist."
+    }
+  ]
+}

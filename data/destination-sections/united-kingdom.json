@@ -98,6 +98,14 @@
       {
         "title": "Readiness before visa submission",
         "body": "Before submitting, ensure CAS details, maintenance evidence, and personal history records are coherent and current."
+      },
+      {
+        "title": "ATAS, credibility interviews, and course fit",
+        "body": "Some science and engineering courses require ATAS clearance. Credibility interviews can probe course relevance to prior study or work—keep your narrative consistent with CAS data."
+      },
+      {
+        "title": "Maintenance and dependants",
+        "body": "Published maintenance amounts in GBP change with policy. If dependants apply with you, their funds requirement is additional—verify GOV.UK before budgeting."
       }
     ],
     "faq": [
@@ -108,11 +116,12 @@
     ],
     "related": [
       { "title": "UK hub", "href": "/destinations/united-kingdom" },
+      { "title": "Student cost planner", "href": "/tools/student-country-cost-planner" },
       { "title": "Education planning", "href": "/destinations/united-kingdom/education" }
     ],
     "heroImage": {
       "src": "/images/brisbane-skyline.jpg",
-      "alt": "Study planning"
+      "alt": "United Kingdom student route planning"
     }
   },
   "education": {

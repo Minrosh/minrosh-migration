@@ -104,6 +104,14 @@
       {
         "title": "Document readiness",
         "body": "Financial evidence, identity, and enrolment documents should be consistent and complete before lodgement to reduce requests for further information."
+      },
+      {
+        "title": "Typical cost sequencing (Australia)",
+        "body": "Tuition instalments, Overseas Student Health Cover, and living funds should align with your Genuine Student narrative. Use the MinRosh student cost planner under /tools for indicative bands before you rely on institution quotes alone."
+      },
+      {
+        "title": "Genuine Student and risk signals",
+        "body": "Gaps between work history, course level, and funds source are frequent review triggers. Plan early for prior visa refusals, dependants, and health or character matters that need disclosure."
       }
     ],
     "faq": [
@@ -115,6 +123,7 @@
     "related": [
       { "title": "Australia migration hub", "href": "/destinations/australia" },
       { "title": "Student visa Australia", "href": "/student-visa-australia" },
+      { "title": "Student cost planner", "href": "/tools/student-country-cost-planner" },
       { "title": "Education consultation", "href": "/destinations/australia/education" }
     ],
     "heroImage": {

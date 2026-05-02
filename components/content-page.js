@@ -156,7 +156,7 @@ export function ContentPage({
                   <li key={item.id}>
                     <a 
                       href={`#${item.id}`} 
-                      className="flex items-center gap-3 p-4 rounded-xl border border-brand-plum/5 hover:border-brand-rose/20 hover:bg-brand-rose/[0.02] transition-all group"
+                      className="flex min-h-[48px] touch-manipulation items-center gap-3 rounded-xl border border-brand-plum/5 p-4 hover:border-brand-rose/20 hover:bg-brand-rose/[0.02] transition-all group"
                     >
                       <span className="text-[10px] font-black text-brand-plum/20 group-hover:text-brand-rose transition-colors">→</span>
                       <span className="text-sm font-bold text-brand-plum/70 group-hover:text-brand-plum transition-colors">{item.label}</span>
