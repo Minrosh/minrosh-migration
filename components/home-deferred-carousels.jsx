@@ -3,111 +3,118 @@
 import Link from "next/link";
 import { MotionReveal } from "./ui/motion-wrapper";
 
-const TESTIMONIALS = [
+const FEEDBACK = [
   {
     name: "Ahmed",
-    visa: "Skilled 190",
-    quote: "MinRosh changed my life. They found a state nomination I didn't even know existed.",
+    context: "Skilled pathway planning",
+    quote:
+      "The team walked through nomination options and official references clearly—I understood what to verify next.",
   },
   {
     name: "Sarah",
-    visa: "Partner 820",
-    quote: "The evidence binder they helped me build was so professional.",
+    context: "Partner visa preparation",
+    quote:
+      "They helped me organise relationship evidence and present it consistently—professional structure throughout.",
   },
   {
     name: "R. Fernando",
-    visa: "Skilled 189",
-    quote: "The structured points review made the process feel manageable. We knew exactly what to improve.",
+    context: "Points and sequencing discussion",
+    quote:
+      "The structured review made next steps manageable. We focused on improvements against published criteria—not guesses.",
   },
   {
     name: "S. Wick",
-    visa: "Student 500",
-    quote: "Mapping my education to PR was the best decision I made for my future.",
+    context: "Student visa preparation",
+    quote:
+      "Clear explanations on course fit and paperwork expectations before lodging—I knew what departments looked for.",
   },
 ];
 
 export function HomeDeferredCarousels({ newsItems = [] }) {
   return (
     <>
-      <section className="ultra-snap-section bg-brand-cream/30 overflow-hidden">
-        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
-          <MotionReveal className="text-center mb-12" y={20}>
-            <p className="text-brand-rose font-black uppercase tracking-[0.3em] text-[10px] sm:text-xs mb-3">
-              Client Trust
-            </p>
-            <h2 className="text-3xl font-black text-brand-plum tracking-tighter leading-[1.1] sm:text-4xl md:text-5xl">
-              Success <span className="text-brand-rose">Stories.</span>
+      <section className="home-section bg-brand-cream/30 overflow-x-clip">
+        <div className="mx-auto min-w-0 max-w-7xl px-4 sm:px-6 lg:px-8">
+          <MotionReveal className="text-center" y={16}>
+            <p className="text-[10px] font-black uppercase tracking-[0.28em] text-brand-rose sm:text-xs">Trust</p>
+            <h2 className="mt-3 text-2xl font-black tracking-tight text-brand-plum sm:text-3xl md:text-4xl">
+              Client feedback
             </h2>
+            <p className="mx-auto mt-4 max-w-3xl text-sm font-medium leading-relaxed text-brand-plum/70 sm:text-base">
+              Quotes describe past clients&apos; experience of working with MinRosh—organisation, clarity and process
+              support. They are{" "}
+              <strong className="font-black text-brand-plum">not promises about future visa grants or outcomes.</strong>{" "}
+              Individual results depend on your facts and current immigration rules.
+            </p>
           </MotionReveal>
 
-          <div className="relative">
-            <div className="flex overflow-x-auto pb-8 gap-6 snap-x snap-mandatory no-scrollbar -mx-4 px-4">
-              {TESTIMONIALS.map((item) => (
-                <div key={`${item.name}-${item.visa}`} className="flex-none w-[85%] sm:w-[450px] snap-center">
-                  <div className="glass-card p-8 sm:p-10 h-full shadow-xl transition-all hover:shadow-2xl border-white/40">
-                    <div className="flex text-brand-gold gap-1 mb-6">★★★★★</div>
-                    <p className="text-lg sm:text-xl font-bold text-brand-plum italic mb-8 leading-relaxed">
-                      &quot;{item.quote}&quot;
-                    </p>
-                    <p className="font-black text-brand-rose uppercase tracking-widest text-[10px] sm:text-xs">
-                      {item.name} — {item.visa}
-                    </p>
-                  </div>
+          <div className="relative mt-10">
+            <div className="flex snap-x snap-mandatory gap-6 overflow-x-auto pb-8 no-scrollbar -mx-4 px-4 sm:-mx-0 sm:px-0">
+              {FEEDBACK.map((item) => (
+                <div key={`${item.name}-${item.context}`} className="w-[85%] flex-none snap-center sm:w-[min(100%,420px)]">
+                  <figure className="glass-card flex h-full flex-col border border-white/50 p-6 shadow-lg sm:p-8">
+                    <blockquote className="flex-1 text-base font-semibold italic leading-relaxed text-brand-plum sm:text-lg">
+                      &ldquo;{item.quote}&rdquo;
+                    </blockquote>
+                    <figcaption className="mt-6 border-t border-brand-plum/10 pt-4 text-[10px] font-black uppercase tracking-[0.2em] text-brand-rose sm:text-xs">
+                      {item.name} · {item.context}
+                    </figcaption>
+                  </figure>
                 </div>
               ))}
             </div>
-            <div className="flex justify-center gap-2 mt-4">
-              {[0, 1, 2, 3].map((dot) => (
-                <div key={dot} className="h-1.5 w-1.5 rounded-full bg-brand-plum/20" />
-              ))}
-            </div>
           </div>
+
+          <p className="mt-6 text-center text-xs font-medium leading-relaxed text-brand-plum/55">
+            MinRosh maintains OMARA-aligned practices and cites departmental guidance—always confirm requirements on
+            official immigration websites.
+          </p>
         </div>
       </section>
 
-      <section className="ultra-snap-section bg-white">
-        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
-            <MotionReveal y={20}>
-              <p className="text-brand-rose font-black uppercase tracking-[0.3em] text-[10px] sm:text-xs mb-3">
-                Knowledge Base
+      <section className="home-section bg-white overflow-x-clip">
+        <div className="mx-auto min-w-0 max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mb-10 flex flex-col justify-between gap-6 md:flex-row md:items-end">
+            <MotionReveal y={16}>
+              <p className="text-[10px] font-black uppercase tracking-[0.28em] text-brand-rose sm:text-xs">
+                Knowledge base
               </p>
-              <h2 className="text-3xl font-black text-brand-plum tracking-tighter sm:text-4xl md:text-5xl">
-                Latest Insights.
+              <h2 className="mt-3 text-2xl font-black tracking-tight text-brand-plum sm:text-3xl md:text-4xl">
+                Latest insights
               </h2>
             </MotionReveal>
-            <MotionReveal delay={0.1} y={10}>
+            <MotionReveal delay={0.06} y={12}>
               <Link
                 href="/immigration-news"
-                className="inline-flex min-h-[48px] touch-manipulation items-center font-black text-brand-plum underline decoration-2 underline-offset-8 hover:text-brand-rose transition-colors"
+                className="inline-flex min-h-[48px] touch-manipulation items-center font-black text-brand-plum underline decoration-2 underline-offset-8 transition-colors hover:text-brand-rose"
               >
-                View all news <span>→</span>
+                View all news <span className="ml-2">→</span>
               </Link>
             </MotionReveal>
           </div>
 
           <div className="relative">
-            <div className="flex overflow-x-auto pb-8 gap-6 snap-x snap-mandatory no-scrollbar -mx-4 px-4">
+            <div className="flex snap-x snap-mandatory gap-6 overflow-x-auto pb-6 no-scrollbar -mx-4 px-4 sm:-mx-0 sm:px-0">
               {newsItems.map((item) => (
-                <div key={item.id} className="flex-none w-[85%] sm:w-[380px] snap-center">
+                <div key={item.id} className="w-[85%] flex-none snap-center sm:w-[380px]">
                   <Link href={item.href} className="group block h-full">
-                    <div className="glass-card p-6 sm:p-8 h-full flex flex-col hover:bg-brand-cream/10 transition-all border-transparent hover:border-brand-rose/20 shadow-lg">
-                      <div className="flex items-center justify-between mb-6">
-                        <span className="bg-brand-plum/5 text-brand-plum text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-wider">
+                    <div className="glass-card flex h-full flex-col border border-transparent p-6 shadow-lg transition-all hover:border-brand-rose/20 hover:bg-brand-cream/10 sm:p-8">
+                      <div className="mb-6 flex items-center justify-between">
+                        <span className="rounded-full bg-brand-plum/5 px-3 py-1 text-[10px] font-black uppercase tracking-wider text-brand-plum">
                           {item.country}
                         </span>
-                        <span className="text-[10px] font-bold text-brand-plum/40 uppercase tracking-widest">
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-brand-plum/40">
                           {item.date}
                         </span>
                       </div>
-                      <h3 className="text-xl font-black text-brand-plum mb-4 group-hover:text-brand-rose transition-colors leading-tight">
+                      <h3 className="mb-4 text-xl font-black leading-tight text-brand-plum transition-colors group-hover:text-brand-rose">
                         {item.title}
                       </h3>
-                      <p className="text-sm text-brand-plum/50 font-medium leading-relaxed line-clamp-3 mb-8">
+                      <p className="mb-8 line-clamp-3 flex-1 text-sm font-medium leading-relaxed text-brand-plum/55">
                         {item.summary}
                       </p>
-                      <div className="mt-auto flex items-center gap-2 text-xs font-black text-brand-plum group-hover:gap-4 transition-all uppercase tracking-widest">
-                        Read Story <span>→</span>
+                      <div className="mt-auto flex min-h-[48px] items-center gap-2 text-xs font-black uppercase tracking-widest text-brand-plum transition-all group-hover:gap-3">
+                        Read article <span aria-hidden="true">→</span>
                       </div>
                     </div>
                   </Link>

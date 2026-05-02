@@ -27,17 +27,17 @@
   "consultationHoursNote": "Consultations are usually scheduled during business hours (AEST). We confirm your appointment by email or phone after you enquire.",
   "processSectionLead": "Each step is designed to reduce guesswork: from your first assessment through a clear view of options, a direct conversation, and structured next actions you can follow with confidence.",
   "hero": {
-    "eyebrow": "Migration Agent in Australia",
-    "title": "Turn Visa Complexity Into a Clear Pathway",
-    "lead": "Structured guidance for skilled, student, partner, and employer-sponsored visas — with clear sequencing before you lodge.",
+    "eyebrow": "Registered migration guidance · Four destinations",
+    "title": "Clear migration and study pathways across Australia, Canada, the UK and New Zealand",
+    "lead": "Structured guidance for student, skilled, partner, employer-sponsored and visitor routes — with official-source habits before you lodge.",
     "bullets": [
-      "Eligibility direction so you know what to prepare next (tests, skills assessment, relationship evidence).",
-      "Document-ready coaching aligned to Department of Home Affairs expectations.",
-      "Official visa listing and Visa Finder highlighted for every subclass and charge check — not forum summaries alone.",
-      "Practical next steps toward consultation or self-service, at the pace that suits you."
+      "Indicative direction so you know what to verify next (tests, skills assessment, relationship evidence).",
+      "Document-ready coaching aligned to Department of Home Affairs and other official programme expectations.",
+      "Official visa listings and departmental tools highlighted—not forum summaries alone.",
+      "Practical next steps toward the pathway questionnaire or consultation, at the pace that suits you."
     ],
-    "primaryCta": "Start Your Pathway",
-    "secondaryCta": "Book Consultation"
+    "primaryCta": "Start the pathway questionnaire",
+    "secondaryCta": "Book a consultation"
   },
   "stats": [
     {
@@ -49,8 +49,8 @@
       "label": "Compare Australia, New Zealand, Canada, and UK routes before you commit."
     },
     {
-      "value": "Smart Navigator Assessment",
-      "label": "A guided question flow that points you to the most relevant next action."
+      "value": "Pathway questionnaire",
+      "label": "Indicative direction to prioritise next checks—consultation when you want tailored guidance."
     }
   ],
   "about": {
@@ -120,9 +120,9 @@
       "href": "/employer-sponsored-visas",
       "summary": "Guidance for applicants and workers exploring employer-sponsored visa options when direct PR is not the strongest immediate pathway.",
       "highlights": [
-        "Eligibility mapping for employer-backed pathways",
+        "Pathway fit discussion for employer-backed routes",
         "Work history, occupation, and evidence planning",
-        "Alternative strategy when direct PR is not immediately competitive"
+        "Alternative strategy when immediate skilled residence pathways are less competitive"
       ]
     },
     {
@@ -150,7 +150,7 @@
       "href": "/visitor-visas",
       "summary": "Straightforward guidance for visitor visa applications where clean documentation and clear travel purpose are important.",
       "highlights": [
-        "Visitor visa eligibility guidance",
+        "Visitor visa pathway orientation",
         "Document review and application support",
         "Clear advice on common refusal risks"
       ]

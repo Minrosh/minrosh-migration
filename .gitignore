@@ -31,3 +31,6 @@ data/nurture-queue.json
 codex_out.txt
 test-results/
 artifacts/
+
+# Large local homepage preview exports (section thumbnails still tracked under reports/stage2-review/)
+reports/stage2-review/*fullpage.png

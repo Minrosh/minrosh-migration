@@ -44,6 +44,28 @@
   animation: blob-pulse 8s ease-in-out infinite;
 }
 
+/** Stage 2: standard homepage bands — avoids full-viewport snap on inner sections (mobile-friendly). */
+.home-section {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: clip;
+  padding-top: 2.75rem;
+  padding-bottom: 2.75rem;
+  box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+  .home-section {
+    padding-top: 3.5rem;
+    padding-bottom: 3.5rem;
+  }
+}
+
+.home-journey-card {
+  min-width: 0;
+}
+
 .ultra-snap-section {
   min-height: calc(100dvh - var(--site-header-chrome-height, var(--header-height, 88px)));
   display: flex;

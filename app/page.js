@@ -1,43 +1,30 @@
 import siteData from "../data/site.json";
 import newsData from "../data/news.json";
-import dynamic from "next/dynamic";
 import "./home.css";
 import { SiteShell } from "../components/site-shell";
 import { UltraMaximumLayout } from "../components/ultra-maximum-layout";
 import { HomeDeferredCarouselsLazy } from "../components/home-deferred-carousels-lazy";
-import { HomeDeferredMotionSectionsLazy } from "../components/home-deferred-motion-sections-lazy";
+import { HomeBuyerJourneyStrip } from "../components/home-buyer-journey-strip";
+import { HomeDestinationCards } from "../components/home-destination-cards";
+import { HomePlanningTools } from "../components/home-planning-tools";
+import { HomeServicesPathways } from "../components/home-services-pathways";
+import { HomeFinalCta } from "../components/home-final-cta";
 import { PublicFileImg } from "../components/public-file-img";
 import { MotionReveal } from "../components/ui/motion-wrapper";
 import { TrackedAnchor, TrackedLink } from "../components/tracked-link";
-
-const HomeSmartNavigatorIsland = dynamic(
-  () => import("../components/home-smart-navigator-island").then((mod) => mod.HomeSmartNavigatorIsland),
-  {
-    loading: () => <div className="min-h-[360px] rounded-[1.9rem] bg-brand-plum/5" aria-hidden="true" />,
-  }
-);
-
-const HomeVisaComparisonFlowchart = dynamic(
-  () => import("../components/home-visa-comparison-flowchart").then((mod) => mod.HomeVisaComparisonFlowchart),
-  {
-    loading: () => <section className="ultra-snap-section bg-white" aria-hidden="true" />,
-  }
-);
 
 export default function HomePage() {
   return (
     <SiteShell siteData={siteData} currentPath="/">
       <UltraMaximumLayout>
-        {/* BACKGROUND DECORATIONS */}
         <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden bg-brand-cream/30">
           <div className="blur-orb bg-brand-rose/25 top-[-10%] left-[-10%]" />
           <div className="blur-orb bg-brand-gold/20 bottom-[-10%] right-[-10%]" />
         </div>
 
-        {/* HERO SECTION - SNAPPY ANIMATIONS */}
         <section className="ultra-snap-section relative overflow-x-clip overflow-y-visible bg-gradient-to-b from-brand-cream/90 to-white md:overflow-hidden">
           <div className="absolute inset-0 z-0">
-            <div className="absolute inset-0 bg-gradient-to-b from-white/60 via-white/80 to-white z-10" />
+            <div className="absolute inset-0 z-10 bg-gradient-to-b from-white/60 via-white/80 to-white" />
             <PublicFileImg
               src="/images/hero-sydney-real.v2.webp"
               alt="Sydney skyline"
@@ -49,55 +36,74 @@ export default function HomePage() {
               sizes="100vw"
             />
           </div>
-          
-          <div className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-16 lg:py-24 text-center">
+
+          <div className="relative z-10 mx-auto min-w-0 max-w-7xl px-4 py-16 text-center sm:px-6 lg:px-8 lg:py-24">
             <MotionReveal delay={0} y={10}>
-              <div className="inline-flex max-w-full flex-wrap items-center justify-center gap-3 rounded-full bg-white/60 px-4 py-2 text-[10px] sm:text-xs font-extrabold text-brand-rose shadow-xl backdrop-blur-xl mb-8 border border-white animate-float text-center sm:px-5">
-                <span className="flex h-2 w-2 rounded-full bg-brand-rose shadow-[0_0_10px_#9b4a6c] animate-pulse" />
-                Brisbane-based · Pathways to Australia, Canada, the UK & NZ
+              <div className="mx-auto mb-8 inline-flex max-w-full flex-wrap items-center justify-center gap-2 rounded-full border border-white bg-white/70 px-4 py-2 text-center text-[10px] font-extrabold text-brand-plum shadow-lg backdrop-blur-xl sm:gap-3 sm:px-5 sm:text-xs">
+                Registered migration guidance · Australia, Canada, the UK & New Zealand
               </div>
             </MotionReveal>
 
             <MotionReveal delay={0.05} y={15}>
-              <h1 className="mx-auto max-w-4xl text-2xl font-black tracking-tight text-brand-plum sm:text-4xl md:text-[2.65rem] leading-[1.12]">
+              <h1 className="mx-auto max-w-4xl text-2xl font-black leading-[1.12] tracking-tight text-brand-plum sm:text-4xl md:text-[2.65rem]">
                 <span className="text-gradient-shine">
-                  Clear migration and study pathway guidance from Brisbane to the world
+                  Clear migration and study pathways across Australia, Canada, the UK and New Zealand
                 </span>
               </h1>
             </MotionReveal>
 
             <MotionReveal delay={0.08} y={12}>
-              <p className="mx-auto mt-5 max-w-3xl text-lg font-semibold text-brand-plum/75 sm:text-xl md:text-2xl leading-snug">
-                Plan your move to Australia, Canada, the UK or New Zealand with Brisbane-based migration guidance.
+              <p className="mx-auto mt-5 max-w-3xl text-lg font-semibold leading-snug text-brand-plum/80 sm:text-xl md:text-2xl">
+                For students, skilled workers, couples and families—including offshore applicants planning study,
+                skilled routes, partner or employer-sponsored options, visitors and education decisions.
               </p>
             </MotionReveal>
 
             <MotionReveal delay={0.1}>
-              <p className="mx-auto mt-5 max-w-3xl text-base text-brand-plum/60 sm:text-lg md:text-xl leading-relaxed font-medium">
-                Student visas, skilled migration, partner and family pathways, employer sponsorship and education
-                consultation — explained in plain English before you spend money.
+              <p className="mx-auto mt-5 max-w-3xl text-base font-medium leading-relaxed text-brand-plum/60 sm:text-lg md:text-xl">
+                Plain-English sequencing with references to official sources before you commit time or money. Led from
+                Brisbane with appointments online worldwide.
               </p>
             </MotionReveal>
-            
-            <MotionReveal delay={0.15} y={10}>
-              <div className="mt-10 flex flex-wrap justify-center gap-4">
-                <TrackedLink 
+
+            <MotionReveal delay={0.14} y={10}>
+              <div className="mt-10 flex min-w-0 flex-wrap justify-center gap-4">
+                <TrackedLink
                   id="hero-cta-assessment"
-                  href="/assessment" 
+                  href="/assessment"
                   eventName="cta_click"
-                  eventParams={{ cta_id: "hero_check_eligibility", cta_location: "home_hero", destination: "/assessment" }}
-                  aria-label="Check eligibility from homepage hero"
-                  className="btn min-h-[48px] touch-manipulation bg-brand-plum px-8 py-4 text-base sm:text-lg font-black text-white shadow-xl transition-all hover:-translate-y-1 active:scale-95 group"
+                  eventParams={{
+                    cta_id: "hero_pathway_questionnaire",
+                    cta_location: "home_hero",
+                    destination: "/assessment",
+                  }}
+                  aria-label="Start the pathway questionnaire"
+                  className="group btn min-h-[48px] touch-manipulation bg-brand-plum px-8 py-4 text-base font-black text-white shadow-xl transition-all hover:-translate-y-1 active:scale-95 sm:text-lg"
                 >
-                  Check Eligibility in 2 Minutes
-                  <span className="ml-2 inline-block transition-transform group-hover:translate-x-2">→</span>
+                  Start the pathway questionnaire
+                  <span className="ml-2 inline-block transition-transform group-hover:translate-x-2" aria-hidden="true">
+                    →
+                  </span>
+                </TrackedLink>
+                <TrackedLink
+                  id="hero-cta-consultation"
+                  href="/book-consultation"
+                  eventName="cta_click"
+                  eventParams={{
+                    cta_id: "hero_book_consultation",
+                    cta_location: "home_hero",
+                    destination: "/book-consultation",
+                  }}
+                  aria-label="Book a migration consultation"
+                  className="btn btn-ghost min-h-[48px] touch-manipulation border-2 border-brand-plum/20 px-8 py-4 text-base font-black text-brand-plum transition-all hover:border-brand-plum/35 hover:bg-brand-cream/40 sm:text-lg"
+                >
+                  Book a consultation
                 </TrackedLink>
               </div>
-              <p className="mt-3 text-sm font-semibold text-brand-plum/70">
-                Need quick human help?{" "}
+              <p className="mt-4 text-sm font-semibold text-brand-plum/70">
                 <TrackedAnchor
                   id="hero-cta-whatsapp"
-                  href="https://wa.me/61478100542?text=Hi%20MinRosh%20Migration,%20I%20need%20help%20understanding%20my%20visa%20options."
+                  href="https://wa.me/61478100542?text=Hi%20MinRosh%20Migration,%20I%20would%20like%20to%20discuss%20scheduling%20or%20general%20pathway%20questions."
                   eventName="cta_click"
                   eventParams={{ cta_id: "hero_whatsapp", cta_location: "home_hero", destination: "whatsapp" }}
                   aria-label="Open WhatsApp chat with MinRosh"
@@ -107,19 +113,20 @@ export default function HomePage() {
                 >
                   Chat on WhatsApp
                 </TrackedAnchor>
-                {" "}Fast response for urgent eligibility questions.
+                {" — "}
+                Message us for scheduling or general pathway questions.
               </p>
             </MotionReveal>
 
-            <MotionReveal delay={0.25}>
+            <MotionReveal delay={0.22}>
               <div className="mt-12 flex justify-center">
-                <div className="glass-card inline-flex max-w-xl flex-col gap-1 px-4 py-3 text-left rounded-xl border-brand-rose/20 shadow-inner sm:flex-row sm:items-center sm:gap-3">
-                  <span className="text-[8px] font-black uppercase tracking-[0.2em] text-brand-rose shrink-0">
+                <div className="glass-card inline-flex max-w-xl flex-col gap-1 rounded-xl border-brand-rose/20 px-4 py-3 text-left shadow-inner sm:flex-row sm:items-center sm:gap-3">
+                  <span className="shrink-0 text-[8px] font-black uppercase tracking-[0.2em] text-brand-rose">
                     Typical focus
                   </span>
                   <div className="hidden h-4 w-px bg-brand-plum/10 sm:block" aria-hidden="true" />
-                  <p className="text-[10px] sm:text-xs font-semibold text-brand-plum/65 leading-snug">
-                    Skilled points, employer-sponsored options, and student-to-graduate sequencing—explained with
+                  <p className="text-[10px] font-semibold leading-snug text-brand-plum/65 sm:text-xs">
+                    Skilled points, employer-sponsored routes, student pathways and partner evidence—explained with
                     official sources, not hype.
                   </p>
                 </div>
@@ -128,52 +135,17 @@ export default function HomePage() {
           </div>
         </section>
 
-        <HomeVisaComparisonFlowchart />
+        <HomeBuyerJourneyStrip />
 
-        {/* Smart Navigator snapshot */}
-        <section className="ultra-snap-section bg-gradient-to-b from-white to-brand-cream/30 relative overflow-hidden">
-          <div className="absolute right-[-5%] bottom-0 w-[60%] h-[120%] opacity-20 pointer-events-none hidden md:block">
-            <div className="absolute inset-0 bg-gradient-to-l from-transparent to-brand-cream/30 z-10" />
-            <PublicFileImg
-              src="/images/brisbane-skyline.v2.webp"
-              alt="Brisbane skyline"
-              className="w-full h-full object-cover mix-blend-multiply"
-              width={1920}
-              height={1280}
-            />
-          </div>
-          <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10 py-12 md:py-20">
-            <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
-              <div className="w-full lg:w-1/3 text-center lg:text-left bg-white/60 backdrop-blur-md p-6 rounded-[2rem] border border-brand-plum/5">
-                <MotionReveal y={20}>
-                  <p className="text-brand-rose font-black uppercase tracking-[0.3em] text-[10px] sm:text-xs mb-3">
-                    Pathway snapshot
-                  </p>
-                  <h2 className="text-3xl font-black text-brand-plum tracking-tighter sm:text-4xl md:text-5xl">
-                    Quick pathway check
-                  </h2>
-                  <p className="mt-4 text-base sm:text-lg text-brand-plum/60 font-semibold leading-relaxed">
-                    Answer a short set of questions for an indicative sense of direction—then validate with assessment
-                    or a consultation.
-                  </p>
-                </MotionReveal>
-              </div>
-              <div className="w-full lg:w-2/3">
-                <MotionReveal delay={0.1} y={30}>
-                  <div className="rounded-[2rem] sm:rounded-[3rem] shadow-[0_40px_100px_rgba(61,36,50,0.15)] p-1.5 bg-gradient-to-tr from-brand-rose/40 via-white to-brand-gold/40">
-                    <div className="min-w-0 max-w-full bg-white/90 backdrop-blur-3xl rounded-[1.8rem] sm:rounded-[2.8rem] p-4 sm:p-8 shadow-inner overflow-x-auto overflow-y-visible">
-                      <HomeSmartNavigatorIsland />
-                    </div>
-                  </div>
-                </MotionReveal>
-              </div>
-            </div>
-          </div>
-        </section>
+        <HomeDestinationCards countries={siteData.countries} />
 
-        <HomeDeferredMotionSectionsLazy />
+        <HomeServicesPathways />
+
+        <HomePlanningTools />
 
         <HomeDeferredCarouselsLazy newsItems={newsData} />
+
+        <HomeFinalCta />
       </UltraMaximumLayout>
     </SiteShell>
   );
