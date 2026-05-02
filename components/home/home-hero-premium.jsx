@@ -173,7 +173,7 @@ export function HomeHeroPremium({ whatsappHref }) {
           />
         </div>
 
-        <div className="home-hero-premium__content-column relative z-[1] mx-auto flex w-full max-w-7xl min-w-0 flex-col items-stretch px-4 pb-12 pt-8 sm:px-6 sm:pb-14 sm:pt-12 lg:flex-1 lg:min-h-0 lg:justify-center lg:px-6 lg:pb-8 lg:pt-8">
+        <div className="home-hero-premium__content-column relative z-[1] flex w-full max-w-7xl min-w-0 flex-col items-start px-4 pb-12 pt-12 sm:px-6 sm:pb-14 sm:pt-16 lg:ml-[clamp(1rem,5vw,6rem)] lg:flex-1 lg:min-h-0 lg:justify-center lg:px-6 lg:pb-8 lg:pt-12">
           <div className="home-hero-premium__glass-inner relative overflow-hidden rounded-[2.5rem] bg-white/55 px-6 py-10 shadow-[0_32px_64px_rgba(0,0,0,0.06)] backdrop-blur-2xl sm:px-10 sm:py-12 lg:max-w-4xl lg:px-12 lg:py-14">
             {/* Soft inner glow for better readability on busy images */}
             <div className="absolute inset-0 bg-gradient-to-br from-white/50 via-white/10 to-transparent pointer-events-none" aria-hidden />
