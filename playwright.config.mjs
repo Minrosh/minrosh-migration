@@ -1,6 +1,19 @@
 import { defineConfig, devices } from "@playwright/test";
 
-const baseURL = process.env.PLAYWRIGHT_BASE_URL || "http://127.0.0.1:4173";
+const liveUrl = process.env.PLAYWRIGHT_LIVE_URL?.trim();
+const baseURL = liveUrl || process.env.PLAYWRIGHT_BASE_URL || "http://127.0.0.1:4173";
+
+/** Live/mobile-only runs hit production or staging; skip spawning local standalone. */
+const webServer = liveUrl
+  ? undefined
+  : {
+      // Build standalone output, then run from repo root to avoid cwd-dependent failures.
+      command: "bash -lc 'npm run build && PORT=4173 HOSTNAME=127.0.0.1 node .next/standalone/server.js'",
+      url: baseURL,
+      /** Local dev: reuse an already-running server on :4173. CI: always start fresh. */
+      reuseExistingServer: !process.env.CI,
+      timeout: 120_000,
+    };
 
 export default defineConfig({
   testDir: "e2e",
@@ -14,12 +27,5 @@ export default defineConfig({
     trace: "on-first-retry",
   },
   projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
-  webServer: {
-    // Build standalone output, then run from repo root to avoid cwd-dependent failures.
-    command: "bash -lc 'npm run build && PORT=4173 HOSTNAME=127.0.0.1 node .next/standalone/server.js'",
-    url: baseURL,
-    /** Local dev: reuse an already-running server on :4173. CI: always start fresh. */
-    reuseExistingServer: !process.env.CI,
-    timeout: 120_000,
-  },
+  ...(webServer ? { webServer } : {}),
 });

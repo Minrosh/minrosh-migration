@@ -29,18 +29,19 @@ export default function HomePage() {
     <SiteShell siteData={siteData} currentPath="/">
       <UltraMaximumLayout>
         {/* BACKGROUND DECORATIONS */}
-        <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
-          <div className="blur-orb bg-brand-rose/10 top-[-10%] left-[-10%]" />
-          <div className="blur-orb bg-brand-gold/5 bottom-[-10%] right-[-10%]" />
+        <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden bg-brand-cream/30">
+          <div className="blur-orb bg-brand-rose/25 top-[-10%] left-[-10%]" />
+          <div className="blur-orb bg-brand-gold/20 bottom-[-10%] right-[-10%]" />
         </div>
 
         {/* HERO SECTION - SNAPPY ANIMATIONS */}
-        <section className="ultra-snap-section relative overflow-x-clip overflow-y-visible bg-brand-cream/20 md:overflow-hidden">
-          <div className="absolute inset-0 z-0 opacity-[0.03]">
+        <section className="ultra-snap-section relative overflow-x-clip overflow-y-visible bg-gradient-to-b from-brand-cream/90 to-white md:overflow-hidden">
+          <div className="absolute inset-0 z-0">
+            <div className="absolute inset-0 bg-gradient-to-b from-white/60 via-white/80 to-white z-10" />
             <PublicFileImg
               src="/images/hero-sydney-real.v2.webp"
-              alt=""
-              className="h-full w-full object-cover grayscale"
+              alt="Sydney skyline"
+              className="h-full w-full object-cover object-[center_30%] opacity-40 mix-blend-multiply"
               width={1920}
               height={1280}
               priority
@@ -51,7 +52,7 @@ export default function HomePage() {
           
           <div className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-16 lg:py-24 text-center">
             <MotionReveal delay={0} y={10}>
-              <div className="inline-flex items-center gap-3 rounded-full bg-white/60 px-5 py-2 text-[10px] sm:text-xs font-extrabold text-brand-rose shadow-xl backdrop-blur-xl mb-8 border border-white animate-float">
+              <div className="inline-flex max-w-full flex-wrap items-center justify-center gap-3 rounded-full bg-white/60 px-4 py-2 text-[10px] sm:text-xs font-extrabold text-brand-rose shadow-xl backdrop-blur-xl mb-8 border border-white animate-float text-center sm:px-5">
                 <span className="flex h-2 w-2 rounded-full bg-brand-rose shadow-[0_0_10px_#9b4a6c] animate-pulse" />
                 Brisbane-based · Pathways to Australia, Canada, the UK & NZ
               </div>
@@ -130,10 +131,20 @@ export default function HomePage() {
         <HomeVisaComparisonFlowchart />
 
         {/* Smart Navigator snapshot */}
-        <section className="ultra-snap-section bg-white relative">
-          <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10 py-8 md:py-16">
+        <section className="ultra-snap-section bg-gradient-to-b from-white to-brand-cream/30 relative overflow-hidden">
+          <div className="absolute right-[-5%] bottom-0 w-[60%] h-[120%] opacity-20 pointer-events-none hidden md:block">
+            <div className="absolute inset-0 bg-gradient-to-l from-transparent to-brand-cream/30 z-10" />
+            <PublicFileImg
+              src="/images/brisbane-skyline.v2.webp"
+              alt="Brisbane skyline"
+              className="w-full h-full object-cover mix-blend-multiply"
+              width={1920}
+              height={1280}
+            />
+          </div>
+          <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10 py-12 md:py-20">
             <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
-              <div className="w-full lg:w-1/3 text-center lg:text-left">
+              <div className="w-full lg:w-1/3 text-center lg:text-left bg-white/60 backdrop-blur-md p-6 rounded-[2rem] border border-brand-plum/5">
                 <MotionReveal y={20}>
                   <p className="text-brand-rose font-black uppercase tracking-[0.3em] text-[10px] sm:text-xs mb-3">
                     Pathway snapshot
@@ -141,7 +152,7 @@ export default function HomePage() {
                   <h2 className="text-3xl font-black text-brand-plum tracking-tighter sm:text-4xl md:text-5xl">
                     Quick pathway check
                   </h2>
-                  <p className="mt-4 text-base sm:text-lg text-brand-plum/50 font-medium">
+                  <p className="mt-4 text-base sm:text-lg text-brand-plum/60 font-semibold leading-relaxed">
                     Answer a short set of questions for an indicative sense of direction—then validate with assessment
                     or a consultation.
                   </p>
@@ -149,8 +160,8 @@ export default function HomePage() {
               </div>
               <div className="w-full lg:w-2/3">
                 <MotionReveal delay={0.1} y={30}>
-                  <div className="rounded-[2rem] sm:rounded-[3rem] shadow-[0_40px_100px_rgba(61,36,50,0.15)] p-1 bg-gradient-to-tr from-brand-rose/30 via-white to-brand-gold/30">
-                    <div className="min-w-0 max-w-full bg-white/80 backdrop-blur-3xl rounded-[1.9rem] sm:rounded-[2.9rem] p-3 sm:p-6 shadow-inner overflow-x-auto overflow-y-visible">
+                  <div className="rounded-[2rem] sm:rounded-[3rem] shadow-[0_40px_100px_rgba(61,36,50,0.15)] p-1.5 bg-gradient-to-tr from-brand-rose/40 via-white to-brand-gold/40">
+                    <div className="min-w-0 max-w-full bg-white/90 backdrop-blur-3xl rounded-[1.8rem] sm:rounded-[2.8rem] p-4 sm:p-8 shadow-inner overflow-x-auto overflow-y-visible">
                       <HomeSmartNavigatorIsland />
                     </div>
                   </div>

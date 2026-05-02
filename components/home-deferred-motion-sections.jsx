@@ -30,7 +30,7 @@ export function HomeDeferredMotionSections() {
                   We focus on defensible evidence, realistic sequencing, and what Home Affairs expects to see—not
                   shortcuts or guarantees.
                 </p>
-                <div className="hidden lg:flex items-center gap-6 opacity-40 grayscale hover:grayscale-0 transition-all">
+                <div className="flex flex-wrap lg:flex-nowrap items-center gap-6 opacity-80 grayscale-0 sm:grayscale sm:opacity-50 hover:grayscale-0 transition-all justify-center lg:justify-start mt-8 lg:mt-0">
                   <span className="text-4xl">🇦🇺</span>
                   <span className="text-4xl">🇨🇦</span>
                   <span className="text-4xl">🇬🇧</span>
@@ -64,8 +64,8 @@ export function HomeDeferredMotionSections() {
           </MotionReveal>
           <MotionStagger className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
             <MotionItem>
-              <div className="glass-card !bg-brand-cream/20 p-6 sm:p-8 h-full flex flex-col justify-between group overflow-hidden relative">
-                <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity">
+              <div className="glass-card !bg-brand-cream/60 p-6 sm:p-8 h-full flex flex-col justify-between group overflow-hidden relative border border-brand-cream/80">
+                <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
                   <span className="text-6xl font-black leading-none">01</span>
                 </div>
                 <div>
@@ -83,8 +83,8 @@ export function HomeDeferredMotionSections() {
               </div>
             </MotionItem>
             <MotionItem>
-              <div className="glass-card !bg-brand-rose/5 p-6 sm:p-8 h-full border-brand-rose/10 flex flex-col justify-between group overflow-hidden relative">
-                <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity">
+              <div className="glass-card !bg-brand-rose/15 p-6 sm:p-8 h-full flex flex-col justify-between group overflow-hidden relative border border-brand-rose/20">
+                <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
                   <span className="text-6xl font-black leading-none">02</span>
                 </div>
                 <div>
@@ -102,8 +102,8 @@ export function HomeDeferredMotionSections() {
               </div>
             </MotionItem>
             <MotionItem>
-              <div className="glass-card !bg-brand-gold/5 p-6 sm:p-8 h-full border-brand-gold/10 flex flex-col justify-between group overflow-hidden relative">
-                <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity">
+              <div className="glass-card !bg-brand-gold/15 p-6 sm:p-8 h-full flex flex-col justify-between group overflow-hidden relative border border-brand-gold/20">
+                <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
                   <span className="text-6xl font-black leading-none">03</span>
                 </div>
                 <div>

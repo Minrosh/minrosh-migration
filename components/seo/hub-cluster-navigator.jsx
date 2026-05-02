@@ -36,33 +36,37 @@ export function HubClusterNavigator({ category, currentPath = "", className = ""
   if (!hub) return null;
 
   return (
-    <div className={`my-12 p-8 rounded-[2.5rem] bg-brand-plum text-white shadow-2xl ${className}`}>
-      <div className="max-w-3xl">
-        <h2 className="text-3xl font-extrabold mb-4">{hub.title}</h2>
-        <p className="text-brand-cream/70 mb-8 text-lg">{hub.description}</p>
-        
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {hub.links.map((link) => (
+    <div
+      className={`my-10 rounded-2xl bg-brand-plum p-5 text-white shadow-2xl sm:my-12 sm:rounded-[2.5rem] sm:p-8 ${className}`}
+    >
+      <div className="max-w-3xl min-w-0">
+        <h2 className="mb-3 text-2xl font-extrabold sm:mb-4 sm:text-3xl">{hub.title}</h2>
+        <p className="mb-6 text-base text-brand-cream/70 sm:mb-8 sm:text-lg">{hub.description}</p>
+
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
+          {hub.links.map((link) =>
             link.href === currentPath ? (
               <span
                 key={link.href}
-                className="flex items-center justify-between p-4 rounded-2xl bg-white/20 border border-white/30"
+                className="flex min-h-[48px] flex-wrap items-center justify-between gap-2 rounded-2xl border border-white/30 bg-white/20 px-4 py-3"
                 aria-current="page"
               >
-                <span className="font-semibold">{link.label}</span>
-                <span className="text-xs font-bold uppercase tracking-wider text-brand-cream/80">Current page</span>
+                <span className="min-w-0 font-semibold leading-snug">{link.label}</span>
+                <span className="shrink-0 text-xs font-bold uppercase tracking-wider text-brand-cream/80">
+                  Current page
+                </span>
               </span>
             ) : (
               <Link
                 key={link.href}
                 href={link.href}
-                className="flex items-center justify-between p-4 rounded-2xl bg-white/10 border border-white/10 hover:bg-white/20 transition-all group"
+                className="group flex min-h-[48px] touch-manipulation items-center justify-between gap-3 rounded-2xl border border-white/10 bg-white/10 px-4 py-3 transition-all hover:bg-white/20"
               >
-                <span className="font-semibold">{link.label}</span>
-                <span className="text-xl group-hover:translate-x-1 transition-transform">→</span>
+                <span className="min-w-0 font-semibold leading-snug">{link.label}</span>
+                <span className="shrink-0 text-xl transition-transform group-hover:translate-x-1">→</span>
               </Link>
-            )
-          ))}
+            ),
+          )}
         </div>
       </div>
     </div>

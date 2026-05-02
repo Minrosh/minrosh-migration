@@ -110,7 +110,7 @@ export function ContentPage({
 
       {summary ? (
         <div className="mx-auto mt-8 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="p-8 rounded-[2rem] bg-brand-plum/5 border border-brand-plum/10 border-dashed relative overflow-hidden group">
+          <div className="rounded-[2rem] border border-dashed border-brand-plum/10 bg-brand-plum/5 p-5 relative overflow-hidden group sm:p-8">
             <div className="absolute top-0 right-0 p-8 opacity-[0.03] group-hover:opacity-[0.06] transition-opacity">
               <span className="text-8xl font-black italic">!</span>
             </div>
