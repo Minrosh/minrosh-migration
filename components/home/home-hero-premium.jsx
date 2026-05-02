@@ -1,3 +1,5 @@
+"use client";
+
 import { PublicFileImg } from "../public-file-img";
 import { TrackedAnchor, TrackedLink } from "../tracked-link";
 
