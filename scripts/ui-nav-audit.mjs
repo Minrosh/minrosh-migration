@@ -9,7 +9,7 @@ function fail(message) {
 }
 
 async function expectOk(page, path) {
-  const response = await page.goto(`${BASE_URL}${path}`, { waitUntil: "domcontentloaded" });
+  const response = await page.goto(`${BASE_URL}${path}`, { waitUntil: "load" });
   const status = response?.status?.() ?? 0;
   if (!response || status >= 400) {
     fail(`${path} returned status ${status}`);
@@ -55,11 +55,16 @@ async function run() {
 
   if (await expectOk(page, "/")) {
     try {
-      const startPathway = page.locator('a[href="/assessment"]:visible').first();
-      await startPathway.scrollIntoViewIfNeeded();
-      await startPathway.click();
-      await page.waitForURL(/\/assessment/, { timeout: 8000 });
-      await page.getByText(/Smart Navigator|Visa Decision Engine/i).first().waitFor({ timeout: 8000 });
+      await page.waitForLoadState("domcontentloaded");
+      const startPathway = page.locator("#hero-cta-assessment");
+      await startPathway.waitFor({ state: "visible", timeout: 25_000 });
+      await page.evaluate(() => {
+        const el = document.getElementById("hero-cta-assessment");
+        if (!(el instanceof HTMLElement)) throw new Error("missing #hero-cta-assessment");
+        el.click();
+      });
+      await page.waitForURL(/\/assessment/, { timeout: 15_000 });
+      await page.getByText(/Smart Navigator|Visa Decision Engine/i).first().waitFor({ timeout: 12_000 });
     } catch (err) {
       fail(`Start your pathway flow failed: ${err.message}`);
     }

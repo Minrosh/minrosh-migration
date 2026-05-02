@@ -4,7 +4,7 @@ import { PublicFileImg } from "../public-file-img";
 import { TrackedAnchor, TrackedLink } from "../tracked-link";
 
 const plumDark = "#1F1020"; // Near-black headings/body (mock)
-const plumMid = "#8B1D41"; // Vibrant burgundy from the design
+const plumMid = "#881337"; // Primary maroon (premium homepage reference)
 const charcoal = "#1F1020";
 const iconSoft = "#F5EAF0"; // Soft pinkish white for icon circles
 
@@ -155,10 +155,10 @@ export function HomeHeroPremium({ whatsappHref }) {
         <div className="pointer-events-none absolute inset-0 z-0">
           <PublicFileImg
             src="/images/hero-brisbane-river-cbd.jpg"
-            alt="Brisbane River and CBD skyline"
-            className="absolute inset-0 h-full w-full object-cover object-[center_35%] lg:scale-[1.15]"
+            alt="Brisbane River and CBD at dusk with CityCat ferry"
+            className="absolute inset-0 h-full w-full object-cover object-[38%_52%] lg:object-[42%_48%]"
             width={1920}
-            height={1080}
+            height={1280}
             priority
             fetchPriority="high"
             sizes="100vw"
@@ -243,7 +243,7 @@ export function HomeHeroPremium({ whatsappHref }) {
                   destination: "/assessment",
                 }}
                 aria-label="Start the pathway questionnaire"
-                className="home-hero-premium__cta inline-flex min-h-[52px] w-full items-center justify-center rounded-full border-2 border-white px-7 py-3.5 text-center text-base font-bold text-white shadow-[0_14px_36px_rgba(139,29,65,0.28)] outline-none ring-offset-2 ring-offset-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-[0_18px_44px_rgba(139,29,65,0.35)] focus-visible:ring-2 focus-visible:ring-[#8B1D41]/45 sm:w-auto sm:min-w-[280px] sm:px-10 sm:text-lg"
+                className="home-hero-premium__cta inline-flex min-h-[52px] w-full items-center justify-center rounded-full border-2 border-white px-7 py-3.5 text-center text-base font-bold text-white shadow-[0_14px_36px_rgba(136,19,55,0.28)] outline-none ring-offset-2 ring-offset-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-[0_18px_44px_rgba(136,19,55,0.35)] focus-visible:ring-2 focus-visible:ring-[#881337]/45 sm:w-auto sm:min-w-[280px] sm:px-10 sm:text-lg"
                 style={{ backgroundColor: plumMid }}
               >
                 Start the pathway questionnaire →

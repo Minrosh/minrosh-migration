@@ -3,7 +3,7 @@
 
 :root {
   --brand-plum: #3d2432;
-  --brand-rose: #9b4a6c;
+  --brand-rose: #8B1D41;
   --brand-gold: #caa64d;
   --brand-cream: #fbf8f4;
   --navy-950: var(--brand-cream);
@@ -40,7 +40,7 @@
   --ease-lux: cubic-bezier(0.76, 0, 0.24, 1);
   --glass-white: rgba(255, 255, 255, 0.7);
   --glass-border: rgba(255, 255, 255, 0.3);
-  --accent-gradient: linear-gradient(135deg, #9b4a6c 0%, #3d2432 100%);
+  --accent-gradient: linear-gradient(135deg, #8B1D41 0%, #3d2432 100%);
 }
 
 .glass-card {

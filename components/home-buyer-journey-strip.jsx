@@ -2,57 +2,85 @@
 
 import { TrackedLink } from "./tracked-link";
 
+const MAROON = "#881337";
+
 const STEPS = [
   {
     kicker: "Step 1",
-    title: "Choose your destination focus",
-    body: "Open Australia, Canada, the UK or New Zealand hubs to compare study, skilled and family-style pathways.",
+    title: "Define your goal",
+    body: "Clarify whether you are leaning toward study, skilled migration, partner reunion, employer-sponsored support or an exploratory visit—then we map what to read next.",
+    chips: ["Study", "Migrate", "Work", "Partner", "Visit"],
   },
   {
     kicker: "Step 2",
-    title: "Map your pathway type",
-    body: "Student, skilled, partner, employer-sponsored or visitor routes — identify what matches your situation on paper.",
+    title: "Shape your pathway lens",
+    body: "Stress-test timing, skills context and location preferences against official programme outlines—not quick guarantees—so your next steps stay grounded.",
+    chips: ["Points", "Skills", "Location", "Timing"],
   },
   {
     kicker: "Step 3",
-    title: "Confirm next actions",
-    body: "Use the pathway questionnaire for indicative direction, then book a consultation when you want case-specific guidance.",
+    title: "Pick your next action",
+    body: "Move into the pathway questionnaire for indicative sequencing, browse hubs for detail, or book a consultation when you want case-specific guidance.",
+    chips: ["Plan", "Documents", "Timeline", "Advice"],
   },
 ];
+
+function Chip({ children }) {
+  return (
+    <span
+      className="inline-flex items-center rounded-full border px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.14em]"
+      style={{ borderColor: `${MAROON}33`, color: MAROON, backgroundColor: "#ffffff" }}
+    >
+      {children}
+    </span>
+  );
+}
 
 export function HomeBuyerJourneyStrip() {
   return (
     <section
-      className="home-section bg-brand-cream/35 border-y border-brand-plum/[0.06]"
+      className="home-section border-y border-zinc-200/80 bg-gradient-to-b from-zinc-50 via-white to-zinc-50/90"
       aria-labelledby="home-journey-heading"
     >
       <div className="mx-auto min-w-0 max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div>
-          <h2
-            id="home-journey-heading"
-            className="text-center text-2xl font-black tracking-tight text-brand-plum sm:text-3xl md:text-4xl"
-          >
-            How to start
-          </h2>
-          <p className="mx-auto mt-3 max-w-2xl text-center text-sm font-medium leading-relaxed text-brand-plum/70 sm:text-base">
-            A simple sequence for offshore and onshore applicants. Information is indicative until your circumstances are
-            reviewed in consultation—not eligibility advice or outcome guarantees.
-          </p>
-        </div>
+        <p
+          className="text-center text-[11px] font-bold uppercase tracking-[0.28em]"
+          style={{ color: MAROON }}
+        >
+          Visa planning made easy
+        </p>
+        <h2
+          id="home-journey-heading"
+          className="mt-3 text-center text-2xl font-bold tracking-tight text-[#1f1020] sm:text-3xl md:text-[2.15rem] md:leading-tight"
+          style={{ fontFamily: "var(--font-sans), ui-sans-serif, system-ui, sans-serif" }}
+        >
+          Compare pathways in one clear flow
+        </h2>
+        <p className="mx-auto mt-4 max-w-2xl text-center text-sm font-medium leading-relaxed text-[#1f1020]/72 sm:text-base">
+          A calm sequence for offshore and onshore applicants. Information stays indicative until your circumstances are
+          reviewed in consultation—not outcome guarantees.
+        </p>
 
-        <ol className="mt-8 list-none space-y-5 pl-0 md:mt-10 md:grid md:grid-cols-3 md:gap-5 md:space-y-0">
+        <ol className="mt-10 list-none space-y-6 pl-0 md:mt-12 md:grid md:grid-cols-3 md:gap-6 md:space-y-0">
           {STEPS.map((step) => (
             <li key={step.kicker} className="home-journey-card min-w-0">
-              <div className="flex h-full flex-col rounded-2xl border border-brand-plum/10 bg-white p-5 shadow-sm sm:p-6">
-                <span className="text-[10px] font-black uppercase tracking-[0.28em] text-brand-rose">{step.kicker}</span>
-                <h3 className="mt-2 text-lg font-black text-brand-plum">{step.title}</h3>
-                <p className="mt-2 flex-1 text-sm font-medium leading-relaxed text-brand-plum/65">{step.body}</p>
+              <div className="flex h-full flex-col rounded-2xl border border-zinc-200/90 bg-white p-6 shadow-[0_12px_40px_rgba(31,16,32,0.06)] transition-shadow duration-300 hover:shadow-[0_18px_52px_rgba(31,16,32,0.09)] sm:p-7">
+                <span className="text-[10px] font-bold uppercase tracking-[0.26em]" style={{ color: MAROON }}>
+                  {step.kicker}
+                </span>
+                <h3 className="mt-2 text-lg font-bold text-[#1f1020] sm:text-xl">{step.title}</h3>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {step.chips.map((c) => (
+                    <Chip key={c}>{c}</Chip>
+                  ))}
+                </div>
+                <p className="mt-4 flex-1 text-sm font-medium leading-relaxed text-[#1f1020]/70">{step.body}</p>
               </div>
             </li>
           ))}
         </ol>
 
-        <div className="mt-8 flex min-w-0 flex-col gap-3 sm:mx-auto sm:mt-10 sm:max-w-2xl sm:flex-row sm:flex-wrap sm:justify-center sm:gap-4">
+        <div className="mt-10 flex min-w-0 flex-col gap-3 sm:mx-auto sm:mt-12 sm:max-w-2xl sm:flex-row sm:flex-wrap sm:justify-center sm:gap-4">
           <TrackedLink
             id="journey-cta-questionnaire"
             href="/assessment"
@@ -63,7 +91,8 @@ export function HomeBuyerJourneyStrip() {
               destination: "/assessment",
             }}
             aria-label="Start the pathway questionnaire"
-            className="btn flex min-h-[48px] w-full touch-manipulation items-center justify-center bg-brand-plum px-6 py-3 text-base font-black text-white shadow-lg transition-all hover:-translate-y-0.5 active:scale-[0.98] sm:w-auto sm:px-8 sm:text-lg"
+            className="btn flex min-h-[52px] w-full touch-manipulation items-center justify-center rounded-full px-8 py-3.5 text-base font-bold text-white shadow-[0_14px_36px_rgba(136,19,55,0.22)] transition-all hover:-translate-y-0.5 hover:shadow-[0_18px_44px_rgba(136,19,55,0.28)] active:scale-[0.98] sm:w-auto sm:text-lg"
+            style={{ backgroundColor: MAROON }}
           >
             Start the pathway questionnaire
             <span className="ml-2 inline-block" aria-hidden="true">
@@ -71,18 +100,18 @@ export function HomeBuyerJourneyStrip() {
             </span>
           </TrackedLink>
           <TrackedLink
-            id="journey-cta-consultation"
-            href="/book-consultation"
+            id="journey-cta-global-pathways"
+            href="/global-pathways"
             eventName="cta_click"
             eventParams={{
-              cta_id: "journey_book_consultation",
+              cta_id: "journey_compare_pathways",
               cta_location: "home_journey_strip",
-              destination: "/book-consultation",
+              destination: "/global-pathways",
             }}
-            aria-label="Book a migration consultation"
-            className="btn btn-ghost flex min-h-[48px] w-full touch-manipulation items-center justify-center border-2 border-brand-plum/20 px-6 py-3 text-base font-black text-brand-plum transition-all hover:border-brand-plum/40 hover:bg-brand-cream/50 sm:w-auto sm:px-8 sm:text-lg"
+            aria-label="Compare visa pathways"
+            className="btn flex min-h-[52px] w-full touch-manipulation items-center justify-center rounded-full border-2 border-[#881337]/25 bg-white px-8 py-3.5 text-base font-bold text-[#1f1020] transition-all hover:border-[#881337]/45 hover:bg-zinc-50 active:scale-[0.98] sm:w-auto sm:text-lg"
           >
-            Book a consultation
+            Compare visa pathways
           </TrackedLink>
         </div>
       </div>
