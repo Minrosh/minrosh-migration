@@ -21,7 +21,7 @@ export function SiteShell({
   currentPath,
   children,
   destinationContext = null,
-  headerBackdrop = "au",
+  headerBackdrop: initialHeaderBackdrop = "au",
 }) {
   const footerStats = getFooterStats();
   const primaryWhatsAppUrl = buildWhatsAppUrl(siteData.brand.whatsapp, WHATSAPP_LEAD_MESSAGE);
@@ -32,11 +32,19 @@ export function SiteShell({
   const brandHref = "/";
   const brandAria = "Go to MinRosh homepage";
 
+  const isPremiumHome = currentPath === "/";
+
+  const headerBackdrop = isPremiumHome ? "none" : initialHeaderBackdrop;
+
   const backdropModifier =
-    headerBackdrop === "neutral" ? "site-header--backdrop-neutral" : "site-header--backdrop-au";
+    headerBackdrop === "neutral"
+      ? "site-header--backdrop-neutral"
+      : headerBackdrop === "none"
+        ? "site-header--backdrop-none"
+        : "site-header--backdrop-au";
 
   return (
-    <div className="portal-shell">
+    <div className={`portal-shell${isPremiumHome ? " portal-shell--premium-home" : ""}`}>
       <SitePublicStickyHeader
         backdropModifier={backdropModifier}
         className="site-header--marketing"
@@ -60,6 +68,11 @@ export function SiteShell({
               <strong className="brand__name text-brand-plum">
                 {siteData.brand.name}
               </strong>
+              {isPremiumHome ? (
+                <span className="brand__tagline">
+                  Your Pathway. Our Guidance. Your Future.
+                </span>
+              ) : null}
             </span>
           </Link>
           <SiteHeaderNav

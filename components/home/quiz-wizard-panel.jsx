@@ -639,14 +639,23 @@ export function QuizWizardPanel({ isActive, onGoToContact, resultSkeleton }) {
 
                   <button
                     type="button"
-                    className="w-full min-h-[48px] py-4 bg-brand-plum text-white font-bold rounded-xl shadow-lg shadow-brand-plum/30 hover:-translate-y-1 hover:bg-brand-rose transition-all duration-300 mb-4"
+                    className="w-full min-h-[48px] py-4 bg-brand-plum text-white font-bold rounded-xl shadow-lg shadow-brand-plum/30 hover:-translate-y-1 hover:bg-brand-rose transition-all duration-300 mb-3"
                     onClick={() => {
                       trackEvent("quiz_get_full_report_clicked", { points_score: quizResult?.score || 0 });
                       onGoToContact?.();
                     }}
                   >
-                    Discuss these results with us
+                    Book a consultation with these results
                   </button>
+                  <p className="mb-4 text-center text-sm text-brand-plum/65">
+                    Prefer a general enquiry?{" "}
+                    <a
+                      href="/contact"
+                      className="font-semibold text-brand-rose underline decoration-brand-rose/40 underline-offset-4 transition-colors hover:text-brand-plum"
+                    >
+                      Contact us
+                    </a>
+                  </p>
 
                   <div className="flex gap-2">
                     <button 
@@ -663,7 +672,8 @@ export function QuizWizardPanel({ isActive, onGoToContact, resultSkeleton }) {
                     </button>
                   </div>
                   <p className="text-xs text-center text-brand-plum/45 mt-4 leading-relaxed">
-                    Records are prefilled when contacting us. Not official migration advice.
+                    Your summary is saved for this browser session and prefills the booking form. Not official
+                    migration advice.
                   </p>
                 </div>
               ) : !quizComplete ? (

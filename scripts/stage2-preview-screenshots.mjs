@@ -1,12 +1,13 @@
 /**
- * One-off preview captures for Stage 2 review. Requires standalone on PORT (default 4173).
- * Usage: PORT=4173 node scripts/stage2-preview-screenshots.mjs
+ * One-off preview captures for Stage 2 review. Point PREVIEW_URL at a running standalone server.
+ * Example: PORT=4177 HOSTNAME=127.0.0.1 node .next/standalone/server.js &
+ *          PREVIEW_URL=http://127.0.0.1:4177 node scripts/stage2-preview-screenshots.mjs
  */
 import { chromium } from "playwright";
 import fs from "node:fs";
 import path from "node:path";
 
-const base = process.env.PREVIEW_URL || "http://127.0.0.1:4173";
+const base = process.env.PREVIEW_URL || "http://127.0.0.1:4177";
 const outDir = path.join(process.cwd(), "reports/stage2-review");
 fs.mkdirSync(outDir, { recursive: true });
 

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+  <title id="title">MinRosh Migration logo</title>
+  <desc id="desc">Circular emblem with M and accent check mark.</desc>
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#4a1d42"/>
+      <stop offset="100%" stop-color="#8b3d6a"/>
+    </linearGradient>
+  </defs>
+  <rect width="256" height="256" rx="128" fill="#fffaf3"/>
+  <circle cx="128" cy="128" r="114" fill="url(#g)"/>
+  <path d="M63 176V80h26l39 53 39-53h26v96h-27v-53l-29 40h-18l-29-40v53H63z" fill="#ffffff"/>
+  <path d="M181 171l13 13 28-32" fill="none" stroke="#d4af37" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

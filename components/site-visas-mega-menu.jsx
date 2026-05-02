@@ -99,8 +99,7 @@ export function SiteVisasMegaMenu() {
   return (
     <details ref={menuRef} className="visas-mega">
       <summary className="visas-mega__summary">
-        Australian visas
-        <span className="visas-mega__summary-chip">Popular routes</span>
+        POPULAR ROUTES
         <span className="visas-mega__chevron" aria-hidden="true" />
       </summary>
       <div className="visas-mega__panel" role="region" aria-label="Australian visa pathways">

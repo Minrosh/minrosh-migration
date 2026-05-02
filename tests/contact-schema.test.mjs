@@ -32,7 +32,7 @@ describe("parseContactSubmission", () => {
     expect(r.value.privacyPolicyAccepted).toBe(true);
   });
 
-  it("accepts consultation time from time input as HH:MM:SS", () => {
+  it("accepts consultation time from time input as HH:MM:SS within allowed window", () => {
     const r = parseContactSubmission({
       firstName: "A",
       lastName: "B",
@@ -41,11 +41,13 @@ describe("parseContactSubmission", () => {
       mainNeed: "General Enquiry",
       message: "Book me",
       preferredDate: "2026-04-20",
-      preferredTime: "14:30:00",
+      preferredTime: "19:00:00",
+      timeZone: "Australia/Brisbane",
+      consultationDurationMins: "30",
       privacyPolicyAccepted: true,
     });
     expect(r.ok).toBe(true);
-    expect(r.value.preferredTime).toBe("14:30");
+    expect(r.value.preferredTime).toBe("19:00");
   });
 });
 

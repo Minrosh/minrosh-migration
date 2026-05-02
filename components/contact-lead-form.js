@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { useSearchParams } from "next/navigation";
@@ -8,6 +9,7 @@ import {
   quizSummaryFromNavigatorDetail,
   readNavigatorQuizSummaryLine,
 } from "@/lib/navigator-session";
+import { validateConsultationSlot } from "@/lib/consultation-slot-policy";
 import { trackEvent } from "@/lib/client-analytics";
 import { retryAfterHint } from "@/lib/http/retry-after";
 import { REQUEST_ID_HEADER } from "@/lib/observability/request-id";
@@ -17,7 +19,9 @@ const CAPTCHA_ENABLED =
   String(process.env.NEXT_PUBLIC_ENABLE_HCAPTCHA || "").toLowerCase() === "true" &&
   Boolean(String(process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY || "").trim());
 
-function validateLeadForm(form, mode) {
+const MAX_RESUME_BYTES = 15 * 1024 * 1024;
+
+function validateLeadForm(form, mode, resumeFile) {
   /** @type {Record<string, string>} */
   const errors = {};
   if (!String(form.firstName || "").trim()) {
@@ -48,9 +52,29 @@ function validateLeadForm(form, mode) {
     }
     if (!String(form.preferredTime || "").trim()) {
       errors.preferredTime = "Please choose a preferred time.";
+    } else if (String(form.preferredDate || "").trim()) {
+      const slot = validateConsultationSlot({
+        preferredDate: String(form.preferredDate || "").trim(),
+        preferredTime: String(form.preferredTime || "").trim(),
+        timeZone: String(form.timeZone || "Australia/Brisbane").trim(),
+        slotDurationMins: 30,
+      });
+      if (!slot.ok) {
+        errors.preferredTime = slot.error;
+      }
     }
     if (!String(form.bookingType || "").trim()) {
       errors.bookingType = "Please choose consultation type.";
+    }
+    if (resumeFile) {
+      if (resumeFile.size > MAX_RESUME_BYTES) {
+        errors.resume = "Resume must be 15MB or smaller.";
+      } else {
+        const name = String(resumeFile.name || "").toLowerCase();
+        if (!name.endsWith(".pdf")) {
+          errors.resume = "Please upload a PDF resume only.";
+        }
+      }
     }
   }
   if (!form.privacyPolicyAccepted) {
@@ -71,7 +95,7 @@ const initialForm = {
   mainNeed: "Skilled Migration",
   preferredDate: "",
   preferredTime: "",
-  consultationDurationMins: "45",
+  consultationDurationMins: "30",
   bookingType: "video",
   consultationOffer: "first_15_free",
   timeZone: "Australia/Brisbane",
@@ -122,6 +146,7 @@ function mapContactErrorMessage(errorCode, fallbackMessage) {
 export function ContactLeadForm({ className = "", mode = "general" }) {
   const searchParams = useSearchParams();
   const [form, setForm] = useState(initialForm);
+  const [resumeFile, setResumeFile] = useState(null);
   const [quizSummaryLine, setQuizSummaryLine] = useState("");
   const [state, setState] = useState({ status: "idle", message: "" });
   const [fieldErrors, setFieldErrors] = useState({});
@@ -134,8 +159,8 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
     mode === "consultation"
       ? [
           ["firstName", "lastName", "email", "phone"],
-          ["preferredCountry", "mainNeed", "preferredDate", "preferredTime", "consultationDurationMins", "timeZone"],
-          ["bookingType", "consultationOffer"],
+          ["preferredCountry", "mainNeed", "preferredDate", "preferredTime", "timeZone"],
+          ["bookingType", "consultationOffer", "resume"],
           ["message", "privacyPolicyAccepted"],
         ]
       : [
@@ -218,6 +243,17 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
     return () =>
       window.removeEventListener("minrosh:navigator-summary", handleNavigatorSummary);
   }, []);
+
+  function handleResumeFileChange(event) {
+    const file = event.target.files?.[0];
+    setResumeFile(file || null);
+    setFieldErrors((current) => {
+      if (!current.resume) return current;
+      const next = { ...current };
+      delete next.resume;
+      return next;
+    });
+  }
 
   function handleChange(event) {
     const { name, value, type, checked } = event.target;
@@ -305,7 +341,7 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
       handleNextStep();
       return;
     }
-    const errors = validateLeadForm(form, mode);
+    const errors = validateLeadForm(form, mode, resumeFile);
     const errorEntries = Object.entries(errors);
     setFieldErrors(errors);
     if (errorEntries.length > 0) {
@@ -327,22 +363,55 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
     });
     setState({ status: "loading", message: "" });
     try {
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({
-          ...form,
-          privacyPolicyAccepted: Boolean(form.privacyPolicyAccepted),
-          company: hpRef.current?.value || "",
-          quizSummary: quizSummaryLine,
-          hCaptchaToken: String(form.hCaptchaToken || "").trim(),
-          referralSource: String(form.referralSource || "").trim(),
-          referralCode: String(form.referralCode || "").trim(),
-          utmSource: String(form.utmSource || "").trim(),
-          bookingType: String(form.bookingType || "video").trim(),
-          consultationOffer: String(form.consultationOffer || "first_15_free").trim(),
-        }),
-      });
+      const useMultipart = mode === "consultation" && resumeFile instanceof File && resumeFile.size > 0;
+      let response;
+      if (useMultipart) {
+        const fd = new FormData();
+        fd.append("firstName", String(form.firstName || ""));
+        fd.append("lastName", String(form.lastName || ""));
+        fd.append("email", String(form.email || ""));
+        fd.append("phone", String(form.phone || ""));
+        fd.append("preferredCountry", String(form.preferredCountry || ""));
+        fd.append("mainNeed", String(form.mainNeed || ""));
+        fd.append("preferredDate", String(form.preferredDate || ""));
+        fd.append("preferredTime", String(form.preferredTime || ""));
+        fd.append("consultationDurationMins", "30");
+        fd.append("timeZone", String(form.timeZone || ""));
+        fd.append("bookingType", String(form.bookingType || "video"));
+        fd.append("consultationOffer", String(form.consultationOffer || "first_15_free"));
+        fd.append("message", String(form.message || ""));
+        fd.append("privacyPolicyAccepted", form.privacyPolicyAccepted ? "true" : "false");
+        fd.append("quizSummary", quizSummaryLine || "");
+        fd.append("hCaptchaToken", String(form.hCaptchaToken || "").trim());
+        fd.append("referralSource", String(form.referralSource || "").trim());
+        fd.append("referralCode", String(form.referralCode || "").trim());
+        fd.append("utmSource", String(form.utmSource || "").trim());
+        fd.append("company", hpRef.current?.value || "");
+        fd.append("resume", resumeFile);
+        response = await fetch("/api/contact", {
+          method: "POST",
+          headers: { Accept: "application/json" },
+          body: fd,
+        });
+      } else {
+        response = await fetch("/api/contact", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Accept: "application/json" },
+          body: JSON.stringify({
+            ...form,
+            consultationDurationMins: "30",
+            privacyPolicyAccepted: Boolean(form.privacyPolicyAccepted),
+            company: hpRef.current?.value || "",
+            quizSummary: quizSummaryLine,
+            hCaptchaToken: String(form.hCaptchaToken || "").trim(),
+            referralSource: String(form.referralSource || "").trim(),
+            referralCode: String(form.referralCode || "").trim(),
+            utmSource: String(form.utmSource || "").trim(),
+            bookingType: String(form.bookingType || "video").trim(),
+            consultationOffer: String(form.consultationOffer || "first_15_free").trim(),
+          }),
+        });
+      }
       const rawText = await response.text();
       let payload;
       try {
@@ -394,6 +463,7 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
       setForm(initialForm);
       setFieldErrors({});
       setQuizSummaryLine("");
+      setResumeFile(null);
       clearNavigatorSummarySession();
     } catch (error) {
       trackEvent("contact_form_submit_error", {
@@ -431,6 +501,22 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
         </a>{" "}
         for how we handle personal information.
       </p>
+      {mode === "consultation" ? (
+        <div className="mb-6 rounded-2xl border border-brand-plum/10 bg-brand-cream/50 p-4 text-sm text-brand-plum/80">
+          <p className="font-semibold text-brand-plum">Points wizard</p>
+          <p className="mt-1 leading-relaxed">
+            Run the 2026 points wizard first if you can — your summary saves in this browser session and appears here
+            when you return.             Open{" "}
+            <Link
+              href="/#quiz"
+              className="font-semibold text-brand-rose underline decoration-brand-rose/40 underline-offset-4 transition-colors hover:text-brand-plum"
+            >
+              Points wizard (same tab recommended)
+            </Link>
+            , then use your browser back button or book again to see prefilled results.
+          </p>
+        </div>
+      ) : null}
       {mobileStepper ? (
         <div className="contact-form__stepper" aria-live="polite">
           <p className="contact-form__stepper-label">
@@ -553,33 +639,30 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
               className={fieldErrors.preferredTime ? "has-error" : ""}
               hidden={mobileStepper && !visibleFields?.has("preferredTime")}
             >
-              <span>Preferred time</span>
+              <span>Preferred time (30-minute slots)</span>
               <input
                 type="time"
                 name="preferredTime"
                 value={form.preferredTime}
                 onChange={handleChange}
+                step={1800}
                 required
                 aria-invalid={fieldErrors.preferredTime ? "true" : undefined}
-                aria-describedby={fieldErrors.preferredTime ? "err-preferredTime" : undefined}
+                aria-describedby={
+                  fieldErrors.preferredTime
+                    ? "err-preferredTime"
+                    : "hint-consultation-hours"
+                }
               />
+              <span id="hint-consultation-hours" className="text-xs text-brand-plum/60 mt-1 block leading-relaxed">
+                In your selected time zone: Monday–Friday 7:00 pm–10:00 pm; Saturday–Sunday 9:00 am–10:00 pm. Last start
+                9:30 pm.
+              </span>
               {fieldErrors.preferredTime ? (
                 <span className="field-error" id="err-preferredTime" role="alert">
                   {fieldErrors.preferredTime}
                 </span>
               ) : null}
-            </label>
-            <label hidden={mobileStepper && !visibleFields?.has("consultationDurationMins")}>
-              <span>Consultation length</span>
-              <select
-                name="consultationDurationMins"
-                value={form.consultationDurationMins}
-                onChange={handleChange}
-              >
-                <option value="30">30 minutes</option>
-                <option value="45">45 minutes</option>
-                <option value="60">60 minutes</option>
-              </select>
             </label>
             <label hidden={mobileStepper && !visibleFields?.has("timeZone")}>
               <span>Time zone</span>
@@ -615,6 +698,29 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
                 <option value="standard">Standard consultation</option>
               </select>
             </label>
+            <label
+              className={fieldErrors.resume ? "has-error" : ""}
+              hidden={mobileStepper && !visibleFields?.has("resume")}
+            >
+              <span>Resume (optional, PDF)</span>
+              <input
+                type="file"
+                name="resume"
+                accept="application/pdf,.pdf"
+                onChange={handleResumeFileChange}
+                className="text-sm text-brand-plum/80 file:mr-3 file:rounded-lg file:border-0 file:bg-brand-plum file:px-3 file:py-2 file:text-xs file:font-semibold file:text-white hover:file:bg-brand-rose"
+                aria-invalid={fieldErrors.resume ? "true" : undefined}
+                aria-describedby={fieldErrors.resume ? "err-resume" : "hint-resume"}
+              />
+              <span id="hint-resume" className="text-xs text-brand-plum/55 mt-1 block">
+                Max 15MB. Uploaded to your lead folder when Drive is configured.
+              </span>
+              {fieldErrors.resume ? (
+                <span className="field-error" id="err-resume" role="alert">
+                  {fieldErrors.resume}
+                </span>
+              ) : null}
+            </label>
           </>
         ) : null}
         <div 
@@ -636,9 +742,11 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
             />
           </label>
           {quizSummaryLine ? (
-            <div className="mb-4 p-3 rounded-lg bg-brand-rose/5 border border-brand-rose/10 text-[10px] sm:text-xs font-medium text-brand-rose flex items-start gap-3">
-              <span className="flex-shrink-0 mt-0.5">ℹ️</span>
-              <p>We included your quiz summary for convenience; you can edit or remove it from the text area above.</p>
+            <div className="mb-4 p-3 rounded-lg bg-brand-rose/5 border border-brand-rose/10 text-[10px] sm:text-xs font-medium text-brand-rose">
+              <p>
+                We will send your points / navigator summary with this enquiry. You can add more detail in your message
+                below.
+              </p>
             </div>
           ) : null}
           {fieldErrors.message ? (

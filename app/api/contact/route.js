@@ -1,5 +1,7 @@
 import { saveEnquiry, sendContactEmails } from "../../../lib/contact";
 import { parseContactSubmission, getMaxContactBodyBytes } from "../../../lib/validation/contact-schema";
+import { contactFieldsFromFormData } from "@/lib/contact-form-data";
+import { uploadConsultationResumeIfPresent } from "@/lib/contact-resume-upload";
 import { rateLimitAllow } from "../../../lib/security/rate-limit";
 import { getClientIp } from "../../../lib/security/request-ip";
 import { checkConsultationAvailability, createConsultationCalendarEvent } from "../../../lib/google-calendar";
@@ -14,6 +16,8 @@ import { API_ERROR_CODES, apiFail, apiOk, requestContextFromRequest } from "@/li
 import { hCaptchaEnabledOnServer, verifyHCaptchaToken } from "@/lib/security/hcaptcha";
 import { consultationChargeAmountCents, createStripeCheckoutSession, stripeEnabled } from "@/lib/payments/stripe";
 
+const MULTIPART_MAX_BYTES = 18 * 1024 * 1024;
+
 export async function POST(request) {
   const context = requestContextFromRequest(request);
   const ip = getClientIp(request);
@@ -21,30 +25,58 @@ export async function POST(request) {
     return apiFail({ code: API_ERROR_CODES.RATE_LIMITED, message: "Too many requests. Try again later.", status: 429 }, context);
   }
 
-  const maxBytes = getMaxContactBodyBytes();
-  const cl = request.headers.get("content-length");
-  if (cl) {
-    const n = Number(cl);
-    if (Number.isFinite(n) && n > maxBytes) {
-      return apiFail({ code: API_ERROR_CODES.VALIDATION_FAILED, message: "Request too large.", status: 413 }, context);
-    }
-  }
-
-  let rawText;
-  try {
-    rawText = await request.text();
-  } catch {
-    return apiFail({ code: API_ERROR_CODES.VALIDATION_FAILED, message: "Invalid request.", status: 400 }, context);
-  }
-  if (Buffer.byteLength(rawText, "utf8") > maxBytes) {
-    return apiFail({ code: API_ERROR_CODES.VALIDATION_FAILED, message: "Request too large.", status: 413 }, context);
-  }
+  const contentType = String(request.headers.get("content-type") || "");
+  const isMultipart = contentType.includes("multipart/form-data");
 
   let body;
-  try {
-    body = JSON.parse(rawText);
-  } catch {
-    return apiFail({ code: API_ERROR_CODES.VALIDATION_FAILED, message: "Invalid JSON body.", status: 400 }, context);
+  /** @type {File | null} */
+  let resumeFile = null;
+
+  if (isMultipart) {
+    const cl = request.headers.get("content-length");
+    if (cl) {
+      const n = Number(cl);
+      if (Number.isFinite(n) && n > MULTIPART_MAX_BYTES) {
+        return apiFail({ code: API_ERROR_CODES.VALIDATION_FAILED, message: "Request too large.", status: 413 }, context);
+      }
+    }
+    let formData;
+    try {
+      formData = await request.formData();
+    } catch {
+      return apiFail({ code: API_ERROR_CODES.VALIDATION_FAILED, message: "Invalid multipart body.", status: 400 }, context);
+    }
+    body = contactFieldsFromFormData(formData);
+    const r = formData.get("resume");
+    if (r && typeof r === "object" && "arrayBuffer" in r && typeof r.arrayBuffer === "function") {
+      const f = /** @type {File} */ (r);
+      if (f.size > 0) {
+        resumeFile = f;
+      }
+    }
+  } else {
+    const maxBytes = getMaxContactBodyBytes();
+    const cl = request.headers.get("content-length");
+    if (cl) {
+      const n = Number(cl);
+      if (Number.isFinite(n) && n > maxBytes) {
+        return apiFail({ code: API_ERROR_CODES.VALIDATION_FAILED, message: "Request too large.", status: 413 }, context);
+      }
+    }
+    let rawText;
+    try {
+      rawText = await request.text();
+    } catch {
+      return apiFail({ code: API_ERROR_CODES.VALIDATION_FAILED, message: "Invalid request.", status: 400 }, context);
+    }
+    if (Buffer.byteLength(rawText, "utf8") > maxBytes) {
+      return apiFail({ code: API_ERROR_CODES.VALIDATION_FAILED, message: "Request too large.", status: 413 }, context);
+    }
+    try {
+      body = JSON.parse(rawText);
+    } catch {
+      return apiFail({ code: API_ERROR_CODES.VALIDATION_FAILED, message: "Invalid JSON body.", status: 400 }, context);
+    }
   }
 
   const validated = parseContactSubmission(body);
@@ -55,7 +87,11 @@ export async function POST(request) {
   if (String(process.env.REQUIRE_PRIVACY_CONSENT_ON_CONTACT || "").toLowerCase() === "true") {
     if (validated.value.privacyPolicyAccepted !== true) {
       return apiFail(
-        { code: API_ERROR_CODES.VALIDATION_FAILED, message: "Please confirm you have read and accept the privacy policy before submitting.", status: 400 },
+        {
+          code: API_ERROR_CODES.VALIDATION_FAILED,
+          message: "Please confirm you have read and accept the privacy policy before submitting.",
+          status: 400,
+        },
         context
       );
     }
@@ -103,6 +139,14 @@ export async function POST(request) {
     leadDrive = { created: false, reason: "drive_error" };
     processing.driveFolder = "failed";
   }
+
+  const folderId = leadDrive.created ? leadDrive.folderId : "";
+  const resumeResult = await uploadConsultationResumeIfPresent({
+    resumeFile,
+    folderId: String(folderId || "").trim(),
+    enquiryId: validated.value.id,
+  });
+
   const enquiryCore = { ...validated.value };
   delete enquiryCore.privacyPolicyAccepted;
   const enquiryRecord = {
@@ -110,7 +154,10 @@ export async function POST(request) {
     privacyConsentLog,
     leadDriveFolderId: leadDrive.created ? leadDrive.folderId : "",
     leadDriveFolderUrl: leadDrive.created ? leadDrive.folderUrl : "",
+    resumeUploadStatus: resumeResult.status,
+    resumeFileName: resumeResult.fileName || "",
   };
+
   saveEnquiry(enquiryRecord);
   try {
     await dualWriteEnquiryToSupabase(enquiryRecord);
@@ -173,12 +220,12 @@ export async function POST(request) {
   let checkoutUrl = "";
   let availabilityResult = { available: true, checked: false };
   const hasConsultationSlot =
-    validated.value.preferredDate && validated.value.preferredTime && validated.value.email;
+    enquiryRecord.preferredDate && enquiryRecord.preferredTime && enquiryRecord.email;
   if (hasConsultationSlot) {
     try {
-      availabilityResult = await checkConsultationAvailability(validated.value);
+      availabilityResult = await checkConsultationAvailability(enquiryRecord);
       if (availabilityResult.available) {
-        calendarResult = await createConsultationCalendarEvent(validated.value);
+        calendarResult = await createConsultationCalendarEvent(enquiryRecord);
       } else {
         calendarResult = { created: false, reason: "slot_unavailable" };
       }
@@ -192,13 +239,13 @@ export async function POST(request) {
       ? undefined
       : !availabilityResult.available
         ? "Selected consultation time is no longer available. Please choose another slot."
-      : calendarResult.reason === "google_calendar_not_configured"
-        ? "Consultation booking is currently offline (calendar not configured). Your enquiry is saved and our team will confirm manually."
-      : calendarResult.reason === "calendar_error"
-        ? "Enquiry saved, but calendar provider is temporarily unavailable. We will confirm your slot manually."
-      : !calendarResult.created
-        ? "Enquiry saved, but calendar booking could not be created."
-      : undefined;
+        : calendarResult.reason === "google_calendar_not_configured"
+          ? "Consultation booking is currently offline (calendar not configured). Your enquiry is saved and our team will confirm manually."
+          : calendarResult.reason === "calendar_error"
+            ? "Enquiry saved, but calendar provider is temporarily unavailable. We will confirm your slot manually."
+            : !calendarResult.created
+              ? "Enquiry saved, but calendar booking could not be created."
+              : undefined;
 
   if (hasConsultationSlot && stripeEnabled()) {
     try {
@@ -228,38 +275,44 @@ export async function POST(request) {
 
   try {
     const mailResult = await sendContactEmails(enquiryRecord);
-    return apiOk({
-      id: enquiryRecord.id,
-      internalSent: mailResult.internalSent,
-      thankYouSent: mailResult.thankYouSent,
-      brochureAttached: mailResult.brochureAttached || false,
-      consultationBooked: Boolean(calendarResult.created),
-      slotAvailable: availabilityResult.available,
-      calendarReason: calendarResult.reason || undefined,
-      meetUrl: calendarResult.meetUrl || undefined,
-      leadDriveFolderId: enquiryRecord.leadDriveFolderId || undefined,
-      leadDriveFolderUrl: enquiryRecord.leadDriveFolderUrl || undefined,
-      checkoutUrl: checkoutUrl || undefined,
-      processing,
-      warning:
-        mailResult.reason === "smtp_not_configured"
-          ? "Enquiry saved, but SMTP is not configured yet."
-          : calendarWarning,
-    }, context);
+    return apiOk(
+      {
+        id: enquiryRecord.id,
+        internalSent: mailResult.internalSent,
+        thankYouSent: mailResult.thankYouSent,
+        brochureAttached: mailResult.brochureAttached || false,
+        consultationBooked: Boolean(calendarResult.created),
+        slotAvailable: availabilityResult.available,
+        calendarReason: calendarResult.reason || undefined,
+        meetUrl: calendarResult.meetUrl || undefined,
+        leadDriveFolderId: enquiryRecord.leadDriveFolderId || undefined,
+        leadDriveFolderUrl: enquiryRecord.leadDriveFolderUrl || undefined,
+        checkoutUrl: checkoutUrl || undefined,
+        processing,
+        warning:
+          mailResult.reason === "smtp_not_configured"
+            ? "Enquiry saved, but SMTP is not configured yet."
+            : calendarWarning,
+      },
+      context
+    );
   } catch {
-    return apiOk({
-      id: enquiryRecord.id,
-      internalSent: false,
-      thankYouSent: false,
-      consultationBooked: Boolean(calendarResult.created),
-      slotAvailable: availabilityResult.available,
-      calendarReason: calendarResult.reason || undefined,
-      meetUrl: calendarResult.meetUrl || undefined,
-      leadDriveFolderId: enquiryRecord.leadDriveFolderId || undefined,
-      leadDriveFolderUrl: enquiryRecord.leadDriveFolderUrl || undefined,
-      checkoutUrl: checkoutUrl || undefined,
-      processing,
-      warning: "Enquiry saved, but email delivery could not be completed. We will still review your message.",
-    }, context);
+    return apiOk(
+      {
+        id: enquiryRecord.id,
+        internalSent: false,
+        thankYouSent: false,
+        consultationBooked: Boolean(calendarResult.created),
+        slotAvailable: availabilityResult.available,
+        calendarReason: calendarResult.reason || undefined,
+        meetUrl: calendarResult.meetUrl || undefined,
+        leadDriveFolderId: enquiryRecord.leadDriveFolderId || undefined,
+        leadDriveFolderUrl: enquiryRecord.leadDriveFolderUrl || undefined,
+        checkoutUrl: checkoutUrl || undefined,
+        processing,
+        warning: "Enquiry saved, but email delivery could not be completed. We will still review your message.",
+      },
+      context
+    );
   }
 }

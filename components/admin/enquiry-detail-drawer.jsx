@@ -192,6 +192,17 @@ export function EnquiryDetailDrawer({ enquiry, open, onClose, onConverted }) {
               <span className="text-muted-foreground">No quiz summary</span>
             )}
           </FieldBlock>
+          <FieldBlock label="Resume">
+            {enquiry.resumeUploadStatus === "uploaded" && enquiry.resumeFileName ? (
+              <span>
+                Uploaded ({enquiry.resumeFileName}) — check lead Drive folder.
+              </span>
+            ) : enquiry.resumeUploadStatus === "failed" ? (
+              <span className="text-destructive">Upload failed or rejected</span>
+            ) : (
+              <span className="text-muted-foreground">Not uploaded</span>
+            )}
+          </FieldBlock>
         </div>
 
         <div className="border-t border-border p-5">

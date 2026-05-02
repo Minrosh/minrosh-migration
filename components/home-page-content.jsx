@@ -156,7 +156,7 @@ export function HomePageContent({ siteData, homeTab }) {
         resultSkeleton={<QuizResultSkeleton />}
         onGoToContact={() => {
           if (typeof window !== "undefined") {
-            window.location.href = "/contact";
+            window.location.href = "/book-consultation";
           }
         }}
       />

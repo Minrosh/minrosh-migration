@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { MotionItem, MotionReveal, MotionStagger } from "./ui/motion-wrapper";
 
 const TILES = [
   {
@@ -73,7 +72,7 @@ export function HomeServicesPathways() {
   return (
     <section className="home-section bg-white" aria-labelledby="home-services-heading">
       <div className="mx-auto min-w-0 max-w-7xl px-4 sm:px-6 lg:px-8">
-        <MotionReveal y={16}>
+        <div>
           <h2
             id="home-services-heading"
             className="text-center text-2xl font-black tracking-tight text-brand-plum sm:text-3xl md:text-4xl"
@@ -84,19 +83,21 @@ export function HomeServicesPathways() {
             Registered migration guidance led from Brisbane, with online consultations for clients worldwide. We cite
             official sources and highlight what departments publish—not forum summaries alone.
           </p>
-        </MotionReveal>
+        </div>
 
-        <MotionStagger className="mt-10 grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="mt-8 grid min-w-0 list-none grid-cols-1 gap-5 pl-0 sm:mt-10 sm:grid-cols-2 lg:grid-cols-3">
           {TILES.map((tile, i) => (
-            <MotionItem key={tile.href}>
-              <div className={`relative flex h-full flex-col overflow-hidden p-6 sm:p-8 ${tileClasses(tile.tone)}`}>
+            <li key={tile.href} className="min-w-0">
+              <div className={`relative flex h-full min-h-full flex-col overflow-hidden rounded-2xl p-5 sm:p-8 ${tileClasses(tile.tone)}`}>
                 <span
-                  className={`absolute right-4 top-4 text-5xl font-black leading-none opacity-[0.08] ${tile.tone === "plum" ? "text-white" : "text-brand-plum"}`}
+                  className={`absolute right-3 top-3 text-5xl font-black leading-none opacity-[0.08] sm:right-4 sm:top-4 ${tile.tone === "plum" ? "text-white" : "text-brand-plum"}`}
                   aria-hidden="true"
                 >
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                <h3 className={`text-xl font-black ${tile.tone === "plum" ? "text-white" : "text-brand-plum"} sm:text-2xl`}>
+                <h3
+                  className={`text-lg font-black sm:text-xl md:text-2xl ${tile.tone === "plum" ? "text-white" : "text-brand-plum"}`}
+                >
                   {tile.title}
                 </h3>
                 <p
@@ -106,14 +107,14 @@ export function HomeServicesPathways() {
                 </p>
                 <Link
                   href={tile.href}
-                  className={`mt-6 inline-flex min-h-[48px] touch-manipulation items-center gap-2 transition-all hover:gap-3 ${linkClasses(tile.tone)}`}
+                  className={`mt-5 inline-flex min-h-[48px] touch-manipulation items-center gap-2 transition-all hover:gap-3 sm:mt-6 ${linkClasses(tile.tone)}`}
                 >
                   {tile.cta} <span aria-hidden="true">→</span>
                 </Link>
               </div>
-            </MotionItem>
+            </li>
           ))}
-        </MotionStagger>
+        </ul>
       </div>
     </section>
   );

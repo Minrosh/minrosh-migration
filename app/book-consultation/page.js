@@ -87,6 +87,10 @@ export default function BookConsultationPage() {
           {siteData.consultationHoursNote ? (
             <p className="content-hero__note">{siteData.consultationHoursNote}</p>
           ) : null}
+          <p className="mt-3 max-w-2xl text-sm text-brand-plum/70">
+            Consultation slots are 30 minutes. In the time zone you select when booking: Monday–Friday 7:00 pm–10:00 pm;
+            Saturday–Sunday 9:00 am–10:00 pm (last start 9:30 pm).
+          </p>
         </section>
 
         <section className="grid gap-6 lg:grid-cols-[1fr_1.1fr] lg:items-start">

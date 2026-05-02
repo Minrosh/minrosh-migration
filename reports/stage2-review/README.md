@@ -8,8 +8,8 @@ Committed thumbnails:
 Full-length homepage screenshots (`*-fullpage.png`) are **gitignored** (large binaries). Regenerate locally after `npm run build`:
 
 ```bash
-PORT=4174 HOSTNAME=127.0.0.1 node .next/standalone/server.js &
-PREVIEW_URL=http://127.0.0.1:4174 node scripts/stage2-preview-screenshots.mjs
+PORT=4177 HOSTNAME=127.0.0.1 node .next/standalone/server.js &
+PREVIEW_URL=http://127.0.0.1:4177 node scripts/stage2-preview-screenshots.mjs
 ```
 
 Stop the server when finished.

@@ -1,0 +1,1491 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MinRosh Migration — Full homepage preview (bundled photography)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* Hero chrome aligns with high-fidelity mock (#3A1C2C / #76365C). Logo: premium-homepage-preview-assets/minrosh-logo.svg */
+      :root {
+        --hero-plum-dark: #3a1c2c;
+        --hero-plum-mid: #76365c;
+        --hero-icon-soft: #efe6ec;
+        --hero-maroon: #3a1c2c;
+        --hero-soft-pink: #efe6ec;
+        --primary-text: #3a1c2c;
+        --accent: #e74c3c;
+        --subheading: #76365c;
+        --deep-block: #3a1c2c;
+        --cream: #fff8f5;
+        --card: #ffffff;
+        --muted: #666666;
+        --whatsapp: #25d366;
+        --radius-card: 25px;
+        --radius-sm: 20px;
+        --radius-glass: 44px;
+        --shadow-soft: 0 4px 15px rgba(0, 0, 0, 0.05);
+        --shadow-lift: 0 10px 30px rgba(0, 0, 0, 0.1);
+        --shadow-glass: 0 24px 60px rgba(58, 28, 44, 0.18), 0 8px 28px rgba(0, 0, 0, 0.08);
+        --font: "Plus Jakarta Sans", "Inter", system-ui, sans-serif;
+        --container: min(1200px, 92vw);
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: var(--font);
+        color: var(--primary-text);
+        background: var(--cream);
+      }
+
+      .preview-footer-note {
+        padding: 14px 16px;
+        text-align: center;
+        font-size: 11px;
+        font-weight: 500;
+        color: var(--muted);
+        background: #f5f0f2;
+        border-top: 1px solid rgba(58, 28, 44, 0.12);
+      }
+
+      .preview-footer-note code {
+        font-size: 10px;
+      }
+
+      .site-header {
+        position: fixed;
+        top: 20px;
+        left: 0;
+        right: 0;
+        z-index: 50;
+        display: flex;
+        justify-content: center;
+        pointer-events: none;
+      }
+
+      .site-header__inner {
+        pointer-events: auto;
+        width: min(1400px, 92vw);
+        min-height: 68px;
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
+        gap: 16px;
+        padding: 12px 28px;
+        border-radius: 999px;
+        background: rgba(255, 253, 251, 0.94);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        box-shadow: 0 8px 32px rgba(58, 28, 44, 0.12);
+        border: 1px solid rgba(255, 255, 255, 0.95);
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        min-width: 0;
+      }
+
+      .brand__mark {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        overflow: hidden;
+        flex-shrink: 0;
+        background: #fff;
+        border: 1px solid rgba(58, 28, 44, 0.1);
+      }
+
+      .brand__mark img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        display: block;
+      }
+
+      .brand__title {
+        font-weight: 800;
+        font-size: 1rem;
+        color: var(--hero-plum-dark);
+        line-height: 1.15;
+      }
+
+      .brand__tag {
+        font-size: 10px;
+        color: #888;
+        font-weight: 500;
+      }
+
+      .nav {
+        display: none;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 4px 12px;
+      }
+
+      @media (min-width: 1100px) {
+        .nav {
+          display: flex;
+        }
+      }
+
+      .nav a {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--muted);
+        text-decoration: none;
+        padding: 8px 6px;
+      }
+
+      .nav a:hover {
+        color: var(--hero-plum-dark);
+      }
+
+      .nav a.is-active {
+        color: var(--hero-plum-dark);
+        border-bottom: 2px solid var(--hero-plum-dark);
+        padding-bottom: 6px;
+      }
+
+      .nav-chevron {
+        width: 12px;
+        height: 12px;
+        flex-shrink: 0;
+        opacity: 0.72;
+        color: currentColor;
+      }
+
+      .header-cta {
+        justify-self: end;
+        padding: 11px 22px;
+        border-radius: 999px;
+        background: var(--hero-plum-dark);
+        color: #fff;
+        font-size: 12px;
+        font-weight: 700;
+        border: none;
+        cursor: pointer;
+        white-space: nowrap;
+      }
+
+      .hero-shell {
+        position: relative;
+        min-height: min(92vh, 980px);
+        padding: 112px 16px 88px;
+        overflow: hidden;
+      }
+
+      .hero-bg {
+        position: absolute;
+        inset: 0;
+        background: url("premium-homepage-preview-assets/hero-brisbane-river-cbd.png") center / cover no-repeat;
+        background-position: 30% center;
+      }
+
+      .hero-bg__frost {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          100deg,
+          rgba(255, 255, 255, 0.78) 0%,
+          rgba(255, 255, 255, 0.45) 38%,
+          rgba(255, 250, 252, 0.12) 62%,
+          transparent 82%
+        );
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+      }
+
+      .hero-layout {
+        position: relative;
+        z-index: 1;
+        margin: 0 auto;
+        width: min(1400px, 94vw);
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .glass-card {
+        border-radius: var(--radius-glass);
+        box-shadow: var(--shadow-glass);
+        background: rgba(255, 253, 254, 0.88);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        border: 1px solid rgba(255, 255, 255, 0.88);
+        overflow: hidden;
+      }
+
+      .glass-main {
+        padding: 36px 28px 36px;
+      }
+
+      @media (min-width: 768px) {
+        .glass-main {
+          padding: 52px 52px 44px;
+        }
+      }
+
+      .pill-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 9px 17px;
+        border-radius: 999px;
+        background: #fff;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--hero-plum-mid);
+        box-shadow: var(--shadow-soft);
+        border: 1px solid rgba(58, 28, 44, 0.06);
+      }
+
+      .pill-badge svg {
+        flex-shrink: 0;
+        color: var(--hero-plum-mid);
+      }
+
+      .hero-title {
+        margin: 22px 0 0;
+        max-width: 46rem;
+        font-size: clamp(1.75rem, 4.2vw, 2.85rem);
+        font-weight: 800;
+        line-height: 1.12;
+        color: var(--hero-plum-dark);
+        text-align: left;
+      }
+
+      .hero-title em {
+        font-style: normal;
+        color: var(--hero-plum-dark);
+      }
+
+      .accent-rule {
+        margin-top: 16px;
+        width: 56px;
+        height: 6px;
+        border-radius: 999px;
+        background: var(--hero-plum-dark);
+      }
+
+      .features {
+        margin-top: 30px;
+        display: grid;
+        gap: 22px;
+      }
+
+      @media (min-width: 900px) {
+        .features {
+          grid-template-columns: repeat(3, 1fr);
+          gap: 22px;
+        }
+      }
+
+      .feature {
+        text-align: left;
+      }
+
+      .feature__icon {
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        background: var(--hero-icon-soft);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 12px;
+        color: var(--hero-plum-dark);
+      }
+
+      .feature__icon svg {
+        stroke: currentColor;
+      }
+
+      .feature h4 {
+        margin: 0;
+        font-size: 14px;
+        font-weight: 800;
+        color: var(--hero-plum-dark);
+      }
+
+      .feature p {
+        margin: 8px 0 0;
+        font-size: 13px;
+        color: #444;
+        line-height: 1.45;
+      }
+
+      .hero-cta {
+        margin-top: 30px;
+      }
+
+      .btn-primary {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 17px 30px;
+        border-radius: 999px;
+        background: var(--hero-plum-dark);
+        color: #fff;
+        font-weight: 800;
+        font-size: 15px;
+        border: 2px solid #fff;
+        box-shadow: var(--shadow-soft);
+        cursor: pointer;
+      }
+
+      .hero-help {
+        margin-top: 14px;
+        font-size: 13px;
+        color: #666;
+        max-width: 28rem;
+        line-height: 1.45;
+      }
+
+      .hero-help a {
+        color: var(--hero-plum-mid);
+        font-weight: 700;
+      }
+
+      .trust-strip--overlap {
+        position: relative;
+        z-index: 2;
+        margin-top: -36px;
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%;
+        max-width: min(1320px, 90vw);
+        display: grid;
+        gap: 20px;
+        padding: 22px 26px;
+        background: rgba(255, 255, 255, 0.94);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border-radius: 28px;
+        box-shadow: 0 14px 44px rgba(58, 28, 44, 0.14);
+        border: 1px solid rgba(255, 255, 255, 0.92);
+      }
+
+      @media (min-width: 900px) {
+        .trust-strip--overlap {
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+          gap: 16px;
+          padding: 26px 40px;
+          border-radius: 999px;
+          align-items: flex-start;
+        }
+
+        .trust-strip--overlap .trust-item + .trust-item {
+          border-left: 1px solid rgba(58, 28, 44, 0.1);
+          padding-left: 28px;
+        }
+      }
+
+      .trust-item {
+        display: flex;
+        gap: 14px;
+        align-items: flex-start;
+      }
+
+      .trust-item__icon {
+        width: 46px;
+        height: 46px;
+        border-radius: 50%;
+        background: var(--hero-icon-soft);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        color: var(--hero-plum-dark);
+      }
+
+      .trust-item__icon svg {
+        stroke: currentColor;
+        fill: none;
+      }
+
+      .trust-item strong {
+        display: block;
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--hero-plum-dark);
+      }
+
+      .trust-item span {
+        font-size: 12px;
+        color: #555;
+        line-height: 1.35;
+      }
+
+      .section {
+        padding: 56px 16px;
+      }
+
+      .section__inner {
+        width: var(--container);
+        margin: 0 auto;
+      }
+
+      .eyebrow {
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin: 0 0 8px;
+      }
+
+      .h2 {
+        margin: 0;
+        font-size: clamp(1.45rem, 3vw, 2rem);
+        font-weight: 800;
+        color: var(--primary-text);
+      }
+
+      .lead {
+        margin: 12px 0 0;
+        font-size: 15px;
+        color: var(--muted);
+        max-width: 52rem;
+        line-height: 1.55;
+      }
+
+      .card {
+        background: var(--card);
+        border-radius: var(--radius-card);
+        box-shadow: var(--shadow-soft);
+        padding: 36px 28px;
+      }
+
+      @media (min-width: 768px) {
+        .card {
+          padding: 48px 52px;
+        }
+      }
+
+      .grid-3 {
+        display: grid;
+        gap: 18px;
+        margin-top: 28px;
+      }
+
+      @media (min-width: 768px) {
+        .grid-3 {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+
+      .mini-card {
+        border-radius: 18px;
+        border: 1px solid rgba(58, 28, 44, 0.08);
+        padding: 18px;
+      }
+
+      .mini-card h3 {
+        margin: 0;
+        font-size: 15px;
+        color: var(--subheading);
+      }
+
+      .mini-card p {
+        margin: 8px 0 0;
+        font-size: 13px;
+        color: var(--muted);
+        line-height: 1.45;
+      }
+
+      .split {
+        display: grid;
+        gap: 22px;
+        margin-top: 28px;
+      }
+
+      @media (min-width: 960px) {
+        .split {
+          grid-template-columns: 1fr 1fr;
+          align-items: stretch;
+        }
+      }
+
+      .usp-grid {
+        display: grid;
+        gap: 14px;
+        margin-top: 22px;
+      }
+
+      @media (min-width: 520px) {
+        .usp-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      .usp {
+        display: flex;
+        gap: 10px;
+      }
+
+      .usp__icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        background: rgba(231, 76, 60, 0.12);
+        flex-shrink: 0;
+      }
+
+      .usp h4 {
+        margin: 0;
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .usp p {
+        margin: 4px 0 0;
+        font-size: 12px;
+        color: var(--muted);
+        line-height: 1.4;
+      }
+
+      .visual-card {
+        border-radius: var(--radius-card);
+        overflow: hidden;
+        box-shadow: var(--shadow-soft);
+        min-height: 240px;
+      }
+
+      .visual-card--tall {
+        min-height: min(340px, 52vw);
+      }
+
+      .visual-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      @media (max-width: 959px) {
+        .split--flip-sm .visual-card {
+          order: -1;
+        }
+      }
+
+      .deep-panel {
+        border-radius: var(--radius-card);
+        background: var(--deep-block);
+        color: #f8f4f6;
+        padding: 44px 28px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: var(--shadow-soft);
+      }
+
+      .deep-panel__dots {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        opacity: 0.07;
+        background-image: radial-gradient(#fff 1px, transparent 1px);
+        background-size: 36px 36px;
+      }
+
+      .deep-panel::before {
+        content: "";
+        position: absolute;
+        width: 280px;
+        height: 280px;
+        border-radius: 50%;
+        background: rgba(231, 76, 60, 0.15);
+        top: -80px;
+        right: -60px;
+      }
+
+      .deep-panel::after {
+        content: "";
+        position: absolute;
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.06);
+        bottom: -50px;
+        left: -40px;
+      }
+
+      .deep-panel .h2,
+      .deep-panel .lead {
+        position: relative;
+        z-index: 1;
+        color: #fff;
+      }
+
+      .deep-panel .lead {
+        opacity: 0.92;
+      }
+
+      .testimonial-card {
+        background: var(--card);
+        border-radius: var(--radius-card);
+        padding: 22px;
+        box-shadow: var(--shadow-soft);
+      }
+
+      .stars {
+        color: var(--accent);
+        letter-spacing: 2px;
+        font-size: 14px;
+        margin-bottom: 10px;
+      }
+
+      .quote {
+        font-size: 14px;
+        line-height: 1.5;
+        color: var(--primary-text);
+        margin: 0;
+      }
+
+      .author {
+        margin-top: 14px;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--subheading), var(--hero-maroon));
+      }
+
+      .author strong {
+        display: block;
+        font-size: 13px;
+      }
+
+      .author span {
+        font-size: 11px;
+        color: var(--muted);
+      }
+
+      .resource-card-wrap {
+        background: var(--card);
+        border-radius: var(--radius-card);
+        padding: 28px 22px 32px;
+        box-shadow: var(--shadow-soft);
+      }
+
+      .resource-grid {
+        display: grid;
+        gap: 18px;
+        margin-top: 22px;
+      }
+
+      @media (min-width: 768px) {
+        .resource-grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+
+      .resource-tile {
+        border-radius: 18px;
+        border: 1px solid rgba(58, 28, 44, 0.08);
+        overflow: hidden;
+        background: #fafafa;
+      }
+
+      .resource-thumb {
+        height: 120px;
+        padding: 0;
+        overflow: hidden;
+      }
+
+      .resource-thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      .resource-body {
+        padding: 14px;
+      }
+
+      .resource-body h4 {
+        margin: 0;
+        font-size: 14px;
+        line-height: 1.35;
+      }
+
+      .resource-body .meta {
+        font-size: 11px;
+        color: var(--muted);
+        margin-top: 6px;
+      }
+
+      .resource-body p {
+        margin: 8px 0 0;
+        font-size: 12px;
+        color: var(--muted);
+        line-height: 1.45;
+      }
+
+      .read-more {
+        margin-top: 10px;
+        font-size: 12px;
+        font-weight: 800;
+        color: var(--accent);
+      }
+
+      .final-cta {
+        border-radius: var(--radius-card);
+        background: linear-gradient(135deg, var(--deep-block), #5c2749);
+        color: #fff;
+        padding: 40px 28px;
+        text-align: center;
+        box-shadow: var(--shadow-soft);
+      }
+
+      .final-cta h2 {
+        margin: 0;
+        font-size: clamp(1.5rem, 3vw, 2rem);
+      }
+
+      .final-cta p {
+        margin: 12px auto 0;
+        max-width: 36rem;
+        opacity: 0.92;
+        font-size: 15px;
+      }
+
+      .final-cta .actions {
+        margin-top: 22px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        justify-content: center;
+      }
+
+      .btn-white {
+        padding: 14px 22px;
+        border-radius: 999px;
+        background: #fff;
+        color: var(--deep-block);
+        font-weight: 800;
+        border: none;
+        cursor: pointer;
+      }
+
+      .btn-outline {
+        padding: 14px 22px;
+        border-radius: 999px;
+        border: 2px solid rgba(255, 255, 255, 0.55);
+        background: transparent;
+        color: #fff;
+        font-weight: 800;
+        cursor: pointer;
+      }
+
+      .footer-preview {
+        background: #ede6e9;
+        padding: 44px 16px 24px;
+        color: var(--primary-text);
+      }
+
+      .footer-grid {
+        width: var(--container);
+        margin: 0 auto;
+        display: grid;
+        gap: 28px;
+      }
+
+      @media (min-width: 768px) {
+        .footer-grid {
+          grid-template-columns: 1.3fr repeat(4, 1fr);
+        }
+      }
+
+      .footer-preview h5 {
+        margin: 0 0 12px;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--subheading);
+      }
+
+      .footer-preview ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .footer-preview li {
+        margin-bottom: 8px;
+      }
+
+      .footer-preview a {
+        color: var(--muted);
+        text-decoration: none;
+        font-size: 13px;
+      }
+
+      .footer-preview a:hover {
+        color: var(--accent);
+      }
+
+      .footer-bottom {
+        width: var(--container);
+        margin: 28px auto 0;
+        padding-top: 18px;
+        border-top: 1px solid rgba(58, 28, 44, 0.12);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        justify-content: space-between;
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      .float-widgets {
+        position: fixed;
+        bottom: 22px;
+        right: 22px;
+        z-index: 60;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .wa {
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        background: var(--whatsapp);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: var(--shadow-lift);
+        color: #fff;
+      }
+
+      .wa svg {
+        width: 26px;
+        height: 26px;
+        fill: #fff;
+      }
+
+      .ask {
+        padding: 14px 20px;
+        border-radius: 999px;
+        background: var(--hero-plum-dark);
+        color: #fff;
+        font-weight: 800;
+        font-size: 13px;
+        border: none;
+        box-shadow: var(--shadow-lift);
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header" aria-label="Preview header">
+      <div class="site-header__inner">
+        <div class="brand">
+          <div class="brand__mark">
+            <img src="premium-homepage-preview-assets/minrosh-logo.svg" alt="" width="48" height="48" decoding="async" />
+          </div>
+          <div>
+            <div class="brand__title">MinRosh Migration</div>
+            <div class="brand__tag">Your Pathway. Our Guidance. Your Future.</div>
+          </div>
+        </div>
+        <nav class="nav" aria-label="Primary preview nav">
+          <a class="is-active" href="#">Home</a>
+          <a href="#">Australian visas</a>
+          <a href="#"
+            >POPULAR ROUTES
+            <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </a>
+          <a href="#">Free Assessment</a>
+          <a href="#">About</a>
+          <a href="#">Contact</a>
+        </nav>
+        <button type="button" class="header-cta">Book consultation</button>
+      </div>
+    </header>
+
+    <section class="hero-shell" aria-label="Hero preview">
+      <div class="hero-bg" aria-hidden="true"></div>
+      <div class="hero-bg__frost" aria-hidden="true"></div>
+      <div class="hero-layout">
+        <div class="glass-card">
+          <div class="glass-main">
+            <div class="pill-badge">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                <path
+                  d="M12 21s7-4.35 7-11a7 7 0 10-14 0c0 6.65 7 11 7 11z"
+                  stroke-width="2"
+                />
+                <circle cx="12" cy="10" r="2.5" stroke-width="2" />
+              </svg>
+              Brisbane-based • Pathways to Australia, Canada, the UK &amp; NZ
+            </div>
+
+            <h1 class="hero-title">
+              Clear migration and study <em>pathway guidance</em> from Brisbane to the world
+            </h1>
+            <div class="accent-rule" aria-hidden="true"></div>
+
+            <div class="features">
+              <div class="feature">
+                <div class="feature__icon">
+                  <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M4.5 10.5 12 7l7.5 3.5L12 14 4.5 10.5z" stroke-width="2" stroke-linejoin="round" />
+                    <path d="M9 12.2v2.6l3 1.5 3-1.5v-2.6M6 10.5V17" stroke-width="2" stroke-linecap="round" />
+                  </svg>
+                </div>
+                <h4>Pathways that fit you</h4>
+                <p>Student visas, skilled migration, partner and family pathways</p>
+              </div>
+              <div class="feature">
+                <div class="feature__icon">
+                  <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <rect x="5" y="8" width="14" height="11" rx="2" stroke-width="2" />
+                    <path d="M9 8V7a2 2 0 012-2h2a2 2 0 012 2v1" stroke-width="2" />
+                  </svg>
+                </div>
+                <h4>Expert support</h4>
+                <p>Employer sponsorship and education consultation</p>
+              </div>
+              <div class="feature">
+                <div class="feature__icon">
+                  <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path
+                      d="M12 21s8-4 8-10V6l-8-3-8 3v5c0 6 8 10 8 10z"
+                      stroke-width="2"
+                      stroke-linejoin="round"
+                    />
+                    <path d="M9.5 12l2 2 4-4" stroke-width="2" stroke-linecap="round" />
+                  </svg>
+                </div>
+                <h4>Plain-English guidance</h4>
+                <p>Honest advice and ongoing support before you spend money</p>
+              </div>
+            </div>
+
+            <div class="hero-cta">
+              <button type="button" class="btn-primary">
+                Check Eligibility in 2 Minutes <span aria-hidden="true">→</span>
+              </button>
+              <p class="hero-help">
+                Need quick human help?
+                <a href="#">Chat on WhatsApp</a><br />
+                Fast response for urgent eligibility questions.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="trust-strip--overlap">
+          <div class="trust-item">
+            <div class="trust-item__icon" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path
+                  d="M12 21s7-4.35 7-11a7 7 0 10-14 0c0 6.65 7 11 7 11z"
+                  stroke-width="2"
+                  stroke-linejoin="round"
+                />
+                <circle cx="12" cy="10" r="2.5" stroke-width="2" />
+              </svg>
+            </div>
+            <div>
+              <strong>Brisbane-based</strong>
+              <span>Local experts with a global outlook</span>
+            </div>
+          </div>
+          <div class="trust-item">
+            <div class="trust-item__icon" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <circle cx="12" cy="12" r="9" stroke-width="2" />
+                <path d="M3 12h18M12 3c2.5 3 2.5 15 0 18M12 3c-2.5 3-2.5 15 0 18" stroke-width="2" />
+              </svg>
+            </div>
+            <div>
+              <strong>Global reach</strong>
+              <span>Australia, Canada, the UK &amp; NZ</span>
+            </div>
+          </div>
+          <div class="trust-item">
+            <div class="trust-item__icon" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <circle cx="9" cy="8" r="3" stroke-width="2" />
+                <circle cx="17" cy="9" r="2.5" stroke-width="2" />
+                <path d="M4 20v-1a4 4 0 014-4h2a4 4 0 014 4v1M14 20v-1a3 3 0 013-3" stroke-width="2" />
+              </svg>
+            </div>
+            <div>
+              <strong>All pathways</strong>
+              <span>Student, Skilled, Partner, Family</span>
+            </div>
+          </div>
+          <div class="trust-item">
+            <div class="trust-item__icon" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <circle cx="12" cy="11" r="6" stroke-width="2" />
+                <path d="M12 17v4M9 21h6" stroke-width="2" stroke-linecap="round" />
+                <path d="M12 9v2.5" stroke-width="2" stroke-linecap="round" />
+              </svg>
+            </div>
+            <div>
+              <strong>Trusted guidance</strong>
+              <span>Step-by-step planning from start to finish</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="background: var(--cream); padding-top: 28px">
+      <div class="section__inner">
+        <div class="split split--flip-sm">
+          <div class="card">
+            <p class="eyebrow">Your pathway</p>
+            <h2 class="h2">Compare your options, clear the pathway</h2>
+            <p class="lead" style="margin-top: 14px">
+              Navigate visa structures with clear sequencing and plain-English summaries — so you understand steps, risks
+              and timing before you commit fees.
+            </p>
+            <button type="button" class="btn-primary" style="margin-top: 18px; border: none; font-size: 14px; padding: 12px 22px">
+              Start comparing
+            </button>
+          </div>
+          <div class="visual-card visual-card--tall">
+            <img
+              src="premium-homepage-preview-assets/pathways-documentation.png"
+              alt="Australian passport and Canada study permit pathway summary on a desk"
+              width="1200"
+              height="800"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="background: var(--cream)">
+      <div class="section__inner">
+        <p class="eyebrow">Visa navigation map</p>
+        <h2 class="h2">Compare pathways in one clear flow</h2>
+        <p class="lead">
+          This gives you a simple way to understand your goal, eligibility lane and next action before you spend money.
+        </p>
+        <div class="card" style="margin-top: 22px">
+          <div class="grid-3">
+            <div class="mini-card">
+              <h3>Step 1 — Define your goal</h3>
+              <p>Study, skilled migration, partner, family or employer pathway.</p>
+            </div>
+            <div class="mini-card">
+              <h3>Step 2 — Check eligibility lane</h3>
+              <p>Compare points, documents, timing and likely pathway risks.</p>
+            </div>
+            <div class="mini-card">
+              <h3>Step 3 — Pick your next action</h3>
+              <p>Start an assessment, book a consult or prepare documents.</p>
+            </div>
+          </div>
+          <div style="margin-top: 22px; display: flex; flex-wrap: wrap; gap: 12px">
+            <button type="button" class="btn-primary" style="border: none">Start Free Assessment</button>
+            <button
+              type="button"
+              style="
+                padding: 14px 22px;
+                border-radius: 999px;
+                border: 2px solid rgba(58, 28, 44, 0.2);
+                background: #fff;
+                font-weight: 800;
+                color: var(--primary-text);
+              "
+            >
+              Compare visa options
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="background: var(--cream)">
+      <div class="section__inner">
+        <div class="split split--flip-sm">
+          <div class="card">
+            <p class="eyebrow">Study pathways</p>
+            <h2 class="h2">International study with your long-term plan in view</h2>
+            <p class="lead" style="margin-top: 14px">
+              Compare institutions and visa subclasses with an eye on post-study options — aligned with pathway mapping for
+              students and families.
+            </p>
+            <div style="margin-top: 18px; display: flex; flex-wrap: wrap; gap: 10px">
+              <button type="button" class="btn-primary" style="border: none; font-size: 13px; padding: 12px 20px">
+                Talk through study options
+              </button>
+            </div>
+          </div>
+          <div class="visual-card visual-card--tall">
+            <img
+              src="premium-homepage-preview-assets/study-pathway-students.png"
+              alt="Group of diverse international students on a university campus plaza"
+              width="1200"
+              height="750"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="background: #fff">
+      <div class="section__inner">
+        <p class="eyebrow">Global pathways</p>
+        <h2 class="h2">Choose the country that fits your next chapter</h2>
+        <p class="lead">
+          Compare study, work, family and skilled migration pathways across Australia, Canada, the UK and New Zealand.
+        </p>
+        <div class="grid-3">
+          <article class="mini-card" style="background: var(--card); box-shadow: var(--shadow-soft)">
+            <h3>Australia</h3>
+            <p>Study, skilled migration, partner, family and employer-sponsored options.</p>
+            <p style="margin-top: 10px; font-size: 11px; font-weight: 700; color: var(--subheading)">
+              Student · Skilled · Partner · Employer
+            </p>
+          </article>
+          <article class="mini-card" style="background: var(--card); box-shadow: var(--shadow-soft)">
+            <h3>Canada</h3>
+            <p>Study and migration planning with a clear view of costs and future options.</p>
+            <p style="margin-top: 10px; font-size: 11px; font-weight: 700; color: var(--subheading)">
+              Student · Work · Family
+            </p>
+          </article>
+          <article class="mini-card" style="background: var(--card); box-shadow: var(--shadow-soft)">
+            <h3>United Kingdom</h3>
+            <p>Study, visitor and family pathway support for applicants planning ahead.</p>
+            <p style="margin-top: 10px; font-size: 11px; font-weight: 700; color: var(--subheading)">
+              Student · Visitor · Family
+            </p>
+          </article>
+          <article
+            class="mini-card"
+            style="
+              background: var(--card);
+              box-shadow: var(--shadow-soft);
+              grid-column: 1 / -1;
+              max-width: 420px;
+              margin: 0 auto;
+            "
+          >
+            <h3>New Zealand</h3>
+            <p>Study and migration guidance with practical pathway comparison.</p>
+            <p style="margin-top: 10px; font-size: 11px; font-weight: 700; color: var(--subheading)">
+              Student · Skilled · Family
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="background: var(--cream)">
+      <div class="section__inner">
+        <div class="split split--flip-sm">
+          <div class="card">
+            <p class="eyebrow">Skilled &amp; employer pathways</p>
+            <h2 class="h2">Consultative support for complex decisions</h2>
+            <p class="lead" style="margin-top: 14px">
+              From points-tested programmes to employer-sponsored routes — structured conversations, document discipline,
+              and clarity on what comes next.
+            </p>
+            <button type="button" class="btn-primary" style="margin-top: 18px; border: none; font-size: 13px; padding: 12px 20px">
+              Book consultation
+            </button>
+          </div>
+          <div class="visual-card visual-card--tall">
+            <img
+              src="premium-homepage-preview-assets/skilled-migration-support.png"
+              alt="Migration consultant greeting clients at a professional meeting"
+              width="1200"
+              height="750"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="background: var(--cream)">
+      <div class="section__inner">
+        <div class="split">
+          <div class="card">
+            <h2 class="h2">Strategic Personal Guidance from Brisbane</h2>
+            <p class="lead" style="margin-top: 14px">
+              Every migration journey is unique. MinRosh Migration provides tailored, step-by-step guidance designed around
+              your specific profile — with verified official sources and plain-English explanations.
+            </p>
+            <div class="usp-grid">
+              <div class="usp">
+                <div class="usp__icon" aria-hidden="true"></div>
+                <div>
+                  <h4>Verified Sources</h4>
+                  <p>Advice anchored to current official programme pages.</p>
+                </div>
+              </div>
+              <div class="usp">
+                <div class="usp__icon" aria-hidden="true"></div>
+                <div>
+                  <h4>Client Portal</h4>
+                  <p>Track milestones and documents in one structured place.</p>
+                </div>
+              </div>
+              <div class="usp">
+                <div class="usp__icon" aria-hidden="true"></div>
+                <div>
+                  <h4>Ongoing Support</h4>
+                  <p>Consistent communication from strategy through next steps.</p>
+                </div>
+              </div>
+              <div class="usp">
+                <div class="usp__icon" aria-hidden="true"></div>
+                <div>
+                  <h4>Transparent Costs</h4>
+                  <p>Clear fee expectations without surprise add-ons.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="visual-card visual-card--tall">
+            <img
+              src="premium-homepage-preview-assets/family-education-consultation.png"
+              alt="Consultant reviewing documents with a young family in a bright modern office"
+              width="1200"
+              height="750"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="background: var(--cream)">
+      <div class="section__inner">
+        <div class="deep-panel">
+          <div class="deep-panel__dots" aria-hidden="true"></div>
+          <h2 class="h2">Trusted advice. Strategic clarity. Transparent process.</h2>
+          <p class="lead" style="margin-top: 14px">
+            Your commitment to a new chapter deserves accuracy over hype. We focus on verified sources and sequencing you
+            can follow — so you always know the next step and why it matters.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="background: #fff">
+      <div class="section__inner">
+        <p class="eyebrow">Client experience</p>
+        <h2 class="h2">What Our Clients Say</h2>
+        <p class="lead">Preview quotes only — production uses compliant copy from the live site.</p>
+        <div class="grid-3" style="margin-top: 22px">
+          <article class="testimonial-card">
+            <div class="stars" aria-hidden="true">★★★★★</div>
+            <p class="quote">
+              “Clear sequencing and official references helped me understand what to verify next — without pressure.”
+            </p>
+            <div class="author">
+              <div class="avatar" aria-hidden="true"></div>
+              <div>
+                <strong>A. M.</strong>
+                <span>Skilled pathway planning</span>
+              </div>
+            </div>
+          </article>
+          <article class="testimonial-card">
+            <div class="stars" aria-hidden="true">★★★★★</div>
+            <p class="quote">“Structured document guidance made the partner pathway feel manageable step by step.”</p>
+            <div class="author">
+              <div class="avatar" aria-hidden="true"></div>
+              <div>
+                <strong>S. K.</strong>
+                <span>Partner visa preparation</span>
+              </div>
+            </div>
+          </article>
+          <article class="testimonial-card">
+            <div class="stars" aria-hidden="true">★★★★★</div>
+            <p class="quote">
+              “Plain-English explanations before lodgement — exactly what I needed as a first-time applicant.”
+            </p>
+            <div class="author">
+              <div class="avatar" aria-hidden="true"></div>
+              <div>
+                <strong>L. W.</strong>
+                <span>Student visa planning</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="background: var(--cream)">
+      <div class="section__inner">
+        <p class="eyebrow">Latest insights</p>
+        <h2 class="h2">Migration Insights &amp; Expert Guides</h2>
+        <p class="lead">Production binds to news.json — tiles below are layout placeholders.</p>
+        <div class="resource-card-wrap" style="margin-top: 22px">
+          <div class="resource-grid">
+            <article class="resource-tile">
+              <div class="resource-thumb">
+                <img
+                  src="premium-homepage-preview-assets/pathways-documentation.png"
+                  alt=""
+                  width="400"
+                  height="120"
+                  loading="lazy"
+                />
+              </div>
+              <div class="resource-body">
+                <h4>Canadian Skilled Migration — orientation guide</h4>
+                <div class="meta">Global · 2026-04-01</div>
+                <p>Short excerpt preview for layout.</p>
+                <div class="read-more">Read guide →</div>
+              </div>
+            </article>
+            <article class="resource-tile">
+              <div class="resource-thumb">
+                <img
+                  src="premium-homepage-preview-assets/study-pathway-students.png"
+                  alt=""
+                  width="400"
+                  height="120"
+                  loading="lazy"
+                />
+              </div>
+              <div class="resource-body">
+                <h4>UK Student Visa — document checklist mindset</h4>
+                <div class="meta">United Kingdom · 2026-03-28</div>
+                <p>Short excerpt preview for layout.</p>
+                <div class="read-more">Read guide →</div>
+              </div>
+            </article>
+            <article class="resource-tile">
+              <div class="resource-thumb">
+                <img
+                  src="premium-homepage-preview-assets/skilled-migration-support.png"
+                  alt=""
+                  width="400"
+                  height="120"
+                  loading="lazy"
+                />
+              </div>
+              <div class="resource-body">
+                <h4>Australian Partner Visas — evidence planning intro</h4>
+                <div class="meta">Australia · 2026-03-15</div>
+                <p>Short excerpt preview for layout.</p>
+                <div class="read-more">Read guide →</div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="background: #fff; padding-bottom: 100px">
+      <div class="section__inner">
+        <div class="final-cta">
+          <h2>Not sure where to start?</h2>
+          <p>Start with a simple pathway check and understand your best next step.</p>
+          <div class="actions">
+            <button type="button" class="btn-white">Check Eligibility in 2 Minutes</button>
+            <button type="button" class="btn-outline">Chat on WhatsApp</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer-preview">
+      <div class="footer-grid">
+        <div>
+          <div class="brand__title">MinRosh Migration</div>
+          <p style="margin: 10px 0 0; font-size: 13px; color: var(--muted); max-width: 260px">
+            Brisbane-based migration and education guidance — preview layout only.
+          </p>
+        </div>
+        <div>
+          <h5>Services</h5>
+          <ul>
+            <li><a href="#">Skilled Migration</a></li>
+            <li><a href="#">Student Visas</a></li>
+            <li><a href="#">Partner &amp; Family</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5>Practice areas</h5>
+          <ul>
+            <li><a href="#">Australia</a></li>
+            <li><a href="#">Canada</a></li>
+            <li><a href="#">United Kingdom</a></li>
+            <li><a href="#">New Zealand</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5>About</h5>
+          <ul>
+            <li><a href="#">Meet the Team</a></li>
+            <li><a href="#">FAQ</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5>Contact</h5>
+          <ul>
+            <li><a href="#">Book consultation</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© MinRosh Migration — preview</span>
+        <span>Terms · Privacy · Sitemap</span>
+      </div>
+      <p class="preview-footer-note">
+        Static homepage preview — bundled assets in <code>docs/premium-homepage-preview-assets/</code>. Compare hero to
+        <code>hero-mock-reference.png</code>. Production Next.js uses <code>/public/images</code> and live routes.
+      </p>
+    </footer>
+
+    <div class="float-widgets" aria-hidden="true">
+      <div class="wa" title="WhatsApp">
+        <svg viewBox="0 0 448 512" aria-hidden="true">
+          <path
+            d="M380.9 97.1C339 55.1 283.2 32 223.9 32 100.4 32 0 132.4 0 255.9c0 39.5 10.3 78.1 29.8 111.9L0 480l115.1-30.1c32.8 17.9 69.8 27.3 108.6 27.3 123.4 0 223.8-100.4 223.8-223.9 0-59.3-23.1-115.1-65-157.1zM223.9 448c-33.3 0-66.2-9-94.6-26.1l-6.8-4.1-69.1 18.1L71.5 367l-4.4-7.1c-19.4-30.9-29.6-66.6-29.6-103.9 0-107 87-194 194-194 51.9 0 100.6 20.2 137.3 56.9s56.9 85.4 56.9 137.3c0 107-87 194-194 194zm108.7-149.3c-6-3-35.4-17.5-40.8-19.5-5.4-2-9.4-3-13.4 3s-15.6 19.5-19.1 23.6-6.9 4-12.9 1c-6-3-25.5-9.4-48.6-29.9-18-16.1-30.2-36-33.7-42-3.5-6-.4-9.3 2.6-12.2 2.7-2.7 6-6.9 9-10.4 3-3.5 4-6 6-9.9 2-4 1-7.4-.5-10.4-1.5-3-13.4-32.3-18.4-44.4-4.9-11.8-9.8-10.2-13.4-10.4-3.4-.2-7.4-.2-11.4-.2s-10.4 1.5-15.8 7.4-20.8 20.3-20.8 49.6 21.3 57.5 24.3 61.5c3 4 42.1 64.3 102 90.1 14.3 6.1 25.4 9.8 34.1 12.6 14.3 4.5 27.3 3.9 37.6 2.4 11.4-1.7 35.4-14.5 40.4-28.5 5-14 5-26 3.5-28.5-1.5-2.5-5.4-4-11.4-7z"
+          />
+        </svg>
+      </div>
+      <button type="button" class="ask">Ask MinRosh</button>
+    </div>
+  </body>
+</html>

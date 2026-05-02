@@ -25,16 +25,16 @@ export function HomeDestinationCards({ countries }) {
           immigration websites.
         </p>
 
-        <ul className="mt-10 grid min-w-0 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <ul className="mt-8 grid min-w-0 list-none grid-cols-1 gap-6 pl-0 sm:mt-10 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
           {cards.map((card) => (
-            <li key={card.key}>
+            <li key={card.key} className="min-w-0">
               <Link
                 href={card.href}
-                className="group flex h-full min-h-[48px] flex-col rounded-2xl border border-brand-plum/10 bg-brand-cream/25 p-5 shadow-sm transition-all hover:border-brand-rose/25 hover:bg-brand-cream/40 hover:shadow-md"
+                className="group flex h-full min-h-[48px] flex-col rounded-2xl border border-brand-plum/10 bg-brand-cream/25 p-6 shadow-sm transition-all hover:border-brand-rose/25 hover:bg-brand-cream/40 hover:shadow-md sm:p-6"
               >
                 <h3 className="text-lg font-black text-brand-plum group-hover:text-brand-rose">{card.title}</h3>
-                <p className="mt-2 flex-1 text-sm font-medium leading-relaxed text-brand-plum/65">{card.copy}</p>
-                <span className="mt-4 inline-flex min-h-[48px] items-center font-black text-brand-plum underline decoration-2 underline-offset-4 group-hover:text-brand-rose">
+                <p className="mt-3 flex-1 text-sm font-medium leading-relaxed text-brand-plum/65">{card.copy}</p>
+                <span className="mt-5 inline-flex min-h-[48px] items-center font-black text-brand-plum underline decoration-2 underline-offset-4 group-hover:text-brand-rose">
                   Open hub <span className="ml-2 transition-transform group-hover:translate-x-1">→</span>
                 </span>
               </Link>

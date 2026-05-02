@@ -145,7 +145,7 @@ export function SiteHeaderNav({ navLinks, currentPath, enableVisaMega = false })
                 >
                   {link.label}
                 </Link>
-                {enableVisaMega && normalizedHref === "/" ? (
+                {enableVisaMega && link.label === "POPULAR ROUTES" ? (
                   <div className="site-nav__mega-host">
                     <SiteVisasMegaMenu />
                   </div>

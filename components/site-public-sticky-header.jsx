@@ -45,14 +45,20 @@ export function SitePublicStickyHeader({ backdropModifier, className = "", child
     };
   }, []);
 
-  const tone = backdropModifier.includes("neutral") ? "neutral" : "au";
+  const tone = backdropModifier.includes("neutral")
+    ? "neutral"
+    : backdropModifier.includes("none")
+      ? "none"
+      : "au";
 
   return (
     <header
       ref={headerRef}
       className={`site-header site-header--backdrop ${backdropModifier} ${scrolled ? "is-scrolled" : ""} ${className}`.trim()}
     >
-      <div className={`site-header__media site-header__media--${tone}`} aria-hidden />
+      {tone !== "none" && (
+        <div className={`site-header__media site-header__media--${tone}`} aria-hidden />
+      )}
       <div className="site-header__chrome">{children}</div>
     </header>
   );
