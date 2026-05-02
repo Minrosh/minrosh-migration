@@ -237,11 +237,11 @@ export function HomeHeroPremium({ whatsappHref }) {
                   cta_location: "home_hero",
                   destination: "/assessment",
                 }}
-                aria-label="Check eligibility in two minutes"
+                aria-label="Start the pathway questionnaire"
                 className="home-hero-premium__cta inline-flex min-h-[52px] w-full items-center justify-center rounded-full border-2 border-white px-7 py-3.5 text-center text-base font-bold text-white shadow-[0_14px_36px_rgba(139,29,65,0.28)] outline-none ring-offset-2 ring-offset-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-[0_18px_44px_rgba(139,29,65,0.35)] focus-visible:ring-2 focus-visible:ring-[#8B1D41]/45 sm:w-auto sm:min-w-[280px] sm:px-10 sm:text-lg"
                 style={{ backgroundColor: plumMid }}
               >
-                Check Eligibility in 2 Minutes →
+                Start the pathway questionnaire →
               </TrackedLink>
 
               <p className="max-w-md text-sm font-medium leading-relaxed text-[#1F1020]/72 sm:text-[0.9375rem]">
@@ -260,7 +260,7 @@ export function HomeHeroPremium({ whatsappHref }) {
                   Chat on WhatsApp
                 </TrackedAnchor>
                 <br />
-                <span className="text-[#1F1020]/68">Fast response for urgent eligibility questions.</span>
+                <span className="text-[#1F1020]/68">Message us for scheduling or general pathway questions.</span>
               </p>
             </div>
           </div>

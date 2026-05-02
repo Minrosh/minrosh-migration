@@ -2,6 +2,7 @@
 
 Committed thumbnails:
 
+- `home-mobile-390-hero-section.png` — hero + header band at 390px width  
 - `home-mobile-390-tools-section.png` — planning tools band at 390px width  
 - `home-mobile-390-client-feedback-section.png` — client feedback band at 390px width  
 
