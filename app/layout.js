@@ -36,20 +36,25 @@ export const viewport = {
 export const metadata = {
   metadataBase: new URL("https://minroshmigration.com.au"),
   title: {
-    default: "Migration Agent Brisbane | Skilled, Partner & Student Visa Help | MinRosh Migration",
+    default:
+      "Migration Agent Brisbane | Australia, Canada, UK & New Zealand Visa Guidance | MinRosh Migration",
     template: "%s | MinRosh Migration",
   },
   description:
-    "Migration Agent in Australia for skilled migration, partner visas, student visas, and employer-sponsored pathways.",
+    "Brisbane-based migration and education consultants helping clients plan pathways to Australia, Canada, the UK and New Zealand — skilled, partner, student and employer-sponsored visas in plain English before you lodge.",
   keywords: [
     "MinRosh Migration",
     "Australian migration guidance",
     "Brisbane migration",
+    "Canada UK New Zealand visa guidance",
+    "student visa Australia",
+    "skilled migration Australia",
   ],
   openGraph: {
-    title: "MinRosh Migration",
+    title:
+      "Migration Agent Brisbane | Australia, Canada, UK & New Zealand Visa Guidance | MinRosh Migration",
     description:
-      "Migration Agent in Australia for skilled migration, student visas, partner visas, and employer-sponsored pathways.",
+      "Brisbane-based migration guidance for Australia, Canada, the UK and New Zealand — skilled, partner, student and employer-sponsored pathways explained clearly before you lodge.",
     url: "https://minroshmigration.com.au",
     siteName: "MinRosh Migration",
     locale: "en_AU",
@@ -65,9 +70,10 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Migration Agent Brisbane | MinRosh Migration",
+    title:
+      "Migration Agent Brisbane | Australia, Canada, UK & NZ Visa Guidance | MinRosh Migration",
     description:
-      "Expert visa help in Brisbane for skilled migration, partner visas, student visas, and employer-sponsored pathways.",
+      "Brisbane-based consultants helping students, skilled workers and families plan pathways to Australia, Canada, the UK and New Zealand.",
     images: ["/images/hero-sydney-real.v2.webp"],
   },
   robots: {

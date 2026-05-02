@@ -95,7 +95,21 @@ From the project root (or CI), verify that crawl endpoints respond:
 npm run reindex:verify
 ```
 
-Optional: point at staging.
+### Live roadmap smoke (tools routes + homepage bundle age)
+
+After deploying **latest `main`** (including PR #3 tool routes), confirm production matches the repo:
+
+```bash
+npm run verify:live-roadmap
+# or staging:
+SITE_URL=https://your-staging-host.example npm run verify:live-roadmap
+```
+
+Expect **HTTP 200** on `/tools/student-country-cost-planner` and `/tools/pr-pathway-explorer`, both segments present in `sitemap.xml`, and the homepage HTML **without** deprecated strings (`MinRosh Intelligence v3.4`, “The Island.”, fake “Live Activity” strip). Exit code **1** means production is still behind `main` or an older bundle is cached — resolve by redeploying (`bash scripts/update-server.sh` on the host per `scripts/deploy-ubuntu.sh` flow).
+
+**Human gate — mobile (Stage 1):** Spot-check priority URLs at **320–768px** (`/`, `/tools`, `/student-visa-australia`, `/skilled-migration`, `/assessment`) for readable hero, nav, and CTAs after deploy.
+
+Optional: point `reindex:verify` at staging.
 
 ```bash
 SITE_URL=https://your-staging-host.example npm run reindex:verify

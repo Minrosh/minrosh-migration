@@ -7,7 +7,7 @@ import { UltraMaximumLayout } from "../components/ultra-maximum-layout";
 import { HomeDeferredCarouselsLazy } from "../components/home-deferred-carousels-lazy";
 import { HomeDeferredMotionSectionsLazy } from "../components/home-deferred-motion-sections-lazy";
 import { PublicFileImg } from "../components/public-file-img";
-import { MotionReveal, MotionStagger, MotionItem } from "../components/ui/motion-wrapper";
+import { MotionReveal } from "../components/ui/motion-wrapper";
 import { TrackedAnchor, TrackedLink } from "../components/tracked-link";
 
 const HomeSmartNavigatorIsland = dynamic(
@@ -53,24 +53,28 @@ export default function HomePage() {
             <MotionReveal delay={0} y={10}>
               <div className="inline-flex items-center gap-3 rounded-full bg-white/60 px-5 py-2 text-[10px] sm:text-xs font-extrabold text-brand-rose shadow-xl backdrop-blur-xl mb-8 border border-white animate-float">
                 <span className="flex h-2 w-2 rounded-full bg-brand-rose shadow-[0_0_10px_#9b4a6c] animate-pulse" />
-                Registered migration agents · Brisbane
+                Brisbane-based · Pathways to Australia, Canada, the UK & NZ
               </div>
             </MotionReveal>
-            
+
             <MotionReveal delay={0.05} y={15}>
-              <h1 className="mx-auto max-w-4xl text-3xl font-black tracking-tight text-brand-plum sm:text-5xl md:text-6xl leading-[1.1]">
+              <h1 className="mx-auto max-w-4xl text-2xl font-black tracking-tight text-brand-plum sm:text-4xl md:text-[2.65rem] leading-[1.12]">
                 <span className="text-gradient-shine">
-                  Migration Agent Brisbane
+                  Clear migration and study pathway guidance from Brisbane to the world
                 </span>
-                <br />
-                <span className="text-brand-plum/90 font-display italic text-2xl sm:text-4xl md:text-5xl">Skilled, Partner and Student Visa Clarity.</span>
               </h1>
             </MotionReveal>
-            
+
+            <MotionReveal delay={0.08} y={12}>
+              <p className="mx-auto mt-5 max-w-3xl text-lg font-semibold text-brand-plum/75 sm:text-xl md:text-2xl leading-snug">
+                Plan your move to Australia, Canada, the UK or New Zealand with Brisbane-based migration guidance.
+              </p>
+            </MotionReveal>
+
             <MotionReveal delay={0.1}>
-              <p className="mx-auto mt-6 max-w-2xl text-base text-brand-plum/60 sm:text-lg md:text-xl leading-relaxed font-medium">
-                Clear visa sequencing from a Brisbane-based registered migration agent team. We map practical next
-                steps—documents, timing, and official checks—before you commit to lodgement.
+              <p className="mx-auto mt-5 max-w-3xl text-base text-brand-plum/60 sm:text-lg md:text-xl leading-relaxed font-medium">
+                Student visas, skilled migration, partner and family pathways, employer sponsorship and education
+                consultation — explained in plain English before you spend money.
               </p>
             </MotionReveal>
             
@@ -125,7 +129,7 @@ export default function HomePage() {
 
         <HomeVisaComparisonFlowchart />
 
-        {/* THE INTELLIGENT ISLAND */}
+        {/* Smart Navigator snapshot */}
         <section className="ultra-snap-section bg-white relative">
           <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10 py-8 md:py-16">
             <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">

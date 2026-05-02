@@ -174,6 +174,8 @@ if [[ "${SKIP_REINDEX_VERIFY:-}" == "1" ]]; then
 else
   echo "==> Crawl signal check (/, /sitemap.xml, /robots.txt). Override base: SITE_URL=https://… npm run reindex:verify"
   (cd "$ROOT" && npm run reindex:verify) || echo "WARNING: reindex:verify failed (network, DNS, or SITE_URL). See docs/SEARCH-CONSOLE-REINDEX.md"
+  echo "==> Live roadmap smoke (tool routes + sitemap segments + homepage bundle). Override: SITE_URL=https://… npm run verify:live-roadmap"
+  (cd "$ROOT" && npm run verify:live-roadmap) || echo "WARNING: verify:live-roadmap failed — prod may still be behind main or CDN stale HTML. See docs/SEARCH-CONSOLE-REINDEX.md"
 fi
 
 echo "==> Done. Keep SMTP_*, ADMIN_SESSION_SECRET, ADMIN_PASSWORD, etc. in $ROOT/.env — PM2 loads them from ecosystem.config.js."
