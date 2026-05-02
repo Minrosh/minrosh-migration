@@ -28,11 +28,38 @@ async function getStatus(path) {
     redirect: "follow",
     headers: { Accept: "text/html,application/xml;q=0.9,*/*;q=0.8" },
   });
-  return { url, status: res.status, ok: res.ok };
+  return { url, status: res.status, ok: res.ok, res };
+}
+
+/** Short snippet for debugging 5xx HTML bodies (Next.js error pages, nginx). */
+async function peekErrorBody(res, maxLen = 280) {
+  try {
+    const ct = res.headers.get("content-type") || "";
+    if (!/text\/(html|plain)|application\/json/i.test(ct)) return "";
+    const t = await res.clone().text();
+    const oneLine = t.replace(/\s+/g, " ").trim();
+    return oneLine.length > maxLen ? `${oneLine.slice(0, maxLen)}…` : oneLine;
+  } catch {
+    return "";
+  }
+}
+
+function hintForHttpStatus(status) {
+  if (status >= 500) {
+    return "Runtime/upstream failure (app threw or proxy error). On the host: `pm2 logs` for the Next process, `nginx -t` + error.log, disk space, and `.env` required vars — not the same as “routes missing”.";
+  }
+  if (status === 404) {
+    return "Not found — production build may still be behind `main`, or the path is wrong.";
+  }
+  if (status >= 400) {
+    return "Client/forbidden issue — check auth headers, WAF, or maintenance mode.";
+  }
+  return "";
 }
 
 async function main() {
   let failed = false;
+  let saw5xx = false;
 
   console.log(`Live roadmap verify → ${base}\n`);
 
@@ -40,7 +67,11 @@ async function main() {
     try {
       const r = await getStatus(p);
       if (!r.ok) {
+        if (r.status >= 500) saw5xx = true;
+        const peek = r.status >= 500 ? await peekErrorBody(r.res) : "";
         console.error(`FAIL ${r.url} → HTTP ${r.status} (expected 200)`);
+        if (peek) console.error(`     body: ${peek}`);
+        console.error(`     ${hintForHttpStatus(r.status)}`);
         failed = true;
       } else {
         console.log(`OK   ${r.url} → HTTP ${r.status}`);
@@ -55,7 +86,11 @@ async function main() {
     const smUrl = `${base}/sitemap.xml`;
     const smRes = await fetch(smUrl, { redirect: "follow" });
     if (!smRes.ok) {
+      if (smRes.status >= 500) saw5xx = true;
+      const peek = smRes.status >= 500 ? await peekErrorBody(smRes) : "";
       console.error(`FAIL ${smUrl} → HTTP ${smRes.status}`);
+      if (peek) console.error(`     body: ${peek}`);
+      console.error(`     ${hintForHttpStatus(smRes.status)}`);
       failed = true;
     } else {
       const text = await smRes.text();
@@ -77,7 +112,11 @@ async function main() {
     const homeUrl = `${base}/`;
     const homeRes = await fetch(homeUrl, { redirect: "follow" });
     if (!homeRes.ok) {
+      if (homeRes.status >= 500) saw5xx = true;
+      const peek = homeRes.status >= 500 ? await peekErrorBody(homeRes) : "";
       console.error(`FAIL ${homeUrl} → HTTP ${homeRes.status}`);
+      if (peek) console.error(`     body: ${peek}`);
+      console.error(`     ${hintForHttpStatus(homeRes.status)}`);
       failed = true;
     } else {
       const html = await homeRes.text();
@@ -99,10 +138,16 @@ async function main() {
   }
 
   if (failed) {
-    console.error(
-      "\nLive roadmap verify: production is not aligned with current main (deploy gap), or homepage copy not yet shipped.",
-    );
-    console.error("Server deploy (example): cd ~/minrosh-migration && bash scripts/update-server.sh\n");
+    if (saw5xx) {
+      console.error(
+        "\nLive roadmap verify: production returned 5xx — fix the running app/proxy first (logs above), then re-run.",
+      );
+    } else {
+      console.error(
+        "\nLive roadmap verify: production is not aligned with current main (deploy gap), or homepage copy not yet shipped.",
+      );
+      console.error("After fixing: cd ~/minrosh-migration && bash scripts/update-server.sh\n");
+    }
     process.exit(1);
   }
 
