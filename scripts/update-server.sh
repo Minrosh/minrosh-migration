@@ -44,6 +44,10 @@ set_env_value() {
 
 reload_runtime_for_env() {
   pm2 delete minrosh-next || true
+  if [[ ! -f "$ROOT/.next/standalone/server.js" ]]; then
+    echo "WARN: $ROOT/.next/standalone/server.js missing — skip PM2 start until deploy builds standalone."
+    return 0
+  fi
   pm2 start ecosystem.config.js
   pm2 save
 }

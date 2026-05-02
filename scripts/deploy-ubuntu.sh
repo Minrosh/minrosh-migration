@@ -30,6 +30,11 @@ reload_runtime_for_env() {
   # PM2 restart --update-env can reuse persisted env and miss fresh .env merges from ecosystem.config.js.
   # Always rebuild the process from ecosystem so MAINTENANCE_MODE changes are guaranteed.
   pm2 delete minrosh-next || true
+  if [[ ! -f "$ROOT/.next/standalone/server.js" ]]; then
+    echo "WARN: $ROOT/.next/standalone/server.js missing — skip PM2 start (normal before first build or during rm -rf .next)."
+    echo "    Deploy continues with npm ci && npm run build; PM2 starts once standalone exists."
+    return 0
+  fi
   pm2 start ecosystem.config.js
   pm2 save
 }
