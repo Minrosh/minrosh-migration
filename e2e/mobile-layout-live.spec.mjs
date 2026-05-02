@@ -21,6 +21,14 @@ const PATHS = [
   "/contact",
 ];
 
+async function waitForPublicMain(page) {
+  await page.locator("#main-content").waitFor({ state: "attached", timeout: 45_000 });
+  const overlay = page.locator("main.loading-screen").first();
+  if ((await overlay.count()) > 0) {
+    await overlay.waitFor({ state: "hidden", timeout: 45_000 });
+  }
+}
+
 (LIVE ? test.describe : test.describe.skip)("mobile layout — production (set PLAYWRIGHT_LIVE_URL)", () => {
   for (const width of WIDTHS) {
     test.describe(`${width}px`, () => {
@@ -32,6 +40,7 @@ const PATHS = [
             timeout: 90_000,
           });
           expect(res?.ok(), `HTTP ${res?.status()} for ${path}`).toBeTruthy();
+          await waitForPublicMain(page);
 
           const overflow = await page.evaluate(() => {
             const root = document.documentElement;
@@ -39,10 +48,10 @@ const PATHS = [
             const cw = root.clientWidth;
             const docGap = Math.max(0, root.scrollWidth - cw);
             const bodyGap = body ? Math.max(0, body.scrollWidth - cw) : 0;
-            const main = document.querySelector("main");
+            const portalMain = document.querySelector("#main-content");
             let mainW = 0;
-            if (main) {
-              mainW = main.getBoundingClientRect().width;
+            if (portalMain) {
+              mainW = portalMain.getBoundingClientRect().width;
             }
             return { docGap, bodyGap, cw, mainW };
           });
@@ -58,13 +67,13 @@ const PATHS = [
           if (overflow.mainW > 0) {
             expect(
               overflow.mainW,
-              `<main> wider than viewport (${overflow.mainW} vs ${overflow.cw}) @ ${width}px ${path}`,
+              `#main-content wider than viewport (${overflow.mainW} vs ${overflow.cw}) @ ${width}px ${path}`,
             ).toBeLessThanOrEqual(overflow.cw + 2);
           }
 
           const headerBlocksMain = await page.evaluate(() => {
             const header = document.querySelector("header.site-header");
-            const main = document.querySelector("main");
+            const main = document.querySelector("#main-content");
             if (!header || !main) return { ok: true, reason: "missing-header-or-main" };
             const hr = header.getBoundingClientRect();
             /** First in-flow block inside main (skip visually hidden sr-only). */
@@ -91,7 +100,7 @@ const PATHS = [
             `sticky header may be covering first main section (${JSON.stringify(headerBlocksMain)}) @ ${width}px ${path}`,
           ).toBeTruthy();
 
-          await expect(page.locator("main")).toBeVisible();
+          await expect(page.locator("#main-content")).toBeVisible();
         });
       }
     });
