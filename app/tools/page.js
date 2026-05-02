@@ -39,13 +39,7 @@ const toolCards = [
   {
     href: "/assessment",
     title: "Free assessment",
-    body: "Structured pathway intake before a consultation — clarify goals, timing, and the strongest next step.",
-    cta: "Start assessment",
-  },
-  {
-    href: "/assessment",
-    title: "Pathway assessment",
-    body: "Structured intake before a consultation — clarify goals and next steps (always verify skilled criteria on Home Affairs).",
+    body: "Structured pathway intake before a consultation — clarify goals, timing, and the strongest next step (always verify skilled criteria on Home Affairs).",
     cta: "Start assessment",
   },
   {

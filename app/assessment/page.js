@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { BreadcrumbsNav } from "../../components/breadcrumbs-nav";
 import { PublicFileImg } from "../../components/public-file-img";
 import siteData from "../../data/site.json";
@@ -173,7 +172,38 @@ export default function AssessmentPage() {
                   readiness and urgency.
                 </p>
                 <ul className="feature-list">
-                  <li>Continue with points wizard for a more detailed profile signal</li>
+                  <li>
+                    Open the{" "}
+                    <TrackedLink
+                      href="/skilled-migration-australia-points-guide"
+                      eventName="cta_click"
+                      eventParams={{
+                        cta_id: "assessment_pathways_points_guide",
+                        cta_location: "assessment_accordion_pathways",
+                        destination: "/skilled-migration-australia-points-guide",
+                      }}
+                      className="font-semibold text-brand-rose underline decoration-brand-rose/40 underline-offset-4"
+                    >
+                      skilled migration points guide
+                    </TrackedLink>{" "}
+                    for a structured self-check
+                  </li>
+                  <li>
+                    Explore the{" "}
+                    <TrackedLink
+                      href="/tools/pr-pathway-explorer"
+                      eventName="cta_click"
+                      eventParams={{
+                        cta_id: "assessment_pathways_pr_explorer",
+                        cta_location: "assessment_accordion_pathways",
+                        destination: "/tools/pr-pathway-explorer",
+                      }}
+                      className="font-semibold text-brand-rose underline decoration-brand-rose/40 underline-offset-4"
+                    >
+                      PR pathway explorer
+                    </TrackedLink>{" "}
+                    for illustrative sequencing (orientation only)
+                  </li>
                   <li>Book consultation when timeline is tight or case complexity is high</li>
                   <li>Use contact form to receive focused follow-up for your scenario</li>
                 </ul>
@@ -213,8 +243,39 @@ export default function AssessmentPage() {
             <section className="content-section bento-hover mt-5" aria-label="What to do next">
               <h2>What to do next</h2>
               <ul className="feature-list">
-                <li>Use the points wizard if you want an immediate structured self-check</li>
-                <li>Open Smart Navigator for advisory pathway direction and preparation cues</li>
+                <li>
+                  Use the{" "}
+                  <TrackedLink
+                    href="/skilled-migration-australia-points-guide"
+                    eventName="cta_click"
+                    eventParams={{
+                      cta_id: "assessment_next_points_guide",
+                      cta_location: "assessment_what_next",
+                      destination: "/skilled-migration-australia-points-guide",
+                    }}
+                    className="font-semibold text-brand-rose underline decoration-brand-rose/40 underline-offset-4"
+                  >
+                    points guide
+                  </TrackedLink>{" "}
+                  for an immediate structured self-check
+                </li>
+                <li>
+                  Open the{" "}
+                  <TrackedLink
+                    href="/tools/pr-pathway-explorer"
+                    eventName="cta_click"
+                    eventParams={{
+                      cta_id: "assessment_next_pr_explorer",
+                      cta_location: "assessment_what_next",
+                      destination: "/tools/pr-pathway-explorer",
+                    }}
+                    className="font-semibold text-brand-rose underline decoration-brand-rose/40 underline-offset-4"
+                  >
+                    PR pathway explorer
+                  </TrackedLink>{" "}
+                  for orientation on common sequencing discussions
+                </li>
+                <li>Open Smart Navigator above for advisory pathway direction and preparation cues</li>
                 <li>Book consultation when your case is time-sensitive or complex</li>
               </ul>
             </section>
