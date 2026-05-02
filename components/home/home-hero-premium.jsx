@@ -1,8 +1,8 @@
 import { PublicFileImg } from "../public-file-img";
 import { TrackedAnchor, TrackedLink } from "../tracked-link";
 
-const plumDark = "#1F1020"; // Almost black for text
-const plumMid = "#8B1D41";  // Deep magenta/red for highlights and buttons
+const plumDark = "#1F1020"; // Near-black headings/body (mock)
+const plumMid = "#881337"; // Maroon accents, CTAs, active nav (1920 mock)
 const charcoal = "#1F1020";
 const iconSoft = "#F5EAF0"; // Soft pinkish white for icon circles
 
@@ -154,7 +154,7 @@ export function HomeHeroPremium({ whatsappHref }) {
           <PublicFileImg
             src="/images/hero-brisbane-river-cbd.jpg"
             alt="Brisbane River and CBD skyline at sunset with CityCat ferry"
-            className="absolute inset-0 h-full w-full object-cover object-[30%_center] sm:object-[32%_center] lg:object-[35%_52%]"
+            className="absolute inset-0 h-full w-full object-cover object-[32%_center] sm:object-[34%_center] lg:object-[42%_52%]"
             width={1024}
             height={682}
             priority
@@ -162,10 +162,13 @@ export function HomeHeroPremium({ whatsappHref }) {
             sizes="100vw"
           />
           <div
-            className="absolute inset-0 bg-gradient-to-r from-white via-white/95 to-transparent sm:via-white/90 lg:from-white lg:from-[45%] lg:via-white/60 lg:to-transparent"
+            className="absolute inset-0 bg-gradient-to-r from-white via-white/94 to-white/25 sm:via-white/88 lg:from-white lg:from-[38%] lg:via-white/42 lg:to-transparent"
             aria-hidden
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-white/25 via-transparent to-white/15 lg:from-white/10" aria-hidden />
+          <div
+            className="absolute inset-0 bg-gradient-to-t from-white/28 via-transparent to-white/12 lg:from-white/14"
+            aria-hidden
+          />
         </div>
 
         <div className="home-hero-premium__content-column relative z-[1] mx-auto flex w-full max-w-7xl min-w-0 flex-col items-stretch px-4 pb-12 pt-8 sm:px-6 sm:pb-14 sm:pt-12 lg:flex-1 lg:min-h-0 lg:justify-center lg:overflow-y-auto lg:px-6 lg:pb-8 lg:pt-8">
@@ -195,8 +198,8 @@ export function HomeHeroPremium({ whatsappHref }) {
             </h1>
 
             <div
-              className="home-hero-premium__accent-line mt-5 h-1.5 w-14 rounded-full sm:mt-6 sm:w-16 lg:mt-4"
-              style={{ backgroundColor: plumDark }}
+              className="home-hero-premium__accent-line mt-5 h-1.5 w-14 rounded-full sm:mt-6 sm:w-16 lg:mt-4 lg:h-2 lg:w-[4.25rem]"
+              style={{ backgroundColor: plumMid }}
               aria-hidden
             />
 
@@ -209,7 +212,7 @@ export function HomeHeroPremium({ whatsappHref }) {
                       className="flex h-[52px] w-[52px] shrink-0 items-center justify-center rounded-full shadow-inner"
                       style={{ backgroundColor: iconSoft }}
                     >
-                      <FeatureIcon stroke={plumDark} />
+                      <FeatureIcon stroke={plumMid} />
                     </div>
                     <div className="min-w-0 pt-0.5">
                       <p className="text-base font-bold leading-tight" style={{ color: plumDark }}>
@@ -263,7 +266,7 @@ export function HomeHeroPremium({ whatsappHref }) {
           </div>
 
           <div className="relative z-[2] mx-auto mt-0 w-full max-w-[min(82rem,92vw)] px-1 sm:px-2">
-            <div className="home-hero-premium__trust-shell -mt-8 rounded-[1.75rem] border border-white/90 bg-[rgba(255,255,255,0.94)] px-5 py-6 shadow-[0_14px_44px_rgba(58,28,44,0.12)] backdrop-blur-lg sm:-mt-10 sm:px-8 sm:py-7 lg:-mt-11 lg:rounded-full lg:px-8 lg:py-5">
+            <div className="home-hero-premium__trust-shell -mt-8 rounded-[1.75rem] border border-zinc-200/80 bg-white px-5 py-6 shadow-[0_16px_48px_rgba(31,16,32,0.1)] backdrop-blur-sm sm:-mt-10 sm:px-8 sm:py-7 lg:-mt-11 lg:px-10 lg:py-6 xl:px-12">
               <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-x-8 sm:gap-y-9 lg:grid-cols-4 lg:gap-x-0 lg:gap-y-0">
                 {TRUST_PILLARS.map((pillar, index) => {
                   const PillarIcon = pillar.Icon;
@@ -281,7 +284,7 @@ export function HomeHeroPremium({ whatsappHref }) {
                       style={{ backgroundColor: iconSoft }}
                       aria-hidden
                     >
-                      <PillarIcon className="h-5 w-5 sm:h-[22px] sm:w-[22px]" stroke={plumDark} />
+                      <PillarIcon className="h-5 w-5 sm:h-[22px] sm:w-[22px]" stroke={plumMid} />
                     </div>
                     <div className="min-w-0">
                       <p className="text-base font-bold leading-tight" style={{ color: plumDark }}>
