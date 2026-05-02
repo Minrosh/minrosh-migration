@@ -1,5 +1,3 @@
-"use client";
-
 import siteData from "../data/site.json";
 import newsData from "../data/news.json";
 import "./home.css";

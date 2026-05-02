@@ -4,7 +4,7 @@ import { PublicFileImg } from "../public-file-img";
 import { TrackedAnchor, TrackedLink } from "../tracked-link";
 
 const plumDark = "#1F1020"; // Near-black headings/body (mock)
-const plumMid = "#881337"; // Maroon accents, CTAs, active nav (1920 mock)
+const plumMid = "#8B1D41"; // Vibrant burgundy from the design
 const charcoal = "#1F1020";
 const iconSoft = "#F5EAF0"; // Soft pinkish white for icon circles
 
@@ -155,10 +155,10 @@ export function HomeHeroPremium({ whatsappHref }) {
         <div className="pointer-events-none absolute inset-0 z-0">
           <PublicFileImg
             src="/images/hero-brisbane-river-cbd.jpg"
-            alt="Brisbane River and CBD skyline at sunset with CityCat ferry"
-            className="absolute inset-0 h-full w-full object-cover object-[32%_center] sm:object-[34%_center] lg:object-[42%_52%]"
-            width={1024}
-            height={682}
+            alt="Brisbane River and CBD skyline"
+            className="absolute inset-0 h-full w-full object-cover object-[center_35%] lg:scale-[1.15]"
+            width={1920}
+            height={1080}
             priority
             fetchPriority="high"
             sizes="100vw"
@@ -173,9 +173,12 @@ export function HomeHeroPremium({ whatsappHref }) {
           />
         </div>
 
-        <div className="home-hero-premium__content-column relative z-[1] mx-auto flex w-full max-w-7xl min-w-0 flex-col items-stretch px-4 pb-12 pt-8 sm:px-6 sm:pb-14 sm:pt-12 lg:flex-1 lg:min-h-0 lg:justify-center lg:overflow-y-auto lg:px-6 lg:pb-8 lg:pt-8">
-          <div className="home-hero-premium__glass-inner px-6 py-10 sm:px-10 sm:py-12 lg:px-0 lg:py-10">
-            <p className="home-hero-premium__badge mb-7 inline-flex max-w-full flex-wrap items-center gap-2 rounded-full border border-[rgba(58,28,44,0.08)] bg-white px-3.5 py-2.5 text-sm font-semibold shadow-[0_8px_28px_rgba(58,28,44,0.08)] sm:mb-8 sm:px-4 sm:py-3 sm:text-[0.9375rem] lg:mb-5">
+        <div className="home-hero-premium__content-column relative z-[1] mx-auto flex w-full max-w-7xl min-w-0 flex-col items-stretch px-4 pb-12 pt-8 sm:px-6 sm:pb-14 sm:pt-12 lg:flex-1 lg:min-h-0 lg:justify-center lg:px-6 lg:pb-8 lg:pt-8">
+          <div className="home-hero-premium__glass-inner relative overflow-hidden rounded-[2.5rem] bg-white/55 px-6 py-10 shadow-[0_32px_64px_rgba(0,0,0,0.06)] backdrop-blur-2xl sm:px-10 sm:py-12 lg:max-w-4xl lg:px-12 lg:py-14">
+            {/* Soft inner glow for better readability on busy images */}
+            <div className="absolute inset-0 bg-gradient-to-br from-white/50 via-white/10 to-transparent pointer-events-none" aria-hidden />
+            
+            <p className="home-hero-premium__badge relative z-10 mb-7 inline-flex max-w-full flex-wrap items-center gap-2 rounded-full border border-white/40 bg-white/80 px-3.5 py-2.5 text-sm font-semibold shadow-sm sm:mb-8 sm:px-4 sm:py-3 sm:text-[0.9375rem] lg:mb-5">
               <span className="flex shrink-0 items-center justify-center rounded-full p-1.5" style={{ backgroundColor: iconSoft }} aria-hidden>
                 <IconLocationPin className="h-[18px] w-[18px]" stroke={plumMid} />
               </span>
@@ -189,7 +192,7 @@ export function HomeHeroPremium({ whatsappHref }) {
 
             <h1
               id="home-hero-heading"
-              className="home-hero-premium__heading max-w-4xl text-balance font-bold leading-[1.12] tracking-[-0.02em] text-[clamp(1.65rem,4vw,2.85rem)] lg:max-w-5xl"
+              className="home-hero-premium__heading relative z-10 max-w-4xl text-balance font-bold leading-[1.12] tracking-[-0.02em] text-[clamp(1.65rem,4vw,2.85rem)] lg:max-w-5xl"
               style={{ color: plumDark }}
             >
               Clear migration and study{" "}
