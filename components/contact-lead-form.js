@@ -13,11 +13,10 @@ import { validateConsultationSlot } from "@/lib/consultation-slot-policy";
 import { trackEvent } from "@/lib/client-analytics";
 import { retryAfterHint } from "@/lib/http/retry-after";
 import { REQUEST_ID_HEADER } from "@/lib/observability/request-id";
+import { isHcaptchaPublicEnabled } from "@/lib/config";
 import { HCaptchaField } from "./hcaptcha-field";
 
-const CAPTCHA_ENABLED =
-  String(process.env.NEXT_PUBLIC_ENABLE_HCAPTCHA || "").toLowerCase() === "true" &&
-  Boolean(String(process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY || "").trim());
+const CAPTCHA_ENABLED = isHcaptchaPublicEnabled();
 
 const MAX_RESUME_BYTES = 15 * 1024 * 1024;
 

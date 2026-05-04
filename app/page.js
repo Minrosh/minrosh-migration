@@ -26,19 +26,21 @@ export default function HomePage() {
           <div className="blur-orb bg-brand-gold/20 bottom-[-10%] right-[-10%]" />
         </div>
 
-        <HomeHeroPremium whatsappHref={homeHeroWhatsAppHref} />
+        <div className="relative z-10">
+          <HomeHeroPremium whatsappHref={homeHeroWhatsAppHref} />
 
-        <HomeBuyerJourneyStrip />
+          <HomeBuyerJourneyStrip />
 
-        <HomeDestinationCards countries={siteData.countries} />
+          <HomeDestinationCards countries={siteData.countries} />
 
-        <HomeServicesPathways />
+          <HomeServicesPathways />
 
-        <HomePlanningTools />
+          <HomePlanningTools />
 
-        <HomeDeferredCarouselsLazy newsItems={newsData} />
+          <HomeDeferredCarouselsLazy newsItems={newsData} />
 
-        <HomeFinalCta />
+          <HomeFinalCta />
+        </div>
       </UltraMaximumLayout>
     </SiteShell>
   );

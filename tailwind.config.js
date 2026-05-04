@@ -2,7 +2,7 @@
 module.exports = {
   darkMode: ["class"],
   corePlugins: {
-    preflight: false,
+    preflight: true,
   },
   content: [
     "./app/**/*.{js,jsx,ts,tsx}",

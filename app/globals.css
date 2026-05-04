@@ -1,3 +1,4 @@
+@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
@@ -158,13 +159,12 @@ textarea {
 }
 
 a {
-  color: inherit;
   text-underline-offset: 0.18em;
-  /* Tailwind preflight is off — browsers default to underlined <a>; reset globally and opt in below. */
+  /* Default: no underline; opt into underlines in long-form copy below. */
   text-decoration: none;
 }
 
-/* Running copy / notices: underline anchors so links stay recognizable without preflight. */
+/* Running copy / notices: underline anchors so links stay recognizable. */
 :is(
   .content-accordion__body,
   .faq-card__body,
@@ -204,13 +204,9 @@ a {
   overflow-x: clip;
 }
 
-/*
- * Homepage hero primary CTA: global `a { color: inherit }` (below @tailwind utilities) otherwise wins over
- * Tailwind `text-white` on Next <Link>, producing a “blank” white pill. Lock colors here.
- */
+/* Homepage hero primary CTA: gradient shell; text colour comes from Tailwind utilities on the link. */
 .home-hero-primary-cta,
 .home-hero-primary-cta:visited {
-  color: #fff !important;
   background-color: #9b4a6c;
   background-image: linear-gradient(to bottom, #9b4a6c, #7d3857);
   box-shadow: 0 10px 28px rgba(155, 74, 108, 0.28);
@@ -218,7 +214,6 @@ a {
 
 .home-hero-primary-cta:hover,
 .home-hero-primary-cta:focus-visible {
-  color: #fff !important;
   background-image: linear-gradient(to bottom, #7d3857, #3d2432);
 }
 
@@ -4398,6 +4393,12 @@ a.brand:hover .brand__mark {
   grid-template-columns: 1.1fr 1fr 0.8fr;
   gap: 20px;
   align-items: flex-start;
+}
+
+@media (min-width: 721px) and (max-width: 1024px) {
+  .site-footer__inner {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 @media (min-width: 1800px) {

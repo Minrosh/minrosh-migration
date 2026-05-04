@@ -2,7 +2,8 @@ import { Inter, Playfair_Display } from "next/font/google";
 import { headers } from "next/headers";
 import "./globals.css";
 import siteDataStatic from "../data/site.json";
-import { getHomeSiteData } from "../lib/home-site-data";
+import { warnHcaptchaEnvIfMisconfigured } from "../lib/config";
+import { getHomeSiteData, getSiteDataForClientWidgets } from "../lib/home-site-data";
 import { StructuredData } from "../components/structured-data";
 import { GlobalClientWidgets } from "../components/global-client-widgets";
 import { GoogleAnalytics } from "../components/google-analytics";
@@ -12,6 +13,7 @@ import { PWARegister } from "../components/pwa-register";
 import { RuntimeChunkRecovery } from "../components/runtime-chunk-recovery";
 
 const siteData = getHomeSiteData(siteDataStatic);
+warnHcaptchaEnvIfMisconfigured();
 
 const inter = Inter({
   subsets: ["latin"],
@@ -22,7 +24,7 @@ const inter = Inter({
 const playfair = Playfair_Display({
   subsets: ["latin"],
   variable: "--font-display",
-  preload: false,
+  preload: true,
   display: "swap",
 });
 
@@ -93,13 +95,7 @@ export const metadata = {
 export default async function RootLayout({ children }) {
   const h = await headers();
   const nonce = String(h.get("x-csp-nonce") || "").trim();
-  const publicSiteData = {
-    ...siteData,
-    brand: {
-      ...siteData.brand,
-      email: "",
-    },
-  };
+  const publicSiteData = getSiteDataForClientWidgets(siteData);
 
   return (
     <html lang="en-AU">

@@ -73,7 +73,7 @@ export function HomeHeroBento({ siteData, trustNote }) {
             <div className="sticky bottom-3 z-10 mt-6 flex flex-col gap-3 rounded-2xl bg-white/95 p-3 shadow-lg shadow-brand-plum/10 backdrop-blur sm:static sm:mt-8 sm:bg-transparent sm:p-0 sm:shadow-none sm:backdrop-blur-0">
               <Link
                 href="/#quiz"
-                className="home-hero-primary-cta inline-flex min-h-[52px] w-full items-center justify-center rounded-xl px-8 py-4 text-center text-base font-bold no-underline outline-none ring-offset-2 ring-offset-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-lg hover:no-underline focus-visible:ring-2 focus-visible:ring-brand-rose/60 focus-visible:ring-offset-2 sm:w-auto sm:min-w-[240px]"
+                className="home-hero-primary-cta inline-flex min-h-[52px] w-full items-center justify-center rounded-xl px-8 py-4 text-center text-base font-bold text-white visited:text-white hover:text-white focus-visible:text-white no-underline outline-none ring-offset-2 ring-offset-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-lg hover:no-underline focus-visible:ring-2 focus-visible:ring-brand-rose/60 focus-visible:ring-offset-2 sm:w-auto sm:min-w-[240px]"
               >
                 {siteData.hero.primaryCta}
               </Link>

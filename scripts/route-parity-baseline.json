@@ -84,6 +84,7 @@
     "/api/portal/invoices",
     "/api/portal/payment-method",
     "/api/portal/profile",
+    "/api/quiz-results",
     "/api/reviews",
     "/api/social/graph-image",
     "/api/stats",

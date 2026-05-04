@@ -10,11 +10,10 @@ import {
 import { retryAfterHint } from "@/lib/http/retry-after";
 import { REQUEST_ID_HEADER } from "@/lib/observability/request-id";
 import trustSignalsData from "../data/quick-enquiry-signals.json";
+import { isHcaptchaPublicEnabled } from "@/lib/config";
 import { HCaptchaField } from "./hcaptcha-field";
 
-const CAPTCHA_ENABLED =
-  String(process.env.NEXT_PUBLIC_ENABLE_HCAPTCHA || "").toLowerCase() === "true" &&
-  Boolean(String(process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY || "").trim());
+const CAPTCHA_ENABLED = isHcaptchaPublicEnabled();
 
 const initial = {
   firstName: "",

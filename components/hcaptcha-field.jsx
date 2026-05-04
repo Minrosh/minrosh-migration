@@ -2,9 +2,10 @@
 
 import Script from "next/script";
 import { useEffect, useRef, useState } from "react";
+import { getHcaptchaSiteKeyPublic, isHcaptchaPublicEnabled } from "@/lib/config";
 
-const SITE_KEY = String(process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY || "").trim();
-const ENABLED = String(process.env.NEXT_PUBLIC_ENABLE_HCAPTCHA || "").toLowerCase() === "true" && Boolean(SITE_KEY);
+const SITE_KEY = getHcaptchaSiteKeyPublic();
+const ENABLED = isHcaptchaPublicEnabled();
 
 export function HCaptchaField({ value = "", onTokenChange, error = "" }) {
   const containerRef = useRef(null);

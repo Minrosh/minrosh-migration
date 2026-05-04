@@ -1,7 +1,6 @@
 "use client";
 
-import { useLayoutEffect, useState } from "react";
-import { ContactChatPanel } from "./home/contact-chat-panel";
+import { useEffect, useState } from "react";
 import { FuturePacingLab } from "./home/future-pacing-lab";
 import { QuizWizardPanel } from "./home/quiz-wizard-panel";
 import { QuizResultSkeleton } from "./home/quiz-result-skeleton";
@@ -28,7 +27,7 @@ export function HomePageContent({ siteData, homeTab }) {
   const [activeTab, setActiveTab] = useState("home");
   const [selectedPathwayIndex, setSelectedPathwayIndex] = useState(0);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     function sync() {
       const h = typeof window !== "undefined" ? window.location.hash : "";
       const tab = tabFromHash(h);
