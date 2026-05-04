@@ -92,6 +92,7 @@
   max-width: 100%;
   min-width: 0;
   overflow-x: clip;
+  overflow-y: visible;
   padding-bottom: 0.25rem;
 }
 
@@ -185,67 +186,144 @@
   }
 }
 
-/* Premium hero: bottom-anchored row, clear visual lane between columns for Brisbane skyline. */
+/* Premium hero: 85vh min height; viewport-wide left fog (white → clear) + bottom glass stats bar. */
 .portal-shell--premium-home .home-hero-premium-section.home-hero-premium-section--viewport-fit {
   min-height: 85vh;
 }
 
-.portal-shell--premium-home .home-hero-premium__row {
+/* Full-bleed fog from viewport left; copy stays in --content-max lane above (z-index). */
+.portal-shell--premium-home .home-hero-premium__fog-layer {
+  left: 50%;
+  width: 100vw;
+  max-width: none;
+  transform: translateX(-50%);
+}
+
+.portal-shell--premium-home .home-hero-premium__fog-gradient {
+  height: 100%;
+  width: 100%;
+  /* Solid white at the viewport left edge → transparent toward river / boat (image center). */
+  background: linear-gradient(
+    to right,
+    #ffffff 0%,
+    rgba(255, 255, 255, 0.88) 18%,
+    rgba(255, 255, 255, 0.35) 42%,
+    rgba(255, 255, 255, 0) 62%
+  );
+  /* Mask clips composited output so blur fades with the wash (no hard card edge). */
+  -webkit-mask-image: linear-gradient(
+    to right,
+    #000 0%,
+    #000 12%,
+    rgba(0, 0, 0, 0.92) 28%,
+    rgba(0, 0, 0, 0.45) 44%,
+    transparent 62%
+  );
+  mask-image: linear-gradient(
+    to right,
+    #000 0%,
+    #000 12%,
+    rgba(0, 0, 0, 0.92) 28%,
+    rgba(0, 0, 0, 0.45) 44%,
+    transparent 62%
+  );
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.portal-shell--premium-home .home-hero-premium__lane {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  align-items: stretch;
+  min-height: 0;
+}
+
+.portal-shell--premium-home .home-hero-premium__upper {
+  align-items: flex-start;
   width: 100%;
   min-width: 0;
-  gap: 1.25rem;
+}
+
+.portal-shell--premium-home .home-hero-premium__glass-wrap {
+  width: 100%;
+  max-width: min(100%, 30rem);
 }
 
 @media (min-width: 1024px) {
-  .portal-shell--premium-home .home-hero-premium__row {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-end;
-    gap: clamp(1rem, 4vw, 3rem);
-  }
-
   .portal-shell--premium-home .home-hero-premium__glass-wrap {
-    flex: 0 1 auto;
-    max-width: 42rem;
-    width: min(100%, 42rem);
-  }
-
-  .portal-shell--premium-home .home-hero-premium__side-panel {
-    flex: 0 1 auto;
-    max-width: min(38%, 26rem);
-    width: min(100%, min(36vw, 26rem));
+    max-width: min(100%, 52rem);
   }
 }
 
 .portal-shell--premium-home .home-hero-premium__content-card.hero__content {
   background: transparent;
-  border-color: rgba(139, 61, 106, 0.1);
-  box-shadow: 0 18px 48px rgba(31, 16, 32, 0.08);
+  border: none;
+  box-shadow: none;
 }
 
 .portal-shell--premium-home .home-hero-premium__glass-inner.hero__glass {
-  background-color: rgba(255, 255, 255, 0.75);
-  background-image: none;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  /* Override globals.css .hero__glass (gradient, radius, inset shadow). Fog layer carries wash + blur. */
+  background: transparent none;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
-.portal-shell--premium-home .home-hero-premium__trust-shell.home-hero-premium__side-panel {
-  background-color: rgba(255, 255, 255, 0.75);
+.portal-shell--premium-home .home-hero-premium__bottom-bar {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  transform: none;
+  width: calc(100% - 3rem);
+  margin-inline: auto;
+  border-radius: 1rem;
+  background-color: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.52);
+  box-shadow: 0 -12px 40px rgba(31, 16, 32, 0.06);
+  padding: 0.8rem 0.55rem 0.9rem;
+}
+
+@media (min-width: 640px) {
+  .portal-shell--premium-home .home-hero-premium__bottom-bar {
+    width: calc(100% - 5rem);
+    border-radius: 1.25rem;
+    padding: 0.95rem 0.7rem 1.05rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .portal-shell--premium-home .home-hero-premium__bottom-bar {
+    /* Shorten desktop bar so its right edge sits near Ask MinRosh left edge. */
+    width: calc(100% - 18rem);
+  }
 }
 
 @media (max-width: 720px) {
-  .portal-shell--premium-home .home-hero-premium__glass-inner.hero__glass,
-  .portal-shell--premium-home .home-hero-premium__trust-shell.home-hero-premium__side-panel {
+  .portal-shell--premium-home .home-hero-premium__fog-gradient {
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
-    background-color: rgba(255, 253, 251, 0.96);
+    /* Slightly stronger flat wash when backdrop blur is disabled. */
+    background: linear-gradient(
+      to right,
+      rgba(255, 255, 255, 0.97) 0%,
+      rgba(255, 255, 255, 0.72) 35%,
+      rgba(255, 255, 255, 0) 68%
+    );
+  }
+
+  .portal-shell--premium-home .home-hero-premium__bottom-bar {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background-color: rgba(255, 253, 251, 0.94);
   }
 }
 
@@ -275,7 +353,8 @@
     min-height: max(85vh, var(--premium-hero-viewport));
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    overflow-x: clip;
+    overflow-y: visible;
     padding-bottom: 0;
     box-sizing: border-box;
   }
@@ -290,8 +369,7 @@
   .portal-shell--premium-home .home-hero-premium-section--viewport-fit .home-hero-premium__content-column {
     flex: 1 1 auto;
     min-height: 0;
-    overflow-y: auto;
-    overscroll-behavior: contain;
+    overflow: visible;
   }
 }
 
@@ -301,9 +379,9 @@
     padding-bottom: 1.75rem !important;
   }
 
-  .portal-shell--premium-home .home-hero-premium-section--viewport-fit .home-hero-premium__trust-shell {
-    padding-top: 1.25rem !important;
-    padding-bottom: 1.25rem !important;
+  .portal-shell--premium-home .home-hero-premium-section--viewport-fit .home-hero-premium__bottom-bar {
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
   }
 
   .portal-shell--premium-home .home-hero-premium-section--viewport-fit #home-hero-heading {
@@ -405,6 +483,12 @@
 
 .portal-shell--premium-home .brand__name {
   color: #1f1020 !important;
+  font-size: clamp(1.18rem, 1.05rem + 0.34vw, 1.36rem);
+}
+
+.portal-shell--premium-home .brand__mark {
+  width: 68px;
+  height: 68px;
 }
 
 .portal-shell--premium-home .site-nav__link--header:not(.is-active) {
@@ -415,6 +499,37 @@
 .portal-shell--premium-home .site-nav__link--header:not(.is-active):hover {
   color: #1f1020 !important;
   background: rgba(136, 19, 55, 0.06) !important;
+}
+
+@media (min-width: 921px) {
+  /* Premium home: rebalance nav spacing so tabs don't look cramped. */
+  .portal-shell--premium-home .site-nav {
+    gap: clamp(4px, 0.7vw, 10px);
+    align-items: center;
+  }
+
+  .portal-shell--premium-home .site-nav__group--main {
+    flex: 0 1 min(100%, 45rem);
+    justify-content: space-between;
+    column-gap: clamp(2px, 0.45vw, 8px);
+    padding-inline: clamp(10px, 1.4vw, 18px);
+  }
+
+  .portal-shell--premium-home .site-nav__group--main .site-nav__link--header,
+  .portal-shell--premium-home .site-nav__group--main .site-nav__mega-host {
+    flex: 1 1 0;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .portal-shell--premium-home .site-nav__link--header {
+    padding: 6px clamp(8px, 0.9vw, 12px) 8px;
+    white-space: nowrap;
+  }
+
+  .portal-shell--premium-home .site-nav__toolbar {
+    margin-left: clamp(2px, 0.45vw, 6px);
+  }
 }
 
 .portal-shell--premium-home .site-nav__cta--primary {
@@ -455,7 +570,3 @@
   background-position: inherit !important;
 }
 
-/* Trust strip: wide rounded rectangle with vertical dividers (not a stadium pill) */
-.portal-shell--premium-home .home-hero-premium__trust-shell {
-  border-radius: 1.75rem !important;
-}

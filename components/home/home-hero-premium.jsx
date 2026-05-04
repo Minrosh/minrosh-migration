@@ -5,7 +5,7 @@ import { TrackedAnchor, TrackedLink } from "../tracked-link";
 
 /** Single marketing hero image: Brisbane River and CBD (see `/public/images/hero-brisbane-river-cbd.jpg`). */
 const HERO_BRISBANE_IMAGE = {
-  src: "/images/hero-brisbane-river-cbd.jpg",
+  src: "/images/hero-brisbane-river-cbd-hd.jpg",
   alt: "Brisbane River and CBD skyline at dusk with CityCat ferry",
 };
 
@@ -24,25 +24,6 @@ function IconLocationPin({ className = "h-5 w-5", stroke = plumDark }) {
         strokeLinejoin="round"
       />
       <circle cx="12" cy="10" r="2.5" stroke={stroke} strokeWidth="2" />
-    </svg>
-  );
-}
-
-function IconGradCap({ className = "h-[22px] w-[22px]", stroke = plumDark }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden>
-      <path
-        d="M4.5 10.5 12 7l7.5 3.5L12 14 4.5 10.5z"
-        stroke={stroke}
-        strokeWidth="2"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M9 12.2v2.6l3 1.5 3-1.5v-2.6M6 10.5V17"
-        stroke={stroke}
-        strokeWidth="2"
-        strokeLinecap="round"
-      />
     </svg>
   );
 }
@@ -107,11 +88,6 @@ function IconTrustedBadge({ className = "h-5 w-5", stroke = plumDark }) {
 
 const FEATURES = [
   {
-    title: "Pathways that fit you",
-    text: "Student visas, skilled migration, partner and family pathways",
-    Icon: IconGradCap,
-  },
-  {
     title: "Expert support",
     text: "Employer sponsorship and education consultation",
     Icon: IconBriefcase,
@@ -147,55 +123,63 @@ const TRUST_PILLARS = [
 ];
 
 /**
- * Premium Brisbane River / CBD homepage hero — glass columns pinned to the sides so the skyline stays visible mid-frame.
+ * Premium Brisbane hero: viewport-wide left fog (white → clear), copy in content lane, bottom glass stats bar.
  *
  * @param {{ whatsappHref: string }} props
  */
 export function HomeHeroPremium({ whatsappHref }) {
   return (
     <section
-      className="home-hero-premium-section home-hero-premium-section--viewport-fit relative flex min-w-0 flex-col overflow-x-clip"
+      className="home-hero-premium-section home-hero-premium-section--viewport-fit relative flex w-full min-w-0 flex-col overflow-x-clip"
       aria-labelledby="home-hero-heading"
     >
-      <div className="relative flex min-h-0 flex-1 flex-col">
+      <div className="relative flex min-h-0 w-full flex-1 flex-col">
         <div className="pointer-events-none absolute inset-0 z-0">
           <PublicFileImg
             src={HERO_BRISBANE_IMAGE.src}
             alt={HERO_BRISBANE_IMAGE.alt}
-            className="absolute inset-0 h-full w-full object-cover object-[50%_45%] lg:object-[52%_42%]"
+            className="absolute inset-0 h-full w-full object-cover object-[54%_40%] lg:object-[56%_38%]"
             width={1920}
             height={1280}
             priority
             fetchPriority="high"
             sizes="100vw"
           />
-          {/* Light legibility wash only — keeps a clear lane over the river/CBD */}
           <div
-            className="absolute inset-0 bg-gradient-to-b from-black/[0.06] via-transparent to-black/20 lg:from-transparent lg:via-transparent lg:to-black/25"
+            className="absolute inset-0 bg-gradient-to-b from-black/[0.04] via-transparent to-black/15 lg:from-transparent lg:to-black/20"
             aria-hidden
           />
         </div>
 
-        <div className="home-hero-premium__content-column relative z-[1] flex min-h-0 w-full flex-1 flex-col px-0 pb-12 pt-12 sm:pb-14 sm:pt-16 lg:pb-10 lg:pt-14">
-          <div className="mx-auto w-full min-w-0 max-w-[var(--content-max)] px-[var(--content-pad)]">
-            <div className="home-hero-premium__row">
+        {/* Linear white fade + masked blur: strongest at viewport left, clear toward river/CBD center */}
+        <div className="home-hero-premium__fog-layer pointer-events-none absolute inset-y-0 z-[1]" aria-hidden>
+          <div className="home-hero-premium__fog-gradient h-full w-full" />
+        </div>
+
+        <div className="home-hero-premium__content-column relative z-[2] flex min-h-0 w-full flex-1 flex-col">
+          <div className="home-hero-premium__lane mx-auto flex w-full min-w-0 max-w-[var(--content-max)] flex-1 flex-col justify-end px-[var(--content-pad)] pb-2 pt-12 sm:pb-3 sm:pt-16 lg:pb-2 lg:pt-14">
+            <div className="home-hero-premium__upper flex min-h-0 flex-1 flex-col justify-end pb-3 lg:justify-center lg:pb-0">
               <div className="home-hero-premium__glass-wrap hero__content home-hero-premium__content-card min-w-0">
-                <div className="hero__glass home-hero-premium__glass-inner relative overflow-hidden rounded-[2.5rem] px-6 py-8 sm:px-10 sm:py-10 lg:px-10 lg:py-10">
-                  <p className="home-hero-premium__badge relative z-10 mb-7 inline-flex max-w-full flex-wrap items-center gap-2 rounded-full border border-white/50 px-3.5 py-2.5 text-sm font-semibold shadow-sm sm:mb-8 sm:px-4 sm:py-3 sm:text-[0.9375rem] lg:mb-5 bg-white/75 backdrop-blur-[20px]">
-                  <span className="flex shrink-0 items-center justify-center rounded-full p-1.5" style={{ backgroundColor: iconSoft }} aria-hidden>
-                    <IconLocationPin className="h-[18px] w-[18px]" stroke={plumMid} />
-                  </span>
-                  <span className="min-w-0 text-pretty leading-snug" style={{ color: charcoal }}>
-                    <strong className="font-bold" style={{ color: plumMid }}>
-                      Brisbane-based
-                    </strong>
-                    <span className="font-semibold"> • Pathways to Australia, Canada, the UK & NZ</span>
-                  </span>
+                <div className="hero__glass home-hero-premium__glass-inner relative px-0 py-6 sm:py-8 lg:px-0 lg:py-9">
+                  <p className="home-hero-premium__badge relative z-10 mb-6 inline-flex max-w-[34rem] flex-wrap items-center gap-2 rounded-full border border-white/45 bg-white/60 px-3.5 py-2.5 text-sm font-semibold shadow-sm sm:mb-7 sm:max-w-[36rem] sm:px-4 sm:py-3 sm:text-[0.9375rem] backdrop-blur-[20px]">
+                    <span
+                      className="flex shrink-0 items-center justify-center rounded-full p-1.5"
+                      style={{ backgroundColor: iconSoft }}
+                      aria-hidden
+                    >
+                      <IconLocationPin className="h-[18px] w-[18px]" stroke={plumMid} />
+                    </span>
+                    <span className="min-w-0 text-pretty leading-snug" style={{ color: charcoal }}>
+                      <strong className="font-bold" style={{ color: plumMid }}>
+                        Brisbane-based
+                      </strong>
+                      <span className="font-semibold"> • Pathways to Australia, Canada, the UK & NZ</span>
+                    </span>
                   </p>
 
                   <h1
                     id="home-hero-heading"
-                    className="home-hero-premium__heading relative z-10 max-w-xl text-balance font-bold leading-[1.12] tracking-[-0.02em] text-[clamp(1.65rem,4vw,2.85rem)] lg:max-w-none"
+                    className="home-hero-premium__heading relative z-10 max-w-none text-balance font-bold leading-[1.12] tracking-[-0.02em] text-[clamp(1.65rem,4vw,2.85rem)]"
                     style={{ color: plumDark }}
                   >
                     Clear migration and study{" "}
@@ -205,102 +189,103 @@ export function HomeHeroPremium({ whatsappHref }) {
                     from Brisbane to the world
                   </h1>
 
-                  <p className="hero__lead relative z-10 mt-5 max-w-xl text-base font-medium leading-relaxed text-[#1F1020]/80 sm:text-[1.05rem] lg:max-w-none">
-                    Expert support for student, skilled, partner and family pathways with practical next steps tailored
-                    to your profile.
-                  </p>
-
                   <div
-                    className="home-hero-premium__accent-line mt-5 h-1.5 w-14 rounded-full sm:mt-6 sm:w-16 lg:mt-4 lg:h-2 lg:w-[4.25rem]"
+                    className="home-hero-premium__accent-line mt-4 h-1.5 w-14 rounded-full sm:mt-5 sm:w-16 lg:h-2 lg:w-[4.25rem]"
                     style={{ backgroundColor: plumMid }}
                     aria-hidden
                   />
+
+                  <div className="relative z-10 mt-8 flex max-w-lg flex-col gap-3 sm:mt-9">
+                    <TrackedLink
+                      id="hero-cta-assessment"
+                      href="/assessment"
+                      eventName="cta_click"
+                      eventParams={{
+                        cta_id: "hero_pathway_questionnaire",
+                        cta_location: "home_hero",
+                        destination: "/assessment",
+                      }}
+                      aria-label="Start the pathway questionnaire"
+                      className="home-hero-premium__cta inline-flex min-h-[52px] w-full items-center justify-center rounded-full border-2 border-white px-7 py-3.5 text-center text-base font-bold text-white shadow-[0_14px_36px_rgba(136,19,55,0.28)] outline-none ring-offset-2 ring-offset-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-[0_18px_44px_rgba(136,19,55,0.35)] focus-visible:ring-2 focus-visible:ring-[#881337]/45 sm:w-auto sm:min-w-[280px]"
+                      style={{ backgroundColor: plumMid }}
+                    >
+                      Start the pathway questionnaire →
+                    </TrackedLink>
+
+                    <p className="text-sm font-medium leading-relaxed text-[#1F1020]/72 sm:text-[0.9375rem]">
+                      Need quick human help?{" "}
+                      <TrackedAnchor
+                        id="hero-cta-whatsapp"
+                        href={whatsappHref}
+                        eventName="cta_click"
+                        eventParams={{ cta_id: "hero_whatsapp", cta_location: "home_hero", destination: "whatsapp" }}
+                        aria-label="Open WhatsApp chat with MinRosh"
+                        className="font-bold transition hover:opacity-90"
+                        style={{ color: plumMid }}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Chat on WhatsApp
+                      </TrackedAnchor>
+                    </p>
+                  </div>
                 </div>
               </div>
+            </div>
 
-              <aside className="home-hero-premium__trust-shell home-hero-premium__side-panel min-w-0 rounded-[1.75rem] border border-white/50 px-5 py-6 shadow-[0_18px_42px_rgba(31,16,32,0.14)] sm:px-8 sm:py-7 lg:px-7 lg:py-7">
-                <ul className="grid list-none grid-cols-1 gap-5 pl-0 sm:grid-cols-2 lg:grid-cols-1 lg:gap-4">
-                {FEATURES.map((item) => {
+            <div
+              className="home-hero-premium__bottom-bar w-full shrink-0"
+              role="region"
+              aria-label="Pathway highlights and trust signals"
+            >
+              <ul className="home-hero-premium__bottom-bar-list flex list-none flex-nowrap items-stretch gap-0 overflow-x-auto overscroll-x-contain py-1 pl-0 [-webkit-overflow-scrolling:touch] sm:flex-nowrap sm:justify-between sm:overflow-visible sm:py-0">
+                {FEATURES.map((item, index) => {
                   const FeatureIcon = item.Icon;
                   return (
-                    <li key={item.title} className="flex gap-3.5">
+                    <li
+                      key={item.title}
+                      className={`home-hero-premium__bottom-bar-item flex min-w-[10.5rem] shrink-0 items-center justify-center gap-2.5 px-3 py-2 sm:min-w-0 sm:flex-1 sm:basis-0 sm:max-w-none sm:px-2 ${index > 0 ? "border-l border-[#1f1020]/10" : ""}`}
+                    >
                       <div
-                        className="flex h-[48px] w-[48px] shrink-0 items-center justify-center rounded-full shadow-inner"
+                        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full shadow-inner sm:h-10 sm:w-10"
                         style={{ backgroundColor: iconSoft }}
+                        aria-hidden
                       >
-                        <FeatureIcon stroke={plumMid} />
+                        <FeatureIcon className="h-[18px] w-[18px] sm:h-[22px] sm:w-[22px]" stroke={plumMid} />
                       </div>
-                      <div className="min-w-0 pt-0.5">
-                        <p className="text-sm font-bold leading-tight sm:text-base" style={{ color: plumDark }}>
-                          {item.title}
+                      <div className="min-w-0 text-center">
+                        <p className="text-xs font-bold leading-snug text-[#1f1020] sm:text-sm">{item.title}</p>
+                        <p className="mt-0.5 line-clamp-2 text-[10px] font-medium leading-snug text-[#1f1020]/68 sm:text-xs">
+                          {item.text}
                         </p>
-                        <p className="mt-1 text-sm font-medium leading-relaxed text-[#1F1020]/78">{item.text}</p>
                       </div>
                     </li>
                   );
                 })}
-                </ul>
-
-                <div className="mt-6 border-t border-zinc-200/80 pt-5">
-                  <TrackedLink
-                    id="hero-cta-assessment"
-                    href="/assessment"
-                    eventName="cta_click"
-                    eventParams={{
-                      cta_id: "hero_pathway_questionnaire",
-                      cta_location: "home_hero",
-                      destination: "/assessment",
-                    }}
-                    aria-label="Start the pathway questionnaire"
-                    className="home-hero-premium__cta inline-flex min-h-[52px] w-full items-center justify-center rounded-full border-2 border-white px-7 py-3.5 text-center text-base font-bold text-white shadow-[0_14px_36px_rgba(136,19,55,0.28)] outline-none ring-offset-2 ring-offset-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-[0_18px_44px_rgba(136,19,55,0.35)] focus-visible:ring-2 focus-visible:ring-[#881337]/45"
-                    style={{ backgroundColor: plumMid }}
-                  >
-                    Start the pathway questionnaire →
-                  </TrackedLink>
-
-                <p className="mt-3 text-sm font-medium leading-relaxed text-[#1F1020]/72 sm:text-[0.9375rem]">
-                  Need quick human help?{" "}
-                  <TrackedAnchor
-                    id="hero-cta-whatsapp"
-                    href={whatsappHref}
-                    eventName="cta_click"
-                    eventParams={{ cta_id: "hero_whatsapp", cta_location: "home_hero", destination: "whatsapp" }}
-                    aria-label="Open WhatsApp chat with MinRosh"
-                    className="font-bold transition hover:opacity-90"
-                    style={{ color: plumMid }}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Chat on WhatsApp
-                  </TrackedAnchor>
-                </p>
-              </div>
-
-              <div className="mt-6 grid grid-cols-1 gap-5 border-t border-zinc-200/80 pt-5 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-5 lg:grid-cols-1">
-                {TRUST_PILLARS.map((pillar) => {
+                {TRUST_PILLARS.map((pillar, index) => {
                   const PillarIcon = pillar.Icon;
                   return (
-                    <div key={pillar.title} className="flex gap-3">
+                    <li
+                      key={pillar.title}
+                      className={`home-hero-premium__bottom-bar-item flex min-w-[10.5rem] shrink-0 items-center justify-center gap-2.5 px-3 py-2 sm:min-w-0 sm:flex-1 sm:basis-0 sm:max-w-none sm:px-2 ${FEATURES.length > 0 || index > 0 ? "border-l border-[#1f1020]/10" : ""}`}
+                    >
                       <div
-                        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full"
+                        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full sm:h-10 sm:w-10"
                         style={{ backgroundColor: iconSoft }}
                         aria-hidden
                       >
-                        <PillarIcon className="h-[18px] w-[18px]" stroke={plumMid} />
+                        <PillarIcon className="h-[18px] w-[18px] sm:h-[22px] sm:w-[22px]" stroke={plumMid} />
                       </div>
-                      <div className="min-w-0">
-                        <p className="text-sm font-bold leading-tight" style={{ color: plumDark }}>
-                          {pillar.title}
-                        </p>
-                        <p className="mt-1 text-xs font-medium leading-relaxed text-[#1F1020]/72 sm:text-sm">
+                      <div className="min-w-0 text-center">
+                        <p className="text-xs font-bold leading-snug text-[#1f1020] sm:text-sm">{pillar.title}</p>
+                        <p className="mt-0.5 line-clamp-2 text-[10px] font-medium leading-snug text-[#1f1020]/68 sm:text-xs">
                           {pillar.body}
                         </p>
                       </div>
-                    </div>
+                    </li>
                   );
                 })}
-              </div>
-            </aside>
+              </ul>
             </div>
           </div>
         </div>

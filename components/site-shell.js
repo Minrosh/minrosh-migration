@@ -59,8 +59,8 @@ export function SiteShell({
               <PublicFileImg
                 src="/images/minrosh-logo.v2.webp"
                 alt="MinRosh Migration logo"
-                width={46}
-                height={46}
+                width={52}
+                height={52}
                 priority
               />
             </span>

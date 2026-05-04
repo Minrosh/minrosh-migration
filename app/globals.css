@@ -4909,10 +4909,10 @@ a.brand:hover .brand__mark {
 
 .floating-tools__dock {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
   justify-content: flex-end;
-  gap: 12px;
+  gap: 10px;
   flex-wrap: wrap;
 }
 

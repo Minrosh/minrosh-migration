@@ -128,6 +128,18 @@ export function SiteHeaderNav({ navLinks, currentPath, enableVisaMega = false })
             const isActive = isActiveNavHref(normalizedHref);
             const isVisaHub = VISA_HUB_PATHS.has(normalizedHref);
             const collapseDesktop = enableVisaMega && isVisaHub;
+            const isPopularRoutes = link.label === "POPULAR ROUTES";
+
+            if (enableVisaMega && isPopularRoutes) {
+              return (
+                <Fragment key={link.href}>
+                  <div className="site-nav__mega-host">
+                    <SiteVisasMegaMenu />
+                  </div>
+                </Fragment>
+              );
+            }
+
             return (
               <Fragment key={link.href}>
                 <Link
@@ -149,7 +161,7 @@ export function SiteHeaderNav({ navLinks, currentPath, enableVisaMega = false })
                     link.label
                   )}
                 </Link>
-                {enableVisaMega && link.label === "POPULAR ROUTES" ? (
+                {enableVisaMega && isPopularRoutes ? (
                   <div className="site-nav__mega-host">
                     <SiteVisasMegaMenu />
                   </div>
