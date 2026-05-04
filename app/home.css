@@ -188,7 +188,7 @@
 
 /* Premium hero: 85vh min height; viewport-wide left fog (white → clear) + bottom glass stats bar. */
 .portal-shell--premium-home .home-hero-premium-section.home-hero-premium-section--viewport-fit {
-  min-height: 85vh;
+  height: calc(100vh - var(--site-header-chrome-height));
 }
 
 /* Full-bleed fog from viewport left; copy stays in --content-max lane above (z-index). */
@@ -202,13 +202,14 @@
 .portal-shell--premium-home .home-hero-premium__fog-gradient {
   height: 100%;
   width: 100%;
+  --hero-fog-fade-end: 62%;
   /* Solid white at the viewport left edge → transparent toward river / boat (image center). */
   background: linear-gradient(
     to right,
     #ffffff 0%,
     rgba(255, 255, 255, 0.88) 18%,
     rgba(255, 255, 255, 0.35) 42%,
-    rgba(255, 255, 255, 0) 62%
+    rgba(255, 255, 255, 0) var(--hero-fog-fade-end)
   );
   /* Mask clips composited output so blur fades with the wash (no hard card edge). */
   -webkit-mask-image: linear-gradient(
@@ -217,7 +218,7 @@
     #000 12%,
     rgba(0, 0, 0, 0.92) 28%,
     rgba(0, 0, 0, 0.45) 44%,
-    transparent 62%
+    transparent var(--hero-fog-fade-end)
   );
   mask-image: linear-gradient(
     to right,
@@ -225,7 +226,7 @@
     #000 12%,
     rgba(0, 0, 0, 0.92) 28%,
     rgba(0, 0, 0, 0.45) 44%,
-    transparent 62%
+    transparent var(--hero-fog-fade-end)
   );
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
@@ -275,7 +276,8 @@
   -webkit-backdrop-filter: none;
 }
 
-.portal-shell--premium-home .home-hero-premium__bottom-bar {
+.portal-shell--premium-home .home-hero-premium__bottom-bar,
+.portal-shell--premium-home .home-hero-premium__trust-shell {
   position: absolute;
   right: 0;
   bottom: 0;
@@ -349,8 +351,7 @@
  */
 @media (min-width: 1024px) {
   .portal-shell--premium-home .home-hero-premium-section.home-hero-premium-section--viewport-fit {
-    /* At least 85vh so the Brisbane skyline reads at scale; do not clip to a short max-height. */
-    min-height: max(85vh, var(--premium-hero-viewport));
+    height: calc(100vh - var(--site-header-chrome-height));
     display: flex;
     flex-direction: column;
     overflow-x: clip;

@@ -138,7 +138,7 @@ export function HomeHeroPremium({ whatsappHref }) {
           <PublicFileImg
             src={HERO_BRISBANE_IMAGE.src}
             alt={HERO_BRISBANE_IMAGE.alt}
-            className="absolute inset-0 h-full w-full object-cover object-[54%_40%] lg:object-[56%_38%]"
+            className="absolute inset-0 h-full w-full object-cover object-bottom object-center"
             width={1920}
             height={1280}
             priority
@@ -157,7 +157,7 @@ export function HomeHeroPremium({ whatsappHref }) {
         </div>
 
         <div className="home-hero-premium__content-column relative z-[2] flex min-h-0 w-full flex-1 flex-col">
-          <div className="home-hero-premium__lane mx-auto flex w-full min-w-0 max-w-[var(--content-max)] flex-1 flex-col justify-end px-[var(--content-pad)] pb-2 pt-12 sm:pb-3 sm:pt-16 lg:pb-2 lg:pt-14">
+          <div className="home-hero-premium__lane mx-auto flex w-full min-w-0 max-w-[var(--content-max)] flex-1 flex-col justify-end px-[var(--content-pad)] pb-20 pt-6 sm:pb-20 sm:pt-8 lg:pb-20 lg:pt-8">
             <div className="home-hero-premium__upper flex min-h-0 flex-1 flex-col justify-end pb-3 lg:justify-center lg:pb-0">
               <div className="home-hero-premium__glass-wrap hero__content home-hero-premium__content-card min-w-0">
                 <div className="hero__glass home-hero-premium__glass-inner relative px-0 py-6 sm:py-8 lg:px-0 lg:py-9">
