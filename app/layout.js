@@ -65,10 +65,10 @@ export const metadata = {
     type: "website",
     images: [
       {
-        url: "/images/hero-sydney-real.v2.webp",
+        url: "/images/hero-brisbane-river-cbd.jpg",
         width: 1800,
         height: 1200,
-        alt: "Sydney Harbour with ferries on the water and the Opera House",
+        alt: "Brisbane River and CBD skyline at dusk",
       },
     ],
   },
@@ -78,7 +78,7 @@ export const metadata = {
       "Migration Agent Brisbane | Australia, Canada, UK & NZ Visa Guidance | MinRosh Migration",
     description:
       "Brisbane-based consultants helping students, skilled workers and families plan pathways to Australia, Canada, the UK and New Zealand.",
-    images: ["/images/hero-sydney-real.v2.webp"],
+    images: ["/images/hero-brisbane-river-cbd.jpg"],
   },
   robots: {
     index: true,

@@ -6,7 +6,7 @@ const ROUTES = [
     href: "/skilled-migration",
     title: "Skilled migration",
     description: "Points-tested subclasses, skills assessment sequencing, and nomination strategy.",
-    image: { src: "/images/hero-sydney-real.v2.webp", alt: "Australian skilled migration context — Sydney Harbour" },
+    image: { src: "/images/hero-brisbane-river-cbd.jpg", alt: "Australian skilled migration context — Brisbane River and CBD" },
   },
   {
     href: "/student-visa-australia",

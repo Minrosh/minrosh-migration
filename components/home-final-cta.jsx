@@ -10,7 +10,7 @@ export function HomeFinalCta() {
         <div className="absolute -right-[10%] bottom-0 h-[280px] w-[280px] rounded-full bg-brand-gold/25 blur-[70px]" />
       </div>
 
-      <div className="relative z-10 mx-auto min-w-0 max-w-7xl px-4 py-14 text-center sm:px-6 sm:py-16 lg:py-20">
+      <div className="relative z-10 mx-auto w-full min-w-0 py-14 text-center sm:py-16 lg:py-20">
         <p className="text-[10px] font-black uppercase tracking-[0.35em] text-brand-gold sm:text-xs">Next step</p>
         <h2 className="mt-4 text-2xl font-black leading-tight tracking-tight text-white sm:text-4xl md:text-5xl">
           Ready to plan your next steps?
@@ -45,7 +45,7 @@ export function HomeFinalCta() {
               destination: "/book-consultation",
             }}
             aria-label="Book a consultation from homepage footer"
-            className="btn flex min-h-[48px] w-full touch-manipulation items-center justify-center border-2 border-white/50 bg-white/5 px-8 py-4 text-base font-black text-white backdrop-blur-sm transition-all hover:bg-white/15 sm:w-auto sm:text-lg"
+            className="btn flex min-h-[48px] w-full touch-manipulation items-center justify-center border-2 border-white/50 bg-white/15 px-8 py-4 text-base font-black text-white backdrop-blur-[20px] transition-all hover:border-white/65 hover:bg-white/22 sm:w-auto sm:text-lg"
           >
             Book a consultation
           </TrackedLink>

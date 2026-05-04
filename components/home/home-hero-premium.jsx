@@ -3,10 +3,16 @@
 import { PublicFileImg } from "../public-file-img";
 import { TrackedAnchor, TrackedLink } from "../tracked-link";
 
-const plumDark = "#1F1020"; // Near-black headings/body (mock)
-const plumMid = "#8B1D41"; // Primary burgundy (premium spec)
+/** Single marketing hero image: Brisbane River and CBD (see `/public/images/hero-brisbane-river-cbd.jpg`). */
+const HERO_BRISBANE_IMAGE = {
+  src: "/images/hero-brisbane-river-cbd.jpg",
+  alt: "Brisbane River and CBD skyline at dusk with CityCat ferry",
+};
+
+const plumDark = "#1F1020";
+const plumMid = "#8B1D41";
 const charcoal = "#1F1020";
-const iconSoft = "#F5EAF0"; // Soft pinkish white for icon circles
+const iconSoft = "#F5EAF0";
 
 function IconLocationPin({ className = "h-5 w-5", stroke = plumDark }) {
   return (
@@ -141,7 +147,7 @@ const TRUST_PILLARS = [
 ];
 
 /**
- * Premium Brisbane skyline homepage hero — marketing homepage only (glass card + overlapping trust strip).
+ * Premium Brisbane River / CBD homepage hero — glass columns pinned to the sides so the skyline stays visible mid-frame.
  *
  * @param {{ whatsappHref: string }} props
  */
@@ -151,156 +157,150 @@ export function HomeHeroPremium({ whatsappHref }) {
       className="home-hero-premium-section home-hero-premium-section--viewport-fit relative flex min-w-0 flex-col overflow-x-clip"
       aria-labelledby="home-hero-heading"
     >
-      <div className="relative flex min-h-0 flex-1 flex-col justify-center">
+      <div className="relative flex min-h-0 flex-1 flex-col">
         <div className="pointer-events-none absolute inset-0 z-0">
           <PublicFileImg
-            src="/images/hero-brisbane-river-cbd.jpg"
-            alt="Brisbane River and CBD at dusk with CityCat ferry"
-            className="absolute inset-0 h-full w-full object-cover object-[38%_52%] lg:object-[42%_48%]"
+            src={HERO_BRISBANE_IMAGE.src}
+            alt={HERO_BRISBANE_IMAGE.alt}
+            className="absolute inset-0 h-full w-full object-cover object-[50%_45%] lg:object-[52%_42%]"
             width={1920}
             height={1280}
             priority
             fetchPriority="high"
             sizes="100vw"
           />
+          {/* Light legibility wash only — keeps a clear lane over the river/CBD */}
           <div
-            className="absolute inset-0 bg-gradient-to-r from-white via-white/94 to-white/25 sm:via-white/88 lg:from-white lg:from-[38%] lg:via-white/42 lg:to-transparent"
-            aria-hidden
-          />
-          <div
-            className="absolute inset-0 bg-gradient-to-t from-white/28 via-transparent to-white/12 lg:from-white/14"
+            className="absolute inset-0 bg-gradient-to-b from-black/[0.06] via-transparent to-black/20 lg:from-transparent lg:via-transparent lg:to-black/25"
             aria-hidden
           />
         </div>
 
-        <div className="home-hero-premium__content-column relative z-[1] flex w-full max-w-7xl min-w-0 flex-col items-start px-4 pb-12 pt-12 sm:px-6 sm:pb-14 sm:pt-16 lg:ml-[clamp(1rem,5vw,6rem)] lg:flex-1 lg:min-h-0 lg:justify-center lg:px-6 lg:pb-8 lg:pt-12">
-          <div className="home-hero-premium__glass-inner relative overflow-hidden rounded-[2.5rem] bg-white/55 px-6 py-10 shadow-[0_32px_64px_rgba(0,0,0,0.06)] backdrop-blur-2xl sm:px-10 sm:py-12 lg:max-w-4xl lg:px-12 lg:py-14">
-            {/* Soft inner glow for better readability on busy images */}
-            <div className="absolute inset-0 bg-gradient-to-br from-white/50 via-white/10 to-transparent pointer-events-none" aria-hidden />
-            
-            <p className="home-hero-premium__badge relative z-10 mb-7 inline-flex max-w-full flex-wrap items-center gap-2 rounded-full border border-white/40 bg-white/80 px-3.5 py-2.5 text-sm font-semibold shadow-sm sm:mb-8 sm:px-4 sm:py-3 sm:text-[0.9375rem] lg:mb-5">
-              <span className="flex shrink-0 items-center justify-center rounded-full p-1.5" style={{ backgroundColor: iconSoft }} aria-hidden>
-                <IconLocationPin className="h-[18px] w-[18px]" stroke={plumMid} />
-              </span>
-              <span className="min-w-0 text-pretty leading-snug" style={{ color: charcoal }}>
-                <strong className="font-bold" style={{ color: plumMid }}>
-                  Brisbane-based
-                </strong>
-                <span className="font-semibold"> • Pathways to Australia, Canada, the UK & NZ</span>
-              </span>
-            </p>
+        <div className="home-hero-premium__content-column relative z-[1] flex min-h-0 w-full flex-1 flex-col px-0 pb-12 pt-12 sm:pb-14 sm:pt-16 lg:pb-10 lg:pt-14">
+          <div className="mx-auto w-full min-w-0 max-w-[var(--content-max)] px-[var(--content-pad)]">
+            <div className="home-hero-premium__row">
+              <div className="home-hero-premium__glass-wrap hero__content home-hero-premium__content-card min-w-0">
+                <div className="hero__glass home-hero-premium__glass-inner relative overflow-hidden rounded-[2.5rem] px-6 py-8 sm:px-10 sm:py-10 lg:px-10 lg:py-10">
+                  <p className="home-hero-premium__badge relative z-10 mb-7 inline-flex max-w-full flex-wrap items-center gap-2 rounded-full border border-white/50 px-3.5 py-2.5 text-sm font-semibold shadow-sm sm:mb-8 sm:px-4 sm:py-3 sm:text-[0.9375rem] lg:mb-5 bg-white/75 backdrop-blur-[20px]">
+                  <span className="flex shrink-0 items-center justify-center rounded-full p-1.5" style={{ backgroundColor: iconSoft }} aria-hidden>
+                    <IconLocationPin className="h-[18px] w-[18px]" stroke={plumMid} />
+                  </span>
+                  <span className="min-w-0 text-pretty leading-snug" style={{ color: charcoal }}>
+                    <strong className="font-bold" style={{ color: plumMid }}>
+                      Brisbane-based
+                    </strong>
+                    <span className="font-semibold"> • Pathways to Australia, Canada, the UK & NZ</span>
+                  </span>
+                  </p>
 
-            <h1
-              id="home-hero-heading"
-              className="home-hero-premium__heading relative z-10 max-w-4xl text-balance font-bold leading-[1.12] tracking-[-0.02em] text-[clamp(1.65rem,4vw,2.85rem)] lg:max-w-5xl"
-              style={{ color: plumDark }}
-            >
-              Clear migration and study{" "}
-              <span className="font-bold" style={{ color: plumMid }}>
-                pathway guidance
-              </span>{" "}
-              from Brisbane to the world
-            </h1>
+                  <h1
+                    id="home-hero-heading"
+                    className="home-hero-premium__heading relative z-10 max-w-xl text-balance font-bold leading-[1.12] tracking-[-0.02em] text-[clamp(1.65rem,4vw,2.85rem)] lg:max-w-none"
+                    style={{ color: plumDark }}
+                  >
+                    Clear migration and study{" "}
+                    <span className="font-bold" style={{ color: plumMid }}>
+                      pathway guidance
+                    </span>{" "}
+                    from Brisbane to the world
+                  </h1>
 
-            <div
-              className="home-hero-premium__accent-line mt-5 h-1.5 w-14 rounded-full sm:mt-6 sm:w-16 lg:mt-4 lg:h-2 lg:w-[4.25rem]"
-              style={{ backgroundColor: plumMid }}
-              aria-hidden
-            />
+                  <p className="hero__lead relative z-10 mt-5 max-w-xl text-base font-medium leading-relaxed text-[#1F1020]/80 sm:text-[1.05rem] lg:max-w-none">
+                    Expert support for student, skilled, partner and family pathways with practical next steps tailored
+                    to your profile.
+                  </p>
 
-            <ul className="mt-9 grid list-none grid-cols-1 gap-7 pl-0 sm:mt-10 lg:mt-6 lg:grid-cols-3 lg:gap-6">
-              {FEATURES.map((item) => {
-                const FeatureIcon = item.Icon;
-                return (
-                  <li key={item.title} className="flex gap-3.5 lg:gap-4">
-                    <div
-                      className="flex h-[52px] w-[52px] shrink-0 items-center justify-center rounded-full shadow-inner"
-                      style={{ backgroundColor: iconSoft }}
-                    >
-                      <FeatureIcon stroke={plumMid} />
-                    </div>
-                    <div className="min-w-0 pt-0.5">
-                      <p className="text-base font-bold leading-tight" style={{ color: plumDark }}>
-                        {item.title}
-                      </p>
-                      <p className="mt-1.5 text-sm font-medium leading-relaxed text-[#1F1020]/78 sm:text-[0.9375rem]">
-                        {item.text}
-                      </p>
-                    </div>
-                  </li>
-                );
-              })}
-            </ul>
+                  <div
+                    className="home-hero-premium__accent-line mt-5 h-1.5 w-14 rounded-full sm:mt-6 sm:w-16 lg:mt-4 lg:h-2 lg:w-[4.25rem]"
+                    style={{ backgroundColor: plumMid }}
+                    aria-hidden
+                  />
+                </div>
+              </div>
 
-            <div className="mt-9 flex max-w-lg flex-col gap-4 sm:mt-11 lg:mt-6 lg:gap-3">
-              <TrackedLink
-                id="hero-cta-assessment"
-                href="/assessment"
-                eventName="cta_click"
-                eventParams={{
-                  cta_id: "hero_pathway_questionnaire",
-                  cta_location: "home_hero",
-                  destination: "/assessment",
-                }}
-                aria-label="Start the pathway questionnaire"
-                className="home-hero-premium__cta inline-flex min-h-[52px] w-full items-center justify-center rounded-full border-2 border-white px-7 py-3.5 text-center text-base font-bold text-white shadow-[0_14px_36px_rgba(136,19,55,0.28)] outline-none ring-offset-2 ring-offset-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-[0_18px_44px_rgba(136,19,55,0.35)] focus-visible:ring-2 focus-visible:ring-[#881337]/45 sm:w-auto sm:min-w-[280px] sm:px-10 sm:text-lg"
-                style={{ backgroundColor: plumMid }}
-              >
-                Start the pathway questionnaire →
-              </TrackedLink>
+              <aside className="home-hero-premium__trust-shell home-hero-premium__side-panel min-w-0 rounded-[1.75rem] border border-white/50 px-5 py-6 shadow-[0_18px_42px_rgba(31,16,32,0.14)] sm:px-8 sm:py-7 lg:px-7 lg:py-7">
+                <ul className="grid list-none grid-cols-1 gap-5 pl-0 sm:grid-cols-2 lg:grid-cols-1 lg:gap-4">
+                {FEATURES.map((item) => {
+                  const FeatureIcon = item.Icon;
+                  return (
+                    <li key={item.title} className="flex gap-3.5">
+                      <div
+                        className="flex h-[48px] w-[48px] shrink-0 items-center justify-center rounded-full shadow-inner"
+                        style={{ backgroundColor: iconSoft }}
+                      >
+                        <FeatureIcon stroke={plumMid} />
+                      </div>
+                      <div className="min-w-0 pt-0.5">
+                        <p className="text-sm font-bold leading-tight sm:text-base" style={{ color: plumDark }}>
+                          {item.title}
+                        </p>
+                        <p className="mt-1 text-sm font-medium leading-relaxed text-[#1F1020]/78">{item.text}</p>
+                      </div>
+                    </li>
+                  );
+                })}
+                </ul>
 
-              <p className="max-w-md text-sm font-medium leading-relaxed text-[#1F1020]/72 sm:text-[0.9375rem]">
-                Need quick human help?{" "}
-                <TrackedAnchor
-                  id="hero-cta-whatsapp"
-                  href={whatsappHref}
-                  eventName="cta_click"
-                  eventParams={{ cta_id: "hero_whatsapp", cta_location: "home_hero", destination: "whatsapp" }}
-                  aria-label="Open WhatsApp chat with MinRosh"
-                  className="font-bold transition hover:opacity-90"
-                  style={{ color: plumMid }}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Chat on WhatsApp
-                </TrackedAnchor>
-                <br />
-                <span className="text-[#1F1020]/68">Message us for scheduling or general pathway questions.</span>
-              </p>
-            </div>
-          </div>
+                <div className="mt-6 border-t border-zinc-200/80 pt-5">
+                  <TrackedLink
+                    id="hero-cta-assessment"
+                    href="/assessment"
+                    eventName="cta_click"
+                    eventParams={{
+                      cta_id: "hero_pathway_questionnaire",
+                      cta_location: "home_hero",
+                      destination: "/assessment",
+                    }}
+                    aria-label="Start the pathway questionnaire"
+                    className="home-hero-premium__cta inline-flex min-h-[52px] w-full items-center justify-center rounded-full border-2 border-white px-7 py-3.5 text-center text-base font-bold text-white shadow-[0_14px_36px_rgba(136,19,55,0.28)] outline-none ring-offset-2 ring-offset-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-[0_18px_44px_rgba(136,19,55,0.35)] focus-visible:ring-2 focus-visible:ring-[#881337]/45"
+                    style={{ backgroundColor: plumMid }}
+                  >
+                    Start the pathway questionnaire →
+                  </TrackedLink>
 
-          <div className="relative z-[2] mx-auto mt-0 w-full max-w-[min(82rem,92vw)] px-1 sm:px-2">
-            <div className="home-hero-premium__trust-shell -mt-8 rounded-[1.75rem] border border-zinc-200/80 bg-white px-5 py-6 shadow-[0_16px_48px_rgba(31,16,32,0.1)] backdrop-blur-sm sm:-mt-10 sm:px-8 sm:py-7 lg:-mt-11 lg:px-10 lg:py-6 xl:px-12">
-              <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-x-8 sm:gap-y-9 lg:grid-cols-4 lg:gap-x-0 lg:gap-y-0">
-                {TRUST_PILLARS.map((pillar, index) => {
+                <p className="mt-3 text-sm font-medium leading-relaxed text-[#1F1020]/72 sm:text-[0.9375rem]">
+                  Need quick human help?{" "}
+                  <TrackedAnchor
+                    id="hero-cta-whatsapp"
+                    href={whatsappHref}
+                    eventName="cta_click"
+                    eventParams={{ cta_id: "hero_whatsapp", cta_location: "home_hero", destination: "whatsapp" }}
+                    aria-label="Open WhatsApp chat with MinRosh"
+                    className="font-bold transition hover:opacity-90"
+                    style={{ color: plumMid }}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Chat on WhatsApp
+                  </TrackedAnchor>
+                </p>
+              </div>
+
+              <div className="mt-6 grid grid-cols-1 gap-5 border-t border-zinc-200/80 pt-5 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-5 lg:grid-cols-1">
+                {TRUST_PILLARS.map((pillar) => {
                   const PillarIcon = pillar.Icon;
                   return (
-                  <div
-                    key={pillar.title}
-                    className={`flex gap-3.5 sm:gap-4 ${
-                      index > 0
-                        ? `border-t border-zinc-200/90 pt-8 lg:border-l lg:border-t-0 lg:border-zinc-200/90 lg:pl-9 lg:pt-0 xl:pl-11 ${index === 1 ? "sm:border-t-0 sm:pt-0" : ""}`
-                        : ""
-                    }`}
-                  >
-                    <div
-                      className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full sm:h-12 sm:w-12"
-                      style={{ backgroundColor: iconSoft }}
-                      aria-hidden
-                    >
-                      <PillarIcon className="h-5 w-5 sm:h-[22px] sm:w-[22px]" stroke={plumMid} />
+                    <div key={pillar.title} className="flex gap-3">
+                      <div
+                        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full"
+                        style={{ backgroundColor: iconSoft }}
+                        aria-hidden
+                      >
+                        <PillarIcon className="h-[18px] w-[18px]" stroke={plumMid} />
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-sm font-bold leading-tight" style={{ color: plumDark }}>
+                          {pillar.title}
+                        </p>
+                        <p className="mt-1 text-xs font-medium leading-relaxed text-[#1F1020]/72 sm:text-sm">
+                          {pillar.body}
+                        </p>
+                      </div>
                     </div>
-                    <div className="min-w-0">
-                      <p className="text-base font-bold leading-tight" style={{ color: plumDark }}>
-                        {pillar.title}
-                      </p>
-                      <p className="mt-1.5 text-sm font-medium leading-relaxed text-[#1F1020]/72">{pillar.body}</p>
-                    </div>
-                  </div>
                   );
                 })}
               </div>
+            </aside>
             </div>
           </div>
         </div>

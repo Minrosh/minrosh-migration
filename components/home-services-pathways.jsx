@@ -71,7 +71,7 @@ function linkClasses(tone) {
 export function HomeServicesPathways() {
   return (
     <section className="home-section bg-white scroll-mt-[calc(var(--site-header-chrome-height,var(--header-height,88px))+16px)]" aria-labelledby="home-services-heading" id="popular-routes">
-      <div className="mx-auto min-w-0 max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto w-full min-w-0">
         <div>
           <h2
             id="home-services-heading"
@@ -85,7 +85,7 @@ export function HomeServicesPathways() {
           </p>
         </div>
 
-        <ul className="mt-8 grid min-w-0 list-none grid-cols-1 gap-5 pl-0 sm:mt-10 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="mt-8 grid min-w-0 list-none grid-cols-1 gap-[clamp(24px,4vw,48px)] pl-0 sm:mt-10 sm:grid-cols-2 lg:grid-cols-3">
           {TILES.map((tile, i) => (
             <li key={tile.href} className="min-w-0">
               <div className={`relative flex h-full min-h-full flex-col overflow-hidden rounded-2xl p-5 sm:p-8 ${tileClasses(tile.tone)}`}>

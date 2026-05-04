@@ -33,7 +33,7 @@ export function HomeDeferredCarousels({ newsItems = [] }) {
   return (
     <>
       <section className="home-section bg-brand-cream/30 overflow-x-clip">
-        <div className="mx-auto min-w-0 max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto w-full min-w-0">
           <div className="text-center">
             <p className="text-[10px] font-black uppercase tracking-[0.28em] text-brand-rose sm:text-xs">Trust</p>
             <h2 className="mt-3 text-2xl font-black tracking-tight text-brand-plum sm:text-3xl md:text-4xl">
@@ -78,7 +78,7 @@ export function HomeDeferredCarousels({ newsItems = [] }) {
       </section>
 
       <section className="home-section bg-white overflow-x-clip">
-        <div className="mx-auto min-w-0 max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto w-full min-w-0">
           <div className="mb-8 flex flex-col justify-between gap-6 sm:mb-10 md:flex-row md:items-end">
             <div>
               <p className="text-[10px] font-black uppercase tracking-[0.28em] text-brand-rose sm:text-xs">

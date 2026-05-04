@@ -7,8 +7,8 @@ const DESTINATION_KEYS = ["australia", "canada", "uk", "nz"];
 /** Landmark-forward art direction — reuse strip crops where dedicated shots are not stored yet */
 const CARD_MEDIA = {
   australia: {
-    src: "/images/hero-sydney-real.v2.webp",
-    alt: "Sydney Harbour including the Opera House and waterfront",
+    src: "/images/hero-brisbane-river-cbd.jpg",
+    alt: "Brisbane River and CBD skyline at dusk",
     imgClass: "object-cover object-[center_58%]",
   },
   canada: {
@@ -37,7 +37,7 @@ export function HomeDestinationCards({ countries }) {
 
   return (
     <section className="home-section bg-[#FBF6F4]/80" aria-labelledby="home-destinations-heading">
-      <div className="mx-auto min-w-0 max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto w-full min-w-0">
         <p className="text-center text-[11px] font-bold uppercase tracking-[0.28em] text-brand-rose">
           Pathways to your future
         </p>
@@ -53,7 +53,7 @@ export function HomeDestinationCards({ countries }) {
           elsewhere offshore or already in-country. Always verify current rules on each government immigration site.
         </p>
 
-        <ul className="mt-10 grid min-w-0 list-none grid-cols-1 gap-7 pl-0 sm:mt-12 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
+        <ul className="mt-10 grid min-w-0 list-none grid-cols-1 gap-[clamp(24px,4vw,48px)] pl-0 sm:mt-12 sm:grid-cols-2 lg:grid-cols-4">
           {cards.map((card) => {
             const media = CARD_MEDIA[card.key];
             return (

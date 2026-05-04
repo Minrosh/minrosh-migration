@@ -42,7 +42,7 @@ export function HomeBuyerJourneyStrip() {
       className="home-section border-y border-brand-plum/[0.08] bg-gradient-to-b from-[#FBF6F4] via-white to-[#FBF6F4]/90"
       aria-labelledby="home-journey-heading"
     >
-      <div className="mx-auto min-w-0 max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto w-full min-w-0">
         <p
           className="text-center text-[11px] font-bold uppercase tracking-[0.28em]"
           style={{ color: MAROON }}
@@ -61,7 +61,7 @@ export function HomeBuyerJourneyStrip() {
           reviewed in consultation—not outcome guarantees.
         </p>
 
-        <ol className="mt-10 list-none space-y-6 pl-0 md:mt-12 md:grid md:grid-cols-3 md:gap-6 md:space-y-0">
+        <ol className="mt-10 list-none space-y-6 pl-0 md:mt-12 md:grid md:grid-cols-3 md:gap-[clamp(24px,4vw,48px)] md:space-y-0">
           {STEPS.map((step) => (
             <li key={step.kicker} className="home-journey-card min-w-0">
               <div className="flex h-full flex-col rounded-[1.75rem] border border-brand-plum/10 bg-white p-6 shadow-[var(--shadow-lux)] transition-shadow duration-300 hover:shadow-[var(--shadow-lux-lg)] sm:p-7">
@@ -109,7 +109,7 @@ export function HomeBuyerJourneyStrip() {
               destination: "/global-pathways",
             }}
             aria-label="Compare visa pathways"
-            className="btn flex min-h-[52px] w-full touch-manipulation items-center justify-center rounded-full border-2 border-[#881337]/25 bg-white px-8 py-3.5 text-base font-bold text-[#1f1020] transition-all hover:border-[#881337]/45 hover:bg-zinc-50 active:scale-[0.98] sm:w-auto sm:text-lg"
+            className="premium-frosted-surface btn flex min-h-[52px] w-full touch-manipulation items-center justify-center rounded-full border-2 border-[#881337]/22 px-8 py-3.5 text-base font-bold text-[#1f1020] transition-all hover:border-[#881337]/45 active:scale-[0.98] sm:w-auto sm:text-lg"
           >
             Compare visa pathways
           </TrackedLink>

@@ -23,20 +23,23 @@ export default function HomePage() {
           <div className="blur-orb bg-brand-gold/20 bottom-[-10%] right-[-10%]" />
         </div>
 
-        <div className="relative z-10 w-full max-w-[var(--content-max)] mx-auto px-[var(--content-pad)]">
+        {/* Hero uses its own max-width + pad wrapper for row alignment; body bands share this padded lane. */}
+        <div className="home-page-content-lane relative z-10 mx-auto w-full min-w-0 max-w-[var(--content-max)]">
           <HomeHeroPremium whatsappHref={homeHeroWhatsAppHref} />
 
-          <HomeBuyerJourneyStrip />
+          <div className="px-[var(--content-pad)]">
+            <HomeBuyerJourneyStrip />
 
-          <HomeDestinationCards countries={siteData.countries} />
+            <HomeDestinationCards countries={siteData.countries} />
 
-          <HomeServicesPathways />
+            <HomeServicesPathways />
 
-          <HomePlanningTools />
+            <HomePlanningTools />
 
-          <HomeDeferredCarouselsLazy newsItems={newsData} />
+            <HomeDeferredCarouselsLazy newsItems={newsData} />
 
-          <HomeFinalCta />
+            <HomeFinalCta />
+          </div>
         </div>
       </UltraMaximumLayout>
     </SiteShell>
