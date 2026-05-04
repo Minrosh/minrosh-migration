@@ -117,6 +117,27 @@ export default function ContactPage() {
           </div>
         </section>
         <section className="grid gap-6 lg:grid-cols-[1fr_1.1fr] lg:items-start">
+          <div className="contact-office-premium-panel">
+            <h2>Office &amp; hours</h2>
+            <p>
+              <strong className="text-brand-plum">Location:</strong> {siteData.brand.location}
+            </p>
+            <p>
+              <strong className="text-brand-plum">Scheduling:</strong> {siteData.consultationHoursNote}
+            </p>
+            <p className="text-sm">
+              <strong className="text-brand-plum">Phone:</strong>{" "}
+              <TrackedAnchor
+                href={`tel:${siteData.brand.phone.replace(/\s+/g, "")}`}
+                eventName="cta_click"
+                eventParams={{ cta_id: "contact_office_panel_phone", cta_location: "contact_office", destination: "phone" }}
+                className="font-semibold text-brand-rose underline decoration-brand-rose/40 underline-offset-4"
+              >
+                {siteData.brand.phone}
+              </TrackedAnchor>
+            </p>
+          </div>
+
           <div className="relative overflow-hidden rounded-[2rem] border border-brand-plum/10 bg-white shadow-lux">
             <div className="h-56 lg:h-72">
               <PublicFileImg
@@ -214,9 +235,12 @@ export default function ContactPage() {
               </div>
             </div>
           </div>
-          <div id="contact-enquiry-form" className="contact-form-column rounded-[2rem] border border-brand-plum/10 bg-white/90 p-4 shadow-lux md:p-6">
+          <div
+            id="contact-enquiry-form"
+            className="contact-form-column premium-contact-shell rounded-[2rem] border border-brand-plum/10 bg-white/90 p-4 shadow-lux md:p-6"
+          >
             <AgentRegistrationStrip brand={siteData.brand} />
-            <ContactLeadForm />
+            <ContactLeadForm className="premium-contact-form" />
           </div>
         </section>
       </section>

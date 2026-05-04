@@ -79,22 +79,29 @@ export default function AboutPage() {
                   <li key={point}>{point}</li>
                 ))}
               </ul>
-              {trustSignals.length ? (
-                <div className="mt-4 grid gap-2 sm:grid-cols-3">
-                  {trustSignals.map((item) => (
-                    <div key={item.id} className="rounded-xl border border-brand-plum/15 bg-white px-3 py-2">
-                      <p className="text-sm font-bold text-brand-plum">{item.value}</p>
-                      <p className="text-xs text-brand-plum/70">{item.label}</p>
-                    </div>
-                  ))}
-                </div>
-              ) : null}
             </div>
             <div className="content-hero__media" aria-hidden="true">
               <PublicFileImg src="/images/brisbane-skyline.jpg" alt="Brisbane skyline and riverfront" width={1600} height={900} />
             </div>
           </div>
         </section>
+
+        {trustSignals.length ? (
+          <section className="about-premium-stats-strip" aria-labelledby="about-stats-heading">
+            <p className="section-label">Trust &amp; clarity</p>
+            <h2 id="about-stats-heading" className="mt-2 text-xl font-bold tracking-tight text-brand-plum sm:text-2xl">
+              Signals clients reference after early sessions
+            </h2>
+            <div className="about-premium-stats-strip__grid mt-6">
+              {trustSignals.map((item) => (
+                <div key={item.id} className="about-premium-stats-strip__item">
+                  <strong>{item.value}</strong>
+                  <span>{item.label}</span>
+                </div>
+              ))}
+            </div>
+          </section>
+        ) : null}
 
         <section className="content-section">
           <p className="section-label">Story timeline</p>

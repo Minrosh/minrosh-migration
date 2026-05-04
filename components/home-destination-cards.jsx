@@ -36,9 +36,9 @@ export function HomeDestinationCards({ countries }) {
   }).filter(Boolean);
 
   return (
-    <section className="home-section bg-white" aria-labelledby="home-destinations-heading">
+    <section className="home-section bg-[#FBF6F4]/80" aria-labelledby="home-destinations-heading">
       <div className="mx-auto min-w-0 max-w-7xl px-4 sm:px-6 lg:px-8">
-        <p className="text-center text-[11px] font-bold uppercase tracking-[0.28em] text-[#881337]">
+        <p className="text-center text-[11px] font-bold uppercase tracking-[0.28em] text-brand-rose">
           Pathways to your future
         </p>
         <h2
@@ -60,7 +60,7 @@ export function HomeDestinationCards({ countries }) {
               <li key={card.key} className="min-w-0">
                 <Link
                   href={card.href}
-                  className="group flex h-full min-h-[48px] flex-col overflow-hidden rounded-2xl border border-zinc-200/90 bg-white shadow-[0_12px_36px_rgba(31,16,32,0.06)] transition-all duration-300 hover:-translate-y-1 hover:border-[#881337]/22 hover:shadow-[0_22px_56px_rgba(31,16,32,0.1)]"
+                  className="group flex h-full min-h-[48px] flex-col overflow-hidden rounded-[1.75rem] border border-brand-plum/10 bg-white shadow-[var(--shadow-lux)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-rose/25 hover:shadow-[var(--shadow-lux-lg)]"
                 >
                   <div className="relative aspect-[4/3] w-full min-h-[11rem] overflow-hidden bg-zinc-100">
                     <PublicFileImg

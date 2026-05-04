@@ -1,5 +1,6 @@
 import siteDataStatic from "../../data/site.json";
 import seoPages from "../../data/seo-pages.json";
+import { MigrationPopularRoutes } from "../../components/migration-popular-routes";
 import { ContentPage } from "../../components/content-page";
 import { SiteShell } from "../../components/site-shell";
 import { StructuredData } from "../../components/structured-data";
@@ -40,6 +41,7 @@ export default function SriLankaMigrationPage() {
           { href: "/", label: "Home" },
           { href: pageData.path, label: pageData.title },
         ]}
+        belowHero={<MigrationPopularRoutes />}
         officialResources={pageData.officialResources ?? []}
         currentPath={pageData.path}
         sections={pageData.sections}

@@ -2,7 +2,7 @@
 
 import { TrackedLink } from "./tracked-link";
 
-const MAROON = "#881337";
+const MAROON = "#8B1D41";
 
 const STEPS = [
   {
@@ -39,7 +39,7 @@ function Chip({ children }) {
 export function HomeBuyerJourneyStrip() {
   return (
     <section
-      className="home-section border-y border-zinc-200/80 bg-gradient-to-b from-zinc-50 via-white to-zinc-50/90"
+      className="home-section border-y border-brand-plum/[0.08] bg-gradient-to-b from-[#FBF6F4] via-white to-[#FBF6F4]/90"
       aria-labelledby="home-journey-heading"
     >
       <div className="mx-auto min-w-0 max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -64,7 +64,7 @@ export function HomeBuyerJourneyStrip() {
         <ol className="mt-10 list-none space-y-6 pl-0 md:mt-12 md:grid md:grid-cols-3 md:gap-6 md:space-y-0">
           {STEPS.map((step) => (
             <li key={step.kicker} className="home-journey-card min-w-0">
-              <div className="flex h-full flex-col rounded-2xl border border-zinc-200/90 bg-white p-6 shadow-[0_12px_40px_rgba(31,16,32,0.06)] transition-shadow duration-300 hover:shadow-[0_18px_52px_rgba(31,16,32,0.09)] sm:p-7">
+              <div className="flex h-full flex-col rounded-[1.75rem] border border-brand-plum/10 bg-white p-6 shadow-[var(--shadow-lux)] transition-shadow duration-300 hover:shadow-[var(--shadow-lux-lg)] sm:p-7">
                 <span className="text-[10px] font-bold uppercase tracking-[0.26em]" style={{ color: MAROON }}>
                   {step.kicker}
                 </span>

@@ -2,7 +2,10 @@ import Link from "next/link";
 
 export function HomePlanningTools() {
   return (
-    <section className="home-section bg-brand-plum/[0.03]" aria-labelledby="home-tools-heading">
+    <section
+      className="home-section bg-gradient-to-b from-white via-[#FBF6F4]/90 to-[#FBF6F4]"
+      aria-labelledby="home-tools-heading"
+    >
       <div className="mx-auto min-w-0 max-w-7xl px-4 sm:px-6 lg:px-8">
         <h2
           id="home-tools-heading"
@@ -19,7 +22,7 @@ export function HomePlanningTools() {
           <li className="min-w-0">
             <Link
               href="/tools/student-country-cost-planner"
-              className="flex h-full min-h-[48px] flex-col rounded-2xl border border-brand-plum/10 bg-white p-6 shadow-sm transition-all hover:border-brand-gold/40 hover:shadow-md sm:p-7"
+              className="flex h-full min-h-[48px] flex-col rounded-[1.75rem] border border-brand-plum/10 bg-white p-6 shadow-[var(--shadow-lux)] transition-all hover:border-brand-rose/28 hover:shadow-[var(--shadow-lux-lg)] sm:p-7"
             >
               <h3 className="text-xl font-black text-brand-plum">Student country cost planner</h3>
               <p className="mt-3 flex-1 text-sm font-medium leading-relaxed text-brand-plum/65">
@@ -34,7 +37,7 @@ export function HomePlanningTools() {
           <li className="min-w-0">
             <Link
               href="/tools/pr-pathway-explorer"
-              className="flex h-full min-h-[48px] flex-col rounded-2xl border border-brand-plum/10 bg-white p-6 shadow-sm transition-all hover:border-brand-rose/30 hover:shadow-md sm:p-7"
+              className="flex h-full min-h-[48px] flex-col rounded-[1.75rem] border border-brand-plum/10 bg-white p-6 shadow-[var(--shadow-lux)] transition-all hover:border-brand-rose/28 hover:shadow-[var(--shadow-lux-lg)] sm:p-7"
             >
               <h3 className="text-xl font-black text-brand-plum">Pathway explorer</h3>
               <p className="mt-3 flex-1 text-sm font-medium leading-relaxed text-brand-plum/65">

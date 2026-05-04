@@ -49,7 +49,7 @@ export default function AssessmentPage() {
         ])}
       />
 
-      <section className="content-page">
+      <section className="content-page page-assessment-premium">
         <BreadcrumbsNav
           currentPath="/assessment"
           items={[
@@ -217,7 +217,7 @@ export default function AssessmentPage() {
           </div>
 
           <div className="content-page__aside">
-            <ContactLeadForm />
+            <ContactLeadForm className="premium-contact-form" />
           </div>
         </div>
       </section>

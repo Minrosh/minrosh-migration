@@ -57,7 +57,7 @@ export function HomeDeferredCarousels({ newsItems = [] }) {
                   key={`${item.name}-${item.context}`}
                   className="w-[min(calc(100vw-2rem),22rem)] shrink-0 snap-center lg:w-auto lg:min-w-0"
                 >
-                  <figure className="glass-card flex h-full min-h-[200px] flex-col rounded-2xl border border-white/60 bg-white/90 p-6 shadow-md sm:p-8">
+                  <figure className="glass-card flex h-full min-h-[200px] flex-col rounded-[1.75rem] border border-brand-plum/[0.07] bg-white/92 p-6 shadow-[var(--shadow-lux)] sm:p-8">
                     <blockquote className="flex-1 text-[15px] font-semibold italic leading-relaxed text-brand-plum sm:text-lg">
                       &ldquo;{item.quote}&rdquo;
                     </blockquote>
@@ -101,7 +101,7 @@ export function HomeDeferredCarousels({ newsItems = [] }) {
               {newsItems.map((item) => (
                 <li key={item.id} className="w-[min(calc(100vw-2.5rem),380px)] shrink-0 snap-center sm:w-[380px]">
                   <Link href={item.href} className="group block h-full">
-                    <div className="glass-card flex h-full flex-col rounded-2xl border border-transparent p-6 shadow-lg transition-all hover:border-brand-rose/20 hover:bg-brand-cream/10 sm:p-8">
+                    <div className="glass-card flex h-full flex-col rounded-[1.75rem] border border-brand-plum/[0.06] bg-white/95 p-6 shadow-[var(--shadow-lux)] transition-all hover:border-brand-rose/25 hover:bg-[#FBF6F4]/40 hover:shadow-[var(--shadow-lux-lg)] sm:p-8">
                       <div className="mb-6 flex items-center justify-between">
                         <span className="rounded-full bg-brand-plum/5 px-3 py-1 text-[10px] font-black uppercase tracking-wider text-brand-plum">
                           {item.country}

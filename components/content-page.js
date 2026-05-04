@@ -7,6 +7,38 @@ import { StructuredData } from "./structured-data";
 import { faqJsonLd } from "../lib/seo";
 import { personalizedCtaForPath, recommendedLinksForPath } from "../lib/content-personalization";
 
+function IconCheckPremium({ className = "h-5 w-5" }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden>
+      <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2" />
+      <path d="M8 12l2.5 2.5L16 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function IconDocPremium({ className = "h-5 w-5" }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden>
+      <path d="M14 2H8a2 2 0 00-2 2v16a2 2 0 002 2h8a2 2 0 002-2V7l-4-5z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+      <path d="M14 2v5h4M10 13h4M10 17h4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function IconChatPremium({ className = "h-5 w-5" }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden>
+      <path d="M21 12a8 8 0 01-8 8H9l-4 3v-3H5a8 8 0 118 8z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+const HOW_ICON_MAP = {
+  documents: IconDocPremium,
+  strategy: IconChatPremium,
+  default: IconChatPremium,
+};
+
 /** Stable in-page anchors for section titles (deduped with index). */
 export function sectionAnchorId(title, index) {
   const base = String(title || "")
@@ -48,6 +80,10 @@ export function ContentPage({
   articleClassName = "",
   /** Subtle route-specific accent for service landings (hero border tone). */
   routeAccent = "",
+  /** Optional checklist bullets (visa guides — indicative prompts, not eligibility guarantees). */
+  eligibilityChecklist = [],
+  /** Optional “how we help” cards: `{ title, body, icon?: 'documents' | 'strategy' }`. */
+  howWeHelp = [],
 }) {
   const resolvedPath = currentPath || breadcrumbs[breadcrumbs.length - 1]?.href || "";
   const personalizedCta = personalizedCtaForPath(resolvedPath);
@@ -192,6 +228,49 @@ export function ContentPage({
                 ))}
               </ul>
             </section>
+          ) : null}
+
+          {eligibilityChecklist?.length || howWeHelp?.length ? (
+            <div className="content-premium-blocks">
+              {eligibilityChecklist?.length ? (
+                <section className="content-premium-eligibility" aria-labelledby="eligibility-checklist-heading">
+                  <h2 id="eligibility-checklist-heading">Eligibility checklist</h2>
+                  <p className="mb-4 text-sm leading-relaxed text-[var(--muted)]">
+                    Use this as a preparation lens—always confirm against current official criteria for your subclass.
+                  </p>
+                  <ul>
+                    {eligibilityChecklist.map((line) => (
+                      <li key={line}>
+                        <span className="content-premium-eligibility__icon" aria-hidden>
+                          <IconCheckPremium />
+                        </span>
+                        <span>{line}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              ) : null}
+              {howWeHelp?.length ? (
+                <section className="content-premium-how-we-help" aria-labelledby="how-we-help-heading">
+                  <h2 id="how-we-help-heading">How we help</h2>
+                  <div className="content-premium-how-we-help__grid">
+                    {howWeHelp.map((item) => {
+                      const key = item.icon === "documents" || item.icon === "strategy" ? item.icon : "default";
+                      const IconCmp = HOW_ICON_MAP[key] || HOW_ICON_MAP.default;
+                      return (
+                        <div key={item.title} className="content-premium-how-we-help__item">
+                          <div className="content-premium-how-we-help__icon" aria-hidden>
+                            <IconCmp />
+                          </div>
+                          <h3>{item.title}</h3>
+                          <p>{item.body}</p>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </section>
+              ) : null}
+            </div>
           ) : null}
 
           {mainLead}

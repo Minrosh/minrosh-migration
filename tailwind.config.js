@@ -41,10 +41,10 @@ module.exports = {
           foreground: "hsl(var(--card-foreground))",
         },
         brand: {
-          plum: "#3d2432",
-          rose: "#9b4a6c",
+          plum: "#4A1830",
+          rose: "#8B1D41",
           gold: "#caa64d",
-          cream: "#fbf8f4",
+          cream: "#FBF6F4",
         },
       },
       keyframes: {

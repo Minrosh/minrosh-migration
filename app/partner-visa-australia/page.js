@@ -27,6 +27,29 @@ export default function PartnerVisaPage() {
       <StructuredData data={faqJsonLd(pageData.faq)} />
       <ContentPage
         routeAccent="partner"
+        eligibilityChecklist={[
+          "Relationship type confirmed (married or de facto) with a consistent timeline across forms and evidence.",
+          "Financial, social, and household categories mapped for evidence—not a single “photo album” narrative.",
+          "Immigration history and prior visas reviewed for disclosure completeness.",
+          "Health and character requirements understood as part of overall preparation.",
+        ]}
+        howWeHelp={[
+          {
+            title: "Evidence coaching",
+            body: "We help you present relationship proof clearly across categories expected by decision-makers.",
+            icon: "documents",
+          },
+          {
+            title: "Onshore/offshore clarity",
+            body: "Subclass choice is framed around your living situation and lodgement strategy—not guesses.",
+            icon: "strategy",
+          },
+          {
+            title: "Consistency reviews",
+            body: "Forms, statements, and attachments are checked for alignment before submission milestones.",
+            icon: "documents",
+          },
+        ]}
         eyebrow="Partner Visa Australia"
         title={pageData.headline}
         intro={pageData.intro}

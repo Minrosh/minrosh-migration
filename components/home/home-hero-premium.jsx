@@ -4,7 +4,7 @@ import { PublicFileImg } from "../public-file-img";
 import { TrackedAnchor, TrackedLink } from "../tracked-link";
 
 const plumDark = "#1F1020"; // Near-black headings/body (mock)
-const plumMid = "#881337"; // Primary maroon (premium homepage reference)
+const plumMid = "#8B1D41"; // Primary burgundy (premium spec)
 const charcoal = "#1F1020";
 const iconSoft = "#F5EAF0"; // Soft pinkish white for icon circles
 

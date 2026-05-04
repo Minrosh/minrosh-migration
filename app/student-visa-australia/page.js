@@ -36,6 +36,29 @@ export default function StudentVisaPage() {
       <StructuredData data={faqJsonLd(pageData.faq)} />
       <ContentPage
         routeAccent="student"
+        eligibilityChecklist={[
+          "Genuine Student (GS) expectations understood for your course and history — departmental criteria change over time.",
+          "Financial capacity for tuition, living costs, and travel planned with verifiable sources.",
+          "English proficiency testing pathway mapped to your institution and visa subclass rules.",
+          "Overseas Student Health Cover (OSHC) and passport validity aligned to intended travel dates.",
+        ]}
+        howWeHelp={[
+          {
+            title: "Plain-English orientation",
+            body: "We translate departmental language into practical sequencing so you know what to verify next—not outcome guarantees.",
+            icon: "strategy",
+          },
+          {
+            title: "Document sequencing",
+            body: "Evidence is organised before lodgement to reduce rework and inconsistent narratives.",
+            icon: "documents",
+          },
+          {
+            title: "Course and timeline alignment",
+            body: "Study plans are stress-tested against your background so preparation stays coherent with GS factors.",
+            icon: "strategy",
+          },
+        ]}
         eyebrow="Student Visa Australia"
         title={pageData.headline}
         intro={pageData.intro}
