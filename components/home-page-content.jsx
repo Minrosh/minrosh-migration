@@ -141,44 +141,46 @@ export function HomePageContent({ siteData, homeTab }) {
   );
 
   return (
-    <div className="portal-main bg-brand-cream/40">
-      <section
-        id="home"
-        className={`tab-panel ${activeTab === "home" ? "is-active" : ""}`}
-        aria-hidden={activeTab !== "home"}
-      >
-        {homeTab}
-      </section>
+    <div className="bg-brand-cream/40 w-full min-w-0 py-7 pb-[72px] max-md:pb-[calc(96px+env(safe-area-inset-bottom,0px))]">
+      <div className="w-full max-w-[var(--content-max)] mx-auto px-[var(--content-pad)]">
+        <section
+          id="home"
+          className={`tab-panel ${activeTab === "home" ? "is-active" : ""}`}
+          aria-hidden={activeTab !== "home"}
+        >
+          {homeTab}
+        </section>
 
-      <QuizWizardPanel
-        isActive={activeTab === "quiz"}
-        resultSkeleton={<QuizResultSkeleton />}
-        onGoToContact={() => {
-          if (typeof window !== "undefined") {
-            window.location.href = "/book-consultation";
-          }
-        }}
-      />
+        <QuizWizardPanel
+          isActive={activeTab === "quiz"}
+          resultSkeleton={<QuizResultSkeleton />}
+          onGoToContact={() => {
+            if (typeof window !== "undefined") {
+              window.location.href = "/book-consultation";
+            }
+          }}
+        />
 
-      {pathwaysPanel}
-      {servicesPanel}
+        {pathwaysPanel}
+        {servicesPanel}
 
-      <section
-        id="stories"
-        className={`tab-panel ${activeTab === "stories" ? "is-active" : ""}`}
-        aria-hidden={activeTab !== "stories"}
-      >
-        <div className="panel-hero">
-          <div>
-            <p className="section-label">Stories</p>
-            <h2>Browse outcomes that look like your profile</h2>
-            <p className="panel-hero__sub">
-              Filter by pathway type and timeline so social proof stays relevant to your decision stage.
-            </p>
+        <section
+          id="stories"
+          className={`tab-panel ${activeTab === "stories" ? "is-active" : ""}`}
+          aria-hidden={activeTab !== "stories"}
+        >
+          <div className="panel-hero">
+            <div>
+              <p className="section-label">Stories</p>
+              <h2>Browse outcomes that look like your profile</h2>
+              <p className="panel-hero__sub">
+                Filter by pathway type and timeline so social proof stays relevant to your decision stage.
+              </p>
+            </div>
           </div>
-        </div>
-        <StoriesCarouselPanel siteData={siteData} isActive={activeTab === "stories"} wrapSection={false} />
-      </section>
+          <StoriesCarouselPanel siteData={siteData} isActive={activeTab === "stories"} wrapSection={false} />
+        </section>
+      </div>
     </div>
   );
 }

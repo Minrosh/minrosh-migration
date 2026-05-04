@@ -161,6 +161,22 @@
   --premium-hero-viewport: calc(100svh - var(--site-header-chrome-height, 88px) - 2rem);
 }
 
+/* Full-bleed main horizontally: blur orbs stay viewport-wide; sections use --content-max + --content-pad inside UltraMaximumLayout. */
+.portal-shell--premium-home > main#main-content.portal-main.portal-main--immersive {
+  max-width: none;
+  width: 100%;
+  padding-left: 0;
+  padding-right: 0;
+  box-sizing: border-box;
+}
+
+@media (max-width: 720px) {
+  .portal-shell--premium-home > main#main-content.portal-main.portal-main--immersive {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
 /**
  * One-screen hero on lg+: glass + trust fit within viewport (see home-hero-premium-section--viewport-fit).
  * Inner column uses overflow-y:auto only if content still exceeds after tightened spacing.

@@ -23,7 +23,7 @@ export default function HomePage() {
           <div className="blur-orb bg-brand-gold/20 bottom-[-10%] right-[-10%]" />
         </div>
 
-        <div className="relative z-10">
+        <div className="relative z-10 w-full max-w-[var(--content-max)] mx-auto px-[var(--content-pad)]">
           <HomeHeroPremium whatsappHref={homeHeroWhatsAppHref} />
 
           <HomeBuyerJourneyStrip />
