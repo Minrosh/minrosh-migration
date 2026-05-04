@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function Error({ reset }) {
   return (
-    <main className="loading-screen" aria-label="Page error">
+    <main id="main-content" className="loading-screen" aria-label="Page error">
       <section className="not-found__card">
         <p className="loading-screen__eyebrow">MinRosh Migration</p>
         <h1>This page could not be loaded.</h1>

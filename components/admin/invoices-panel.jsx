@@ -948,7 +948,7 @@ export function InvoicesPanel() {
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={issuerLogoPath || "/images/minrosh-logo.png"}
-                    alt=""
+                    alt="Invoice issuer logo preview"
                     loading="lazy"
                     decoding="async"
                     className="mb-3 h-16 w-auto rounded object-contain"

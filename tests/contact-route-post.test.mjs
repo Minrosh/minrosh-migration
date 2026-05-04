@@ -54,6 +54,7 @@ vi.mock("../lib/supabase/enquiries-dual-write.js", () => ({
 }));
 
 import { rateLimitAllow } from "../lib/security/rate-limit.js";
+import { sendContactEmails } from "../lib/contact.js";
 import { POST } from "../app/api/contact/route.js";
 
 function req(json, headers = {}) {
@@ -115,5 +116,31 @@ describe("POST /api/contact", () => {
     const payload = await res.json();
     const j = payload?.data && typeof payload.data === "object" ? payload.data : payload;
     expect(j.id).toBeTruthy();
+  });
+
+  it("returns 503 MAIL_DELIVERY_FAILED when internal SMTP send fails (configured)", async () => {
+    rateLimitAllow.mockReturnValue(true);
+    sendContactEmails.mockResolvedValueOnce({
+      internalSent: false,
+      thankYouSent: false,
+      brochureAttached: false,
+      reason: "smtp_timeout",
+    });
+    const res = await POST(
+      req({
+        firstName: "A",
+        lastName: "B",
+        email: "a@example.com",
+        phone: "+61000000000",
+        mainNeed: "General Enquiry",
+        message: "Hello",
+        privacyPolicyAccepted: true,
+      }),
+    );
+    expect(res.status).toBe(503);
+    const payload = await res.json();
+    expect(payload?.ok).toBe(false);
+    expect(payload?.error?.code).toBe("MAIL_DELIVERY_FAILED");
+    expect(String(payload?.error?.message || "")).toMatch(/try again/i);
   });
 });

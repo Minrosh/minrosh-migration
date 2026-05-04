@@ -139,6 +139,9 @@ function mapContactErrorMessage(errorCode, fallbackMessage) {
   if (errorCode === "INTERNAL_ERROR" || errorCode === "UPSTREAM_ERROR") {
     return "We are having trouble completing your request right now. Please try again shortly.";
   }
+  if (errorCode === "MAIL_DELIVERY_FAILED") {
+    return "We could not send your enquiry by email right now. Please try again in a few minutes, or contact us by phone or email.";
+  }
   return fallbackMessage || "Could not submit enquiry.";
 }
 

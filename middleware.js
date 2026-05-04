@@ -36,11 +36,11 @@ function newCspNonce() {
     }
     return Array.from(bytes, (b) => b.toString(16).padStart(2, "0")).join("");
   };
-  try {
-    return bytesToBase64(globalThis.crypto.getRandomValues(new Uint8Array(16)));
-  } catch {
-    return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`;
+  const cryptoObj = globalThis.crypto;
+  if (!cryptoObj?.getRandomValues) {
+    throw new Error("Web Crypto getRandomValues is required for CSP nonces");
   }
+  return bytesToBase64(cryptoObj.getRandomValues(new Uint8Array(16)));
 }
 
 /**

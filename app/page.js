@@ -1,4 +1,4 @@
-import siteData from "../data/site.json";
+import siteDataStatic from "../data/site.json";
 import newsData from "../data/news.json";
 import "./home.css";
 import { SiteShell } from "../components/site-shell";
@@ -10,12 +10,9 @@ import { HomePlanningTools } from "../components/home-planning-tools";
 import { HomeServicesPathways } from "../components/home-services-pathways";
 import { HomeFinalCta } from "../components/home-final-cta";
 import { HomeHeroPremium } from "../components/home/home-hero-premium";
-import { buildWhatsAppUrl } from "../lib/whatsapp-prefill";
+import { getHomePagePreparedData } from "../lib/home-site-data";
 
-const homeHeroWhatsAppHref = buildWhatsAppUrl(
-  siteData.brand.whatsapp,
-  "Hi MinRosh Migration, I would like to discuss scheduling or general pathway questions.",
-);
+const { siteData, homeHeroWhatsAppHref } = getHomePagePreparedData(siteDataStatic);
 
 export default function HomePage() {
   return (

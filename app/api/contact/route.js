@@ -273,46 +273,65 @@ export async function POST(request) {
     }
   }
 
-  try {
-    const mailResult = await sendContactEmails(enquiryRecord);
-    return apiOk(
+  const mailResult = await sendContactEmails(enquiryRecord);
+
+  if (!mailResult.internalSent) {
+    if (mailResult.reason === "smtp_not_configured") {
+      return apiOk(
+        {
+          id: enquiryRecord.id,
+          internalSent: false,
+          thankYouSent: false,
+          brochureAttached: false,
+          consultationBooked: Boolean(calendarResult.created),
+          slotAvailable: availabilityResult.available,
+          calendarReason: calendarResult.reason || undefined,
+          meetUrl: calendarResult.meetUrl || undefined,
+          leadDriveFolderId: enquiryRecord.leadDriveFolderId || undefined,
+          leadDriveFolderUrl: enquiryRecord.leadDriveFolderUrl || undefined,
+          checkoutUrl: checkoutUrl || undefined,
+          processing,
+          warning: "Enquiry saved, but SMTP is not configured yet.",
+        },
+        context
+      );
+    }
+    return apiFail(
       {
-        id: enquiryRecord.id,
-        internalSent: mailResult.internalSent,
-        thankYouSent: mailResult.thankYouSent,
-        brochureAttached: mailResult.brochureAttached || false,
-        consultationBooked: Boolean(calendarResult.created),
-        slotAvailable: availabilityResult.available,
-        calendarReason: calendarResult.reason || undefined,
-        meetUrl: calendarResult.meetUrl || undefined,
-        leadDriveFolderId: enquiryRecord.leadDriveFolderId || undefined,
-        leadDriveFolderUrl: enquiryRecord.leadDriveFolderUrl || undefined,
-        checkoutUrl: checkoutUrl || undefined,
-        processing,
-        warning:
-          mailResult.reason === "smtp_not_configured"
-            ? "Enquiry saved, but SMTP is not configured yet."
-            : calendarWarning,
-      },
-      context
-    );
-  } catch {
-    return apiOk(
-      {
-        id: enquiryRecord.id,
-        internalSent: false,
-        thankYouSent: false,
-        consultationBooked: Boolean(calendarResult.created),
-        slotAvailable: availabilityResult.available,
-        calendarReason: calendarResult.reason || undefined,
-        meetUrl: calendarResult.meetUrl || undefined,
-        leadDriveFolderId: enquiryRecord.leadDriveFolderId || undefined,
-        leadDriveFolderUrl: enquiryRecord.leadDriveFolderUrl || undefined,
-        checkoutUrl: checkoutUrl || undefined,
-        processing,
-        warning: "Enquiry saved, but email delivery could not be completed. We will still review your message.",
+        code: API_ERROR_CODES.MAIL_DELIVERY_FAILED,
+        message:
+          "We could not deliver your enquiry by email right now. Please try again in a few minutes, or phone or email us directly.",
+        status: 503,
+        details: {
+          reason: mailResult.reason || "smtp_error",
+          enquiryId: enquiryRecord.id,
+        },
       },
       context
     );
   }
+
+  const mailWarning =
+    mailResult.reason === "smtp_thankyou_failed"
+      ? "We received your enquiry, but the automatic confirmation email could not be sent. We will still reply using the contact details you provided."
+      : calendarWarning;
+
+  return apiOk(
+    {
+      id: enquiryRecord.id,
+      internalSent: mailResult.internalSent,
+      thankYouSent: mailResult.thankYouSent,
+      brochureAttached: mailResult.brochureAttached || false,
+      consultationBooked: Boolean(calendarResult.created),
+      slotAvailable: availabilityResult.available,
+      calendarReason: calendarResult.reason || undefined,
+      meetUrl: calendarResult.meetUrl || undefined,
+      leadDriveFolderId: enquiryRecord.leadDriveFolderId || undefined,
+      leadDriveFolderUrl: enquiryRecord.leadDriveFolderUrl || undefined,
+      checkoutUrl: checkoutUrl || undefined,
+      processing,
+      warning: mailWarning,
+    },
+    context
+  );
 }

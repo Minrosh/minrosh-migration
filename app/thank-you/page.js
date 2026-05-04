@@ -14,7 +14,7 @@ export const metadata = buildMetadata({
 export default function ThankYouPage() {
   return (
     <SiteShell siteData={siteData} currentPath="/thank-you" headerBackdrop="neutral">
-      <main className="thank-you-page">
+      <div className="thank-you-page">
         <div className="thank-you-page__card">
           <div className="thank-you-page__check" aria-hidden>
             <svg width="40" height="40" viewBox="0 0 24 24" fill="none">
@@ -36,7 +36,7 @@ export default function ThankYouPage() {
             Back to home
           </Link>
         </div>
-      </main>
+      </div>
     </SiteShell>
   );
 }

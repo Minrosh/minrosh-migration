@@ -384,6 +384,13 @@ a {
   height: 18px;
 }
 
+.site-social-icons__glyph {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
 .site-social-icons--topbar .site-social-icons__link {
   width: 34px;
   height: 34px;
@@ -5633,6 +5640,22 @@ body.ai-concierge-panel-open .mobile-sticky-quiz-cta {
   }
 
   .site-topbar__group--contact a {
+    min-height: 44px;
+  }
+
+  /* Social / messaging icons: meet 44×44px minimum touch target (WCAG 2.5.5). */
+  .site-social-icons__link {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
+    box-sizing: border-box;
+  }
+
+  .site-social-icons--topbar .site-social-icons__link {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
     min-height: 44px;
   }
 

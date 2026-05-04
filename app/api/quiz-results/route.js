@@ -1,4 +1,5 @@
 import { contactInbox, getMailTransport } from "@/lib/contact";
+import { withSmtpDeadline } from "@/lib/smtp-timeout";
 import { API_ERROR_CODES, apiFail, apiOk, requestContextFromRequest } from "@/lib/api/response";
 import { rateLimitAllow } from "@/lib/security/rate-limit";
 import { getClientIp } from "@/lib/security/request-ip";
@@ -116,10 +117,18 @@ export async function POST(request) {
   };
 
   try {
-    await transporter.sendMail(mailOptions);
+    await withSmtpDeadline(transporter.sendMail(mailOptions));
   } catch (err) {
     console.error("quiz-results sendMail:", err);
-    return apiFail({ code: API_ERROR_CODES.UPSTREAM_ERROR, message: "Could not send notification email.", status: 500 }, context);
+    return apiFail(
+      {
+        code: API_ERROR_CODES.MAIL_DELIVERY_FAILED,
+        message:
+          "We could not deliver your quiz results by email right now. Please try again in a few minutes or contact us directly.",
+        status: 503,
+      },
+      context
+    );
   }
 
   return apiOk({ success: true }, context);

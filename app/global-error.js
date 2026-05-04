@@ -6,7 +6,7 @@ export default function GlobalError() {
   return (
     <html lang="en-AU">
       <body>
-        <main className="loading-screen" aria-label="Critical application error">
+        <main id="main-content" className="loading-screen" aria-label="Critical application error">
           <section className="not-found__card">
             <p className="loading-screen__eyebrow">MinRosh Migration</p>
             <h1>Something unexpected happened.</h1>

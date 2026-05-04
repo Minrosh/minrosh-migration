@@ -52,7 +52,7 @@ function MagneticMemberCard({ member }) {
       >
         <PublicFileImg
           src={member.image}
-          alt={`${member.name} profile`}
+          alt={`${member.name}: ${member.focus}`}
           width={240}
           height={240}
           className="h-full w-full object-cover"

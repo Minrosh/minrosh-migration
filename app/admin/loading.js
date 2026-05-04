@@ -1,6 +1,6 @@
 export default function AdminLoading() {
   return (
-    <main className="admin-root min-h-screen bg-background px-4 py-6 text-foreground md:px-6">
+    <main id="main-content" className="admin-root min-h-screen bg-background px-4 py-6 text-foreground md:px-6">
       <section className="mx-auto w-full max-w-6xl animate-pulse rounded-2xl border border-border bg-card p-6">
         <div className="mb-4 h-7 w-56 rounded bg-muted" />
         <div className="mb-8 h-4 w-80 max-w-full rounded bg-muted" />

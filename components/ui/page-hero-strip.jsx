@@ -2,7 +2,13 @@
 
 import Image from "next/image";
 
-export function PageHeroStrip({ title, subtitle = "", eyebrow, bgImage = "/images/brisbane-aerial.png", bgAlt = "" }) {
+export function PageHeroStrip({
+  title,
+  subtitle = "",
+  eyebrow,
+  bgImage = "/images/brisbane-aerial.png",
+  bgAlt = "Brisbane CBD and Brisbane River aerial view",
+}) {
   return (
     <section className="relative left-1/2 flex h-[350px] w-screen -translate-x-1/2 items-center justify-center overflow-hidden">
       <Image src={bgImage} alt={bgAlt} fill priority sizes="100vw" className="object-cover" />

@@ -64,7 +64,7 @@ export function PopularRoutesHub({ routes }) {
               >
                 <PublicFileImg
                   src={item.image}
-                  alt=""
+                  alt={`${item.title} — pathway illustration`}
                   width={560}
                   height={360}
                   className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"

@@ -1,6 +1,6 @@
 export default function UploadLoading() {
   return (
-    <main className="loading-screen" aria-label="Loading secure upload portal">
+    <main id="main-content" className="loading-screen" aria-label="Loading secure upload portal">
       <section className="loading-screen__card">
         <div className="loading-screen__copy">
           <p className="loading-screen__eyebrow">Secure upload</p>

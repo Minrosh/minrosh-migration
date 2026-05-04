@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+import { smtpSocketTimeoutFields, withSmtpDeadline } from "@/lib/smtp-timeout";
 import { requireAdminWrite } from "@/lib/admin/auth-route";
 import { appendAudit } from "@/lib/admin/audit";
 import { AUDIT_ACTIONS } from "@/lib/admin/audit-actions";
@@ -20,7 +21,8 @@ function getMailTransport() {
     host: smtpHost,
     port: smtpPort,
     secure: smtpSecure,
-    auth: { user: smtpUser, pass: smtpPass },
+    ...smtpSocketTimeoutFields(),
+    auth: { user: smtpUser, pass: smtpPass.replace(/\s+/g, "") },
   });
 }
 
@@ -109,16 +111,30 @@ export async function POST(request) {
     : "\n\n---\nMinRosh Migration — prospective client update. Reply to this email if you no longer wish to receive similar messages.";
   const textWithFooter = `${text}${complianceFooter}`;
 
-  await transporter.sendMail({
-    from: smtpFrom,
-    to: smtpFrom,
-    bcc,
-    subject,
-    text: textWithFooter,
-    headers: process.env.SMTP_LIST_UNSUBSCRIBE
-      ? { "List-Unsubscribe": `<${process.env.SMTP_LIST_UNSUBSCRIBE}>` }
-      : undefined,
-  });
+  try {
+    await withSmtpDeadline(
+      transporter.sendMail({
+        from: smtpFrom,
+        to: smtpFrom,
+        bcc,
+        subject,
+        text: textWithFooter,
+        headers: process.env.SMTP_LIST_UNSUBSCRIBE
+          ? { "List-Unsubscribe": `<${process.env.SMTP_LIST_UNSUBSCRIBE}>` }
+          : undefined,
+      })
+    );
+  } catch (err) {
+    console.error("admin broadcast sendMail:", err);
+    return apiFail(
+      {
+        code: API_ERROR_CODES.UPSTREAM_ERROR,
+        message: "Could not send broadcast email. SMTP may be busy — try again in a few minutes.",
+        status: 503,
+      },
+      context
+    );
+  }
 
   appendAudit(AUDIT_ACTIONS.BROADCAST_PROSPECTIVE, `${unique.length} recipients`, {
     ip,

@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function UploadError({ reset }) {
   return (
-    <main className="loading-screen" aria-label="Upload portal error">
+    <main id="main-content" className="loading-screen" aria-label="Upload portal error">
       <section className="not-found__card">
         <p className="loading-screen__eyebrow">Secure upload</p>
         <h1>Unable to open the upload portal.</h1>

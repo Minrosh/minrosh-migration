@@ -3,7 +3,8 @@ import { headers } from "next/headers";
 import "./globals.css";
 import siteDataStatic from "../data/site.json";
 import { warnHcaptchaEnvIfMisconfigured } from "../lib/config";
-import { getHomeSiteData, getSiteDataForClientWidgets } from "../lib/home-site-data";
+import { assertEnvValidForRuntime } from "../lib/env-validation";
+import { getRootLayoutPreparedData } from "../lib/home-site-data";
 import { StructuredData } from "../components/structured-data";
 import { GlobalClientWidgets } from "../components/global-client-widgets";
 import { GoogleAnalytics } from "../components/google-analytics";
@@ -12,7 +13,8 @@ import { ScrollRestorer } from "../components/scroll-restorer";
 import { PWARegister } from "../components/pwa-register";
 import { RuntimeChunkRecovery } from "../components/runtime-chunk-recovery";
 
-const siteData = getHomeSiteData(siteDataStatic);
+const { siteData, publicSiteData } = getRootLayoutPreparedData(siteDataStatic);
+assertEnvValidForRuntime();
 warnHcaptchaEnvIfMisconfigured();
 
 const inter = Inter({
@@ -95,7 +97,6 @@ export const metadata = {
 export default async function RootLayout({ children }) {
   const h = await headers();
   const nonce = String(h.get("x-csp-nonce") || "").trim();
-  const publicSiteData = getSiteDataForClientWidgets(siteData);
 
   return (
     <html lang="en-AU">

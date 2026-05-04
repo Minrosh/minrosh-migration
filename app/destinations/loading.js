@@ -1,6 +1,6 @@
 export default function DestinationsLoading() {
   return (
-    <main className="loading-screen" aria-label="Loading destination content">
+    <main id="main-content" className="loading-screen" aria-label="Loading destination content">
       <section className="loading-screen__card">
         <div className="loading-screen__copy">
           <p className="loading-screen__eyebrow">Global pathways</p>

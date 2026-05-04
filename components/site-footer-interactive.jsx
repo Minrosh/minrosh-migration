@@ -64,7 +64,7 @@ export function SiteFooterInteractive({ brand, initialStats, children }) {
       <div className="site-footer__brand-col">
         <Link href="/" className="brand footer-brand" aria-label="Go to MinRosh homepage">
           <span className="brand__mark" aria-hidden="true">
-            <PublicFileImg src="/images/minrosh-logo.png" alt="" width={60} height={60} />
+            <PublicFileImg src="/images/minrosh-logo.png" alt="MinRosh Migration logo" width={60} height={60} />
           </span>
           <span className="brand__text">
             <strong>{brand.name}</strong>

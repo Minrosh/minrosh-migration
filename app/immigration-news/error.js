@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function ImmigrationNewsError({ reset }) {
   return (
-    <main className="loading-screen" aria-label="News loading error">
+    <main id="main-content" className="loading-screen" aria-label="News loading error">
       <section className="not-found__card">
         <p className="loading-screen__eyebrow">Immigration news</p>
         <h1>Could not load this news view.</h1>

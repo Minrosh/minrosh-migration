@@ -13,13 +13,13 @@ export default async function PublicUploadPage({ params }) {
   if (!customer) notFound();
 
   return (
-    <div className="mx-auto max-w-lg px-4 py-16">
+    <main id="main-content" className="mx-auto max-w-lg px-4 py-16">
       <h1 className="text-2xl font-bold text-slate-900">Secure document center</h1>
       <p className="mt-2 text-slate-600">
         Hi {customer.name || "there"}, use this private link (unique token) to upload your files, download templates,
         and track your submission timeline. Keep this URL confidential; request a new link from us if it may have been exposed.
       </p>
       <PublicUploadForm token={token} />
-    </div>
+    </main>
   );
 }

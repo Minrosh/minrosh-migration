@@ -119,11 +119,19 @@ export function ContactChatPanel({ siteData, isActive }) {
       }
       const data = payload?.data && typeof payload.data === "object" ? payload.data : payload;
       const err = payload?.error;
+      const errorCode =
+        typeof err === "object" && err != null && typeof err.code === "string" ? err.code : "";
       const errorMessage =
         (typeof err === "object" && err != null && typeof err.message === "string" ? err.message : null) ||
         (typeof err === "string" ? err : null) ||
         (typeof data?.error === "string" ? data.error : null);
-      if (!response.ok || !(payload?.ok ?? data?.ok)) throw new Error(errorMessage || "Could not submit enquiry.");
+      if (!response.ok || !(payload?.ok ?? data?.ok)) {
+        const friendly =
+          errorCode === "MAIL_DELIVERY_FAILED"
+            ? "We could not send your enquiry by email right now. Please try again in a few minutes, or contact us by phone or email."
+            : errorMessage || "Could not submit enquiry.";
+        throw new Error(friendly);
+      }
       setContactState({
         status: "success",
         message:

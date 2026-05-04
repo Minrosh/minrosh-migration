@@ -111,7 +111,7 @@ export function SiteHeaderNav({ navLinks, currentPath, enableVisaMega = false })
       {menuOpen ? (
         <button
           type="button"
-          className="site-nav__backdrop"
+          className="site-nav__backdrop touch-manipulation"
           aria-label="Close menu"
           onClick={closeMenu}
         />
@@ -133,7 +133,7 @@ export function SiteHeaderNav({ navLinks, currentPath, enableVisaMega = false })
                 <Link
                   href={normalizedHref}
                   scroll
-                  className={`site-nav__link site-nav__link--header ${
+                  className={`site-nav__link site-nav__link--header touch-manipulation ${
                     collapseDesktop ? "site-nav__link--visa-hub-collapsed-desktop " : ""
                   }${
                     isActive
@@ -163,7 +163,7 @@ export function SiteHeaderNav({ navLinks, currentPath, enableVisaMega = false })
             <Link
               href="/book-consultation"
               scroll
-              className="btn btn-primary site-nav__cta site-nav__cta--primary"
+              className="btn btn-primary site-nav__cta site-nav__cta--primary touch-manipulation"
               onClick={(event) => handleNavClick(event, "/book-consultation")}
             >
               Book consultation

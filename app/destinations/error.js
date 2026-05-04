@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function DestinationsError({ reset }) {
   return (
-    <main className="loading-screen" aria-label="Destination content error">
+    <main id="main-content" className="loading-screen" aria-label="Destination content error">
       <section className="not-found__card">
         <p className="loading-screen__eyebrow">Global pathways</p>
         <h1>Destination details are temporarily unavailable.</h1>

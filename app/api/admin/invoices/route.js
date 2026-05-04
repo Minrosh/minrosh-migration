@@ -2,6 +2,7 @@ import { verifyAdminRequest, adminJsonUnauthorized, requireAdminWrite } from "@/
 import { appendAudit } from "@/lib/admin/audit";
 import { AUDIT_ACTIONS } from "@/lib/admin/audit-actions";
 import { getMailTransport, contactInbox } from "@/lib/contact";
+import { withSmtpDeadline } from "@/lib/smtp-timeout";
 import { buildInvoicePdfBuffer } from "@/lib/admin/invoice-pdf";
 import { resolveInvoicePayId, resolveInvoiceQrMode } from "@/lib/admin/invoice-payment-qr";
 import { getClientIp } from "@/lib/security/request-ip";
@@ -116,27 +117,41 @@ export async function POST(request) {
     const pdfBuffer = await buildInvoicePdfBuffer(invoice, getBankDetails());
     const smtpFrom = process.env.SMTP_FROM || contactInbox;
     const due = invoice.dueDate || invoice.date;
-    await transporter.sendMail({
-      from: smtpFrom,
-      to,
-      subject: `Tax Invoice INV-${invoice.invoiceNumber}`,
-      text: [
-        `Dear ${invoice.customerName || "Customer"},`,
-        "",
-        `Please find attached your tax invoice INV-${invoice.invoiceNumber}.`,
-        `Due date: ${due}`,
-        `Total payable: ${(invoice.currency || "AUD")} ${Number(invoice.total || invoice.amount || 0).toFixed(2)}`,
-        "",
-        "Please contact us if you need any amendments.",
-      ].join("\n"),
-      attachments: [
+    try {
+      await withSmtpDeadline(
+        transporter.sendMail({
+          from: smtpFrom,
+          to,
+          subject: `Tax Invoice INV-${invoice.invoiceNumber}`,
+          text: [
+            `Dear ${invoice.customerName || "Customer"},`,
+            "",
+            `Please find attached your tax invoice INV-${invoice.invoiceNumber}.`,
+            `Due date: ${due}`,
+            `Total payable: ${(invoice.currency || "AUD")} ${Number(invoice.total || invoice.amount || 0).toFixed(2)}`,
+            "",
+            "Please contact us if you need any amendments.",
+          ].join("\n"),
+          attachments: [
+            {
+              filename: `INV-${invoice.invoiceNumber}.pdf`,
+              content: pdfBuffer,
+              contentType: "application/pdf",
+            },
+          ],
+        })
+      );
+    } catch (err) {
+      console.error("emailInvoice sendMail:", err);
+      return apiFail(
         {
-          filename: `INV-${invoice.invoiceNumber}.pdf`,
-          content: pdfBuffer,
-          contentType: "application/pdf",
+          code: API_ERROR_CODES.UPSTREAM_ERROR,
+          message: "Could not send invoice email. Try again shortly or download the PDF from admin.",
+          status: 503,
         },
-      ],
-    });
+        context
+      );
+    }
     appendAudit(AUDIT_ACTIONS.INVOICE_EMAIL_SENT, invoice.invoiceNumber, auditContext);
     return apiOk({ sent: true }, context);
   }

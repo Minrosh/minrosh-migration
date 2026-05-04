@@ -31,6 +31,21 @@ const nextConfig = {
     ];
   },
   async headers() {
+    const globalSecurityHeaders = [
+      { key: "X-Content-Type-Options", value: "nosniff" },
+      { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+      { key: "X-Frame-Options", value: "DENY" },
+      {
+        key: "Permissions-Policy",
+        value: "camera=(), microphone=(), geolocation=()",
+      },
+    ];
+    if (process.env.NODE_ENV === "production") {
+      globalSecurityHeaders.push({
+        key: "Strict-Transport-Security",
+        value: "max-age=31536000; includeSubDomains",
+      });
+    }
     return [
       {
         source: "/images/:path*",
@@ -53,13 +68,7 @@ const nextConfig = {
       {
         source: "/:path*",
         headers: [
-          { key: "X-Content-Type-Options", value: "nosniff" },
-          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-          { key: "X-Frame-Options", value: "DENY" },
-          {
-            key: "Permissions-Policy",
-            value: "camera=(), microphone=(), geolocation=()",
-          },
+          ...globalSecurityHeaders,
           /* CSP is set per-request in middleware (nonces + strict-dynamic). See lib/csp/build-csp-header.js */
         ],
       },

@@ -113,13 +113,15 @@ export function SiteSocialIcons({ brand, variant = "footer", includeWhatsApp = t
       {items.map((item) => (
         <a
           key={item.id}
-          className="site-social-icons__link"
+          className="site-social-icons__link touch-manipulation"
           href={item.href}
           target="_blank"
           rel="noopener noreferrer"
           aria-label={item.label}
         >
-          <SocialGlyph id={item.id} />
+          <span className="site-social-icons__glyph" aria-hidden="true">
+            <SocialGlyph id={item.id} />
+          </span>
         </a>
       ))}
     </nav>

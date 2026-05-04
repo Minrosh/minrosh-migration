@@ -1,6 +1,6 @@
 export default function ImmigrationNewsLoading() {
   return (
-    <main className="loading-screen" aria-label="Loading immigration news">
+    <main id="main-content" className="loading-screen" aria-label="Loading immigration news">
       <section className="loading-screen__card">
         <div className="loading-screen__copy">
           <p className="loading-screen__eyebrow">Immigration news</p>

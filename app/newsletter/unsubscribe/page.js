@@ -14,7 +14,7 @@ export default async function NewsletterUnsubscribePage({ searchParams }) {
   const reason = String(sp?.reason || "");
 
   return (
-    <main className="mx-auto max-w-lg px-4 py-16">
+    <main id="main-content" className="mx-auto max-w-lg px-4 py-16">
       <h1 className="text-2xl font-semibold tracking-tight">Marketing emails</h1>
       {ok ? (
         already ? (

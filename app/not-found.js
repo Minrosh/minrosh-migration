@@ -27,7 +27,7 @@ function SkylineSilhouette() {
 
 export default function NotFound() {
   return (
-    <main className="not-found-premium">
+    <main id="main-content" className="not-found-premium">
       <div className="not-found-premium__card">
         <SkylineSilhouette />
         <p className="not-found-premium__404" aria-hidden="true">

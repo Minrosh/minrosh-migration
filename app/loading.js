@@ -2,7 +2,7 @@ import { PublicFileImg } from "../components/public-file-img";
 
 export default function Loading() {
   return (
-    <main className="loading-screen" aria-label="Loading MinRosh Migration">
+    <main id="main-content" className="loading-screen" aria-label="Loading MinRosh Migration">
       <section className="loading-screen__card">
         <div className="loading-screen__mark">
           <PublicFileImg
