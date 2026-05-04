@@ -30,6 +30,9 @@ export default function NotFound() {
     <main className="not-found-premium">
       <div className="not-found-premium__card">
         <SkylineSilhouette />
+        <p className="not-found-premium__404" aria-hidden="true">
+          404
+        </p>
         <p className="section-label">Page not found</p>
         <h1>That page isn&apos;t available right now.</h1>
         <p>

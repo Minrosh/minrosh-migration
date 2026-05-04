@@ -1,8 +1,6 @@
 import Link from "next/link";
 import { BreadcrumbsNav } from "../../components/breadcrumbs-nav";
-import { PublicFileImg } from "../../components/public-file-img";
 import siteData from "../../data/site.json";
-import { ContactLeadForm } from "../../components/contact-lead-form";
 import { SiteShell } from "../../components/site-shell";
 import { SmartNavigator } from "../../components/smart-navigator";
 import { StructuredData } from "../../components/structured-data";
@@ -24,18 +22,18 @@ export const metadata = buildMetadata({
 const assessmentSteps = [
   {
     number: 1,
-    title: "Free assessment",
-    description: "Tell us about your background, your goal, and the destination you are considering.",
+    title: "Answer a few questions",
+    description: "Goal, timing, and destination signals so we can route you responsibly.",
   },
   {
     number: 2,
-    title: "Initial view",
-    description: "We identify the most relevant pathway signals and the first issues to prioritise.",
+    title: "See a suggested next step",
+    description: "Indicative direction only — not a visa outcome or eligibility guarantee.",
   },
   {
     number: 3,
-    title: "Human conversation",
-    description: "If needed, we turn the assessment into a focused consultation with practical next steps.",
+    title: "Choose how to continue",
+    description: "Book a consultation, open pathway hubs, or refine your profile with official sources.",
   },
 ];
 
@@ -49,178 +47,116 @@ export default function AssessmentPage() {
         ])}
       />
 
-      <section className="content-page page-assessment-premium">
+      <div className="content-page page-assessment-premium">
         <BreadcrumbsNav
           currentPath="/assessment"
           items={[
             { label: "Home", href: "/" },
-            { label: "Assessment", href: "/assessment" },
+            { label: "Free assessment", href: "/assessment" },
           ]}
         />
 
-        <section className="content-hero">
-          <div className="content-hero__grid">
-            <div className="content-hero__copy">
-              <p className="section-label">Free Assessment</p>
-              <h1>Start with a clearer assessment before you commit to the next step</h1>
-              <p>
-                This page is designed as a conversion-first assessment entry point. It helps clients
-                understand whether they should start with the 2026 points wizard, the Smart
-                Navigator, or a direct consultation based on how clear their pathway already is.
+        <div className="page-assessment-prototype pb-16">
+          <div className="page-assessment-prototype__split">
+            <div className="min-w-0">
+              <p className="section-label">Free assessment</p>
+              <h1 className="mt-2 text-3xl font-black tracking-tight text-brand-plum sm:text-4xl md:text-[2.4rem]">
+                Check eligibility in a few minutes — then choose your next step with clarity
+              </h1>
+              <p className="mt-4 text-base font-medium leading-relaxed text-brand-plum/75 sm:text-lg">
+                This guided flow points you toward the most relevant MinRosh pathway pages and tools. It does not
+                replace reading official criteria or booking advice when your case is time-sensitive.
               </p>
-              <div className="content-aside-card__actions">
-                <TrackedLink
-                  href="/#quiz"
-                  eventName="cta_click"
-                  eventParams={{ cta_id: "assessment_primary_quiz", cta_location: "assessment_hero", destination: "/#quiz" }}
-                  aria-label="Open points wizard from assessment page"
-                  className="btn btn-primary min-h-[48px] touch-manipulation"
-                >
-                  Open 2026 Points Wizard
-                </TrackedLink>
+              <div className="page-assessment-prototype__badges" role="list">
+                <span className="page-assessment-prototype__badge" role="listitem">
+                  100% free
+                </span>
+                <span className="page-assessment-prototype__badge" role="listitem">
+                  A few minutes
+                </span>
+                <span className="page-assessment-prototype__badge" role="listitem">
+                  No obligation
+                </span>
               </div>
-              <p className="mt-3 text-sm text-brand-plum/70">
-                Need a human strategy session instead?{" "}
-                <TrackedLink
-                  href="/book-consultation"
-                  eventName="cta_click"
-                  eventParams={{ cta_id: "assessment_secondary_consultation", cta_location: "assessment_hero", destination: "/book-consultation" }}
-                  aria-label="Open consultation booking page"
-                  className="font-semibold text-brand-rose underline decoration-brand-rose/40 underline-offset-4"
-                >
-                  Book consultation
-                </TrackedLink>
-                .
-              </p>
+
+              <div className="mt-10 space-y-6">
+                <div>
+                  <p className="text-[11px] font-black uppercase tracking-[0.18em] text-brand-rose">What happens next</p>
+                  <ol className="mt-4 space-y-4">
+                    {assessmentSteps.map((step) => (
+                      <li
+                        key={step.title}
+                        className="flex gap-4 rounded-2xl border border-brand-plum/10 bg-white/90 p-4 shadow-sm"
+                      >
+                        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#881337] text-sm font-black text-white">
+                          {step.number}
+                        </span>
+                        <div>
+                          <p className="font-bold text-brand-plum">{step.title}</p>
+                          <p className="mt-1 text-sm text-brand-plum/70">{step.description}</p>
+                        </div>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+
+                <div className="flex flex-wrap gap-3">
+                  <TrackedLink
+                    href="/#quiz"
+                    eventName="cta_click"
+                    eventParams={{ cta_id: "assessment_points_wizard", cta_location: "assessment_split", destination: "/#quiz" }}
+                    className="btn btn-primary inline-flex min-h-[48px] items-center justify-center rounded-full px-5"
+                  >
+                    Open points wizard
+                  </TrackedLink>
+                  <TrackedLink
+                    href="/book-consultation"
+                    eventName="cta_click"
+                    eventParams={{
+                      cta_id: "assessment_split_consultation",
+                      cta_location: "assessment_split",
+                      destination: "/book-consultation",
+                    }}
+                    className="btn btn-ghost inline-flex min-h-[48px] items-center justify-center rounded-full px-5"
+                  >
+                    Book consultation
+                  </TrackedLink>
+                  <Link href="/contact" className="btn btn-ghost inline-flex min-h-[48px] items-center justify-center rounded-full px-5">
+                    Contact form
+                  </Link>
+                </div>
+              </div>
             </div>
-            <div className="content-hero__media" aria-hidden="true">
-              <PublicFileImg
-                src="/images/brisbane-skyline.v2.webp"
-                alt="Brisbane skyline and riverfront"
-                width={1600}
-                height={900}
-                priority
-                sizes="(max-width: 1024px) 100vw, 42vw"
+
+            <div className="page-assessment-prototype__navigator-shell min-w-0">
+              <SmartNavigator
+                title="Step through the Smart Navigator"
+                description="Select the answers that best match your situation today. You can restart anytime — bring notes from the Department of Home Affairs visa listing if you already know a subclass."
+                primaryLabel="Continue"
+                finalHref="/book-consultation"
               />
             </div>
           </div>
-        </section>
 
-        <div className="content-page__grid">
-          <div className="content-page__main">
-            <details className="content-section content-accordion bento-hover" open>
-              <summary className="content-accordion__summary">
-                <h2>What this assessment helps you do</h2>
-              </summary>
-              <div className="content-accordion__body">
-                <p>
-                  Some visitors already know they need a partner visa, student visa, or skilled
-                  migration review. Others need help deciding what to prioritise first. This
-                  assessment page is for both groups. It gives a lower-friction way to start, while
-                  still leading into the stronger MinRosh conversion tools already built into the
-                  website.
-                </p>
-                <ul className="feature-list">
-                  <li>Quickly identify whether your strongest next step is quiz, navigator, or consultation</li>
-                  <li>Reduce drop-off for visitors who are not ready to fill a long form yet</li>
-                  <li>Guide high-intent users into contact with clearer context</li>
-                </ul>
-              </div>
-            </details>
-
-            <details className="content-section content-accordion bento-hover">
-              <summary className="content-accordion__summary">
-                <h2>What to prepare before you start</h2>
-              </summary>
-              <div className="content-accordion__body">
-                <p>
-                  A little preparation gives you a stronger assessment outcome. Bring key profile
-                  facts so your next-step recommendation is more accurate and useful.
-                </p>
-                <ul className="feature-list">
-                  <li>Your occupation, qualification level, and recent work history</li>
-                  <li>English test status, partner details, and preferred destination</li>
-                  <li>Target timeline and whether you need urgent support</li>
-                </ul>
-              </div>
-            </details>
-
-            <details className="content-section content-accordion bento-hover">
-              <summary className="content-accordion__summary">
-                <h2>Subclass orientation alongside this page</h2>
-              </summary>
-              <div className="content-accordion__body">
-                <p>
-                  If you do not yet know which Australian visa family fits, spend a few minutes with the
-                  Department of Home Affairs Visa Finder, then open the relevant subclass from the visa listing.
-                  Bring those notes to the Smart Navigator or consultation so advice stays tied to the correct
-                  published criteria.
-                </p>
-              </div>
-            </details>
-
-            <details className="content-section content-accordion bento-hover">
-              <summary className="content-accordion__summary">
-                <h2>After assessment: the decision pathways</h2>
-              </summary>
-              <div className="content-accordion__body">
-                <p>
-                  Once complete, most users move into one of three practical actions depending on
-                  readiness and urgency.
-                </p>
-                <ul className="feature-list">
-                  <li>Continue with points wizard for a more detailed profile signal</li>
-                  <li>Book consultation when timeline is tight or case complexity is high</li>
-                  <li>Use contact form to receive focused follow-up for your scenario</li>
-                </ul>
-              </div>
-            </details>
-
-            <section className="process-section process-section--assessment">
-              <div className="section-head section-head--process">
-                <div>
-                  <p className="section-label">How It Works</p>
-                  <h2>A simple assessment flow before deeper review</h2>
-                </div>
-                <p className="process-section__lead">
-                  Built to feel low-pressure while still moving visitors toward a practical action.
-                </p>
-              </div>
-              <div className="process-grid">
-                {assessmentSteps.map((step) => (
-                  <article key={step.title} className="process-card bento-hover">
-                    <div className="process-card__top">
-                      <span className="process-card__number">{step.number}</span>
-                      <h3>{step.title}</h3>
-                    </div>
-                    <p>{step.description}</p>
-                  </article>
-                ))}
-              </div>
-            </section>
-
-            <SmartNavigator
-              title="Use the upgraded Smart Navigator before you book"
-              description="This expanded assessment grows out of the earlier MinRosh AI assessment flow and now returns a clearer service recommendation, urgency signal, and preparation checklist."
-              primaryLabel="Open recommended page"
-              finalHref="/book-consultation"
-            />
-
-            <section className="content-section bento-hover mt-5" aria-label="What to do next">
-              <h2>What to do next</h2>
-              <ul className="feature-list">
-                <li>Use the points wizard if you want an immediate structured self-check</li>
-                <li>Open Smart Navigator for advisory pathway direction and preparation cues</li>
-                <li>Book consultation when your case is time-sensitive or complex</li>
+          <details className="content-section content-accordion bento-hover mt-12 max-w-4xl" open>
+            <summary className="content-accordion__summary">
+              <h2>Before you start — quick preparation</h2>
+            </summary>
+            <div className="content-accordion__body">
+              <p className="text-brand-plum/80">
+                Stronger inputs produce clearer routing. If you can, have your occupation or study goal, destination
+                preference, and rough timeline ready. When you are unsure which Australian stream applies, skim the
+                official visa listing first, then return here.
+              </p>
+              <ul className="feature-list mt-4">
+                <li>English test status and partner details (if relevant)</li>
+                <li>Whether you need urgent human review versus self-paced research</li>
+                <li>Links or screenshots from official sources you are already using</li>
               </ul>
-            </section>
-          </div>
-
-          <div className="content-page__aside">
-            <ContactLeadForm className="premium-contact-form" />
-          </div>
+            </div>
+          </details>
         </div>
-      </section>
+      </div>
     </SiteShell>
   );
 }

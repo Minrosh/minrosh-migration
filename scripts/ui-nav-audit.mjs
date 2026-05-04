@@ -42,6 +42,8 @@ async function run() {
     "/visitor-visas",
     "/destinations/australia",
     "/immigration-news",
+    "/popular-routes",
+    "/assessment",
     "/updates",
     "/admin",
     "/admin/crm",

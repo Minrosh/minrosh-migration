@@ -5,6 +5,7 @@ import { SiteShell } from "../../components/site-shell";
 import { StructuredData } from "../../components/structured-data";
 import { buildMetadata, breadcrumbJsonLd, faqJsonLd } from "../../lib/seo";
 import { HubClusterNavigator } from "../../components/seo/hub-cluster-navigator";
+import { VisaRailSkilledAu } from "../../components/visa-rail-skilled-au";
 
 const pageData = seoPages.servicePages.skilledMigration;
 
@@ -26,6 +27,7 @@ export default function SkilledMigrationPage() {
       />
       <StructuredData data={faqJsonLd(pageData.faq)} />
       <ContentPage
+        leftRail={<VisaRailSkilledAu currentPath={pageData.path} />}
         routeAccent="skilled"
         eligibilityChecklist={[
           "Occupation and skills assessment pathway identified against current priority lists — lists change.",

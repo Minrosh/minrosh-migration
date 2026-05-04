@@ -26,11 +26,11 @@ export function ImmigrationNewsHub({ items }) {
   return (
     <div className="immigration-news-hub">
       <div className="immigration-news-hub__intro">
-        <p className="section-label">Immigration newsroom</p>
-        <h1>Policy updates MinRosh is watching</h1>
+        <p className="section-label">Resources &amp; insights</p>
+        <h1>Latest insights &amp; migration updates</h1>
         <p className="immigration-news-hub__lead">
-          Each item opens a dedicated MinRosh note with context and a direct link to the official announcement
-          where available. These pages support planning only — always confirm current rules on the department
+          Each card opens a MinRosh note with context and, where available, a direct link to the official
+          announcement. Use filters to focus on a destination — always confirm current rules on the department
           site before lodging.
         </p>
       </div>

@@ -1,0 +1,74 @@
+[
+  {
+    "id": "skilled-au",
+    "title": "Skilled migration (Australia)",
+    "excerpt": "Points-tested pathways including subclasses 189, 190, and 491 — strategy before you invest in tests and skills assessment.",
+    "href": "/skilled-migration",
+    "image": "/images/hero-sydney-real.v2.webp",
+    "regions": ["australia"]
+  },
+  {
+    "id": "student-au",
+    "title": "Student visa Australia",
+    "excerpt": "Subclass 500 planning with Genuine Student factors, course fit, and realistic post-study pathway awareness.",
+    "href": "/student-visa-australia",
+    "image": "/images/team-office-real.jpg",
+    "regions": ["australia"]
+  },
+  {
+    "id": "partner-au",
+    "title": "Partner & family (Australia)",
+    "excerpt": "Relationship evidence, onshore and offshore sequencing, and consistency across your application bundle.",
+    "href": "/partner-visa-australia",
+    "image": "/images/brisbane-skyline.v2.webp",
+    "regions": ["australia"]
+  },
+  {
+    "id": "employer-au",
+    "title": "Employer-sponsored visas",
+    "excerpt": "When sponsorship-backed routes fit your timeline compared with independent skilled options.",
+    "href": "/employer-sponsored-visas",
+    "image": "/images/visual-strip-destinations.jpg",
+    "regions": ["australia"]
+  },
+  {
+    "id": "visitor-au",
+    "title": "Visitor visas",
+    "excerpt": "Short stays with clear travel purpose and document discipline to reduce common refusal risks.",
+    "href": "/visitor-visas",
+    "image": "/images/visual-strip-destinations.jpg",
+    "regions": ["australia"]
+  },
+  {
+    "id": "global-pathways",
+    "title": "Global pathways (AU · CA · UK · NZ)",
+    "excerpt": "Compare study, skilled, partner, and employer-sponsored intent across four destinations before you commit.",
+    "href": "/global-pathways",
+    "image": "/images/visual-strip-destinations.jpg",
+    "regions": ["australia", "canada", "uk", "nz"]
+  },
+  {
+    "id": "dest-uk",
+    "title": "United Kingdom hub",
+    "excerpt": "Student and skilled-worker style routes with structured next-step orientation from official sources.",
+    "href": "/destinations/united-kingdom",
+    "image": "/images/visual-strip-destinations.jpg",
+    "regions": ["uk"]
+  },
+  {
+    "id": "dest-nz",
+    "title": "New Zealand hub",
+    "excerpt": "Study, work, and residence-related pathway context with practical documentation planning.",
+    "href": "/destinations/new-zealand",
+    "image": "/images/visual-strip-destinations.jpg",
+    "regions": ["nz"]
+  },
+  {
+    "id": "dest-ca",
+    "title": "Canada hub",
+    "excerpt": "Study permits and skilled-style pathway awareness aligned to official programme updates.",
+    "href": "/destinations/canada",
+    "image": "/images/visual-strip-destinations.jpg",
+    "regions": ["canada"]
+  }
+]

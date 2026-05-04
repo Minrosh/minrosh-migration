@@ -243,6 +243,22 @@ export default function ContactPage() {
             <ContactLeadForm className="premium-contact-form" />
           </div>
         </section>
+
+        <section className="contact-map-embed" aria-labelledby="contact-map-heading">
+          <h2 id="contact-map-heading" className="sr-only">
+            Office map
+          </h2>
+          <iframe
+            title="Brisbane area map — MinRosh Migration office context"
+            className="contact-map-embed__frame"
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            src="https://www.openstreetmap.org/export/embed.html?bbox=152.92%2C-27.52%2C153.20%2C-27.38&amp;layer=mapnik&amp;marker=-27.45%2C153.06"
+          />
+          <p className="mt-3 text-center text-xs text-brand-plum/55">
+            Map data © OpenStreetMap contributors. Pin is indicative — confirm the exact address before visiting.
+          </p>
+        </section>
       </section>
     </SiteShell>
   );

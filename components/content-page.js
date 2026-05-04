@@ -39,6 +39,18 @@ const HOW_ICON_MAP = {
   default: IconChatPremium,
 };
 
+function ContentBodyWithOptionalLeftRail({ leftRail, children }) {
+  if (!leftRail) return children;
+  return (
+    <div className="content-page__with-left-rail">
+      <aside className="content-page__left-rail" aria-label="Related pathways">
+        {leftRail}
+      </aside>
+      <div className="content-page__left-rail-body">{children}</div>
+    </div>
+  );
+}
+
 /** Stable in-page anchors for section titles (deduped with index). */
 export function sectionAnchorId(title, index) {
   const base = String(title || "")
@@ -84,6 +96,8 @@ export function ContentPage({
   eligibilityChecklist = [],
   /** Optional “how we help” cards: `{ title, body, icon?: 'documents' | 'strategy' }`. */
   howWeHelp = [],
+  /** Optional sticky left column (e.g. visa family shortcuts — prototype “visa subpage” nav). */
+  leftRail = null,
 }) {
   const resolvedPath = currentPath || breadcrumbs[breadcrumbs.length - 1]?.href || "";
   const personalizedCta = personalizedCtaForPath(resolvedPath);
@@ -121,6 +135,7 @@ export function ContentPage({
         />
       ) : null}
 
+      <ContentBodyWithOptionalLeftRail leftRail={leftRail}>
       <MotionReveal as="section" className="content-hero">
         <div className="content-hero__grid">
           <div className="content-hero__copy">
@@ -386,6 +401,7 @@ export function ContentPage({
           ) : null}
         </aside>
       </div>
+      </ContentBodyWithOptionalLeftRail>
     </article>
   );
 }
