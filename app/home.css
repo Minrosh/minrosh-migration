@@ -188,7 +188,7 @@
 
 /* Premium hero: 85vh min height; viewport-wide left fog (white → clear) + bottom glass stats bar. */
 .portal-shell--premium-home .home-hero-premium-section.home-hero-premium-section--viewport-fit {
-  height: calc(100vh - var(--site-header-chrome-height));
+  height: calc(100svh - var(--site-header-chrome-height));
 }
 
 /* Full-bleed fog from viewport left; copy stays in --content-max lane above (z-index). */
@@ -312,24 +312,27 @@
 @media (max-width: 720px) {
   .portal-shell--premium-home .home-hero-premium__fog-gradient {
     --hero-fog-fade-end: 100%;
-    /* Mobile readability: vertical top-to-bottom fog, keeping river/boat visible below. */
+    /* Mobile readability: solid white top 30%, clear by bottom 30%. */
     background: linear-gradient(
       to bottom,
       rgba(255, 255, 255, 1) 0%,
-      rgba(255, 255, 255, 0.92) 38%,
-      rgba(255, 255, 255, 0.3) 100%
+      rgba(255, 255, 255, 1) 30%,
+      rgba(255, 255, 255, 0.35) 55%,
+      rgba(255, 255, 255, 0) 70%
     );
     -webkit-mask-image: linear-gradient(
       to bottom,
       #000 0%,
-      rgba(0, 0, 0, 0.96) 38%,
-      rgba(0, 0, 0, 0.3) 100%
+      #000 30%,
+      rgba(0, 0, 0, 0.4) 55%,
+      transparent 70%
     );
     mask-image: linear-gradient(
       to bottom,
       #000 0%,
-      rgba(0, 0, 0, 0.96) 38%,
-      rgba(0, 0, 0, 0.3) 100%
+      #000 30%,
+      rgba(0, 0, 0, 0.4) 55%,
+      transparent 70%
     );
     -webkit-mask-size: 100% 100%;
     mask-size: 100% 100%;

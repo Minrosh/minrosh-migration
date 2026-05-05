@@ -26,12 +26,12 @@ export function PageHeroStrip({
         priority
         fetchPriority="high"
         sizes="(max-width: 768px) 100vw, 1600px"
-        className="object-cover"
+        className="object-cover object-[70%_center] md:object-[center_bottom]"
         placeholder={resolvedBlurDataURL ? "blur" : "empty"}
         {...(resolvedBlurDataURL ? { blurDataURL: resolvedBlurDataURL } : {})}
       />
       <div className={`page-hero-strip__fog absolute inset-0 ${overlayClassName}`.trim()} aria-hidden />
-      <div className={`relative z-10 mx-auto max-w-7xl px-6 text-center text-white ${contentClassName}`.trim()}>
+      <div className={`relative z-10 mx-auto w-full max-w-[var(--content-max)] px-[var(--content-pad)] text-center text-white ${contentClassName}`.trim()}>
         {eyebrow ? (
           <p className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-brand-gold">{eyebrow}</p>
         ) : null}
