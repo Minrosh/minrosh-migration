@@ -8,6 +8,8 @@
   --brand-rose: #8b1d41;
   --brand-gold: #caa64d;
   --brand-cream: #fbf6f4;
+  /** Semantic heading ink alias (matches plum for marketing typography). */
+  --brand-navy: var(--brand-plum);
   --premium-text: #1f1020;
   --premium-icon-bg: #f5eaf0;
   --navy-950: var(--brand-cream);
@@ -53,6 +55,31 @@
   -webkit-backdrop-filter: blur(24px) saturate(160%);
   border: 1px solid var(--glass-border);
   box-shadow: 0 8px 32px 0 rgba(74, 24, 48, 0.08);
+}
+
+/**
+ * About / Meet the Team premium shell — frosted wash matches homepage language without `.portal-shell--premium-home`.
+ * @see app/home.css `.portal-shell--premium-home .premium-frosted-surface`
+ */
+.about-team-premium-shell .premium-frosted-surface {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.75), rgba(255, 250, 245, 0.75));
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+@media (max-width: 720px) {
+  .about-team-premium-shell .premium-frosted-surface {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: rgba(255, 253, 251, 0.96);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-team-premium-shell .premium-frosted-surface {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
 }
 
 /* Premium marketing surfaces — cream card on soft wash */
@@ -7673,6 +7700,11 @@ button.glossary-term:focus-visible {
   border: 1px solid rgba(74, 24, 48, 0.09);
   background: linear-gradient(135deg, rgba(139, 29, 65, 0.06) 0%, rgba(251, 246, 244, 0.95) 55%, #ffffff 100%);
   box-shadow: var(--shadow-lux);
+}
+
+/* Phase 2 About shell: stats strip uses glass + premium-frosted-surface on the element — drop legacy wash */
+.about-team-premium-shell .about-premium-stats-strip {
+  background: transparent;
 }
 
 .about-premium-stats-strip__grid {

@@ -73,82 +73,101 @@ export default function MeetTheTeamPage() {
           }),
         ]}
       />
-      <article className="content-page">
-        <BreadcrumbsNav
-          currentPath={path}
-          items={[
-            { label: "Home", href: "/" },
-            { label: "Meet the Team", href: path },
-          ]}
-        />
-        <section className="content-hero">
-          <div className="content-hero__grid">
-            <div className="content-hero__copy">
-              <p className="section-label">Trust and credentials</p>
-              <h1>Meet the people behind your migration journey</h1>
-              <p>
-                Migration outcomes depend on clarity, consistency, and timing. Meet our co-founders and support team
-                who combine human consultation with structured systems so clients can make decisions with confidence.
-              </p>
-            </div>
-            <div className="content-hero__media" aria-hidden="true">
-              <PublicFileImg
-                src="/images/brisbane-skyline.v2.webp"
-                alt="MinRosh team operations context in Brisbane"
-                width={1600}
-                height={900}
-                priority
-                sizes="(max-width: 1024px) 100vw, 42vw"
+      <div className="about-team-premium-shell relative min-w-0 bg-[var(--brand-cream)] pb-16 pt-1">
+        <div className="mx-auto w-full max-w-[var(--content-max)] px-[var(--content-pad)]">
+          <article className="content-page">
+            <BreadcrumbsNav
+              currentPath={path}
+              items={[
+                { label: "Home", href: "/" },
+                { label: "Meet the Team", href: path },
+              ]}
+            />
+            <section className="content-hero relative overflow-hidden rounded-[var(--radius-xl)] border border-white/50 shadow-[var(--shadow-lux)]">
+              <div
+                className="pointer-events-none absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_70%_22%,rgba(202,166,77,0.12),transparent_50%),radial-gradient(circle_at_14%_48%,rgba(139,29,65,0.08),transparent_46%),radial-gradient(circle_at_92%_72%,rgba(251,246,244,0.88),transparent_40%)]"
+                aria-hidden
               />
-            </div>
-          </div>
-        </section>
-        <section className="tools-hub" aria-label="Co-founders">
-          <div className="mb-6 sm:mb-8">
-            <p className="section-label">Leadership</p>
-            <h2 className="text-3xl font-black tracking-tight text-brand-plum sm:text-4xl">Founder, Director & Leadership</h2>
-          </div>
-          <ul className="tools-hub__grid">
-            {coFounders.map((person) => (
-              <li key={person.name}>
-                <article className="tools-hub__card bento-hover">
-                  <div className="mb-4 overflow-hidden rounded-2xl border border-brand-plum/10 bg-white">
-                    <PublicFileImg
-                      src={person.imageSrc}
-                      alt={person.alt}
-                      width={640}
-                      height={640}
-                      className="h-auto w-full object-cover"
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    />
-                  </div>
-                  <p className="section-label">{person.role}</p>
-                  <h3>{person.name}</h3>
-                  <p>{person.responsibilities}</p>
-                </article>
-              </li>
-            ))}
-          </ul>
-        </section>
-        <section className="tools-hub" aria-label="Consultant biographies">
-          <div className="mb-6 sm:mb-8">
-            <p className="section-label">Advisory and operations</p>
-            <h2 className="text-3xl font-black tracking-tight text-brand-plum sm:text-4xl">Wider team support</h2>
-          </div>
-          <ul className="tools-hub__grid">
-            {consultants.map((person) => (
-              <li key={person.name}>
-                <article className="tools-hub__card bento-hover">
-                  <p className="section-label">{person.role}</p>
-                  <h2>{person.name}</h2>
-                  <p>{person.story}</p>
-                  <p className="text-sm font-semibold text-brand-plum/70">Languages: {person.languages}</p>
-                </article>
-              </li>
-            ))}
-          </ul>
-        </section>
-      </article>
+              <div className="content-hero__grid relative z-[1]">
+                <div className="content-hero__copy">
+                  <p className="section-label">Trust and credentials</p>
+                  <h1 className="text-[var(--brand-navy)] [font-family:var(--font-display),Georgia,serif]">
+                    Meet the people behind your migration journey
+                  </h1>
+                  <p>
+                    Migration outcomes depend on clarity, consistency, and timing. Meet our co-founders and support team
+                    who combine human consultation with structured systems so clients can make decisions with confidence.
+                  </p>
+                </div>
+                <div className="content-hero__media" aria-hidden="true">
+                  <PublicFileImg
+                    src="/images/brisbane-skyline.v2.webp"
+                    alt="MinRosh team operations context in Brisbane"
+                    width={1600}
+                    height={900}
+                    priority
+                    sizes="(max-width: 1024px) 100vw, 42vw"
+                  />
+                </div>
+              </div>
+            </section>
+            <section className="tools-hub" aria-label="Co-founders">
+              <div className="mb-6 sm:mb-8">
+                <p className="section-label">Leadership</p>
+                <h2 className="text-3xl font-black tracking-tight text-[var(--brand-navy)] [font-family:var(--font-display),Georgia,serif] sm:text-4xl">
+                  Founder, Director & Leadership
+                </h2>
+              </div>
+              <ul className="tools-hub__grid">
+                {coFounders.map((person) => (
+                  <li key={person.name}>
+                    <article className="tools-hub__card glass-card premium-frosted-surface bento-hover rounded-[var(--radius-xl)] border border-brand-plum/12 shadow-[var(--shadow-lux)]">
+                      <div className="mb-4 overflow-hidden rounded-2xl border border-brand-plum/10 bg-white/70">
+                        <PublicFileImg
+                          src={person.imageSrc}
+                          alt={person.alt}
+                          width={640}
+                          height={640}
+                          className="h-auto w-full object-cover"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        />
+                      </div>
+                      <p className="section-label">{person.role}</p>
+                      <h3 className="[font-family:var(--font-display),Georgia,serif] text-[var(--brand-navy)]">{person.name}</h3>
+                      <p>{person.responsibilities}</p>
+                    </article>
+                  </li>
+                ))}
+              </ul>
+            </section>
+            <section className="tools-hub" aria-label="Consultant biographies">
+              <div className="mb-6 sm:mb-8">
+                <p className="section-label">Advisory and operations</p>
+                <h2 className="text-3xl font-black tracking-tight text-[var(--brand-navy)] [font-family:var(--font-display),Georgia,serif] sm:text-4xl">
+                  Wider team support
+                </h2>
+              </div>
+              <ul className="tools-hub__grid">
+                {consultants.map((person) => (
+                  <li key={person.name}>
+                    <article className="tools-hub__card glass-card premium-frosted-surface bento-hover rounded-[var(--radius-xl)] border border-brand-plum/12 shadow-[var(--shadow-lux)]">
+                      <p className="section-label">{person.role}</p>
+                      <h3 className="[font-family:var(--font-display),Georgia,serif] text-[var(--brand-navy)]">{person.name}</h3>
+                      <p>{person.story}</p>
+                      <p className="text-sm font-semibold text-brand-plum/70">
+                        Languages:{" "}
+                        <span className="text-[color:var(--brand-gold)] underline decoration-brand-gold/35 underline-offset-2">
+                          {person.languages}
+                        </span>
+                      </p>
+                    </article>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          </article>
+        </div>
+      </div>
     </SiteShell>
   );
 }
