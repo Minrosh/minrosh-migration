@@ -43,9 +43,9 @@ const timeline = [
 ];
 
 const team = [
-  { name: "Case Strategy Lead", focus: "Pathway sequencing and refusal-risk reduction", image: "/images/brisbane-skyline.jpg" },
-  { name: "Education Pathway Specialist", focus: "Study-to-career migration planning context", image: "/images/brisbane-skyline.jpg" },
-  { name: "Client Success Desk", focus: "Progress communication and action follow-through", image: "/images/brisbane-skyline.jpg" },
+  { name: "Case Strategy Lead", focus: "Pathway sequencing and refusal-risk reduction", image: "/images/hero-brisbane-river-cbd-hd.jpg" },
+  { name: "Education Pathway Specialist", focus: "Study-to-career migration planning context", image: "/images/hero-brisbane-river-cbd-hd.jpg" },
+  { name: "Client Success Desk", focus: "Progress communication and action follow-through", image: "/images/hero-brisbane-river-cbd-hd.jpg" },
 ];
 
 export default function AboutPage() {

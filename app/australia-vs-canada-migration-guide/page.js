@@ -37,10 +37,18 @@ export default function CountryComparisonGuidePage() {
           datePublished: guideData.published,
         })}
       />
+      <div className="guide-premium-shell relative min-w-0 bg-[var(--brand-cream)]">
+        <div className="w-full max-w-[var(--content-max)] mx-auto px-[var(--content-pad)] pb-16">
       <ContentPage
+        articleClassName="content-page--premium-guide"
+        enablePremiumGuideSurfaces
         eyebrow="Country Comparison Guide"
         title={guideData.headline}
         intro={guideData.intro}
+        heroImage={{
+          src: "/images/hero-brisbane-river-cbd-hd.jpg",
+          alt: "Brisbane CBD skyline and River at dusk for country comparison guidance",
+        }}
         breadcrumbs={[
           { href: "/", label: "Home" },
           { href: guideData.path, label: "Australia vs Canada Guide" },
@@ -55,6 +63,8 @@ export default function CountryComparisonGuidePage() {
           { href: "/destinations/canada", title: "Canada migration hub" },
         ]}
       />
+        </div>
+      </div>
     </SiteShell>
   );
 }

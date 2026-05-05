@@ -33,10 +33,18 @@ export default function PartnerVisaGuidePage() {
           datePublished: guideData.published,
         })}
       />
+      <div className="guide-premium-shell relative min-w-0 bg-[var(--brand-cream)]">
+        <div className="w-full max-w-[var(--content-max)] mx-auto px-[var(--content-pad)] pb-16">
       <ContentPage
+        articleClassName="content-page--premium-guide"
+        enablePremiumGuideSurfaces
         eyebrow="Partner Visa Guide"
         title={guideData.headline}
         intro={guideData.intro}
+        heroImage={{
+          src: "/images/hero-brisbane-river-cbd-hd.jpg",
+          alt: "Brisbane CBD skyline and River at dusk for partner visa guidance",
+        }}
         breadcrumbs={[
           { href: "/", label: "Home" },
           { href: "/partner-visa-australia", label: "Partner Visa" },
@@ -52,6 +60,8 @@ export default function PartnerVisaGuidePage() {
           { href: "/student-visa-australia-requirements", title: "Student visa requirements guide" },
         ]}
       />
+        </div>
+      </div>
     </SiteShell>
   );
 }

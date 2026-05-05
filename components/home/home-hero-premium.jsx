@@ -141,7 +141,7 @@ export function HomeHeroPremium({ whatsappHref }) {
             alt={HERO_BRISBANE_IMAGE.alt}
             fill
             className="object-cover object-[70%_center] md:object-bottom md:object-center"
-            sizes="(max-width: 1024px) 100vw, min(100vw, 1920px)"
+            sizes="(max-width: 768px) 100vw, 1600px"
             priority
             fetchPriority="high"
             placeholder="blur"

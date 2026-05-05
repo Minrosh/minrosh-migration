@@ -687,7 +687,7 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
               <select name="timeZone" value={form.timeZone} onChange={handleChange}>
                 <option value="Australia/Brisbane">Australia/Brisbane (AEST)</option>
                 <option value="Asia/Colombo">Asia/Colombo (Sri Lanka)</option>
-                <option value="Australia/Sydney">Australia/Sydney</option>
+                <option value="Australia/Brisbane">Australia/Brisbane</option>
               </select>
               <span className="text-xs text-brand-plum/60 mt-1 block">
                 Consultation length is fixed at 30 minutes (matches calendar and payment). Windows above refer to

@@ -25,7 +25,7 @@ export default function VisaFeesGuidePage() {
       title={guideData.headline}
       subtitle={guideData.intro}
       bgImage="/images/hero-brisbane-river-cbd-hd.jpg"
-      bgAlt="Brisbane River skyline for visa cost planning guidance"
+      bgAlt="Brisbane CBD skyline and River at dusk for visa cost planning guidance"
     />
   );
 

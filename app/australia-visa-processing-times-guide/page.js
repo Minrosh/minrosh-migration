@@ -25,7 +25,7 @@ export default function ProcessingTimesGuidePage() {
       title={guideData.headline}
       subtitle={guideData.intro}
       bgImage="/images/hero-brisbane-river-cbd-hd.jpg"
-      bgAlt="Brisbane riverfront skyline for visa timeline planning guidance"
+      bgAlt="Brisbane CBD skyline and River at dusk for visa timeline planning guidance"
     />
   );
 

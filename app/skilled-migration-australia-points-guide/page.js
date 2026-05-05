@@ -38,10 +38,18 @@ export default function SkilledMigrationGuidePage() {
           datePublished: guideData.published,
         })}
       />
+      <div className="guide-premium-shell relative min-w-0 bg-[var(--brand-cream)]">
+        <div className="w-full max-w-[var(--content-max)] mx-auto px-[var(--content-pad)] pb-16">
       <ContentPage
+        articleClassName="content-page--premium-guide"
+        enablePremiumGuideSurfaces
         eyebrow="Skilled Migration Guide"
         title={guideData.headline}
         intro={guideData.intro}
+        heroImage={{
+          src: "/images/hero-brisbane-river-cbd-hd.jpg",
+          alt: "Brisbane CBD skyline and River at dusk for skilled migration points guidance",
+        }}
         breadcrumbs={[
           { href: "/", label: "Home" },
           { href: "/skilled-migration", label: "Skilled Migration" },
@@ -57,6 +65,8 @@ export default function SkilledMigrationGuidePage() {
           { href: "/partner-visa-australia-guide", title: "Partner visa guide" },
         ]}
       />
+        </div>
+      </div>
     </SiteShell>
   );
 }

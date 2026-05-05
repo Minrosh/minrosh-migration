@@ -33,7 +33,6 @@ export function SiteShell({
   const brandAria = "Go to MinRosh homepage";
 
   const isPremiumHome = currentPath === "/";
-
   const headerBackdrop = isPremiumHome ? "none" : initialHeaderBackdrop;
 
   const backdropModifier =

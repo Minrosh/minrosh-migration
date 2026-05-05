@@ -33,10 +33,18 @@ export default function ImmigrationLawyerVsAgentGuidePage() {
           datePublished: guideData.published,
         })}
       />
+      <div className="guide-premium-shell relative min-w-0 bg-[var(--brand-cream)]">
+        <div className="w-full max-w-[var(--content-max)] mx-auto px-[var(--content-pad)] pb-16">
       <ContentPage
+        articleClassName="content-page--premium-guide"
+        enablePremiumGuideSurfaces
         eyebrow="Advisor Selection Guide"
         title={guideData.headline}
         intro={guideData.intro}
+        heroImage={{
+          src: "/images/hero-brisbane-river-cbd-hd.jpg",
+          alt: "Brisbane CBD skyline and River at dusk for advisor selection guidance",
+        }}
         breadcrumbs={[
           { href: "/", label: "Home" },
           { href: guideData.path, label: "Lawyer vs Agent Guide" },
@@ -51,6 +59,8 @@ export default function ImmigrationLawyerVsAgentGuidePage() {
           { href: "/skilled-migration", title: "Skilled migration service" },
         ]}
       />
+        </div>
+      </div>
     </SiteShell>
   );
 }

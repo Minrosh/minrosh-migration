@@ -149,6 +149,7 @@ export function QuizWizardPanel({ isActive, onGoToContact, resultSkeleton }) {
   const quizStepProgressRaw = ((quizStepIndex + 1) / quizSteps.length) * 100;
   const quizStepProgress = Math.min(100, 35 + quizStepProgressRaw * 0.65);
   const canAdvance = currentQuizStep.fields.every((field) => fieldIsComplete(field, quizForm));
+  const finalStepComplete = currentQuizStep.fields.every((field) => fieldIsComplete(field, quizForm));
   const quizComplete = quizSteps.every((step) =>
     step.fields.every((field) => fieldIsComplete(field, quizForm))
   );
@@ -502,7 +503,7 @@ export function QuizWizardPanel({ isActive, onGoToContact, resultSkeleton }) {
                 <button
                   type="button"
                   className={`min-h-[48px] px-8 py-3 rounded-xl font-bold text-lg shadow-xl transition-all flex items-center gap-2 ${
-                    !quizComplete 
+                    !finalStepComplete 
                     ? "text-white/70 bg-brand-plum/45 cursor-not-allowed shadow-none" 
                     : "text-white bg-gradient-to-r from-brand-plum to-brand-rose hover:scale-105 shadow-brand-rose/50"
                   }`}
@@ -511,7 +512,7 @@ export function QuizWizardPanel({ isActive, onGoToContact, resultSkeleton }) {
                     trackEvent("quiz_continue_to_report_clicked", { points_score: quizResult?.score || 0 });
                     onGoToContact?.();
                   }}
-                  disabled={!quizComplete || reportEmailInvalid}
+                  disabled={!finalStepComplete || reportEmailInvalid}
                 >
                   Book consultation
                 </button>

@@ -48,7 +48,7 @@ export default function SriLankaMigrationPage() {
         faq={pageData.faq}
         heroImage={{
           src: "/images/hero-brisbane-river-cbd-hd.jpg",
-          alt: "Brisbane River and CBD skyline — migration from Sri Lanka context",
+          alt: "Brisbane CBD skyline and River at dusk for migration from Sri Lanka guidance",
         }}
         related={[
           ...(pageData.relatedGuides || []),

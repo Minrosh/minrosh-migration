@@ -101,12 +101,13 @@ export default function MeetTheTeamPage() {
                 </div>
                 <div className="content-hero__media" aria-hidden="true">
                   <PublicFileImg
-                    src="/images/brisbane-skyline.v2.webp"
-                    alt="MinRosh team operations context in Brisbane"
+                    src="/images/hero-brisbane-river-cbd-hd.jpg"
+                    alt="Brisbane CBD skyline and River at dusk for team operations context"
                     width={1600}
                     height={900}
+                    className="h-full w-full object-cover object-[70%_center] md:object-[center_bottom]"
                     priority
-                    sizes="(max-width: 1024px) 100vw, 42vw"
+                    sizes="(max-width: 768px) 100vw, 1600px"
                   />
                 </div>
               </div>
@@ -128,7 +129,7 @@ export default function MeetTheTeamPage() {
                           alt={person.alt}
                           width={640}
                           height={640}
-                          className="h-auto w-full object-cover"
+                          className="h-auto w-full object-cover object-[70%_center] md:object-[center_bottom]"
                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                         />
                       </div>

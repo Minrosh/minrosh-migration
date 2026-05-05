@@ -27,7 +27,7 @@ export default function SkilledMigrationPage() {
       title={pageData.headline}
       subtitle={pageData.intro}
       bgImage="/images/hero-brisbane-river-cbd-hd.jpg"
-      bgAlt="Brisbane River and CBD skyline for Australian skilled migration context"
+      bgAlt="Brisbane CBD skyline and River at dusk for Australian skilled migration guidance"
     />
   );
 
@@ -86,7 +86,7 @@ export default function SkilledMigrationPage() {
             mainLead={<HubClusterNavigator category="skilled" currentPath={pageData.path} />}
             heroImage={{
           src: "/images/hero-brisbane-river-cbd-hd.jpg",
-          alt: "Brisbane River and CBD skyline — Australian skilled migration context",
+          alt: "Brisbane CBD skyline and River at dusk for Australian skilled migration guidance",
             }}
             summary="Skilled migration allows qualified professionals to move to Australia based on their points, occupation, and state demand. Key steps include Skills Assessment, English testing, and an Expression of Interest (EOI)."
             takeaways={[

@@ -25,7 +25,7 @@ export default function DocumentChecklistGuidePage() {
       title={guideData.headline}
       subtitle={guideData.intro}
       bgImage="/images/hero-brisbane-river-cbd-hd.jpg"
-      bgAlt="Brisbane River skyline for visa document checklist guidance"
+      bgAlt="Brisbane CBD skyline and River at dusk for visa document checklist guidance"
     />
   );
 

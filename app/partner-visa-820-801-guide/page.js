@@ -33,10 +33,18 @@ export default function PartnerVisaOnshoreGuidePage() {
           datePublished: guideData.published,
         })}
       />
+      <div className="guide-premium-shell relative min-w-0 bg-[var(--brand-cream)]">
+        <div className="w-full max-w-[var(--content-max)] mx-auto px-[var(--content-pad)] pb-16">
       <ContentPage
+        articleClassName="content-page--premium-guide"
+        enablePremiumGuideSurfaces
         eyebrow="Partner Visa Onshore Guide"
         title={guideData.headline}
         intro={guideData.intro}
+        heroImage={{
+          src: "/images/hero-brisbane-river-cbd-hd.jpg",
+          alt: "Brisbane CBD skyline and River at dusk for onshore partner visa guidance",
+        }}
         breadcrumbs={[
           { href: "/", label: "Home" },
           { href: "/partner-visa-australia", label: "Partner Visa" },
@@ -52,6 +60,8 @@ export default function PartnerVisaOnshoreGuidePage() {
           { href: "/book-consultation", title: "Book consultation" },
         ]}
       />
+        </div>
+      </div>
     </SiteShell>
   );
 }

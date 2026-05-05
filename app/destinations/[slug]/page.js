@@ -129,7 +129,7 @@ export default async function DestinationPage({ params }) {
         }
         heroImage={{
           src: "/images/team-office-real.jpg",
-          alt: "Professional office environment for migration planning discussions",
+          alt: "Brisbane CBD skyline and River at dusk for migration planning guidance",
         }}
       />
     </SiteShell>

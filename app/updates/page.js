@@ -57,10 +57,13 @@ export default function UpdatesPage() {
             </div>
             <div className="content-hero__media" aria-hidden="true">
               <PublicFileImg
-                src="/images/brisbane-skyline.jpg"
-                alt="Brisbane skyline and riverfront"
+                src="/images/hero-brisbane-river-cbd-hd.jpg"
+                alt="Brisbane CBD skyline and River at dusk for migration updates"
                 width={1600}
                 height={900}
+                className="h-full w-full object-cover object-[70%_center] md:object-[center_bottom]"
+                priority
+                sizes="(max-width: 768px) 100vw, 1600px"
               />
             </div>
           </div>

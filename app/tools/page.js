@@ -6,6 +6,7 @@ import { SiteShell } from "../../components/site-shell";
 import { StructuredData } from "../../components/structured-data";
 import { buildMetadata, breadcrumbJsonLd } from "../../lib/seo";
 import { SkilledCostTimelineCalculator } from "../../components/tools/skilled-cost-timeline-calculator";
+import { PublicFileImg } from "../../components/public-file-img";
 
 const path = "/tools";
 
@@ -86,7 +87,9 @@ export default function ToolsPage() {
         ])}
       />
 
-      <article className="content-page">
+      <div className="guide-premium-shell relative min-w-0 bg-[var(--brand-cream)] pb-16">
+      <div className="w-full max-w-[var(--content-max)] mx-auto px-[var(--content-pad)]">
+      <article className="content-page content-page--premium-guide">
         <BreadcrumbsNav
           currentPath={path}
           items={[
@@ -95,7 +98,7 @@ export default function ToolsPage() {
           ]}
         />
 
-        <section className="content-hero">
+        <section className="content-hero glass-card premium-frosted-surface">
           <div className="content-hero__grid">
             <div className="content-hero__copy">
               <p className="section-label">Client tools</p>
@@ -110,6 +113,17 @@ export default function ToolsPage() {
                 migration advice.
               </p>
             </div>
+            <div className="content-hero__media" aria-hidden="true">
+              <PublicFileImg
+                src="/images/hero-brisbane-river-cbd-hd.jpg"
+                alt="Brisbane CBD skyline and River at dusk for migration tools guidance"
+                width={1600}
+                height={900}
+                className="h-full w-full object-cover object-[70%_center] md:object-[center_bottom]"
+                priority
+                sizes="(max-width: 768px) 100vw, 1600px"
+              />
+            </div>
           </div>
         </section>
 
@@ -123,7 +137,7 @@ export default function ToolsPage() {
           <ul className="tools-hub__grid">
             {toolCards.map((card) => (
               <li key={card.href}>
-                <article className="tools-hub__card bento-hover">
+                <article className="tools-hub__card glass-card premium-frosted-surface bento-hover rounded-[var(--radius-xl)] border border-brand-plum/12 shadow-[var(--shadow-lux)]">
                   <h3>{card.title}</h3>
                   <p>{card.body}</p>
                   <Link
@@ -140,7 +154,7 @@ export default function ToolsPage() {
 
         <SkilledCostTimelineCalculator />
 
-        <section className="content-section bento-hover tools-hub__footer-cta">
+        <section className="content-section glass-card premium-frosted-surface bento-hover tools-hub__footer-cta">
           <h2>Prefer to speak first?</h2>
           <p>
             Use <Link href="/contact">contact</Link> for a written enquiry, or return to the{" "}
@@ -148,6 +162,8 @@ export default function ToolsPage() {
           </p>
         </section>
       </article>
+      </div>
+      </div>
     </SiteShell>
   );
 }

@@ -54,8 +54,8 @@ export default function PartnerVisaPage() {
         title={pageData.headline}
         intro={pageData.intro}
         heroImage={{
-          src: "/images/brisbane-skyline.v2.webp",
-          alt: "Brisbane riverfront — partner visa evidence planning with consistent relationship documentation",
+          src: "/images/hero-brisbane-river-cbd-hd.jpg",
+          alt: "Brisbane CBD skyline and River at dusk for partner visa evidence planning guidance",
         }}
         breadcrumbs={[
           { href: "/", label: "Home" },

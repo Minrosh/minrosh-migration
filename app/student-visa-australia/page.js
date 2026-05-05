@@ -34,7 +34,7 @@ export default function StudentVisaPage() {
       title={pageData.headline}
       subtitle={pageData.intro}
       bgImage="/images/hero-brisbane-river-cbd-hd.jpg"
-      bgAlt="Brisbane riverfront skyline for student visa planning guidance"
+      bgAlt="Brisbane CBD skyline and River at dusk for student visa planning guidance"
     />
   );
 
@@ -83,7 +83,7 @@ export default function StudentVisaPage() {
             intro={pageData.intro}
             heroImage={{
           src: "/images/hero-brisbane-river-cbd-hd.jpg",
-          alt: "Education and visa planning context — course choice aligns with Genuine Student expectations",
+          alt: "Brisbane CBD skyline and River at dusk for student visa planning guidance",
             }}
             breadcrumbs={[
           { href: "/", label: "Home" },

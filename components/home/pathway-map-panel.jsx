@@ -29,12 +29,12 @@ const AUSTRALIA_UNIVERSITIES = [
     detail: "Melbourne route with major graduate and professional migration pipelines.",
   },
   {
-    label: "UNSW Sydney (Sydney)",
+    label: "UNSW Brisbane (Brisbane)",
     type: "University",
     country: "Australia",
     lat: -33.9173,
     lng: 151.2313,
-    detail: "Sydney track for higher education and skilled career transitions.",
+    detail: "Brisbane track for higher education and skilled career transitions.",
   },
   {
     label: "Monash University (Melbourne)",
@@ -53,20 +53,20 @@ const AUSTRALIA_UNIVERSITIES = [
     detail: "National university pathway in Canberra with broad research programs.",
   },
   {
-    label: "University of Sydney (Sydney)",
+    label: "University of Brisbane (Brisbane)",
     country: "Australia",
     type: "University",
     lat: -33.8886,
     lng: 151.1873,
-    detail: "Sydney-based university with major international student pathways.",
+    detail: "Brisbane-based university with major international student pathways.",
   },
   {
-    label: "University of New South Wales (Sydney)",
+    label: "University of New South Wales (Brisbane)",
     country: "Australia",
     type: "University",
     lat: -33.9173,
     lng: 151.2313,
-    detail: "Leading Sydney university for engineering, technology, and business.",
+    detail: "Leading Brisbane university for engineering, technology, and business.",
   },
   {
     label: "University of Adelaide (Adelaide)",
@@ -85,12 +85,12 @@ const AUSTRALIA_UNIVERSITIES = [
     detail: "Perth-based university route for undergraduate and postgraduate programs.",
   },
   {
-    label: "University of Technology Sydney (Sydney)",
+    label: "University of Technology Brisbane (Brisbane)",
     country: "Australia",
     type: "University",
     lat: -33.8837,
     lng: 151.2006,
-    detail: "Applied and industry-linked study pathway in Sydney.",
+    detail: "Applied and industry-linked study pathway in Brisbane.",
   },
   {
     label: "RMIT University (Melbourne)",
@@ -109,12 +109,12 @@ const AUSTRALIA_UNIVERSITIES = [
     detail: "Brisbane university pathway focused on practical and professional courses.",
   },
   {
-    label: "Macquarie University (Sydney)",
+    label: "Macquarie University (Brisbane)",
     country: "Australia",
     type: "University",
     lat: -33.7751,
     lng: 151.1126,
-    detail: "Sydney north corridor university with broad international programs.",
+    detail: "Brisbane north corridor university with broad international programs.",
   },
   {
     label: "Deakin University (Melbourne)",
@@ -165,12 +165,12 @@ const AUSTRALIA_UNIVERSITIES = [
     detail: "Coastal NSW university with international student programs.",
   },
   {
-    label: "Western Sydney University (Sydney)",
+    label: "Western Brisbane University (Brisbane)",
     country: "Australia",
     type: "University",
     lat: -33.7522,
     lng: 150.6942,
-    detail: "Greater Sydney multi-campus university pathway.",
+    detail: "Greater Brisbane multi-campus university pathway.",
   },
   {
     label: "Swinburne University of Technology (Melbourne)",
@@ -277,7 +277,7 @@ const AUSTRALIA_UNIVERSITIES = [
     detail: "Western Australia university route for practical and professional fields.",
   },
   {
-    label: "University of Notre Dame Australia (Fremantle/Sydney)",
+    label: "University of Notre Dame Australia (Fremantle/Brisbane)",
     country: "Australia",
     type: "University",
     lat: -32.0555,
@@ -341,7 +341,7 @@ const AUSTRALIA_UNIVERSITIES = [
     detail: "Private university pathway in New South Wales.",
   },
   {
-    label: "Torrens University Australia (Adelaide/Sydney/Melbourne)",
+    label: "Torrens University Australia (Adelaide/Brisbane/Melbourne)",
     country: "Australia",
     type: "University",
     lat: -34.9228,
@@ -410,7 +410,7 @@ const ROUTE_SCENARIOS = [
 
 function universitiesForIntent(intentId) {
   if (intentId === "explore" || intentId === "student") return AUSTRALIA_UNIVERSITIES;
-  const metro = /(Sydney|Melbourne|Brisbane|Perth|Adelaide|Canberra)/i;
+  const metro = /(Brisbane|Melbourne|Perth|Adelaide|Canberra)/i;
   if (intentId === "employer") {
     return AUSTRALIA_UNIVERSITIES.filter((u) => metro.test(u.label));
   }

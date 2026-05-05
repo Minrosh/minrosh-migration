@@ -43,7 +43,7 @@ export default function AustralianVisasOfficialSourcesPage() {
         ]}
         heroImage={{
           src: "/images/visual-strip-destinations.jpg",
-          alt: "Australian cities and travel context — always confirm visa criteria on immi.homeaffairs.gov.au",
+          alt: "Brisbane CBD skyline and River at dusk for Australian visa official sources guidance",
         }}
         belowHero={<AustralianVisasHubLead />}
         articleClassName="content-page--aus-visas-hub"
