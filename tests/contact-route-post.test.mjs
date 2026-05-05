@@ -55,6 +55,7 @@ vi.mock("../lib/supabase/enquiries-dual-write.js", () => ({
 
 import { rateLimitAllow } from "../lib/security/rate-limit.js";
 import { sendContactEmails } from "../lib/contact.js";
+import { dualWriteEnquiryToSupabase } from "../lib/supabase/enquiries-dual-write.js";
 import { POST } from "../app/api/contact/route.js";
 
 function req(json, headers = {}) {
@@ -142,5 +143,27 @@ describe("POST /api/contact", () => {
     expect(payload?.ok).toBe(false);
     expect(payload?.error?.code).toBe("MAIL_DELIVERY_FAILED");
     expect(String(payload?.error?.message || "")).toMatch(/try again/i);
+  });
+
+  it("returns 503 and does not attempt email when Supabase dual-write fails", async () => {
+    rateLimitAllow.mockReturnValue(true);
+    dualWriteEnquiryToSupabase.mockResolvedValueOnce({ ok: false, error: "insert_failed" });
+    sendContactEmails.mockClear();
+    const res = await POST(
+      req({
+        firstName: "A",
+        lastName: "B",
+        email: "a@example.com",
+        phone: "+61000000000",
+        mainNeed: "General Enquiry",
+        message: "Hello",
+        privacyPolicyAccepted: true,
+      }),
+    );
+    expect(res.status).toBe(503);
+    const payload = await res.json();
+    expect(payload?.ok).toBe(false);
+    expect(payload?.error?.code).toBe("UPSTREAM_ERROR");
+    expect(sendContactEmails).not.toHaveBeenCalled();
   });
 });

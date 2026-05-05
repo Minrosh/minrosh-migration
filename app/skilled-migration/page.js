@@ -6,6 +6,8 @@ import { StructuredData } from "../../components/structured-data";
 import { buildMetadata, breadcrumbJsonLd, faqJsonLd } from "../../lib/seo";
 import { HubClusterNavigator } from "../../components/seo/hub-cluster-navigator";
 import { VisaRailSkilledAu } from "../../components/visa-rail-skilled-au";
+import { PageHeroStrip } from "../../components/ui/page-hero-strip";
+import { CONVERSION_PREMIUM_PRIMARY_CTA_CLASS } from "../../lib/conversion-premium-cta-class";
 
 const pageData = seoPages.servicePages.skilledMigration;
 
@@ -17,6 +19,18 @@ export const metadata = buildMetadata({
 });
 
 export default function SkilledMigrationPage() {
+  const heroStrip = (
+    <PageHeroStrip
+      className="guide-page-hero-strip h-[320px] sm:h-[360px]"
+      overlayClassName="guide-page-hero-strip__overlay"
+      eyebrow="Skilled Migration Australia"
+      title={pageData.headline}
+      subtitle={pageData.intro}
+      bgImage="/images/hero-brisbane-river-cbd-hd.jpg"
+      bgAlt="Brisbane River and CBD skyline for Australian skilled migration context"
+    />
+  );
+
   return (
     <SiteShell siteData={siteData} currentPath={pageData.path}>
       <StructuredData
@@ -26,16 +40,22 @@ export default function SkilledMigrationPage() {
         ])}
       />
       <StructuredData data={faqJsonLd(pageData.faq)} />
-      <ContentPage
-        leftRail={<VisaRailSkilledAu currentPath={pageData.path} />}
-        routeAccent="skilled"
-        eligibilityChecklist={[
+      <div className="guide-premium-shell relative min-w-0 bg-[var(--brand-cream)]">
+        <div className="w-full max-w-[var(--content-max)] mx-auto px-[var(--content-pad)] pb-16">
+          <ContentPage
+            leftRail={<VisaRailSkilledAu currentPath={pageData.path} />}
+            routeAccent="skilled"
+            articleClassName="content-page--premium-guide"
+            heroSlot={heroStrip}
+            enablePremiumGuideSurfaces
+            primaryCtaClassName={CONVERSION_PREMIUM_PRIMARY_CTA_CLASS}
+            eligibilityChecklist={[
           "Occupation and skills assessment pathway identified against current priority lists — lists change.",
           "Points posture understood for subclasses you are considering (189/190/491 and related streams).",
           "English testing plan aligned to the level required for your pathway.",
           "State or territory nomination research captured where relevant to your timeline.",
-        ]}
-        howWeHelp={[
+            ]}
+            howWeHelp={[
           {
             title: "Evidence structure",
             body: "Skills assessment and employment narratives are organised so reviewers see a consistent story.",
@@ -51,30 +71,30 @@ export default function SkilledMigrationPage() {
             body: "Advice stays anchored to Home Affairs instruments and departmental guidance—not forum summaries alone.",
             icon: "strategy",
           },
-        ]}
-        eyebrow="Skilled Migration Australia"
-        title={pageData.headline}
-        intro={pageData.intro}
-        breadcrumbs={[
+            ]}
+            eyebrow="Skilled Migration Australia"
+            title={pageData.headline}
+            intro={pageData.intro}
+            breadcrumbs={[
           { href: "/", label: "Home" },
           { href: pageData.path, label: "Skilled Migration" },
-        ]}
-        currentPath={pageData.path}
-        officialResources={pageData.officialResources ?? []}
-        sections={pageData.sections}
-        faq={pageData.faq}
-        mainLead={<HubClusterNavigator category="skilled" currentPath={pageData.path} />}
-        heroImage={{
+            ]}
+            currentPath={pageData.path}
+            officialResources={pageData.officialResources ?? []}
+            sections={pageData.sections}
+            faq={pageData.faq}
+            mainLead={<HubClusterNavigator category="skilled" currentPath={pageData.path} />}
+            heroImage={{
           src: "/images/hero-brisbane-river-cbd-hd.jpg",
           alt: "Brisbane River and CBD skyline — Australian skilled migration context",
-        }}
-        summary="Skilled migration allows qualified professionals to move to Australia based on their points, occupation, and state demand. Key steps include Skills Assessment, English testing, and an Expression of Interest (EOI)."
-        takeaways={[
+            }}
+            summary="Skilled migration allows qualified professionals to move to Australia based on their points, occupation, and state demand. Key steps include Skills Assessment, English testing, and an Expression of Interest (EOI)."
+            takeaways={[
           "Verify your occupation on the latest priority list",
           "Calculate your points profile for 189/190 subclasses",
           "Map your skills assessment and English test sequence"
-        ]}
-        related={[
+            ]}
+            related={[
           ...pageData.relatedGuides,
           {
             href: "/skilled-migration-australia-points-guide",
@@ -88,8 +108,10 @@ export default function SkilledMigrationPage() {
             href: "/australian-visas-official-sources",
             title: "Official Sources",
           },
-        ]}
-      />
+            ]}
+          />
+        </div>
+      </div>
     </SiteShell>
   );
 }

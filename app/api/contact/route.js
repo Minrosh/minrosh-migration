@@ -289,6 +289,26 @@ export async function POST(request) {
   }
   const supabasePersisted = Boolean(supabaseResult.ok && !supabaseResult.skipped);
 
+  if (!supabaseResult.ok) {
+    obsLogger.error("contact_supabase_dual_write_failed_pre_email", {
+      enquiryId: enquiryRecord.id,
+      reason: String(supabaseResult.error || "unknown"),
+    });
+    return apiFail(
+      {
+        code: API_ERROR_CODES.UPSTREAM_ERROR,
+        message:
+          "Your enquiry could not be saved to our secure records right now, so we have not sent emails yet. Please retry in a few minutes.",
+        status: 503,
+        details: {
+          reason: supabaseResult.error || "supabase_dual_write_failed",
+          enquiryId: enquiryRecord.id,
+        },
+      },
+      context
+    );
+  }
+
   const mailResult = await sendContactEmails(enquiryRecord);
 
   if (!mailResult.internalSent) {

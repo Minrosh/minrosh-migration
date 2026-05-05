@@ -98,6 +98,12 @@ export function ContentPage({
   howWeHelp = [],
   /** Optional sticky left column (e.g. visa family shortcuts — prototype “visa subpage” nav). */
   leftRail = null,
+  /** Optional custom hero node to replace default content-hero section. */
+  heroSlot = null,
+  /** Enable glass/frosted surfaces for TOC, aside cards, and premium info blocks. */
+  enablePremiumGuideSurfaces = false,
+  /** Optional class string for the primary CTA in the aside card. */
+  primaryCtaClassName = "",
 }) {
   const resolvedPath = currentPath || breadcrumbs[breadcrumbs.length - 1]?.href || "";
   const personalizedCta = personalizedCtaForPath(resolvedPath);
@@ -136,38 +142,42 @@ export function ContentPage({
       ) : null}
 
       <ContentBodyWithOptionalLeftRail leftRail={leftRail}>
-      <MotionReveal as="section" className="content-hero">
-        <div className="content-hero__grid">
-          <div className="content-hero__copy">
-            <p className="section-label">{eyebrow}</p>
-            <h1>{title}</h1>
-            <GlossaryParagraph text={intro} />
-            {alertBanner ? (
-              <div className="content-alert-banner" role="note">
-                <strong>{alertBanner.title}</strong>
-                <GlossaryParagraph text={alertBanner.body} />
-                {alertBanner.href ? (
-                  <p className="content-alert-banner__link">
-                    <a href={alertBanner.href} target="_blank" rel="noreferrer">
-                      {alertBanner.linkLabel || "Official source"}
-                    </a>
-                  </p>
-                ) : null}
-              </div>
-            ) : null}
+      {heroSlot ? (
+        heroSlot
+      ) : (
+        <MotionReveal as="section" className="content-hero">
+          <div className="content-hero__grid">
+            <div className="content-hero__copy">
+              <p className="section-label">{eyebrow}</p>
+              <h1>{title}</h1>
+              <GlossaryParagraph text={intro} />
+              {alertBanner ? (
+                <div className="content-alert-banner" role="note">
+                  <strong>{alertBanner.title}</strong>
+                  <GlossaryParagraph text={alertBanner.body} />
+                  {alertBanner.href ? (
+                    <p className="content-alert-banner__link">
+                      <a href={alertBanner.href} target="_blank" rel="noreferrer">
+                        {alertBanner.linkLabel || "Official source"}
+                      </a>
+                    </p>
+                  ) : null}
+                </div>
+              ) : null}
+            </div>
+            <div className="content-hero__media" aria-hidden="true">
+              <PublicFileImg
+                src={heroImage.src}
+                alt={heroImage.alt}
+                width={1600}
+                height={900}
+                priority
+              sizes="(max-width: 768px) 100vw, 1600px"
+              />
+            </div>
           </div>
-          <div className="content-hero__media" aria-hidden="true">
-            <PublicFileImg
-              src={heroImage.src}
-              alt={heroImage.alt}
-              width={1600}
-              height={900}
-              priority
-              sizes="(max-width: 1024px) 100vw, 42vw"
-            />
-          </div>
-        </div>
-      </MotionReveal>
+        </MotionReveal>
+      )}
 
       {belowHero ? <div className="content-page__below-hero">{belowHero}</div> : null}
 
@@ -248,7 +258,10 @@ export function ContentPage({
           {eligibilityChecklist?.length || howWeHelp?.length ? (
             <div className="content-premium-blocks">
               {eligibilityChecklist?.length ? (
-                <section className="content-premium-eligibility" aria-labelledby="eligibility-checklist-heading">
+                <section
+                  className={`content-premium-eligibility${enablePremiumGuideSurfaces ? " glass-card premium-frosted-surface" : ""}`}
+                  aria-labelledby="eligibility-checklist-heading"
+                >
                   <h2 id="eligibility-checklist-heading">Eligibility checklist</h2>
                   <p className="mb-4 text-sm leading-relaxed text-[var(--muted)]">
                     Use this as a preparation lens—always confirm against current official criteria for your subclass.
@@ -266,7 +279,10 @@ export function ContentPage({
                 </section>
               ) : null}
               {howWeHelp?.length ? (
-                <section className="content-premium-how-we-help" aria-labelledby="how-we-help-heading">
+                <section
+                  className={`content-premium-how-we-help${enablePremiumGuideSurfaces ? " glass-card premium-frosted-surface" : ""}`}
+                  aria-labelledby="how-we-help-heading"
+                >
                   <h2 id="how-we-help-heading">How we help</h2>
                   <div className="content-premium-how-we-help__grid">
                     {howWeHelp.map((item) => {
@@ -349,7 +365,7 @@ export function ContentPage({
         <aside className="content-page__aside">
           {showToc ? (
             <nav className="content-page__toc content-page__toc--sticky" aria-label="On this page">
-              <div className="content-page__toc-inner bento-hover">
+              <div className={`content-page__toc-inner bento-hover${enablePremiumGuideSurfaces ? " glass-card premium-frosted-surface" : ""}`}>
                 <p className="content-page__toc-label">On this page</p>
                 <ol className="content-page__toc-list content-page__toc-list--numbered">
                   {tocEntries.map((item) => (
@@ -362,12 +378,15 @@ export function ContentPage({
             </nav>
           ) : null}
           {asideTools ? <div className="content-page__aside-tools">{asideTools}</div> : null}
-          <div className="content-aside-card bento-hover">
+          <div className={`content-aside-card bento-hover${enablePremiumGuideSurfaces ? " glass-card premium-frosted-surface" : ""}`}>
             <p className="section-label">Next steps</p>
             <h3>{ctaTitle || personalizedCta.title}</h3>
             <GlossaryParagraph text={ctaBody || personalizedCta.body} />
             <div className="content-aside-card__actions">
-              <Link href="/book-consultation" className="btn btn-primary min-h-[48px] touch-manipulation">
+              <Link
+                href="/book-consultation"
+                className={`${primaryCtaClassName || "btn btn-primary"} min-h-[48px] touch-manipulation`}
+              >
                 Book Consultation
               </Link>
               <Link href="/assessment" className="btn btn-ghost min-h-[48px] touch-manipulation">
@@ -386,7 +405,7 @@ export function ContentPage({
           </div>
 
           {dedupedRelated.length ? (
-            <div className="content-aside-card bento-hover">
+            <div className={`content-aside-card bento-hover${enablePremiumGuideSurfaces ? " glass-card premium-frosted-surface" : ""}`}>
               <p className="section-label">Related Pages</p>
               <div className="content-links">
                 {dedupedRelated.map((item) => (
