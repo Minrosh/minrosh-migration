@@ -27,20 +27,18 @@ export default function HomePage() {
         <div className="relative z-10 w-full min-w-0">
           <HomeHeroPremium whatsappHref={homeHeroWhatsAppHref} />
 
-          <div className="home-page-content-lane mx-auto w-full min-w-0 max-w-[var(--content-max)]">
-            <div className="px-[var(--content-pad)]">
-              <HomeBuyerJourneyStrip />
+          <div className="w-full max-w-[var(--content-max)] mx-auto px-[var(--content-pad)]">
+            <HomeBuyerJourneyStrip />
 
-              <HomeDestinationCards countries={siteData.countries} />
+            <HomeDestinationCards countries={siteData.countries} />
 
-              <HomeServicesPathways />
+            <HomeServicesPathways />
 
-              <HomePlanningTools />
+            <HomePlanningTools />
 
-              <HomeDeferredCarouselsLazy newsItems={newsData} />
+            <HomeDeferredCarouselsLazy newsItems={newsData} />
 
-              <HomeFinalCta />
-            </div>
+            <HomeFinalCta />
           </div>
         </div>
       </UltraMaximumLayout>

@@ -4279,7 +4279,7 @@ a.brand:hover .brand__mark {
 }
 
 .form-feedback.is-error {
-  color: #8c2738;
+  color: var(--brand-rose);
 }
 
 .assistant-panel {
@@ -4659,11 +4659,19 @@ a.brand:hover .brand__mark {
   margin-bottom: 20px;
 }
 
+.destination-card {
+  background-color: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
 .tsmit-tool {
   padding: 22px;
   border-radius: var(--radius-lg);
   border: 1px solid var(--line);
-  background: #ffffff;
+  background-color: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   box-shadow: var(--shadow-soft);
 }
 
@@ -6781,13 +6789,13 @@ body.immersive-theme {
   margin-top: 6px;
   font-size: 0.85rem;
   font-weight: 600;
-  color: #9b1c1c;
+  color: var(--brand-rose);
 }
 
 .contact-form label.has-error input,
 .contact-form label.has-error textarea,
 .contact-form label.has-error select {
-  border-color: rgba(155, 28, 28, 0.45);
+  border-color: color-mix(in srgb, var(--brand-rose) 42%, transparent);
 }
 
 .quiz-summary-artifact {

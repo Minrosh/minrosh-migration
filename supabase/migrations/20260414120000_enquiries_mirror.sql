@@ -1,5 +1,5 @@
--- Phase 1 dual-write: mirror website enquiries from JSON into Postgres for backup / future read switch.
--- Enable with SUPABASE_DUAL_WRITE_ENQUIRIES=true after applying this migration.
+-- Phase 1 dual-write: mirror website enquiries (and quiz lead payloads) from the app into Postgres for backup.
+-- Default: dual-write when Supabase URL + service role are configured. Set SUPABASE_DUAL_WRITE_ENQUIRIES=false to disable.
 
 create table if not exists public.enquiries_mirror (
   id text primary key,

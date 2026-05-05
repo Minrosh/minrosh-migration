@@ -68,7 +68,7 @@ export const metadata = {
         url: "/images/hero-brisbane-river-cbd.jpg",
         width: 1800,
         height: 1200,
-        alt: "Brisbane River and CBD skyline at dusk",
+        alt: "Brisbane River and CBD skyline at dusk with the city centre in view",
       },
     ],
   },

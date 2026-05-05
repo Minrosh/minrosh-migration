@@ -15,6 +15,8 @@ import { retryAfterHint } from "@/lib/http/retry-after";
 import { REQUEST_ID_HEADER } from "@/lib/observability/request-id";
 import { isHcaptchaPublicEnabled } from "@/lib/config";
 import { HCaptchaField } from "./hcaptcha-field";
+import { isValidEmailClient } from "@/lib/validation/email-client";
+import { MAX_CONTACT_MESSAGE_CHARS } from "@/lib/validation/contact-schema";
 
 const CAPTCHA_ENABLED = isHcaptchaPublicEnabled();
 
@@ -32,7 +34,7 @@ function validateLeadForm(form, mode, resumeFile) {
 
   if (!email && !phoneDigits) {
     errors.email = "Please provide an email or phone number so we can respond.";
-  } else if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+  } else if (email && !isValidEmailClient(email)) {
     errors.email = "Please enter a valid email address.";
   } else if (phoneDigits && phoneDigits.length < 8) {
     errors.phone = "Please check your phone number.";
@@ -43,6 +45,8 @@ function validateLeadForm(form, mode, resumeFile) {
     errors.message = "Please describe your situation.";
   } else if (message.length < 5) {
     errors.message = "Please provide a brief description.";
+  } else if (message.length > MAX_CONTACT_MESSAGE_CHARS) {
+    errors.message = `Please shorten your message (maximum ${MAX_CONTACT_MESSAGE_CHARS} characters).`;
   }
   
   if (mode === "consultation") {
@@ -56,7 +60,7 @@ function validateLeadForm(form, mode, resumeFile) {
         preferredDate: String(form.preferredDate || "").trim(),
         preferredTime: String(form.preferredTime || "").trim(),
         timeZone: String(form.timeZone || "Australia/Brisbane").trim(),
-        slotDurationMins: 30,
+        slotDurationMins: Number(String(form.consultationDurationMins || "30").trim()) || 30,
       });
       if (!slot.ok) {
         errors.preferredTime = slot.error;
@@ -259,13 +263,23 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
 
   function handleChange(event) {
     const { name, value, type, checked } = event.target;
+    const nextVal = type === "checkbox" ? checked : value;
     setForm((current) => ({
       ...current,
-      [name]: type === "checkbox" ? checked : value,
+      [name]: nextVal,
     }));
     setFieldErrors((current) => {
-      if (!current[name]) return current;
       const next = { ...current };
+      if (name === "email") {
+        const em = String(type === "checkbox" ? "" : value).trim();
+        if (em && !isValidEmailClient(em)) {
+          next.email = "Please enter a valid email address.";
+        } else {
+          delete next.email;
+        }
+        return next;
+      }
+      if (!current[name]) return current;
       delete next[name];
       return next;
     });
@@ -294,7 +308,7 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
   }
 
   function stepErrorsFor(stepIndex) {
-    const allErrors = validateLeadForm(form, mode);
+    const allErrors = validateLeadForm(form, mode, resumeFile);
     const fields = new Set(stepFieldGroups[stepIndex] || []);
     return Object.fromEntries(Object.entries(allErrors).filter(([field]) => fields.has(field)));
   }
@@ -673,6 +687,9 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
                 <option value="Asia/Colombo">Asia/Colombo (Sri Lanka)</option>
                 <option value="Australia/Sydney">Australia/Sydney</option>
               </select>
+              <span className="text-xs text-brand-plum/60 mt-1 block">
+                Consultation length is fixed at 30 minutes (matches calendar and payment).
+              </span>
             </label>
             <label className={fieldErrors.bookingType ? "has-error" : ""} hidden={mobileStepper && !visibleFields?.has("bookingType")}>
               <span>Consultation type</span>
@@ -737,12 +754,16 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
               autoComplete="off"
               value={form.message}
               onChange={handleChange}
+              maxLength={MAX_CONTACT_MESSAGE_CHARS}
               placeholder="Tell us about your situation, timeline, and the visa pathway you want to explore."
               required
               aria-invalid={fieldErrors.message ? "true" : undefined}
-              aria-describedby={fieldErrors.message ? "err-message" : undefined}
+              aria-describedby={fieldErrors.message ? "err-message msg-char-count" : "msg-char-count"}
             />
           </label>
+          <p id="msg-char-count" className="mb-1 text-right text-xs font-semibold text-brand-plum/55" aria-live="polite">
+            {String(form.message || "").length} / {MAX_CONTACT_MESSAGE_CHARS}
+          </p>
           {quizSummaryLine ? (
             <div className="mb-4 p-3 rounded-lg bg-brand-rose/5 border border-brand-rose/10 text-[10px] sm:text-xs font-medium text-brand-rose">
               <p>
@@ -763,7 +784,7 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
 
       <div className="flex flex-col gap-6 mt-8">
         <label
-          className={`flex items-start gap-3 text-sm p-4 rounded-xl border border-brand-plum/5 bg-brand-plum/[0.02] cursor-pointer hover:bg-brand-plum/[0.04] transition-colors${fieldErrors.privacyPolicyAccepted ? " has-error border-red-200 bg-red-50" : ""}`}
+          className={`flex items-start gap-3 text-sm p-4 rounded-xl border border-brand-plum/5 bg-brand-plum/[0.02] cursor-pointer hover:bg-brand-plum/[0.04] transition-colors${fieldErrors.privacyPolicyAccepted ? " has-error border-[color:var(--brand-rose)]/35 bg-[color:var(--brand-rose)]/[0.06]" : ""}`}
           hidden={mobileStepper && !visibleFields?.has("privacyPolicyAccepted")}
         >
           <input

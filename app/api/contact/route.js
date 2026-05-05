@@ -12,6 +12,7 @@ import { createLead } from "../../../lib/crm/leads-service";
 import { runAutomationRules } from "../../../lib/crm/automation-runner";
 import { findOrCreateCustomerByIdentity } from "../../../lib/admin/customers-service";
 import { dualWriteEnquiryToSupabase } from "@/lib/supabase/enquiries-dual-write";
+import { obsLogger } from "@/lib/observability/logger";
 import { API_ERROR_CODES, apiFail, apiOk, requestContextFromRequest } from "@/lib/api/response";
 import { hCaptchaEnabledOnServer, verifyHCaptchaToken } from "@/lib/security/hcaptcha";
 import { consultationChargeAmountCents, createStripeCheckoutSession, stripeEnabled } from "@/lib/payments/stripe";
@@ -160,13 +161,6 @@ export async function POST(request) {
 
   saveEnquiry(enquiryRecord);
   try {
-    await dualWriteEnquiryToSupabase(enquiryRecord);
-    processing.supabaseDualWrite = "ok";
-  } catch {
-    /* Supabase dual-write is best-effort */
-    processing.supabaseDualWrite = "failed";
-  }
-  try {
     let customerId = "";
     try {
       const found = findOrCreateCustomerByIdentity({
@@ -273,6 +267,25 @@ export async function POST(request) {
     }
   }
 
+  /** Supabase backup immediately before SMTP so email outages still leave a DB row when configured. */
+  const enquiryMirrorPayload = {
+    ...enquiryRecord,
+    processingSnapshot: {
+      consultationBooked: Boolean(calendarResult.created),
+      meetUrl: calendarResult.meetUrl || "",
+      calendarReason: calendarResult.reason || "",
+      checkoutUrl: checkoutUrl || "",
+      slotAvailable: availabilityResult.available,
+    },
+  };
+  const supabaseResult = await dualWriteEnquiryToSupabase(enquiryMirrorPayload);
+  if (supabaseResult.skipped) {
+    processing.supabaseDualWrite = supabaseResult.ok ? "skipped_env" : "skipped";
+  } else {
+    processing.supabaseDualWrite = supabaseResult.ok ? "ok" : "failed";
+  }
+  const supabasePersisted = Boolean(supabaseResult.ok && !supabaseResult.skipped);
+
   const mailResult = await sendContactEmails(enquiryRecord);
 
   if (!mailResult.internalSent) {
@@ -292,6 +305,36 @@ export async function POST(request) {
           checkoutUrl: checkoutUrl || undefined,
           processing,
           warning: "Enquiry saved, but SMTP is not configured yet.",
+        },
+        context
+      );
+    }
+    if (supabasePersisted) {
+      obsLogger.warn("contact_internal_mail_failed_after_supabase", {
+        enquiryId: enquiryRecord.id,
+        reason: mailResult.reason || "smtp_error",
+      });
+      console.error("[contact] internal mail failed after enquiries_mirror success", {
+        enquiryId: enquiryRecord.id,
+        reason: mailResult.reason,
+      });
+      const mailDownWarning =
+        "Your enquiry was received and stored securely. Our email notification is delayed; we will still follow up using the details you provided.";
+      return apiOk(
+        {
+          id: enquiryRecord.id,
+          internalSent: false,
+          thankYouSent: false,
+          brochureAttached: false,
+          consultationBooked: Boolean(calendarResult.created),
+          slotAvailable: availabilityResult.available,
+          calendarReason: calendarResult.reason || undefined,
+          meetUrl: calendarResult.meetUrl || undefined,
+          leadDriveFolderId: enquiryRecord.leadDriveFolderId || undefined,
+          leadDriveFolderUrl: enquiryRecord.leadDriveFolderUrl || undefined,
+          checkoutUrl: checkoutUrl || undefined,
+          processing,
+          warning: mailDownWarning,
         },
         context
       );

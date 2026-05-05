@@ -1,9 +1,12 @@
+import crypto from "node:crypto";
 import { contactInbox, getMailTransport } from "@/lib/contact";
 import { withSmtpDeadline } from "@/lib/smtp-timeout";
 import { API_ERROR_CODES, apiFail, apiOk, requestContextFromRequest } from "@/lib/api/response";
 import { rateLimitAllow } from "@/lib/security/rate-limit";
 import { getClientIp } from "@/lib/security/request-ip";
 import { isValidEmailLinear } from "@/lib/validation/contact-schema";
+import { dualWriteQuizLeadToSupabase } from "@/lib/supabase/enquiries-dual-write";
+import { obsLogger } from "@/lib/observability/logger";
 
 const MAX_BODY_BYTES = 64 * 1024;
 const MAX_NAME_LEN = 120;
@@ -85,8 +88,34 @@ export async function POST(request) {
     }
   }
 
+  const quizLeadId = `QUIZ-${crypto.randomUUID()}`;
+  const submittedAt = new Date().toISOString();
+  const mirrorPayload = {
+    source: "quiz_results_api",
+    id: quizLeadId,
+    submittedAt,
+    name,
+    email,
+    score,
+    detailsText,
+    clientIp: ip,
+  };
+  const supabaseResult = await dualWriteQuizLeadToSupabase(quizLeadId, mirrorPayload);
+  const supabasePersisted = Boolean(supabaseResult.ok && !supabaseResult.skipped);
+
   const transporter = getMailTransport();
   if (!transporter) {
+    if (supabasePersisted) {
+      obsLogger.warn("quiz_results_smtp_missing_after_supabase", { quizLeadId });
+      return apiOk(
+        {
+          success: true,
+          warning:
+            "Your quiz summary was stored securely; email delivery is offline on this server. Our team can still follow up from the backup record.",
+        },
+        context
+      );
+    }
     return apiFail(
       {
         code: API_ERROR_CODES.UPSTREAM_ERROR,
@@ -107,6 +136,7 @@ export async function POST(request) {
     text: [
       "New visa / points quiz submission (website)",
       "",
+      `Mirror ID: ${quizLeadId}`,
       `Name: ${name}`,
       `Email: ${email}`,
       `Score: ${score}`,
@@ -120,6 +150,20 @@ export async function POST(request) {
     await withSmtpDeadline(transporter.sendMail(mailOptions));
   } catch (err) {
     console.error("quiz-results sendMail:", err);
+    if (supabasePersisted) {
+      obsLogger.warn("quiz_results_mail_failed_after_supabase", {
+        quizLeadId,
+        error: String(/** @type {{ message?: string }} */ (err)?.message || err),
+      });
+      return apiOk(
+        {
+          success: true,
+          warning:
+            "Your quiz summary was stored securely; our inbox email is temporarily unavailable. We will still retrieve your submission from our backup.",
+        },
+        context
+      );
+    }
     return apiFail(
       {
         code: API_ERROR_CODES.MAIL_DELIVERY_FAILED,

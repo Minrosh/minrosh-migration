@@ -1,12 +1,13 @@
 "use client";
 
-import { PublicFileImg } from "../public-file-img";
+import Image from "next/image";
+import { HERO_BRISBANE_BLUR_DATA_URL } from "@/lib/marketing/hero-brisbane-blur";
 import { TrackedAnchor, TrackedLink } from "../tracked-link";
 
-/** Single marketing hero image: Brisbane River and CBD (see `/public/images/hero-brisbane-river-cbd.jpg`). */
+/** LCP hero: Brisbane River, CBD skyline, CityCat (see `/public/images/hero-brisbane-river-cbd-hd.jpg`). */
 const HERO_BRISBANE_IMAGE = {
   src: "/images/hero-brisbane-river-cbd-hd.jpg",
-  alt: "Brisbane River and CBD skyline at dusk with CityCat ferry",
+  alt: "Brisbane River and CBD skyline at dusk with a CityCat ferry on the water",
 };
 
 const plumDark = "#1F1020";
@@ -135,15 +136,16 @@ export function HomeHeroPremium({ whatsappHref }) {
     >
       <div className="relative flex min-h-0 w-full flex-1 flex-col">
         <div className="pointer-events-none absolute inset-0 z-0">
-          <PublicFileImg
+          <Image
             src={HERO_BRISBANE_IMAGE.src}
             alt={HERO_BRISBANE_IMAGE.alt}
-            className="absolute inset-0 h-full w-full object-cover object-bottom object-center"
-            width={1920}
-            height={1280}
+            fill
+            className="object-cover object-[70%_center] md:object-bottom md:object-center"
+            sizes="(max-width: 1024px) 100vw, min(100vw, 1920px)"
             priority
             fetchPriority="high"
-            sizes="100vw"
+            placeholder="blur"
+            blurDataURL={HERO_BRISBANE_BLUR_DATA_URL}
           />
           <div
             className="absolute inset-0 bg-gradient-to-b from-black/[0.04] via-transparent to-black/15 lg:from-transparent lg:to-black/20"

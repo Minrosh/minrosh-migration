@@ -49,6 +49,23 @@ describe("parseContactSubmission", () => {
     expect(r.ok).toBe(true);
     expect(r.value.preferredTime).toBe("19:00");
   });
+
+  it("rejects consultation slot when duration is not 30 minutes", () => {
+    const r = parseContactSubmission({
+      firstName: "A",
+      lastName: "B",
+      email: "a@example.com",
+      phone: "+61000000000",
+      mainNeed: "General Enquiry",
+      message: "Book me",
+      preferredDate: "2026-04-20",
+      preferredTime: "19:00",
+      timeZone: "Australia/Brisbane",
+      consultationDurationMins: "60",
+      privacyPolicyAccepted: true,
+    });
+    expect(r.ok).toBe(false);
+  });
 });
 
 describe("normalizePreferredTime", () => {

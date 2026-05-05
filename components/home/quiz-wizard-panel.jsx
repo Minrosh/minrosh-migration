@@ -6,6 +6,10 @@ import { calculateQuizResult, quizOptions } from "@/lib/quiz";
 import { persistNavigatorSummary } from "@/lib/navigator-session";
 import { trackEvent } from "@/lib/client-analytics";
 import { QuizResultSkeleton as DefaultQuizResultSkeleton } from "./quiz-result-skeleton";
+import { isValidEmailClient } from "@/lib/validation/email-client";
+
+/** Free-text occupation field (wizard only; server quiz email path validates separately). */
+const MAX_QUIZ_OCCUPATION_NAME_CHARS = 200;
 
 const quizSteps = [
   {
@@ -137,6 +141,8 @@ export function QuizWizardPanel({ isActive, onGoToContact, resultSkeleton }) {
   const [resultSkeletonActive, setResultSkeletonActive] = useState(false);
   const [copySummaryState, setCopySummaryState] = useState("");
   const [showBreakdown, setShowBreakdown] = useState(false);
+  /** Optional email for future report delivery hooks; validated live when non-empty. */
+  const [reportEmail, setReportEmail] = useState("");
 
   const quizResult = useMemo(() => calculateQuizResult(quizForm), [quizForm]);
   const currentQuizStep = quizSteps[quizStepIndex];
@@ -150,6 +156,8 @@ export function QuizWizardPanel({ isActive, onGoToContact, resultSkeleton }) {
     step.fields.every((field) => fieldIsComplete(field, quizForm))
   ).length;
   const completionPercent = Math.round((completedStepsCount / quizSteps.length) * 100);
+
+  const reportEmailInvalid = Boolean(reportEmail.trim() && !isValidEmailClient(reportEmail.trim()));
 
   const summaryText = useMemo(() => {
     if (!quizResult || !quizComplete) return "";
@@ -201,8 +209,14 @@ export function QuizWizardPanel({ isActive, onGoToContact, resultSkeleton }) {
   }, [quizComplete, quizResult, resultSkeletonActive]);
 
   function setQuizValue(key, value) {
+    if (key === "occupationName") {
+      const v = String(value).slice(0, MAX_QUIZ_OCCUPATION_NAME_CHARS);
+      setQuizForm((current) => ({ ...current, [key]: v }));
+      return;
+    }
     setQuizForm((current) => ({ ...current, [key]: value }));
   }
+
 
   function goToNextQuizStep() {
     if (!canAdvance) return;
@@ -324,8 +338,20 @@ export function QuizWizardPanel({ isActive, onGoToContact, resultSkeleton }) {
                         value={quizForm.occupationName}
                         onChange={(event) => setQuizValue("occupationName", event.target.value)}
                         placeholder="e.g. Software Engineer"
+                        maxLength={MAX_QUIZ_OCCUPATION_NAME_CHARS}
+                        autoComplete="organization-title"
+                        aria-describedby="quiz-occupation-count"
                         className="w-full text-lg p-4 rounded-xl border-2 border-brand-plum/15 focus:border-brand-rose focus:ring-4 focus:ring-brand-rose/20 outline-none transition-all shadow-sm"
                       />
+                      <div className="mt-2 flex flex-wrap items-center justify-between gap-2 text-xs font-semibold">
+                        <span
+                          id="quiz-occupation-count"
+                          className="text-brand-plum/55"
+                          aria-live="polite"
+                        >
+                          {quizForm.occupationName.length} / {MAX_QUIZ_OCCUPATION_NAME_CHARS}
+                        </span>
+                      </div>
                     </label>
                     <label className="block w-full">
                       <span className="block text-brand-plum font-bold mb-3 text-lg">Age</span>
@@ -481,12 +507,13 @@ export function QuizWizardPanel({ isActive, onGoToContact, resultSkeleton }) {
                     : "text-white bg-gradient-to-r from-brand-plum to-brand-rose hover:scale-105 shadow-brand-rose/50"
                   }`}
                   onClick={() => {
+                    if (reportEmailInvalid) return;
                     trackEvent("quiz_continue_to_report_clicked", { points_score: quizResult?.score || 0 });
                     onGoToContact?.();
                   }}
-                  disabled={!quizComplete}
+                  disabled={!quizComplete || reportEmailInvalid}
                 >
-                  Get Eligibility Report 🌟
+                  Book consultation
                 </button>
               )}
             </div>
@@ -590,6 +617,37 @@ export function QuizWizardPanel({ isActive, onGoToContact, resultSkeleton }) {
 
                   <hr className="my-6 border-brand-plum/15" />
 
+                  <div className="mb-6 rounded-2xl border border-brand-plum/10 bg-brand-cream/40 p-4">
+                    <label className="block">
+                      <span className="text-xs font-bold uppercase tracking-[0.12em] text-brand-plum/60">
+                        Email (optional)
+                      </span>
+                      <input
+                        type="email"
+                        name="quizReportEmail"
+                        value={reportEmail}
+                        onChange={(e) => setReportEmail(e.target.value)}
+                        placeholder="you@example.com — for future report delivery"
+                        autoComplete="email"
+                        aria-invalid={reportEmailInvalid ? "true" : undefined}
+                        aria-describedby="quiz-report-email-hint"
+                        className={`mt-2 w-full rounded-xl border-2 px-3 py-2.5 text-sm font-medium outline-none transition focus:ring-4 focus:ring-brand-rose/20 ${
+                          reportEmailInvalid
+                            ? "border-[color:var(--brand-rose)]/55 bg-white"
+                            : "border-brand-plum/15 bg-white focus:border-brand-rose"
+                        }`}
+                      />
+                    </label>
+                    <p id="quiz-report-email-hint" className="mt-1.5 text-xs text-brand-plum/55">
+                      Optional. We validate format as you type so it is ready if you connect this wizard to email later.
+                    </p>
+                    {reportEmailInvalid ? (
+                      <p className="mt-2 text-xs font-semibold text-[color:var(--brand-rose)]" role="alert">
+                        Please enter a valid email address, or leave this field blank.
+                      </p>
+                    ) : null}
+                  </div>
+
                   <div className="mb-8 rounded-2xl border border-brand-plum/15 bg-white p-4">
                     <button
                       type="button"
@@ -641,9 +699,11 @@ export function QuizWizardPanel({ isActive, onGoToContact, resultSkeleton }) {
                     type="button"
                     className="w-full min-h-[48px] py-4 bg-brand-plum text-white font-bold rounded-xl shadow-lg shadow-brand-plum/30 hover:-translate-y-1 hover:bg-brand-rose transition-all duration-300 mb-3"
                     onClick={() => {
+                      if (reportEmailInvalid) return;
                       trackEvent("quiz_get_full_report_clicked", { points_score: quizResult?.score || 0 });
                       onGoToContact?.();
                     }}
+                    disabled={reportEmailInvalid}
                   >
                     Book a consultation with these results
                   </button>

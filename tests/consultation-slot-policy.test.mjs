@@ -81,4 +81,24 @@ describe("validateConsultationSlot", () => {
     });
     expect(r.ok).toBe(false);
   });
+
+  it("rejects non-calendar dates (rollover)", () => {
+    const r = validateConsultationSlot({
+      preferredDate: "2026-02-31",
+      preferredTime: "19:00",
+      timeZone: "Australia/Brisbane",
+      slotDurationMins: 30,
+    });
+    expect(r.ok).toBe(false);
+  });
+
+  it("accepts HH:MM:SS wall time from browsers", () => {
+    const r = validateConsultationSlot({
+      preferredDate: "2026-05-04",
+      preferredTime: "19:00:00",
+      timeZone: "Australia/Brisbane",
+      slotDurationMins: 30,
+    });
+    expect(r.ok).toBe(true);
+  });
 });

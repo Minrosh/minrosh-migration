@@ -9,7 +9,6 @@ import { SiteShell } from "../../components/site-shell";
 import { StructuredData } from "../../components/structured-data";
 import { buildMetadata, breadcrumbJsonLd } from "../../lib/seo";
 import readinessSignals from "../../data/book-consultation-readiness-signals.json";
-import Link from "next/link";
 import { TrackedLink } from "../../components/tracked-link";
 
 const pageData = seoPages.servicePages.bookConsultation;
@@ -71,7 +70,17 @@ export default function BookConsultationPage() {
             >
               Start free assessment
             </TrackedLink>
-            .
+            . Haven’t run the points wizard?{" "}
+            <TrackedLink
+              href="/#quiz"
+              eventName="cta_click"
+              eventParams={{ cta_id: "book_hero_quiz", cta_location: "book_hero", destination: "/#quiz" }}
+              aria-label="Open points wizard on the home page"
+              className="font-semibold text-brand-rose underline decoration-brand-rose/40 underline-offset-4"
+            >
+              Open the wizard
+            </TrackedLink>{" "}
+            (same tab keeps your session).
           </p>
           <div className="mt-4 flex flex-wrap gap-2">
             <span className="rounded-full border border-brand-plum/15 bg-white px-3 py-1 text-xs font-semibold text-brand-plum/75">

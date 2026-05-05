@@ -60,7 +60,7 @@ export function HomeDestinationCards({ countries }) {
               <li key={card.key} className="min-w-0">
                 <Link
                   href={card.href}
-                  className="group flex h-full min-h-[48px] flex-col overflow-hidden rounded-[1.75rem] border border-brand-plum/10 bg-white shadow-[var(--shadow-lux)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-rose/25 hover:shadow-[var(--shadow-lux-lg)]"
+                  className="destination-card group flex h-full min-h-[48px] flex-col overflow-hidden rounded-[1.75rem] border border-brand-plum/10 bg-white shadow-[var(--shadow-lux)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-rose/25 hover:shadow-[var(--shadow-lux-lg)]"
                 >
                   <div className="relative aspect-[4/3] w-full min-h-[11rem] overflow-hidden bg-zinc-100">
                     <PublicFileImg

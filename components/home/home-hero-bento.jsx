@@ -111,8 +111,8 @@ export function HomeHeroBento({ siteData, trustNote }) {
               transition={reduceMotion ? undefined : { duration: 18, repeat: Infinity, ease: "easeInOut" }}
             >
               <Image
-                src="/images/hero-sydney-real.jpg"
-                alt="Sydney Harbour — Australian migration journeys"
+                src="/images/hero-brisbane-river-cbd-hd.jpg"
+                alt="Brisbane River and CBD skyline — Australian migration journeys"
                 fill
                 priority
                 quality={92}
