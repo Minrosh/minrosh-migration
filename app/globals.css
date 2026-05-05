@@ -67,8 +67,42 @@
   -webkit-backdrop-filter: blur(20px);
 }
 
+.guide-premium-shell .premium-frosted-surface {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.75), rgba(255, 250, 245, 0.75));
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.guide-page-hero-strip {
+  border-radius: var(--radius-xl);
+  border: 1px solid rgba(74, 24, 48, 0.12);
+  box-shadow: var(--shadow-lux);
+  overflow: hidden;
+}
+
+.guide-page-hero-strip__overlay {
+  background:
+    radial-gradient(circle at 14% 24%, rgba(74, 24, 48, 0.18), transparent 46%),
+    radial-gradient(circle at 86% 20%, rgba(202, 166, 77, 0.2), transparent 44%),
+    linear-gradient(145deg, rgba(74, 24, 48, 0.72), rgba(74, 24, 48, 0.42));
+}
+
+.content-page--premium-guide .content-page__toc--inline,
+.content-page--premium-guide .content-page__toc--sticky .content-page__toc-inner,
+.content-page--premium-guide .content-aside-card,
+.content-page--premium-guide .content-premium-eligibility,
+.content-page--premium-guide .content-premium-how-we-help {
+  border-color: rgba(74, 24, 48, 0.1);
+}
+
 @media (max-width: 720px) {
   .about-team-premium-shell .premium-frosted-surface {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: rgba(255, 253, 251, 0.96);
+  }
+
+  .guide-premium-shell .premium-frosted-surface {
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
     background: rgba(255, 253, 251, 0.96);
@@ -77,6 +111,11 @@
 
 @media (prefers-reduced-motion: reduce) {
   .about-team-premium-shell .premium-frosted-surface {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .guide-premium-shell .premium-frosted-surface {
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
   }
