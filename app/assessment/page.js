@@ -63,7 +63,7 @@ export default function AssessmentPage() {
           <div className="page-assessment-prototype__split">
             <div className="min-w-0 glass-card rounded-[2rem] border-white/40 p-6 shadow-[0_12px_40px_rgba(74,24,48,0.06)] md:p-8">
               <p className="section-label">Free assessment</p>
-              <h1 className="mt-2 text-3xl font-black tracking-tight text-brand-plum sm:text-4xl md:text-[2.4rem]">
+              <h1 className="mt-2 text-3xl font-black tracking-tight text-brand-plum [font-family:var(--font-display),Georgia,serif] sm:text-4xl md:text-[2.4rem]">
                 Check eligibility in a few minutes — then choose your next step with clarity
               </h1>
               <p className="mt-4 text-base font-medium leading-relaxed text-brand-plum/75 sm:text-lg">
@@ -141,9 +141,12 @@ export default function AssessmentPage() {
             </div>
           </div>
 
-          <details className="content-section content-accordion bento-hover mt-12 max-w-4xl" open>
+          <details
+            className="content-section content-accordion bento-hover glass-card mt-12 max-w-4xl rounded-[2rem] border border-brand-plum/10 p-4 md:p-6"
+            open
+          >
             <summary className="content-accordion__summary">
-              <h2>Before you start — quick preparation</h2>
+              <h2 className="[font-family:var(--font-display),Georgia,serif]">Before you start — quick preparation</h2>
             </summary>
             <div className="content-accordion__body">
               <p className="text-brand-plum/80">

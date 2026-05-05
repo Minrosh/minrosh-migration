@@ -59,7 +59,7 @@ export default function ContactPage() {
           <div className="content-hero__grid">
             <div className="content-hero__copy">
               <p className="section-label">Contact MinRosh Migration</p>
-              <h1>{pageData.headline}</h1>
+              <h1 className="[font-family:var(--font-display),Georgia,serif]">{pageData.headline}</h1>
               <p>{pageData.intro}</p>
               <ul className="feature-list">
                 <li>Clear next-step guidance based on your current profile and timing</li>
@@ -121,7 +121,7 @@ export default function ContactPage() {
         </section>
         <section className="grid gap-6 lg:grid-cols-[1fr_1.1fr] lg:items-start">
           <div className="contact-office-premium-panel glass-card rounded-[2rem] p-5 md:p-6">
-            <h2>Office &amp; hours</h2>
+            <h2 className="[font-family:var(--font-display),Georgia,serif]">Office &amp; hours</h2>
             <p>
               <strong className="text-brand-plum">Location:</strong> {siteData.brand.location}
             </p>
@@ -156,7 +156,9 @@ export default function ContactPage() {
               <ContactCalmVisual />
               <div className="contact-copy">
                 <p className="section-label">Calm guidance, real humans</p>
-                <h2>Start with a focused enquiry (fastest response path)</h2>
+                <h2 className="[font-family:var(--font-display),Georgia,serif]">
+                  Start with a focused enquiry (fastest response path)
+                </h2>
                 <p>
                   Share your migration background, timing, and main visa goal. MinRosh Migration
                   supports Brisbane clients and remote clients across Australia with structured next-step
@@ -247,7 +249,10 @@ export default function ContactPage() {
           </div>
         </section>
 
-        <section className="contact-map-embed" aria-labelledby="contact-map-heading">
+        <section
+          className="contact-map-embed glass-card mt-8 rounded-[2rem] border border-brand-plum/10 p-4 md:p-6"
+          aria-labelledby="contact-map-heading"
+        >
           <h2 id="contact-map-heading" className="sr-only">
             Office map
           </h2>

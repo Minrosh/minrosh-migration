@@ -267,7 +267,10 @@ export async function POST(request) {
     }
   }
 
-  /** Supabase backup immediately before SMTP so email outages still leave a DB row when configured. */
+  /**
+   * Supabase mirror upsert runs immediately before SMTP (never after): email delivery must not precede DB backup.
+   * Payload includes calendar/checkout snapshot when consultation fields are present.
+   */
   const enquiryMirrorPayload = {
     ...enquiryRecord,
     processingSnapshot: {

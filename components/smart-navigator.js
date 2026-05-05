@@ -10,6 +10,7 @@ import {
 } from "../lib/navigator";
 import { persistNavigatorSummary } from "@/lib/navigator-session";
 import { trackEvent } from "@/lib/client-analytics";
+import { CONVERSION_PREMIUM_PRIMARY_CTA_CLASS } from "@/lib/conversion-premium-cta-class";
 
 export function SmartNavigator({
   title = "Answer a few questions and get routed to the most relevant next step",
@@ -122,7 +123,7 @@ export function SmartNavigator({
       <div className="section-head">
         <div>
           <p className="section-label">Visa Decision Engine</p>
-          <h2>{title}</h2>
+          <h2 className="[font-family:var(--font-display),Georgia,serif]">{title}</h2>
         </div>
         <p className="process-section__lead">{description}</p>
         
@@ -144,7 +145,9 @@ export function SmartNavigator({
           <div className="quiz-wizard__meta">
             <div>
               <p className="section-label">Step {stepIndex + 1}</p>
-              <h3>{isEmailStep ? "Where should we send your pathway results?" : currentStep.title}</h3>
+              <h3 className="[font-family:var(--font-display),Georgia,serif]">
+                {isEmailStep ? "Where should we send your pathway results?" : currentStep.title}
+              </h3>
             </div>
             <span className="quiz-wizard__count">
               {stepIndex + 1} / {navigatorSteps.length + 1}
@@ -211,7 +214,7 @@ export function SmartNavigator({
             {!isEmailStep ? (
               <button
                 type="button"
-                className="btn btn-primary"
+                className={`${CONVERSION_PREMIUM_PRIMARY_CTA_CLASS} px-5 py-3 text-sm disabled:pointer-events-none disabled:opacity-50`}
                 onClick={() => {
                   setStepIndex((current) => current + 1);
                   trackEvent("ai_navigator_next_clicked", { from_step: stepIndex });
@@ -223,9 +226,9 @@ export function SmartNavigator({
             ) : !complete ? (
               <button
                 type="button"
-                className="btn btn-primary"
+                className={`${CONVERSION_PREMIUM_PRIMARY_CTA_CLASS} px-5 py-3 text-sm`}
                 onClick={() => {
-                  const form = document.querySelector('form');
+                  const form = document.querySelector("form");
                   if (form) form.requestSubmit();
                 }}
               >
@@ -234,7 +237,7 @@ export function SmartNavigator({
             ) : (
               <Link
                 href={recommendation?.href || finalHref}
-                className="btn btn-primary"
+                className={`${CONVERSION_PREMIUM_PRIMARY_CTA_CLASS} px-5 py-3 text-sm text-center`}
                 onClick={() => trackEvent("ai_navigator_primary_cta_clicked", { need: recommendation?.mainNeed })}
               >
                 {primaryLabel}
@@ -251,7 +254,7 @@ export function SmartNavigator({
             <>
               <div className="navigator-result-header">
                 <div>
-                  <h3 className="mb-0">{recommendation.title}</h3>
+                  <h3 className="mb-0 [font-family:var(--font-display),Georgia,serif]">{recommendation.title}</h3>
                   <p className="navigator-result-summary">{recommendation.summary}</p>
                 </div>
                 <div className="navigator-readiness-pill">

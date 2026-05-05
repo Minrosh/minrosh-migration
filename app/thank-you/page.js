@@ -2,8 +2,8 @@ import Link from "next/link";
 import siteData from "../../data/site.json";
 import { SiteShell } from "../../components/site-shell";
 import { buildMetadata } from "../../lib/seo";
-
-const PLUM_MID = "#8B1D41";
+import "../home.css";
+import { CONVERSION_PREMIUM_PRIMARY_CTA_CLASS } from "@/lib/conversion-premium-cta-class";
 
 export const metadata = buildMetadata({
   title: "Thank you | MinRosh Migration",
@@ -18,17 +18,17 @@ export default function ThankYouPage() {
     <SiteShell siteData={siteData} currentPath="/thank-you" headerBackdrop="neutral">
       <main className="relative flex min-h-[min(92vh,900px)] w-full flex-col items-center justify-center overflow-hidden bg-[var(--brand-cream)] px-5 py-16 sm:px-8 sm:py-20">
         <div
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_22%,rgba(139,29,65,0.08),transparent_42%),radial-gradient(circle_at_82%_18%,rgba(202,166,77,0.1),transparent_38%)]"
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_-10%,rgba(139,29,65,0.12),transparent_55%),radial-gradient(circle_at_18%_28%,rgba(139,29,65,0.09),transparent_46%),radial-gradient(circle_at_82%_22%,rgba(202,166,77,0.14),transparent_42%),radial-gradient(circle_at_50%_100%,rgba(251,246,244,0.9),transparent_48%)]"
           aria-hidden
         />
         <div
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-white/50 to-transparent"
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-white/55 to-transparent"
           aria-hidden
         />
 
         <div className="relative z-[1] mx-auto w-full max-w-lg text-center">
           <div
-            className="rounded-[var(--radius-xl)] border border-white/60 bg-white/70 px-8 py-10 shadow-[var(--shadow-lux-lg)] backdrop-blur-[20px] backdrop-saturate-150 sm:px-12 sm:py-12"
+            className="glass-card rounded-[var(--radius-xl)] border-white/55 px-8 py-10 shadow-[var(--shadow-lux-lg)] backdrop-blur-[20px] backdrop-saturate-150 sm:px-12 sm:py-12"
             style={{ WebkitBackdropFilter: "blur(20px) saturate(160%)" }}
           >
             <div
@@ -45,17 +45,16 @@ export default function ThankYouPage() {
                 />
               </svg>
             </div>
-            <h1 className="mb-3 text-balance font-bold tracking-[-0.035em] text-[var(--ink)] [font-size:clamp(1.55rem,3vw,2rem)]">
+            <h1 className="mb-3 text-balance font-bold tracking-[-0.035em] text-[var(--ink)] [font-family:var(--font-display),Georgia,serif] [font-size:clamp(1.55rem,3vw,2rem)]">
               Thank you
             </h1>
             <p className="mb-8 text-pretty leading-relaxed text-[var(--muted)]">
-              We&apos;ve received your message. If you requested a response, our Brisbane team will reply during
-              business hours (AEST). For urgent matters you can still reach us via the phone number in the site footer.
+              We&apos;ve received your message. Our Brisbane-based registered migration team will reply during business
+              hours (AEST) when you asked for a response. For urgent matters, use the phone number in the site footer.
             </p>
             <Link
               href="/"
-              className="home-hero-premium__cta inline-flex min-h-[52px] w-full items-center justify-center rounded-full border-2 border-white px-7 py-3.5 text-center text-base font-bold text-white shadow-[0_14px_36px_rgba(136,19,55,0.28)] outline-none ring-offset-2 ring-offset-[var(--brand-cream)] transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-[0_18px_44px_rgba(136,19,55,0.35)] focus-visible:ring-2 focus-visible:ring-[#881337]/45 sm:mx-auto sm:w-auto sm:min-w-[280px]"
-              style={{ backgroundColor: PLUM_MID }}
+              className={`${CONVERSION_PREMIUM_PRIMARY_CTA_CLASS} mx-auto w-full min-h-[52px] sm:min-w-[280px]`}
             >
               Back to home
             </Link>

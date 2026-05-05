@@ -88,6 +88,7 @@ export async function POST(request) {
     }
   }
 
+  /** enquiries_mirror.id must use QUIZ- prefix for quiz-result leads (see dualWriteQuizLeadToSupabase). */
   const quizLeadId = `QUIZ-${crypto.randomUUID()}`;
   const submittedAt = new Date().toISOString();
   const mirrorPayload = {

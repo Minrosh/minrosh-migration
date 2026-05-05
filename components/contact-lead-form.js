@@ -17,6 +17,7 @@ import { isHcaptchaPublicEnabled } from "@/lib/config";
 import { HCaptchaField } from "./hcaptcha-field";
 import { isValidEmailClient } from "@/lib/validation/email-client";
 import { MAX_CONTACT_MESSAGE_CHARS } from "@/lib/validation/contact-schema";
+import { CONVERSION_PREMIUM_PRIMARY_CTA_CLASS } from "@/lib/conversion-premium-cta-class";
 
 const CAPTCHA_ENABLED = isHcaptchaPublicEnabled();
 
@@ -834,7 +835,7 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
         <motion.button
           whileTap={{ scale: 0.98 }}
           type="submit"
-          className="btn btn-primary min-h-[48px] touch-manipulation w-full py-5 text-lg font-black shadow-xl hover:-translate-y-1 transition-all"
+          className={`${CONVERSION_PREMIUM_PRIMARY_CTA_CLASS} w-full py-5 text-lg font-black opacity-100 disabled:pointer-events-none disabled:opacity-60`}
           disabled={state.status === "loading"}
         >
           {state.status === "loading"
@@ -863,7 +864,7 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
           {currentStep < stepFieldGroups.length - 1 ? (
             <button
               type="button"
-              className="btn btn-ghost py-3 px-6 text-sm"
+              className={`${CONVERSION_PREMIUM_PRIMARY_CTA_CLASS} py-3 px-6 text-sm disabled:pointer-events-none disabled:opacity-60`}
               onClick={handleNextStep}
               disabled={state.status === "loading"}
             >

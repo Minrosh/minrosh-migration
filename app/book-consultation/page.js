@@ -46,7 +46,9 @@ export default function BookConsultationPage() {
 
         <section className="content-hero glass-card rounded-[2rem] border-white/40 p-6 shadow-[0_12px_40px_rgba(74,24,48,0.06)] md:p-8 lg:p-10">
           <p className="section-label">Book Consultation</p>
-          <h1>Reserve your strategy session with confidence</h1>
+          <h1 className="[font-family:var(--font-display),Georgia,serif]">
+            Reserve your strategy session with confidence
+          </h1>
           <p>
             A premium consultation flow designed to reduce guesswork and lock your highest-impact
             next steps before you spend time on the wrong pathway.
@@ -140,7 +142,7 @@ export default function BookConsultationPage() {
 
             <details className="content-section content-accordion bento-hover mt-5" open>
               <summary className="content-accordion__summary">
-                <h2>Why book now</h2>
+                <h2 className="[font-family:var(--font-display),Georgia,serif]">Why book now</h2>
               </summary>
               <div className="content-accordion__body">
                 <ul className="feature-list">
@@ -153,7 +155,7 @@ export default function BookConsultationPage() {
 
             <details className="content-section content-accordion bento-hover">
               <summary className="content-accordion__summary">
-                <h2>What your session includes</h2>
+                <h2 className="[font-family:var(--font-display),Georgia,serif]">What your session includes</h2>
               </summary>
               <div className="content-accordion__body">
                 <ul className="feature-list">
@@ -171,7 +173,7 @@ export default function BookConsultationPage() {
             </details>
 
             <section className="content-section bento-hover mt-5" aria-label="What to do next">
-              <h2>What to do next</h2>
+              <h2 className="[font-family:var(--font-display),Georgia,serif]">What to do next</h2>
               <ul className="feature-list">
                 <li>Submit your profile basics and preferred timeline in the enquiry form</li>
                 <li>Bring key evidence notes so we can prioritise viable pathways faster</li>
