@@ -10,6 +10,8 @@ import { StructuredData } from "../../components/structured-data";
 import { buildMetadata, breadcrumbJsonLd } from "../../lib/seo";
 import readinessSignals from "../../data/book-consultation-readiness-signals.json";
 import { TrackedLink } from "../../components/tracked-link";
+import "../home.css";
+import { CONVERSION_PREMIUM_PRIMARY_CTA_CLASS } from "@/lib/conversion-premium-cta-class";
 
 const pageData = seoPages.servicePages.bookConsultation;
 
@@ -32,6 +34,7 @@ export default function BookConsultationPage() {
           { name: "Book Consultation", path: pageData.path },
         ])}
       />
+      <div className="conversion-premium-phase1 bg-[var(--brand-cream)] pb-16 pt-1">
       <section className="content-page">
         <BreadcrumbsNav
           currentPath={pageData.path}
@@ -41,7 +44,7 @@ export default function BookConsultationPage() {
           ]}
         />
 
-        <section className="content-hero">
+        <section className="content-hero glass-card rounded-[2rem] border-white/40 p-6 shadow-[0_12px_40px_rgba(74,24,48,0.06)] md:p-8 lg:p-10">
           <p className="section-label">Book Consultation</p>
           <h1>Reserve your strategy session with confidence</h1>
           <p>
@@ -54,7 +57,7 @@ export default function BookConsultationPage() {
               eventName="cta_click"
               eventParams={{ cta_id: "book_primary_consultation", cta_location: "book_hero", destination: "#consultation-enquiry-form" }}
               aria-label="Jump to consultation booking form"
-              className="btn btn-primary min-h-[48px] touch-manipulation"
+              className={`${CONVERSION_PREMIUM_PRIMARY_CTA_CLASS} w-full min-h-[48px] sm:w-auto`}
             >
               Book consultation now
             </TrackedLink>
@@ -97,13 +100,14 @@ export default function BookConsultationPage() {
             <p className="content-hero__note">{siteData.consultationHoursNote}</p>
           ) : null}
           <p className="mt-3 max-w-2xl text-sm text-brand-plum/70">
-            Consultation slots are 30 minutes. In the time zone you select when booking: Monday–Friday 7:00 pm–10:00 pm;
-            Saturday–Sunday 9:00 am–10:00 pm (last start 9:30 pm).
+            Consultation slots are 30 minutes, with at least 24 hours&apos; notice. Available windows are set in{" "}
+            <strong>Brisbane (AEST)</strong>: Monday–Friday 7:00 pm–10:00 pm; Saturday–Sunday 9:00 am–10:00 pm (last
+            start 9:30 pm Brisbane).
           </p>
         </section>
 
         <section className="grid gap-6 lg:grid-cols-[1fr_1.1fr] lg:items-start">
-          <div className="rounded-[2rem] border border-brand-plum/10 bg-white/90 p-5 shadow-lux md:p-7">
+          <div className="glass-card rounded-[2rem] border border-brand-plum/10 p-5 shadow-lux md:p-7">
             <ContactCalmVisual />
             <div className="mt-5 rounded-2xl border border-brand-plum/10 bg-brand-cream/35 p-4">
               <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-plum/60">Consultation runway</p>
@@ -176,12 +180,13 @@ export default function BookConsultationPage() {
             </section>
           </div>
 
-          <div id="consultation-enquiry-form" className="contact-form-column rounded-[2rem] border border-brand-plum/10 bg-white/90 p-4 shadow-lux md:p-6">
+          <div id="consultation-enquiry-form" className="contact-form-column glass-card rounded-[2rem] border border-brand-plum/10 p-4 shadow-lux md:p-6">
             <AgentRegistrationStrip brand={siteData.brand} />
             <ContactLeadForm mode="consultation" />
           </div>
         </section>
       </section>
+      </div>
     </SiteShell>
   );
 }

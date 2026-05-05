@@ -6,6 +6,8 @@ import { SmartNavigator } from "../../components/smart-navigator";
 import { StructuredData } from "../../components/structured-data";
 import { buildMetadata, breadcrumbJsonLd } from "../../lib/seo";
 import { TrackedLink } from "../../components/tracked-link";
+import "../home.css";
+import { CONVERSION_PREMIUM_PRIMARY_CTA_CLASS } from "@/lib/conversion-premium-cta-class";
 
 export const metadata = buildMetadata({
   title: "Free Assessment | MinRosh Migration",
@@ -47,6 +49,7 @@ export default function AssessmentPage() {
         ])}
       />
 
+      <div className="conversion-premium-phase1 bg-[var(--brand-cream)] pb-16 pt-1">
       <div className="content-page page-assessment-premium">
         <BreadcrumbsNav
           currentPath="/assessment"
@@ -58,7 +61,7 @@ export default function AssessmentPage() {
 
         <div className="page-assessment-prototype pb-16">
           <div className="page-assessment-prototype__split">
-            <div className="min-w-0">
+            <div className="min-w-0 glass-card rounded-[2rem] border-white/40 p-6 shadow-[0_12px_40px_rgba(74,24,48,0.06)] md:p-8">
               <p className="section-label">Free assessment</p>
               <h1 className="mt-2 text-3xl font-black tracking-tight text-brand-plum sm:text-4xl md:text-[2.4rem]">
                 Check eligibility in a few minutes — then choose your next step with clarity
@@ -86,7 +89,7 @@ export default function AssessmentPage() {
                     {assessmentSteps.map((step) => (
                       <li
                         key={step.title}
-                        className="flex gap-4 rounded-2xl border border-brand-plum/10 bg-white/90 p-4 shadow-sm"
+                        className="glass-card flex gap-4 rounded-2xl border border-brand-plum/10 p-4 shadow-sm"
                       >
                         <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#881337] text-sm font-black text-white">
                           {step.number}
@@ -105,7 +108,7 @@ export default function AssessmentPage() {
                     href="/#quiz"
                     eventName="cta_click"
                     eventParams={{ cta_id: "assessment_points_wizard", cta_location: "assessment_split", destination: "/#quiz" }}
-                    className="btn btn-primary inline-flex min-h-[48px] items-center justify-center rounded-full px-5"
+                    className={`${CONVERSION_PREMIUM_PRIMARY_CTA_CLASS} inline-flex px-5`}
                   >
                     Open points wizard
                   </TrackedLink>
@@ -117,7 +120,7 @@ export default function AssessmentPage() {
                       cta_location: "assessment_split",
                       destination: "/book-consultation",
                     }}
-                    className="btn btn-ghost inline-flex min-h-[48px] items-center justify-center rounded-full px-5"
+                    className={`${CONVERSION_PREMIUM_PRIMARY_CTA_CLASS} inline-flex px-5`}
                   >
                     Book consultation
                   </TrackedLink>
@@ -128,7 +131,7 @@ export default function AssessmentPage() {
               </div>
             </div>
 
-            <div className="page-assessment-prototype__navigator-shell min-w-0">
+            <div className="page-assessment-prototype__navigator-shell glass-card min-w-0 rounded-[2rem] border border-brand-plum/10 p-4 shadow-lux md:p-6">
               <SmartNavigator
                 title="Step through the Smart Navigator"
                 description="Select the answers that best match your situation today. You can restart anytime — bring notes from the Department of Home Affairs visa listing if you already know a subclass."
@@ -156,6 +159,7 @@ export default function AssessmentPage() {
             </div>
           </details>
         </div>
+      </div>
       </div>
     </SiteShell>
   );

@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import {
   isValidEmailLinear,
   normalizePreferredTime,
@@ -33,6 +33,8 @@ describe("parseContactSubmission", () => {
   });
 
   it("accepts consultation time from time input as HH:MM:SS within allowed window", () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2026-05-01T02:00:00.000Z"));
     const r = parseContactSubmission({
       firstName: "A",
       lastName: "B",
@@ -40,17 +42,20 @@ describe("parseContactSubmission", () => {
       phone: "+61000000000",
       mainNeed: "General Enquiry",
       message: "Book me",
-      preferredDate: "2026-04-20",
+      preferredDate: "2026-05-04",
       preferredTime: "19:00:00",
       timeZone: "Australia/Brisbane",
       consultationDurationMins: "30",
       privacyPolicyAccepted: true,
     });
+    vi.useRealTimers();
     expect(r.ok).toBe(true);
     expect(r.value.preferredTime).toBe("19:00");
   });
 
   it("rejects consultation slot when duration is not 30 minutes", () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2026-05-01T02:00:00.000Z"));
     const r = parseContactSubmission({
       firstName: "A",
       lastName: "B",
@@ -58,12 +63,13 @@ describe("parseContactSubmission", () => {
       phone: "+61000000000",
       mainNeed: "General Enquiry",
       message: "Book me",
-      preferredDate: "2026-04-20",
+      preferredDate: "2026-05-04",
       preferredTime: "19:00",
       timeZone: "Australia/Brisbane",
       consultationDurationMins: "60",
       privacyPolicyAccepted: true,
     });
+    vi.useRealTimers();
     expect(r.ok).toBe(false);
   });
 });

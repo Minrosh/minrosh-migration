@@ -16,6 +16,8 @@ import { SiteSocialIcons } from "../../components/site-social-icons";
 import { ContactCalmVisual } from "../../components/contact-calm-visual";
 import { TrackedAnchor, TrackedLink } from "../../components/tracked-link";
 import readinessSignals from "../../data/contact-readiness-signals.json";
+import "../home.css";
+import { CONVERSION_PREMIUM_PRIMARY_CTA_CLASS } from "@/lib/conversion-premium-cta-class";
 
 const pageData = seoPages.servicePages.contact;
 
@@ -44,6 +46,7 @@ export default function ContactPage() {
           { name: "Contact", path: pageData.path },
         ])}
       />
+      <div className="conversion-premium-phase1 bg-[var(--brand-cream)] pb-16 pt-1">
       <section className="content-page">
         <BreadcrumbsNav
           currentPath={pageData.path}
@@ -52,7 +55,7 @@ export default function ContactPage() {
             { label: "Contact", href: pageData.path },
           ]}
         />
-        <section className="content-hero">
+        <section className="content-hero glass-card rounded-[2rem] border-white/40 p-6 shadow-[0_12px_40px_rgba(74,24,48,0.06)] md:p-8 lg:p-10">
           <div className="content-hero__grid">
             <div className="content-hero__copy">
               <p className="section-label">Contact MinRosh Migration</p>
@@ -69,7 +72,7 @@ export default function ContactPage() {
                   eventName="cta_click"
                   eventParams={{ cta_id: "contact_primary_enquiry", cta_location: "contact_hero", destination: "#contact-enquiry-form" }}
                   aria-label="Jump to contact enquiry form"
-                  className="btn btn-primary min-h-[48px] touch-manipulation"
+                  className={`${CONVERSION_PREMIUM_PRIMARY_CTA_CLASS} w-full min-h-[48px] sm:w-auto`}
                 >
                   Send focused enquiry
                 </TrackedLink>
@@ -96,7 +99,7 @@ export default function ContactPage() {
               {trustSignals.length ? (
                 <div className="mt-4 grid gap-2 sm:grid-cols-3">
                   {trustSignals.map((item) => (
-                    <div key={item.id} className="rounded-xl border border-brand-plum/15 bg-white px-3 py-2">
+                    <div key={item.id} className="glass-card rounded-xl border border-brand-plum/15 px-3 py-2">
                       <p className="text-sm font-bold text-brand-plum">{item.value}</p>
                       <p className="text-xs text-brand-plum/70">{item.label}</p>
                     </div>
@@ -117,7 +120,7 @@ export default function ContactPage() {
           </div>
         </section>
         <section className="grid gap-6 lg:grid-cols-[1fr_1.1fr] lg:items-start">
-          <div className="contact-office-premium-panel">
+          <div className="contact-office-premium-panel glass-card rounded-[2rem] p-5 md:p-6">
             <h2>Office &amp; hours</h2>
             <p>
               <strong className="text-brand-plum">Location:</strong> {siteData.brand.location}
@@ -138,7 +141,7 @@ export default function ContactPage() {
             </p>
           </div>
 
-          <div className="relative overflow-hidden rounded-[2rem] border border-brand-plum/10 bg-white shadow-lux">
+          <div className="glass-card relative overflow-hidden rounded-[2rem] border border-brand-plum/10 shadow-lux">
             <div className="h-56 lg:h-72">
               <PublicFileImg
                 src="/images/brisbane-skyline.v2.webp"
@@ -168,7 +171,7 @@ export default function ContactPage() {
                     eventName="cta_click"
                     eventParams={{ cta_id: "contact_panel_whatsapp", cta_location: "contact_panel", destination: "whatsapp" }}
                     aria-label="Chat on WhatsApp from contact panel"
-                    className="btn btn-primary flex min-h-[48px] flex-1 touch-manipulation items-center justify-center gap-3 py-6 text-lg"
+                    className={`${CONVERSION_PREMIUM_PRIMARY_CTA_CLASS} flex min-h-[48px] flex-1 justify-center gap-3 py-6 text-lg`}
                   >
                     <span className="text-2xl">💬</span>
                     Chat on WhatsApp
@@ -237,7 +240,7 @@ export default function ContactPage() {
           </div>
           <div
             id="contact-enquiry-form"
-            className="contact-form-column premium-contact-shell rounded-[2rem] border border-brand-plum/10 bg-white/90 p-4 shadow-lux md:p-6"
+            className="contact-form-column premium-contact-shell glass-card rounded-[2rem] border border-brand-plum/10 p-4 shadow-lux md:p-6"
           >
             <AgentRegistrationStrip brand={siteData.brand} />
             <ContactLeadForm className="premium-contact-form" />
@@ -260,6 +263,7 @@ export default function ContactPage() {
           </p>
         </section>
       </section>
+      </div>
     </SiteShell>
   );
 }

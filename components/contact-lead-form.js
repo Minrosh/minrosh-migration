@@ -671,8 +671,9 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
                 }
               />
               <span id="hint-consultation-hours" className="text-xs text-brand-plum/60 mt-1 block leading-relaxed">
-                In your selected time zone: Monday–Friday 7:00 pm–10:00 pm; Saturday–Sunday 9:00 am–10:00 pm. Last start
-                9:30 pm.
+                Date and time are in your selected time zone; bookings need at least 24 hours&apos; notice. Available
+                windows are enforced in <strong className="font-semibold text-brand-plum/80">Brisbane (AEST)</strong>:
+                Monday–Friday 7:00 pm–10:00 pm; Saturday–Sunday 9:00 am–10:00 pm (last start 9:30 pm Brisbane).
               </span>
               {fieldErrors.preferredTime ? (
                 <span className="field-error" id="err-preferredTime" role="alert">
@@ -688,7 +689,8 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
                 <option value="Australia/Sydney">Australia/Sydney</option>
               </select>
               <span className="text-xs text-brand-plum/60 mt-1 block">
-                Consultation length is fixed at 30 minutes (matches calendar and payment).
+                Consultation length is fixed at 30 minutes (matches calendar and payment). Windows above refer to
+                Brisbane local time even when another zone is selected for display.
               </span>
             </label>
             <label className={fieldErrors.bookingType ? "has-error" : ""} hidden={mobileStepper && !visibleFields?.has("bookingType")}>

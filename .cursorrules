@@ -27,3 +27,4 @@
 - **Light theme first:** Public marketing UI defaults to a **light** surface (`brand-cream` / white, plum/rose/gold accents). Use **localized** darker panels or imagery only for contrast (e.g. one hero card, a footer band), not a full-site `zinc-950` canvas unless explicitly requested.
 - **Next.js metadata:** Prefer `export const metadata` / `generateMetadata` and `lib/seo.js` `buildMetadata()` over hand-written `<head>` tags.
 - **Admin:** Do not break `app/admin/` or `app/admin/admin.css`; scope marketing-only CSS so it does not override `.admin-root`.
+- **Homepage hero baseline:** Do not change `components/home/home-hero-premium.jsx`, `app/home.css` (especially `.portal-shell--premium-home`), or `public/images/hero-brisbane-river-cbd-hd.jpg` without an explicit audit — see `docs/HOMEPAGE-CONTENT-SAFE-REDESIGN-CHECKLIST.md` (**Hero baseline**).

@@ -2,6 +2,16 @@
 
 This rollout adopts a modern visual design without losing existing content, SEO, or route coverage.
 
+## Hero baseline (do not change without an explicit audit)
+
+These artifacts define the **premium Brisbane homepage hero**. Treat regressions as product-risk changes (LCP, contrast, layout, brand):
+
+- **Component:** `components/home/home-hero-premium.jsx` — structure, LCP image usage, CTA class contracts, and hero markup.
+- **Styling:** `app/home.css`, especially rules under **`.portal-shell--premium-home`** (premium shell scoping, hero chrome, bottom bar, fog/glass). Do not widen `.portal-shell--premium-home` to other routes without a deliberate design decision; use separate wrappers for non-home pages.
+- **Hero image asset:** `public/images/hero-brisbane-river-cbd-hd.jpg` — keep path stable; update SEO/alt in tandem if the file ever changes.
+
+Before altering gradients, viewport-fit behaviour (`home-hero-premium-section--viewport-fit`), or shared `.home-hero-premium__cta` semantics, re-check AA contrast, mobile overflow, and `npm run build`.
+
 ## Hard Guards (must pass for every section)
 
 - Do not delete existing copy blocks; keep all text in HTML/SSR output.
