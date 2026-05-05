@@ -30,7 +30,7 @@ export function PageHeroStrip({
         placeholder={resolvedBlurDataURL ? "blur" : "empty"}
         {...(resolvedBlurDataURL ? { blurDataURL: resolvedBlurDataURL } : {})}
       />
-      <div className={`absolute inset-0 bg-gradient-to-b from-white/40 to-transparent ${overlayClassName}`.trim()} aria-hidden />
+      <div className={`page-hero-strip__fog absolute inset-0 ${overlayClassName}`.trim()} aria-hidden />
       <div className={`relative z-10 mx-auto max-w-7xl px-6 text-center text-white ${contentClassName}`.trim()}>
         {eyebrow ? (
           <p className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-brand-gold">{eyebrow}</p>

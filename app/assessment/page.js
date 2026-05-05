@@ -143,7 +143,7 @@ export default function AssessmentPage() {
           </div>
 
           <details
-            className="content-section content-accordion bento-hover glass-card mt-12 max-w-4xl rounded-[2rem] border border-brand-plum/10 bg-[rgba(255,255,255,0.75)] p-4 backdrop-blur-[20px] md:p-6"
+            className="content-section content-accordion bento-hover glass-card mt-12 rounded-[2rem] border border-brand-plum/10 bg-[rgba(255,255,255,0.75)] p-4 backdrop-blur-[20px] md:p-6"
             open
           >
             <summary className="content-accordion__summary">

@@ -60,7 +60,7 @@ export default function AboutPage() {
           { name: "About", path: "/about" },
         ])}
       />
-      <div className="about-team-premium-shell relative min-w-0 bg-[var(--brand-cream)] pb-16">
+      <div className="about-team-premium-shell relative min-w-0 bg-[var(--brand-cream)] pb-16 pt-8 md:pt-12">
         <div className="w-full max-w-[var(--content-max)] mx-auto px-[var(--content-pad)]">
           <article className="content-page">
             <BreadcrumbsNav

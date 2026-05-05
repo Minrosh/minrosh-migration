@@ -73,7 +73,7 @@ export default function MeetTheTeamPage() {
           }),
         ]}
       />
-      <div className="about-team-premium-shell relative min-w-0 bg-[var(--brand-cream)] pb-16 pt-1">
+      <div className="about-team-premium-shell relative min-w-0 bg-[var(--brand-cream)] pb-16 pt-8 md:pt-12">
         <div className="mx-auto w-full max-w-[var(--content-max)] px-[var(--content-pad)]">
           <article className="content-page">
             <BreadcrumbsNav
