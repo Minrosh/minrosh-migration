@@ -49,7 +49,8 @@ export default function AssessmentPage() {
         ])}
       />
 
-      <div className="conversion-premium-phase1 bg-[var(--brand-cream)] pb-16 pt-1">
+      <div className="conversion-premium-phase1 bg-[var(--brand-cream)] pb-16 pt-8 md:pt-12">
+      <div className="w-full max-w-[var(--content-max)] mx-auto px-[var(--content-pad)]">
       <div className="content-page page-assessment-premium">
         <BreadcrumbsNav
           currentPath="/assessment"
@@ -61,7 +62,7 @@ export default function AssessmentPage() {
 
         <div className="page-assessment-prototype pb-16">
           <div className="page-assessment-prototype__split">
-            <div className="min-w-0 glass-card rounded-[2rem] border-white/40 p-6 shadow-[0_12px_40px_rgba(74,24,48,0.06)] md:p-8">
+            <div className="min-w-0 glass-card rounded-[2rem] bg-[rgba(255,255,255,0.75)] p-6 shadow-[0_12px_40px_rgba(74,24,48,0.06)] backdrop-blur-[20px] md:p-8">
               <p className="section-label">Free assessment</p>
               <h1 className="mt-2 text-3xl font-black tracking-tight text-brand-plum [font-family:var(--font-display),Georgia,serif] sm:text-4xl md:text-[2.4rem]">
                 Check eligibility in a few minutes — then choose your next step with clarity
@@ -89,7 +90,7 @@ export default function AssessmentPage() {
                     {assessmentSteps.map((step) => (
                       <li
                         key={step.title}
-                        className="glass-card flex gap-4 rounded-2xl border border-brand-plum/10 p-4 shadow-sm"
+                        className="glass-card flex gap-4 rounded-2xl border border-brand-plum/10 bg-[rgba(255,255,255,0.75)] p-4 shadow-sm backdrop-blur-[20px]"
                       >
                         <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#881337] text-sm font-black text-white">
                           {step.number}
@@ -131,7 +132,7 @@ export default function AssessmentPage() {
               </div>
             </div>
 
-            <div className="page-assessment-prototype__navigator-shell glass-card min-w-0 rounded-[2rem] border border-brand-plum/10 p-4 shadow-lux md:p-6">
+            <div className="page-assessment-prototype__navigator-shell glass-card min-w-0 rounded-[2rem] border border-brand-plum/10 bg-[rgba(255,255,255,0.75)] p-4 shadow-lux backdrop-blur-[20px] md:p-6">
               <SmartNavigator
                 title="Step through the Smart Navigator"
                 description="Select the answers that best match your situation today. You can restart anytime — bring notes from the Department of Home Affairs visa listing if you already know a subclass."
@@ -142,7 +143,7 @@ export default function AssessmentPage() {
           </div>
 
           <details
-            className="content-section content-accordion bento-hover glass-card mt-12 max-w-4xl rounded-[2rem] border border-brand-plum/10 p-4 md:p-6"
+            className="content-section content-accordion bento-hover glass-card mt-12 max-w-4xl rounded-[2rem] border border-brand-plum/10 bg-[rgba(255,255,255,0.75)] p-4 backdrop-blur-[20px] md:p-6"
             open
           >
             <summary className="content-accordion__summary">
@@ -162,6 +163,7 @@ export default function AssessmentPage() {
             </div>
           </details>
         </div>
+      </div>
       </div>
       </div>
     </SiteShell>

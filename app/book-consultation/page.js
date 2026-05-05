@@ -34,7 +34,8 @@ export default function BookConsultationPage() {
           { name: "Book Consultation", path: pageData.path },
         ])}
       />
-      <div className="conversion-premium-phase1 bg-[var(--brand-cream)] pb-16 pt-1">
+      <div className="conversion-premium-phase1 bg-[var(--brand-cream)] pb-16 pt-8 md:pt-12">
+      <div className="w-full max-w-[var(--content-max)] mx-auto px-[var(--content-pad)]">
       <section className="content-page">
         <BreadcrumbsNav
           currentPath={pageData.path}
@@ -44,7 +45,7 @@ export default function BookConsultationPage() {
           ]}
         />
 
-        <section className="content-hero glass-card rounded-[2rem] border-white/40 p-6 shadow-[0_12px_40px_rgba(74,24,48,0.06)] md:p-8 lg:p-10">
+        <section className="content-hero glass-card rounded-[2rem] bg-[rgba(255,255,255,0.75)] p-6 shadow-[0_12px_40px_rgba(74,24,48,0.06)] backdrop-blur-[20px] md:p-8 lg:p-10">
           <p className="section-label">Book Consultation</p>
           <h1 className="[font-family:var(--font-display),Georgia,serif]">
             Reserve your strategy session with confidence
@@ -109,7 +110,7 @@ export default function BookConsultationPage() {
         </section>
 
         <section className="grid gap-6 lg:grid-cols-[1fr_1.1fr] lg:items-start">
-          <div className="glass-card rounded-[2rem] border border-brand-plum/10 p-5 shadow-lux md:p-7">
+          <div className="glass-card rounded-[2rem] border border-brand-plum/10 bg-[rgba(255,255,255,0.75)] p-5 shadow-lux backdrop-blur-[20px] md:p-7">
             <ContactCalmVisual />
             <div className="mt-5 rounded-2xl border border-brand-plum/10 bg-brand-cream/35 p-4">
               <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-plum/60">Consultation runway</p>
@@ -182,12 +183,13 @@ export default function BookConsultationPage() {
             </section>
           </div>
 
-          <div id="consultation-enquiry-form" className="contact-form-column glass-card rounded-[2rem] border border-brand-plum/10 p-4 shadow-lux md:p-6">
+          <div id="consultation-enquiry-form" className="contact-form-column glass-card rounded-[2rem] border border-brand-plum/10 bg-[rgba(255,255,255,0.75)] p-4 shadow-lux backdrop-blur-[20px] md:p-6">
             <AgentRegistrationStrip brand={siteData.brand} />
             <ContactLeadForm mode="consultation" />
           </div>
         </section>
       </section>
+      </div>
       </div>
     </SiteShell>
   );

@@ -60,8 +60,8 @@ export default function AboutPage() {
           { name: "About", path: "/about" },
         ])}
       />
-      <div className="about-team-premium-shell relative min-w-0 bg-[var(--brand-cream)] pb-16 pt-1">
-        <div className="mx-auto w-full max-w-[var(--content-max)] px-[var(--content-pad)]">
+      <div className="about-team-premium-shell relative min-w-0 bg-[var(--brand-cream)] pb-16">
+        <div className="w-full max-w-[var(--content-max)] mx-auto px-[var(--content-pad)]">
           <article className="content-page">
             <BreadcrumbsNav
               currentPath="/about"
@@ -89,14 +89,20 @@ export default function AboutPage() {
                   </ul>
                 </div>
                 <div className="content-hero__media" aria-hidden="true">
-                  <PublicFileImg src="/images/brisbane-skyline.jpg" alt="Brisbane skyline and riverfront" width={1600} height={900} />
+                  <PublicFileImg
+                    src="/images/hero-brisbane-river-cbd-hd.jpg"
+                    alt="Brisbane CBD skyline and River at dusk"
+                    width={1600}
+                    height={900}
+                    className="h-full w-full object-cover object-bottom md:object-[center_bottom]"
+                  />
                 </div>
               </div>
             </section>
 
             {trustSignals.length ? (
               <section
-                className="about-premium-stats-strip glass-card premium-frosted-surface border-brand-plum/10 shadow-[var(--shadow-lux-lg)]"
+                className="about-premium-stats-strip glass-card premium-frosted-surface border-brand-plum/10 bg-[rgba(255,255,255,0.75)] shadow-[var(--shadow-lux-lg)] backdrop-blur-[20px]"
                 aria-labelledby="about-stats-heading"
               >
                 <p className="section-label">Trust &amp; clarity</p>
@@ -108,7 +114,7 @@ export default function AboutPage() {
                 </h2>
                 <div className="about-premium-stats-strip__grid mt-6">
                   {trustSignals.map((item) => (
-                    <div key={item.id} className="about-premium-stats-strip__item glass-card rounded-xl border border-brand-plum/10 p-4">
+                    <div key={item.id} className="about-premium-stats-strip__item glass-card rounded-xl border border-brand-plum/10 bg-[rgba(255,255,255,0.75)] p-4 backdrop-blur-[20px]">
                       <strong>{item.value}</strong>
                       <span>{item.label}</span>
                     </div>
@@ -126,7 +132,7 @@ export default function AboutPage() {
                 {timeline.map((item, idx) => (
                   <article
                     key={item.title}
-                    className="glass-card premium-frosted-surface rounded-2xl border border-brand-plum/12 p-5 shadow-[var(--shadow-lux)]"
+                    className="glass-card premium-frosted-surface rounded-2xl border border-brand-plum/12 bg-[rgba(255,255,255,0.75)] p-5 shadow-[var(--shadow-lux)] backdrop-blur-[20px]"
                   >
                     <div className="grid gap-3 md:grid-cols-[auto_1fr] md:items-center">
                       <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-brand-plum text-sm font-bold text-white">

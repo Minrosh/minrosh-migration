@@ -46,7 +46,8 @@ export default function ContactPage() {
           { name: "Contact", path: pageData.path },
         ])}
       />
-      <div className="conversion-premium-phase1 bg-[var(--brand-cream)] pb-16 pt-1">
+      <div className="conversion-premium-phase1 bg-[var(--brand-cream)] pb-16 pt-8 md:pt-12">
+      <div className="w-full max-w-[var(--content-max)] mx-auto px-[var(--content-pad)]">
       <section className="content-page">
         <BreadcrumbsNav
           currentPath={pageData.path}
@@ -55,7 +56,7 @@ export default function ContactPage() {
             { label: "Contact", href: pageData.path },
           ]}
         />
-        <section className="content-hero glass-card rounded-[2rem] border-white/40 p-6 shadow-[0_12px_40px_rgba(74,24,48,0.06)] md:p-8 lg:p-10">
+        <section className="content-hero glass-card rounded-[2rem] bg-[rgba(255,255,255,0.75)] p-6 shadow-[0_12px_40px_rgba(74,24,48,0.06)] backdrop-blur-[20px] md:p-8 lg:p-10">
           <div className="content-hero__grid">
             <div className="content-hero__copy">
               <p className="section-label">Contact MinRosh Migration</p>
@@ -99,7 +100,7 @@ export default function ContactPage() {
               {trustSignals.length ? (
                 <div className="mt-4 grid gap-2 sm:grid-cols-3">
                   {trustSignals.map((item) => (
-                    <div key={item.id} className="glass-card rounded-xl border border-brand-plum/15 px-3 py-2">
+                    <div key={item.id} className="glass-card rounded-xl border border-brand-plum/15 bg-[rgba(255,255,255,0.75)] px-3 py-2 backdrop-blur-[20px]">
                       <p className="text-sm font-bold text-brand-plum">{item.value}</p>
                       <p className="text-xs text-brand-plum/70">{item.label}</p>
                     </div>
@@ -109,18 +110,19 @@ export default function ContactPage() {
             </div>
             <div className="content-hero__media" aria-hidden="true">
               <PublicFileImg
-                src="/images/brisbane-skyline.v2.webp"
-                alt="Brisbane skyline and riverfront"
+                src="/images/hero-brisbane-river-cbd-hd.jpg"
+                alt="Brisbane CBD skyline and River at dusk"
                 width={1600}
                 height={900}
+                className="h-full w-full object-cover object-bottom md:object-[center_bottom]"
                 priority
-                sizes="(max-width: 1024px) 100vw, 42vw"
+                sizes="(max-width: 768px) 100vw, 1600px"
               />
             </div>
           </div>
         </section>
         <section className="grid gap-6 lg:grid-cols-[1fr_1.1fr] lg:items-start">
-          <div className="contact-office-premium-panel glass-card rounded-[2rem] p-5 md:p-6">
+          <div className="contact-office-premium-panel glass-card rounded-[2rem] bg-[rgba(255,255,255,0.75)] p-5 backdrop-blur-[20px] md:p-6">
             <h2 className="[font-family:var(--font-display),Georgia,serif]">Office &amp; hours</h2>
             <p>
               <strong className="text-brand-plum">Location:</strong> {siteData.brand.location}
@@ -141,15 +143,15 @@ export default function ContactPage() {
             </p>
           </div>
 
-          <div className="glass-card relative overflow-hidden rounded-[2rem] border border-brand-plum/10 shadow-lux">
+          <div className="glass-card relative overflow-hidden rounded-[2rem] border border-brand-plum/10 bg-[rgba(255,255,255,0.75)] shadow-lux backdrop-blur-[20px]">
             <div className="h-56 lg:h-72">
               <PublicFileImg
-                src="/images/brisbane-skyline.v2.webp"
-                alt="Calm Brisbane skyline view"
+                src="/images/hero-brisbane-river-cbd-hd.jpg"
+                alt="Brisbane CBD skyline and River at dusk"
                 width={1600}
                 height={900}
-                className="h-full w-full object-cover"
-                sizes="(max-width: 1024px) 100vw, 46vw"
+                className="h-full w-full object-cover object-bottom md:object-[center_bottom]"
+                sizes="(max-width: 768px) 100vw, 1600px"
               />
             </div>
             <div className="space-y-4 p-6">
@@ -242,7 +244,7 @@ export default function ContactPage() {
           </div>
           <div
             id="contact-enquiry-form"
-            className="contact-form-column premium-contact-shell glass-card rounded-[2rem] border border-brand-plum/10 p-4 shadow-lux md:p-6"
+            className="contact-form-column premium-contact-shell glass-card rounded-[2rem] border border-brand-plum/10 bg-[rgba(255,255,255,0.75)] p-4 shadow-lux backdrop-blur-[20px] md:p-6"
           >
             <AgentRegistrationStrip brand={siteData.brand} />
             <ContactLeadForm className="premium-contact-form" />
@@ -250,7 +252,7 @@ export default function ContactPage() {
         </section>
 
         <section
-          className="contact-map-embed glass-card mt-8 rounded-[2rem] border border-brand-plum/10 p-4 md:p-6"
+          className="contact-map-embed glass-card mt-8 rounded-[2rem] border border-brand-plum/10 bg-[rgba(255,255,255,0.75)] p-4 backdrop-blur-[20px] md:p-6"
           aria-labelledby="contact-map-heading"
         >
           <h2 id="contact-map-heading" className="sr-only">
@@ -268,6 +270,7 @@ export default function ContactPage() {
           </p>
         </section>
       </section>
+      </div>
       </div>
     </SiteShell>
   );
