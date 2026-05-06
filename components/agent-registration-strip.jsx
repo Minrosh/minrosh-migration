@@ -8,10 +8,6 @@ export function AgentRegistrationStrip({ brand, variant = "default" }) {
   const marn = String(
     brand.marn || (typeof process !== "undefined" ? process.env.NEXT_PUBLIC_MARN : "") || ""
   ).trim();
-  const regsUrl =
-    brand.migrationAgentsRegulations2026Url || "https://www.legislation.gov.au/F2026L00118/latest";
-  const conductUrl = brand.omaraCodeOfConductUrl || "https://www.mara.gov.au/tools-for-agents/legislation/code-of-conduct";
-  const omaraUrl = brand.omaraRegisterUrl || "https://www.mara.gov.au/";
   const registerSearchUrl =
     brand.migrationAgentsRegisterSearchUrl || "https://www.mara.gov.au/search-the-register-of-migration-agents/";
 
@@ -22,12 +18,7 @@ export function AgentRegistrationStrip({ brand, variant = "default" }) {
     >
       <p className="agent-registration-strip__lead">
         <strong>{brand.name}</strong>
-        {marn ? (
-          <>
-            {" "}
-            · <span className="agent-registration-strip__marn">MARN {marn}</span>
-          </>
-        ) : (
+        {!marn ? (
           <span className="agent-registration-strip__pending">
             {" "}
             · Registered with OMARA —{" "}
@@ -36,20 +27,7 @@ export function AgentRegistrationStrip({ brand, variant = "default" }) {
             </a>{" "}
             to confirm details
           </span>
-        )}
-      </p>
-      <p className="agent-registration-strip__links">
-        <a href={regsUrl} target="_blank" rel="noreferrer">
-          Migration Agents Regulations 2026
-        </a>
-        {" · "}
-        <a href={conductUrl} target="_blank" rel="noreferrer">
-          OMARA Code of Conduct
-        </a>
-        {" · "}
-        <a href={omaraUrl} target="_blank" rel="noreferrer">
-          OMARA register
-        </a>
+        ) : null}
       </p>
     </aside>
   );

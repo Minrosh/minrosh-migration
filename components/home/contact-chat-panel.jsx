@@ -24,7 +24,7 @@ const initialForm = {
 export function ContactChatPanel({ siteData, isActive }) {
   const waPrimary = buildWhatsAppUrl(siteData?.brand?.whatsapp, WHATSAPP_LEAD_MESSAGE);
   const waSecondary = buildWhatsAppUrl(siteData?.brand?.whatsappSecondary, WHATSAPP_LEAD_MESSAGE);
-  const supportEmailLabel = String(siteData?.brand?.email || "").trim().replace("@", " [at] ");
+  const supportEmailLabel = String(siteData?.brand?.email || "").trim();
 
   const [contactForm, setContactForm] = useState(initialForm);
   const [contactState, setContactState] = useState({ status: "idle", message: "" });

@@ -4,7 +4,7 @@ import { TrackedLink } from "./tracked-link";
 
 export function HomeFinalCta() {
   return (
-    <section className="home-section bg-brand-plum relative overflow-x-clip text-white">
+    <section className="home-section relative overflow-hidden rounded-[2rem] border border-white/20 bg-brand-plum shadow-[var(--shadow-lux)] overflow-x-clip text-white">
       <div className="pointer-events-none absolute inset-0 opacity-40">
         <div className="absolute -left-[20%] top-0 h-[320px] w-[320px] rounded-full bg-brand-rose/30 blur-[80px]" />
         <div className="absolute -right-[10%] bottom-0 h-[280px] w-[280px] rounded-full bg-brand-gold/25 blur-[70px]" />

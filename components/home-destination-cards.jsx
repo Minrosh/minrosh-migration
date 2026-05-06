@@ -36,24 +36,32 @@ export function HomeDestinationCards({ countries }) {
   }).filter(Boolean);
 
   return (
-    <section className="home-section bg-[#FBF6F4]/80" aria-labelledby="home-destinations-heading">
-      <div className="mx-auto w-full min-w-0">
-        <p className="text-center text-[11px] font-bold uppercase tracking-[0.28em] text-brand-rose">
+    <section className="home-section" aria-labelledby="home-destinations-heading">
+      <div className="relative isolate mx-auto w-full min-w-0 overflow-hidden rounded-[2rem] border border-brand-plum/10 bg-gradient-to-b from-[#FBF6F4]/85 via-white to-[#FBF6F4]/75 p-5 shadow-[var(--shadow-lux)] sm:p-7">
+        <div
+          className="pointer-events-none absolute inset-0 z-0 rounded-[2rem]"
+          aria-hidden
+          style={{
+            background:
+              "radial-gradient(130% 100% at 50% 0%, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0) 62%), radial-gradient(120% 100% at 50% 100%, rgba(136,19,55,0.06) 0%, rgba(136,19,55,0) 65%)",
+          }}
+        />
+        <p className="relative z-10 text-center text-[11px] font-bold uppercase tracking-[0.28em] text-brand-rose">
           Pathways to your future
         </p>
         <h2
           id="home-destinations-heading"
-          className="mt-3 text-center text-2xl font-bold tracking-tight text-[#1f1020] sm:text-3xl md:text-[2.15rem]"
+          className="relative z-10 mt-3 text-center text-2xl font-bold tracking-tight text-[#1f1020] sm:text-3xl md:text-[2.15rem]"
           style={{ fontFamily: "var(--font-sans), ui-sans-serif, system-ui, sans-serif" }}
         >
           Destinations we help you reach
         </h2>
-        <p className="mx-auto mt-4 max-w-3xl text-center text-sm font-medium leading-relaxed text-[#1f1020]/72 sm:text-base">
+        <p className="relative z-10 mx-auto mt-4 max-w-3xl text-center text-sm font-medium leading-relaxed text-[#1f1020]/72 sm:text-base">
           Structured hubs for Australia, Canada, the United Kingdom and New Zealand—whether you are in South Asia,
           elsewhere offshore or already in-country. Always verify current rules on each government immigration site.
         </p>
 
-        <ul className="mt-10 grid min-w-0 list-none grid-cols-1 gap-[clamp(24px,4vw,48px)] pl-0 sm:mt-12 sm:grid-cols-2 lg:grid-cols-4">
+        <ul className="relative z-10 mt-10 grid min-w-0 list-none grid-cols-1 gap-[clamp(24px,4vw,48px)] pl-0 sm:mt-12 sm:grid-cols-2 lg:grid-cols-4">
           {cards.map((card) => {
             const media = CARD_MEDIA[card.key];
             return (

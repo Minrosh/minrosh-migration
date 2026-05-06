@@ -9,7 +9,7 @@ import {
   quizSummaryFromNavigatorDetail,
   readNavigatorQuizSummaryLine,
 } from "@/lib/navigator-session";
-import { validateConsultationSlot } from "@/lib/consultation-slot-policy";
+import { CONSULTATION_MIN_ADVANCE_HOURS, validateConsultationSlot } from "@/lib/consultation-slot-policy";
 import { trackEvent } from "@/lib/client-analytics";
 import { retryAfterHint } from "@/lib/http/retry-after";
 import { REQUEST_ID_HEADER } from "@/lib/observability/request-id";
@@ -70,14 +70,14 @@ function validateLeadForm(form, mode, resumeFile) {
     if (!String(form.bookingType || "").trim()) {
       errors.bookingType = "Please choose consultation type.";
     }
-    if (resumeFile) {
-      if (resumeFile.size > MAX_RESUME_BYTES) {
-        errors.resume = "Resume must be 15MB or smaller.";
-      } else {
-        const name = String(resumeFile.name || "").toLowerCase();
-        if (!name.endsWith(".pdf")) {
-          errors.resume = "Please upload a PDF resume only.";
-        }
+  }
+  if (resumeFile) {
+    if (resumeFile.size > MAX_RESUME_BYTES) {
+      errors.resume = "Resume must be 15MB or smaller.";
+    } else {
+      const name = String(resumeFile.name || "").toLowerCase();
+      if (!name.endsWith(".pdf")) {
+        errors.resume = "Please upload a PDF resume only.";
       }
     }
   }
@@ -173,7 +173,7 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
       : [
           ["firstName", "lastName", "email", "phone"],
           ["preferredCountry", "mainNeed"],
-          ["message", "privacyPolicyAccepted"],
+          ["resume", "message", "privacyPolicyAccepted"],
         ];
 
   const visibleFields = mobileStepper ? new Set(stepFieldGroups[currentStep] || []) : null;
@@ -380,7 +380,7 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
     });
     setState({ status: "loading", message: "" });
     try {
-      const useMultipart = mode === "consultation" && resumeFile instanceof File && resumeFile.size > 0;
+      const useMultipart = resumeFile instanceof File && resumeFile.size > 0;
       let response;
       if (useMultipart) {
         const fd = new FormData();
@@ -511,13 +511,6 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
         </div>
       </div>
 
-      <p className="form-security-note">
-        Submissions use HTTPS in transit. See our{" "}
-        <a href="/privacy-policy" className="text-primary underline">
-          Privacy Policy
-        </a>{" "}
-        for how we handle personal information.
-      </p>
       {mode === "consultation" ? (
         <div className="mb-6 rounded-2xl border border-brand-plum/10 bg-brand-cream/50 p-4 text-sm text-brand-plum/80">
           <p className="font-semibold text-brand-plum">Points wizard</p>
@@ -564,15 +557,19 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
           fieldErrors.firstName,
           "err-firstName"
         )}
-        <label hidden={mobileStepper && !visibleFields?.has("lastName")}>
-          <span>Last name</span>
+        {floatingField(
+          "Last name",
+          "lastName",
           <input
             name="lastName"
             autoComplete="family-name"
             value={form.lastName}
             onChange={handleChange}
-          />
-        </label>
+            className="pt-7"
+          />,
+          "",
+          "err-lastName"
+        )}
         {floatingField(
           "Email",
           "email",
@@ -590,23 +587,22 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
           fieldErrors.email,
           "err-email"
         )}
-        <label className={fieldErrors.phone ? "has-error" : ""} hidden={mobileStepper && !visibleFields?.has("phone")}>
-          <span>Phone</span>
+        {floatingField(
+          "Phone",
+          "phone",
           <input
             name="phone"
             type="tel"
             autoComplete="tel"
             value={form.phone}
             onChange={handleChange}
+            className="pt-7"
             aria-invalid={fieldErrors.phone ? "true" : undefined}
             aria-describedby={fieldErrors.phone ? "err-phone" : undefined}
-          />
-          {fieldErrors.phone ? (
-            <span className="field-error" id="err-phone" role="alert">
-              {fieldErrors.phone}
-            </span>
-          ) : null}
-        </label>
+          />,
+          fieldErrors.phone,
+          "err-phone"
+        )}
         <label hidden={mobileStepper && !visibleFields?.has("preferredCountry")}>
           <span>Preferred country</span>
           <select name="preferredCountry" value={form.preferredCountry} onChange={handleChange}>
@@ -672,8 +668,9 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
                 }
               />
               <span id="hint-consultation-hours" className="text-xs text-brand-plum/60 mt-1 block leading-relaxed">
-                Date and time are in your selected time zone; bookings need at least 24 hours&apos; notice. Available
-                windows are enforced in <strong className="font-semibold text-brand-plum/80">Brisbane (AEST)</strong>:
+                Date and time are in your selected time zone; bookings need at least{" "}
+                {CONSULTATION_MIN_ADVANCE_HOURS} hours&apos; notice. Available windows are enforced in{" "}
+                <strong className="font-semibold text-brand-plum/80">Brisbane (AEST)</strong>:
                 Monday–Friday 7:00 pm–10:00 pm; Saturday–Sunday 9:00 am–10:00 pm (last start 9:30 pm Brisbane).
               </span>
               {fieldErrors.preferredTime ? (
@@ -720,31 +717,33 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
                 <option value="standard">Standard consultation</option>
               </select>
             </label>
-            <label
-              className={fieldErrors.resume ? "has-error" : ""}
-              hidden={mobileStepper && !visibleFields?.has("resume")}
-            >
-              <span>Resume (optional, PDF)</span>
-              <input
-                type="file"
-                name="resume"
-                accept="application/pdf,.pdf"
-                onChange={handleResumeFileChange}
-                className="text-sm text-brand-plum/80 file:mr-3 file:rounded-lg file:border-0 file:bg-brand-plum file:px-3 file:py-2 file:text-xs file:font-semibold file:text-white hover:file:bg-brand-rose"
-                aria-invalid={fieldErrors.resume ? "true" : undefined}
-                aria-describedby={fieldErrors.resume ? "err-resume" : "hint-resume"}
-              />
-              <span id="hint-resume" className="text-xs text-brand-plum/55 mt-1 block">
-                Max 15MB. Uploaded to your lead folder when Drive is configured.
-              </span>
-              {fieldErrors.resume ? (
-                <span className="field-error" id="err-resume" role="alert">
-                  {fieldErrors.resume}
-                </span>
-              ) : null}
-            </label>
           </>
         ) : null}
+        <label
+          className={`contact-grid__full${fieldErrors.resume ? " has-error" : ""}`}
+          hidden={mobileStepper && !visibleFields?.has("resume")}
+        >
+          <span>CV / Resume (optional, PDF)</span>
+          <div className="mt-1 flex items-center gap-3">
+            <input
+              type="file"
+              name="resume"
+              accept="application/pdf,.pdf"
+              onChange={handleResumeFileChange}
+              className="w-[220px] max-w-[220px] shrink-0 text-sm text-brand-plum/80 file:mr-3 file:rounded-lg file:border-0 file:bg-brand-plum file:px-3 file:py-2 file:text-xs file:font-semibold file:text-white hover:file:bg-brand-rose"
+              aria-invalid={fieldErrors.resume ? "true" : undefined}
+              aria-describedby={fieldErrors.resume ? "err-resume" : "hint-resume"}
+            />
+            <span id="hint-resume" className="min-w-0 flex-1 text-xs text-brand-plum/55 leading-relaxed">
+              Optional. PDF only, max 15MB. Uploaded to your lead folder when Drive is configured.
+            </span>
+          </div>
+          {fieldErrors.resume ? (
+            <span className="field-error" id="err-resume" role="alert">
+              {fieldErrors.resume}
+            </span>
+          ) : null}
+        </label>
         <div 
           className={`contact-grid__full${fieldErrors.message ? " has-error" : ""}`}
           hidden={mobileStepper && !visibleFields?.has("message")}

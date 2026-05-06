@@ -32,8 +32,17 @@ const FEEDBACK = [
 export function HomeDeferredCarousels({ newsItems = [] }) {
   return (
     <>
-      <section className="home-section bg-brand-cream/30 overflow-x-clip">
+      <section className="home-section relative isolate overflow-x-clip rounded-[2rem] border border-brand-plum/10 bg-gradient-to-b from-[#FBF6F4]/85 via-white to-[#FBF6F4]/75 p-5 shadow-[var(--shadow-lux)] sm:p-7">
         <div className="mx-auto w-full min-w-0">
+          <div
+            className="pointer-events-none absolute inset-0 z-0 rounded-[2rem]"
+            aria-hidden
+            style={{
+              background:
+                "radial-gradient(130% 100% at 50% 0%, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0) 62%), radial-gradient(120% 100% at 50% 100%, rgba(136,19,55,0.05) 0%, rgba(136,19,55,0) 65%)",
+            }}
+          />
+          <div className="relative z-10 mx-auto w-full min-w-0">
           <div className="text-center">
             <p className="text-[10px] font-black uppercase tracking-[0.28em] text-brand-rose sm:text-xs">Trust</p>
             <h2 className="mt-3 text-2xl font-black tracking-tight text-brand-plum sm:text-3xl md:text-4xl">
@@ -70,15 +79,20 @@ export function HomeDeferredCarousels({ newsItems = [] }) {
             </ul>
           </div>
 
-          <p className="mt-6 text-center text-xs font-medium leading-relaxed text-brand-plum/55">
-            MinRosh maintains OMARA-aligned practices and cites departmental guidance—always confirm requirements on
-            official immigration websites.
-          </p>
+          </div>
         </div>
       </section>
 
-      <section className="home-section bg-white overflow-x-clip">
-        <div className="mx-auto w-full min-w-0">
+      <section className="home-section relative isolate overflow-x-clip rounded-[2rem] border border-brand-plum/10 bg-gradient-to-b from-[#FBF6F4]/85 via-white to-[#FBF6F4]/75 p-5 shadow-[var(--shadow-lux)] sm:p-7">
+          <div
+            className="pointer-events-none absolute inset-0 z-0 rounded-[2rem]"
+            aria-hidden
+            style={{
+              background:
+                "radial-gradient(130% 100% at 50% 0%, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0) 62%), radial-gradient(120% 100% at 50% 100%, rgba(136,19,55,0.06) 0%, rgba(136,19,55,0) 65%)",
+            }}
+          />
+          <div className="relative z-10 mx-auto w-full min-w-0">
           <div className="mb-8 flex flex-col justify-between gap-6 sm:mb-10 md:flex-row md:items-end">
             <div>
               <p className="text-[10px] font-black uppercase tracking-[0.28em] text-brand-rose sm:text-xs">
@@ -97,9 +111,9 @@ export function HomeDeferredCarousels({ newsItems = [] }) {
           </div>
 
           <div className="relative">
-            <ul className="flex list-none gap-5 overflow-x-auto pb-6 pl-0 sm:gap-6 px-1 sm:px-0 snap-x snap-mandatory no-scrollbar">
+            <ul className="relative z-10 mt-10 grid min-w-0 list-none grid-cols-1 gap-[clamp(24px,4vw,48px)] pl-0 sm:mt-12 sm:grid-cols-2 lg:grid-cols-4">
               {newsItems.map((item) => (
-                <li key={item.id} className="w-[min(calc(100vw-2.5rem),380px)] shrink-0 snap-center sm:w-[380px]">
+                <li key={item.id} className="min-w-0">
                   <Link href={item.href} className="group block h-full">
                     <div className="glass-card flex h-full flex-col rounded-[1.75rem] border border-brand-plum/[0.06] bg-white/95 p-6 shadow-[var(--shadow-lux)] transition-all hover:border-brand-rose/25 hover:bg-[#FBF6F4]/40 hover:shadow-[var(--shadow-lux-lg)] sm:p-8">
                       <div className="mb-6 flex items-center justify-between">
@@ -125,7 +139,7 @@ export function HomeDeferredCarousels({ newsItems = [] }) {
               ))}
             </ul>
           </div>
-        </div>
+          </div>
       </section>
     </>
   );

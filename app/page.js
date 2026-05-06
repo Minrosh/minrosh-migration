@@ -10,6 +10,7 @@ import { HomePlanningTools } from "../components/home-planning-tools";
 import { HomeServicesPathways } from "../components/home-services-pathways";
 import { HomeFinalCta } from "../components/home-final-cta";
 import { HomeHeroPremium } from "../components/home/home-hero-premium";
+import { HomeQuizEntrySection } from "../components/home/home-quiz-entry-section";
 import { getHomePagePreparedData } from "../lib/home-site-data";
 
 const { siteData, homeHeroWhatsAppHref } = getHomePagePreparedData(siteDataStatic);
@@ -28,6 +29,8 @@ export default function HomePage() {
           <HomeHeroPremium whatsappHref={homeHeroWhatsAppHref} />
 
           <div className="w-full max-w-[var(--content-max)] mx-auto px-[var(--content-pad)]">
+            <HomeQuizEntrySection />
+
             <HomeBuyerJourneyStrip />
 
             <HomeDestinationCards countries={siteData.countries} />

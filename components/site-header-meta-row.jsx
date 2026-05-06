@@ -28,7 +28,7 @@ const phoneIcon = (
  */
 export function SiteHeaderMetaRow({ siteData }) {
   const email = String(siteData?.brand?.email || "").trim();
-  const supportEmailLabel = email.replace("@", " [at] ");
+  const supportEmailLabel = email;
   const phoneRaw = String(siteData?.brand?.phone || "").trim();
   const telHref = phoneRaw ? `tel:${phoneRaw.replace(/\s+/g, "")}` : "";
   const topbarBrand = { ...siteData.brand, whatsappSecondary: "" };

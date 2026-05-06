@@ -5,12 +5,10 @@ import { listPublicSocialIcons } from "../../lib/social-public";
 import { getHomeSiteData } from "../../lib/home-site-data";
 import { ContactLeadForm } from "../../components/contact-lead-form";
 import { QuickEnquiryForm } from "../../components/quick-enquiry-form";
-import { AgentRegistrationStrip } from "../../components/agent-registration-strip";
 import { SiteShell } from "../../components/site-shell";
 import { StructuredData } from "../../components/structured-data";
 import { buildMetadata, breadcrumbJsonLd } from "../../lib/seo";
 import Link from "next/link";
-import { BreadcrumbsNav } from "../../components/breadcrumbs-nav";
 import { PublicFileImg } from "../../components/public-file-img";
 import { SiteSocialIcons } from "../../components/site-social-icons";
 import { ContactCalmVisual } from "../../components/contact-calm-visual";
@@ -30,7 +28,7 @@ export const metadata = buildMetadata({
 
 export default function ContactPage() {
   const siteData = getHomeSiteData(siteDataStatic);
-  const supportEmailLabel = String(siteData?.brand?.email || "").trim().replace("@", " [at] ");
+  const supportEmailLabel = String(siteData?.brand?.email || "").trim();
   const waPrimary = buildWhatsAppUrl(siteData.brand.whatsapp, WHATSAPP_LEAD_MESSAGE);
   const waSecondary = buildWhatsAppUrl(siteData.brand.whatsappSecondary, WHATSAPP_LEAD_MESSAGE);
   const trustSignals = Array.isArray(readinessSignals?.trustSignals) ? readinessSignals.trustSignals : [];
@@ -46,21 +44,15 @@ export default function ContactPage() {
           { name: "Contact", path: pageData.path },
         ])}
       />
-      <div className="conversion-premium-phase1 bg-[var(--brand-cream)] pb-16 pt-8 md:pt-12">
+      <div className="conversion-premium-phase1 contact-page--flush-top -mt-44 md:-mt-44 bg-[var(--brand-cream)] pb-12 pt-0 md:pt-0">
       <div className="w-full max-w-[var(--content-max)] mx-auto px-[var(--content-pad)]">
       <section className="content-page">
-        <BreadcrumbsNav
-          currentPath={pageData.path}
-          items={[
-            { label: "Home", href: "/" },
-            { label: "Contact", href: pageData.path },
-          ]}
-        />
-        <section className="content-hero glass-card rounded-[2rem] bg-[rgba(255,255,255,0.75)] p-6 shadow-[0_12px_40px_rgba(74,24,48,0.06)] backdrop-blur-[20px] md:p-8 lg:p-10">
+        <section className="content-hero contact-hero--blend contact-hero--home-adopt glass-card rounded-[2rem] bg-[rgba(255,255,255,0.75)] p-6 shadow-[0_12px_40px_rgba(74,24,48,0.06)] backdrop-blur-[20px] md:p-8 lg:p-10">
           <div className="content-hero__grid">
             <div className="content-hero__copy">
-              <p className="section-label">Contact MinRosh Migration</p>
+              <p className="section-label contact-hero--home-adopt__badge">Contact MinRosh Migration</p>
               <h1 className="[font-family:var(--font-display),Georgia,serif]">{pageData.headline}</h1>
+              <div className="contact-hero--home-adopt__accent-line" aria-hidden />
               <p>{pageData.intro}</p>
               <ul className="feature-list">
                 <li>Clear next-step guidance based on your current profile and timing</li>
@@ -78,10 +70,6 @@ export default function ContactPage() {
                   Send focused enquiry
                 </TrackedLink>
               </div>
-              <p className="content-hero__note">
-                Recommended flow: run the quiz for orientation, review pathway/service pages, then submit a focused
-                enquiry with your likely stream and timeframe.
-              </p>
               <p className="text-sm text-brand-plum/70">
                 Prefer chat first?{" "}
                 <TrackedAnchor
@@ -98,9 +86,12 @@ export default function ContactPage() {
                 .
               </p>
               {trustSignals.length ? (
-                <div className="mt-4 grid gap-2 sm:grid-cols-3">
+                <div className="contact-hero--home-adopt__trust mt-4 grid gap-3 sm:grid-cols-3 sm:auto-rows-fr sm:items-stretch">
                   {trustSignals.map((item) => (
-                    <div key={item.id} className="glass-card rounded-xl border border-brand-plum/15 bg-[rgba(255,255,255,0.75)] px-3 py-2 backdrop-blur-[20px]">
+                    <div
+                      key={item.id}
+                      className="glass-card mb-0 h-full rounded-xl border border-brand-plum/15 bg-[rgba(255,255,255,0.75)] px-3 py-2 backdrop-blur-[20px]"
+                    >
                       <p className="text-sm font-bold text-brand-plum">{item.value}</p>
                       <p className="text-xs text-brand-plum/70">{item.label}</p>
                     </div>
@@ -108,7 +99,7 @@ export default function ContactPage() {
                 </div>
               ) : null}
             </div>
-            <div className="content-hero__media" aria-hidden="true">
+            <div className="content-hero__media contact-hero--blend__media" aria-hidden="true">
               <PublicFileImg
                 src="/images/hero-brisbane-river-cbd-hd.jpg"
                 alt="Brisbane CBD skyline and River at dusk"
@@ -121,40 +112,9 @@ export default function ContactPage() {
             </div>
           </div>
         </section>
-        <section className="grid gap-6 lg:grid-cols-[1fr_1.1fr] lg:items-start">
-          <div className="contact-office-premium-panel glass-card rounded-[2rem] bg-[rgba(255,255,255,0.75)] p-5 backdrop-blur-[20px] md:p-6">
-            <h2 className="[font-family:var(--font-display),Georgia,serif]">Office &amp; hours</h2>
-            <p>
-              <strong className="text-brand-plum">Location:</strong> {siteData.brand.location}
-            </p>
-            <p>
-              <strong className="text-brand-plum">Scheduling:</strong> {siteData.consultationHoursNote}
-            </p>
-            <p className="text-sm">
-              <strong className="text-brand-plum">Phone:</strong>{" "}
-              <TrackedAnchor
-                href={`tel:${siteData.brand.phone.replace(/\s+/g, "")}`}
-                eventName="cta_click"
-                eventParams={{ cta_id: "contact_office_panel_phone", cta_location: "contact_office", destination: "phone" }}
-                className="font-semibold text-brand-rose underline decoration-brand-rose/40 underline-offset-4"
-              >
-                {siteData.brand.phone}
-              </TrackedAnchor>
-            </p>
-          </div>
-
+        <section className="grid gap-4 lg:grid-cols-[1fr_1.1fr] lg:items-start">
           <div className="glass-card relative overflow-hidden rounded-[2rem] border border-brand-plum/10 bg-[rgba(255,255,255,0.75)] shadow-lux backdrop-blur-[20px]">
-            <div className="h-56 lg:h-72">
-              <PublicFileImg
-                src="/images/hero-brisbane-river-cbd-hd.jpg"
-                alt="Brisbane CBD skyline and River at dusk"
-                width={1600}
-                height={900}
-                className="h-full w-full object-cover object-bottom md:object-[center_bottom]"
-                sizes="(max-width: 768px) 100vw, 1600px"
-              />
-            </div>
-            <div className="space-y-4 p-6">
+            <div className="space-y-3 p-5 md:p-6">
               <ContactCalmVisual />
               <div className="contact-copy">
                 <p className="section-label">Calm guidance, real humans</p>
@@ -167,7 +127,7 @@ export default function ContactPage() {
                   guidance. If you are still choosing a stream, browse the Department of Home Affairs visa
                   listing first, then tell us which subclass or goal you want to stress-test.
                 </p>
-                <div className="my-8 flex flex-wrap gap-4">
+                <div className="my-5 flex flex-wrap gap-3">
                   <TrackedAnchor 
                     href={waPrimary} 
                     target="_blank" 
@@ -181,94 +141,39 @@ export default function ContactPage() {
                     Chat on WhatsApp
                   </TrackedAnchor>
                 </div>
-                <p className="mt-2 text-sm text-brand-plum/70">
-                  Prefer a direct call?{" "}
-                  <TrackedAnchor
-                    href={`tel:${siteData.brand.phone.replace(/\s+/g, "")}`}
-                    eventName="cta_click"
-                    eventParams={{ cta_id: "contact_panel_phone", cta_location: "contact_panel", destination: "phone" }}
-                    aria-label={`Call ${siteData.brand.phone}`}
-                    className="font-semibold text-brand-rose underline decoration-brand-rose/40 underline-offset-4"
-                  >
-                    Call {siteData.brand.phone}
-                  </TrackedAnchor>
-                  .
-                </p>
-
-                <div className="rounded-2xl bg-brand-plum/[0.03] p-6 border border-brand-plum/5">
+                <div className="rounded-2xl bg-brand-plum/[0.03] p-5 border border-brand-plum/5">
                   <p className="text-[10px] font-black uppercase tracking-widest text-brand-plum/40 mb-4">Other ways to connect</p>
-                  <div className="grid gap-6 sm:grid-cols-2">
-                    <div className="space-y-1">
+                  <div className="flex flex-wrap gap-4">
+                    <div className="min-w-[220px] flex-1 space-y-1 rounded-xl border border-brand-plum/10 bg-white/70 p-3">
                       <p className="text-xs font-black text-brand-plum uppercase tracking-wider">Email</p>
                       <p className="text-sm font-medium text-brand-plum/70">{supportEmailLabel || "Use the form"}</p>
                     </div>
-                    <div className="space-y-1">
-                      <p className="text-xs font-black text-brand-plum uppercase tracking-wider">Location</p>
-                      <p className="text-sm font-medium text-brand-plum/70">{siteData.brand.location}</p>
-                    </div>
                     {siteData.brand.phoneSecondary && (
-                      <div className="space-y-1">
+                      <div className="min-w-[220px] flex-1 space-y-1 rounded-xl border border-brand-plum/10 bg-white/70 p-3">
                         <p className="text-xs font-black text-brand-plum uppercase tracking-wider">Backup Phone</p>
                         <a href={`tel:${siteData.brand.phoneSecondary.replace(/\s+/g, "")}`} className="text-sm font-medium text-brand-plum/70 hover:text-brand-rose transition-colors">
                           {siteData.brand.phoneSecondary}
                         </a>
                       </div>
                     )}
-                    <div className="space-y-1">
+                    <div className="min-w-[220px] flex-1 space-y-1 rounded-xl border border-brand-plum/10 bg-white/70 p-3">
                       <p className="text-xs font-black text-brand-plum uppercase tracking-wider">Social</p>
                       <SiteSocialIcons brand={siteData.brand} variant="contact" includeWhatsApp={false} />
                     </div>
                   </div>
                 </div>
-                {progressiveDisclosure.length ? (
-                  <div className="mt-4 rounded-2xl border border-brand-plum/10 bg-brand-cream/35 p-4">
-                    <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-plum/60">
-                      Progressive disclosure flow
-                    </p>
-                    <ul className="mt-3 space-y-2 text-sm text-brand-plum/80">
-                      {progressiveDisclosure.map((item, index) => (
-                        <li key={item.id} className="flex gap-3">
-                          <span className="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand-plum text-xs font-bold text-white">
-                            {index + 1}
-                          </span>
-                          <span>
-                            <strong>{item.title}:</strong> {item.description}
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ) : null}
               </div>
             </div>
           </div>
+
           <div
             id="contact-enquiry-form"
             className="contact-form-column premium-contact-shell glass-card rounded-[2rem] border border-brand-plum/10 bg-[rgba(255,255,255,0.75)] p-4 shadow-lux backdrop-blur-[20px] md:p-6"
           >
-            <AgentRegistrationStrip brand={siteData.brand} />
             <ContactLeadForm className="premium-contact-form" />
           </div>
         </section>
 
-        <section
-          className="contact-map-embed glass-card mt-8 rounded-[2rem] border border-brand-plum/10 bg-[rgba(255,255,255,0.75)] p-4 backdrop-blur-[20px] md:p-6"
-          aria-labelledby="contact-map-heading"
-        >
-          <h2 id="contact-map-heading" className="sr-only">
-            Office map
-          </h2>
-          <iframe
-            title="Brisbane area map — MinRosh Migration office context"
-            className="contact-map-embed__frame"
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            src="https://www.openstreetmap.org/export/embed.html?bbox=152.92%2C-27.52%2C153.20%2C-27.38&amp;layer=mapnik&amp;marker=-27.45%2C153.06"
-          />
-          <p className="mt-3 text-center text-xs text-brand-plum/55">
-            Map data © OpenStreetMap contributors. Pin is indicative — confirm the exact address before visiting.
-          </p>
-        </section>
       </section>
       </div>
       </div>

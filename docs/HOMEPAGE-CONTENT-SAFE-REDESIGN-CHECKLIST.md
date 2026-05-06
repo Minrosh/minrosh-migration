@@ -19,6 +19,33 @@ Before altering gradients, viewport-fit behaviour (`home-hero-premium-section--v
 - Keep all current features operational (`/#quiz`, `/assessment`, `/contact`, `/book-consultation`, Smart Navigator, AI chat if enabled).
 - Keep legal/trust messaging visible.
 
+## Current homepage structure note
+
+- `/` is now composed from premium homepage sections in `app/page.js` (hero + in-rail blocks), not the legacy tab shell.
+- Keep `/#quiz` operational via a stable in-page anchor section (`id="quiz"`).
+
+## Current design lock (do not change without explicit approval)
+
+Keep the following implementation as the active visual baseline unless explicitly requested by product/brand review:
+
+- **Shared section shell pattern (homepage bands):**
+  - `relative isolate` wrapper
+  - `rounded-[2rem]`, `border border-brand-plum/10`, `shadow-[var(--shadow-lux)]`
+  - soft gradient/fade background (`from-[#FBF6F4]/85 via-white to-[#FBF6F4]/75`) with subtle radial overlay
+  - applied to destination/services/tools/trust/knowledge/journey sections
+- **Homepage hero overlays and spacing:**
+  - floating header over hero image
+  - tuned hero glass/fog/trust-bar offsets in `app/home.css`
+- **Homepage quiz card arrangement:**
+  - two-column content/CTA composition with right CTA panel
+- **Footer rich layout updates:**
+  - wider newsletter column
+  - centered stat cards and improved stat distribution
+- **Desktop visa mega menu updates:**
+  - centered panel positioning and premium glass styling in `app/globals.css`
+
+If any of the above must be changed, run a focused visual regression pass first (desktop + mobile) and document why the lock is being overridden.
+
 ## File-by-File Implementation Plan
 
 ### Section 1 - Hero hierarchy + primary conversion focus

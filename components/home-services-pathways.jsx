@@ -70,8 +70,17 @@ function linkClasses(tone) {
 
 export function HomeServicesPathways() {
   return (
-    <section className="home-section bg-white scroll-mt-[calc(var(--site-header-chrome-height,var(--header-height,88px))+16px)]" aria-labelledby="home-services-heading" id="popular-routes">
-      <div className="mx-auto w-full min-w-0">
+    <section className="home-section scroll-mt-[calc(var(--site-header-chrome-height,var(--header-height,88px))+16px)]" aria-labelledby="home-services-heading" id="popular-routes">
+      <div className="relative isolate mx-auto w-full min-w-0 overflow-hidden rounded-[2rem] border border-brand-plum/10 bg-gradient-to-b from-white via-[#FBF6F4]/45 to-white p-5 shadow-[var(--shadow-lux)] sm:p-7">
+        <div
+          className="pointer-events-none absolute inset-0 z-0 rounded-[2rem]"
+          aria-hidden
+          style={{
+            background:
+              "radial-gradient(130% 100% at 50% 0%, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0) 62%), radial-gradient(120% 100% at 50% 100%, rgba(136,19,55,0.05) 0%, rgba(136,19,55,0) 65%)",
+          }}
+        />
+        <div className="relative z-10 mx-auto w-full min-w-0">
         <div>
           <h2
             id="home-services-heading"
@@ -115,6 +124,7 @@ export function HomeServicesPathways() {
             </li>
           ))}
         </ul>
+        </div>
       </div>
     </section>
   );

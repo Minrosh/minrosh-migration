@@ -50,22 +50,22 @@
   max-width: 100%;
   min-width: 0;
   overflow-x: clip;
-  padding-top: 2.75rem;
-  padding-bottom: 2.75rem;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
   box-sizing: border-box;
 }
 
 @media (min-width: 768px) {
   .home-section {
-    padding-top: 3.5rem;
-    padding-bottom: 3.5rem;
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
   }
 }
 
 @media (min-width: 1024px) {
   .home-section {
-    padding-top: clamp(4.5rem, 7vw, 6.875rem);
-    padding-bottom: clamp(4.5rem, 7vw, 6.875rem);
+    padding-top: clamp(2.75rem, 4vw, 4rem);
+    padding-bottom: clamp(2.75rem, 4vw, 4rem);
   }
 }
 
@@ -165,7 +165,7 @@
 /* Premium homepage: generous rhythm between bands (matches wide hero). */
 .portal-shell--premium-home .home-hero-premium-section + .home-section,
 .portal-shell--premium-home .home-section + .home-section {
-  margin-top: clamp(60px, 10vh, 120px);
+  margin-top: clamp(20px, 3.5vh, 40px);
 }
 
 /**
@@ -202,13 +202,13 @@
 .portal-shell--premium-home .home-hero-premium__fog-gradient {
   height: 100%;
   width: 100%;
-  --hero-fog-fade-end: 62%;
+  --hero-fog-fade-end: 70%;
   /* Solid white at the viewport left edge → transparent toward river / boat (image center). */
   background: linear-gradient(
     to right,
     #ffffff 0%,
     rgba(255, 255, 255, 0.88) 18%,
-    rgba(255, 255, 255, 0.35) 42%,
+    rgba(255, 255, 255, 0.42) 46%,
     rgba(255, 255, 255, 0) var(--hero-fog-fade-end)
   );
   /* Mask clips composited output so blur fades with the wash (no hard card edge). */
@@ -232,8 +232,8 @@
   mask-repeat: no-repeat;
   -webkit-mask-size: 100% 100%;
   mask-size: 100% 100%;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
 }
 
 .portal-shell--premium-home .home-hero-premium__lane {
@@ -251,12 +251,13 @@
 
 .portal-shell--premium-home .home-hero-premium__glass-wrap {
   width: 100%;
-  max-width: min(100%, 30rem);
+  max-width: min(100%, 48rem);
+  margin-top: clamp(14px, 1.4vw, 24px);
 }
 
 @media (min-width: 1024px) {
   .portal-shell--premium-home .home-hero-premium__glass-wrap {
-    max-width: min(100%, 52rem);
+    max-width: min(100%, 48rem);
   }
 }
 
@@ -274,23 +275,26 @@
   box-shadow: none;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
+  margin-top: clamp(34px, 3.2vw, 56px);
 }
 
 .portal-shell--premium-home .home-hero-premium__bottom-bar,
 .portal-shell--premium-home .home-hero-premium__trust-shell {
   position: absolute;
   right: 0;
-  bottom: 0;
+  bottom: clamp(-60px, -4.1vw, -30px);
   left: 0;
   transform: none;
   width: calc(100% - 3rem);
   margin-inline: auto;
   border-radius: 1rem;
-  background-color: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.52);
-  box-shadow: 0 -12px 40px rgba(31, 16, 32, 0.06);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0.86) 100%);
+  backdrop-filter: saturate(1.2) blur(24px);
+  -webkit-backdrop-filter: saturate(1.2) blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.82);
+  box-shadow:
+    0 -12px 40px rgba(31, 16, 32, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.78);
   padding: 0.8rem 0.55rem 0.9rem;
 }
 
@@ -310,6 +314,11 @@
 }
 
 @media (max-width: 720px) {
+  .portal-shell--premium-home .home-hero-premium__bottom-bar,
+  .portal-shell--premium-home .home-hero-premium__trust-shell {
+    bottom: 0;
+  }
+
   .portal-shell--premium-home .home-hero-premium__fog-gradient {
     --hero-fog-fade-end: 100%;
     /* Mobile readability: solid white top 30%, clear by bottom 30%. */
@@ -341,7 +350,7 @@
   }
 
   .portal-shell--premium-home .home-hero-premium__bottom-bar {
-    background-color: rgba(255, 253, 251, 0.94);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 253, 251, 0.84) 100%);
   }
 
   .portal-shell--premium-home .home-hero-premium__bottom-bar-list {
@@ -379,6 +388,7 @@
 .portal-shell--premium-home > main#main-content.portal-main.portal-main--immersive {
   max-width: none;
   width: 100%;
+  padding-top: 0 !important;
   padding-left: 0;
   padding-right: 0;
   box-sizing: border-box;
@@ -444,7 +454,7 @@
 /* Premium homepage: floating white navigation capsule + soft shadow (design reference) */
 .portal-shell--premium-home .site-header.site-header--backdrop {
   position: fixed;
-  top: 1rem;
+  top: 0;
   left: 0;
   right: 0;
   z-index: 50;
@@ -455,7 +465,7 @@
 
 @media (max-width: 920px) {
   .portal-shell--premium-home .site-header.site-header--backdrop {
-    top: 0.5rem;
+    top: 0;
   }
 }
 
@@ -485,14 +495,12 @@
   max-width: min(1320px, 94vw);
   width: 100%;
   margin-inline: auto;
-  border-radius: 9999px;
-  border: 1px solid rgba(136, 19, 55, 0.08);
-  background: #ffffff !important;
-  box-shadow:
-    0 4px 24px rgba(31, 16, 32, 0.06),
-    0 18px 48px rgba(31, 16, 32, 0.07) !important;
-  backdrop-filter: saturate(1.05) blur(12px);
-  -webkit-backdrop-filter: saturate(1.05) blur(12px);
+  border-radius: 0;
+  border: none;
+  background: transparent !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
   padding-block: 10px;
   padding-inline: clamp(14px, 2.5vw, 26px);
   min-height: 62px;
@@ -500,9 +508,7 @@
 }
 
 .portal-shell--premium-home .site-header.is-scrolled .site-header__inner {
-  box-shadow:
-    0 6px 28px rgba(31, 16, 32, 0.08),
-    0 22px 56px rgba(31, 16, 32, 0.09) !important;
+  box-shadow: none !important;
 }
 
 @media (max-width: 920px) {

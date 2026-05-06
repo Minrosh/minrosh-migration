@@ -37,13 +37,9 @@ export default function AustralianVisasOfficialSourcesPage() {
         eyebrow="Australian visas"
         title={guideData.headline}
         intro={guideData.intro}
-        breadcrumbs={[
-          { href: "/", label: "Home" },
-          { href: guideData.path, label: "Australian visas" },
-        ]}
         heroImage={{
-          src: "/images/visual-strip-destinations.jpg",
-          alt: "Brisbane CBD skyline and River at dusk for Australian visa official sources guidance",
+          src: "/images/hero-brisbane-river-cbd-hd.jpg",
+          alt: "Brisbane River and CBD skyline at dusk for Australian visa planning guidance",
         }}
         belowHero={<AustralianVisasHubLead />}
         articleClassName="content-page--aus-visas-hub"

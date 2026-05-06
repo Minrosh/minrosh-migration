@@ -2,7 +2,7 @@
 
 import { TrackedLink } from "./tracked-link";
 
-const MAROON = "#8B1D41";
+const MAROON = "var(--brand-rose)";
 
 const STEPS = [
   {
@@ -38,11 +38,17 @@ function Chip({ children }) {
 
 export function HomeBuyerJourneyStrip() {
   return (
-    <section
-      className="home-section border-y border-brand-plum/[0.08] bg-gradient-to-b from-[#FBF6F4] via-white to-[#FBF6F4]/90"
-      aria-labelledby="home-journey-heading"
-    >
-      <div className="mx-auto w-full min-w-0">
+    <section className="home-section" aria-labelledby="home-journey-heading">
+      <div className="relative isolate mx-auto w-full min-w-0 overflow-hidden rounded-[2rem] border border-brand-plum/10 bg-gradient-to-b from-[#FBF6F4]/85 via-white to-[#FBF6F4]/75 p-5 shadow-[var(--shadow-lux)] sm:p-7">
+        <div
+          className="pointer-events-none absolute inset-0 z-0 rounded-[2rem]"
+          aria-hidden
+          style={{
+            background:
+              "radial-gradient(130% 100% at 50% 0%, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0) 62%), radial-gradient(120% 100% at 50% 100%, rgba(136,19,55,0.06) 0%, rgba(136,19,55,0) 65%)",
+          }}
+        />
+        <div className="relative z-10 mx-auto w-full min-w-0">
         <p
           className="text-center text-[11px] font-bold uppercase tracking-[0.28em]"
           style={{ color: MAROON }}
@@ -51,30 +57,30 @@ export function HomeBuyerJourneyStrip() {
         </p>
         <h2
           id="home-journey-heading"
-          className="mt-3 text-center text-2xl font-bold tracking-tight text-[#1f1020] sm:text-3xl md:text-[2.15rem] md:leading-tight"
+          className="mt-3 text-center text-2xl font-bold tracking-tight text-brand-plum sm:text-3xl md:text-[2.15rem] md:leading-tight"
           style={{ fontFamily: "var(--font-sans), ui-sans-serif, system-ui, sans-serif" }}
         >
           Compare pathways in one clear flow
         </h2>
-        <p className="mx-auto mt-4 max-w-2xl text-center text-sm font-medium leading-relaxed text-[#1f1020]/72 sm:text-base">
+        <p className="mx-auto mt-4 max-w-2xl text-center text-sm font-medium leading-relaxed text-brand-plum/70 sm:text-base">
           A calm sequence for offshore and onshore applicants. Information stays indicative until your circumstances are
           reviewed in consultation—not outcome guarantees.
         </p>
 
-        <ol className="mt-10 list-none space-y-6 pl-0 md:mt-12 md:grid md:grid-cols-3 md:gap-[clamp(24px,4vw,48px)] md:space-y-0">
+        <ol className="mx-auto mt-10 list-none space-y-6 pl-0 md:mt-12 md:grid md:grid-cols-3 md:gap-8 md:space-y-0 lg:gap-10">
           {STEPS.map((step) => (
             <li key={step.kicker} className="home-journey-card min-w-0">
-              <div className="flex h-full flex-col rounded-[1.75rem] border border-brand-plum/10 bg-white p-6 shadow-[var(--shadow-lux)] transition-shadow duration-300 hover:shadow-[var(--shadow-lux-lg)] sm:p-7">
+              <div className="flex h-full min-h-[248px] flex-col rounded-[1.5rem] border border-brand-plum/10 bg-white p-6 shadow-[var(--shadow-lux)] transition-shadow duration-300 hover:shadow-[var(--shadow-lux-lg)] sm:p-8">
                 <span className="text-[10px] font-bold uppercase tracking-[0.26em]" style={{ color: MAROON }}>
                   {step.kicker}
                 </span>
-                <h3 className="mt-2 text-lg font-bold text-[#1f1020] sm:text-xl">{step.title}</h3>
+                <h3 className="mt-2 text-lg font-bold text-brand-plum sm:text-xl">{step.title}</h3>
                 <div className="mt-3 flex flex-wrap gap-2">
                   {step.chips.map((c) => (
                     <Chip key={c}>{c}</Chip>
                   ))}
                 </div>
-                <p className="mt-4 flex-1 text-sm font-medium leading-relaxed text-[#1f1020]/70">{step.body}</p>
+                <p className="mt-4 flex-1 text-sm font-medium leading-relaxed text-brand-plum/70">{step.body}</p>
               </div>
             </li>
           ))}
@@ -109,10 +115,11 @@ export function HomeBuyerJourneyStrip() {
               destination: "/global-pathways",
             }}
             aria-label="Compare visa pathways"
-            className="premium-frosted-surface btn flex min-h-[52px] w-full touch-manipulation items-center justify-center rounded-full border-2 border-[#881337]/22 px-8 py-3.5 text-base font-bold text-[#1f1020] transition-all hover:border-[#881337]/45 active:scale-[0.98] sm:w-auto sm:text-lg"
+            className="premium-frosted-surface btn flex min-h-[52px] w-full touch-manipulation items-center justify-center rounded-full border-2 border-brand-rose/25 px-8 py-3.5 text-base font-bold text-brand-plum transition-all hover:border-brand-rose/45 active:scale-[0.98] sm:w-auto sm:text-lg"
           >
             Compare visa pathways
           </TrackedLink>
+        </div>
         </div>
       </div>
     </section>

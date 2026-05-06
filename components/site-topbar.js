@@ -9,7 +9,7 @@ import { SiteSocialIcons } from "./site-social-icons";
 export function SiteTopbar({ siteData }) {
   const destinationPickerRef = useRef(null);
   const topbarBrand = { ...siteData.brand, whatsappSecondary: "" };
-  const supportEmailLabel = String(siteData?.brand?.email || "").trim().replace("@", " [at] ");
+  const supportEmailLabel = String(siteData?.brand?.email || "").trim();
 
   function closeDestinationPicker() {
     if (destinationPickerRef.current) destinationPickerRef.current.open = false;
