@@ -46,8 +46,8 @@ export default function ContactPage() {
       />
       <div className="conversion-premium-phase1 contact-page--flush-top -mt-44 md:-mt-44 bg-[var(--brand-cream)] pb-12 pt-0 md:pt-0">
       <div className="w-full max-w-[var(--content-max)] mx-auto px-[var(--content-pad)]">
-      <section className="content-page">
-        <section className="content-hero contact-hero--blend contact-hero--home-adopt glass-card rounded-[2rem] bg-[rgba(255,255,255,0.75)] p-6 shadow-[0_12px_40px_rgba(74,24,48,0.06)] backdrop-blur-[20px] md:p-8 lg:p-10">
+      <section className="content-page content-page--contact">
+        <section className="content-hero contact-hero--blend contact-hero--home-adopt contact-hero--home-shell glass-card relative overflow-hidden rounded-[2rem] border border-brand-plum/10 bg-[rgba(255,255,255,0.72)] p-4 shadow-[var(--shadow-lux)] backdrop-blur-[18px] md:p-6 lg:p-8">
           <div className="content-hero__grid">
             <div className="content-hero__copy">
               <p className="section-label contact-hero--home-adopt__badge">Contact MinRosh Migration</p>
