@@ -50,6 +50,8 @@ export const metadata = {
     "MinRosh Migration",
     "Australian migration guidance",
     "Brisbane migration",
+    "migration consultant Brisbane",
+    "Brisbane CBD migration pathways",
     "Canada UK New Zealand visa guidance",
     "student visa Australia",
     "skilled migration Australia",
@@ -68,7 +70,8 @@ export const metadata = {
         url: "/images/hero-brisbane-river-cbd.jpg",
         width: 1800,
         height: 1200,
-        alt: "Brisbane River and CBD skyline at dusk with the city centre in view",
+        alt:
+          "Brisbane River and Brisbane CBD skyline at dusk — MinRosh Migration is Brisbane-based pathways guidance for Australia, Canada, UK and NZ",
       },
     ],
   },
@@ -100,6 +103,9 @@ export default async function RootLayout({ children }) {
 
   return (
     <html lang="en-AU">
+      <head>
+        <link rel="preconnect" href="https://minroshmigration.com.au" />
+      </head>
       <body className={`${inter.variable} ${playfair.variable} immersive-theme`}>
         <ScrollRestorer />
         <RuntimeChunkRecovery />
