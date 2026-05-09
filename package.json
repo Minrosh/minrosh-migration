@@ -27,6 +27,7 @@
     "test:e2e:live-mobile": "playwright test e2e/mobile-layout-live.spec.mjs",
     "purge:cdn": "node scripts/purge-cdn.js",
     "test:nav": "node scripts/ui-nav-audit.mjs",
+    "install:eslint-next": "npm install eslint-config-next --save-dev --ignore-scripts",
     "routes:verify": "node scripts/reindex-verify.mjs",
     "reindex:verify": "node scripts/reindex-verify.mjs",
     "verify:live-roadmap": "node scripts/live-roadmap-verify.mjs",

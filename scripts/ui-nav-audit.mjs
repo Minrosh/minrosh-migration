@@ -1,9 +1,33 @@
+/**
+ * Playwright smoke + optional authenticated admin sidebar checks.
+ *
+ * Common pitfalls (see .env.example):
+ * - UI_AUDIT_BASE_URL must match the running Next port (PM2 often :3000; npm run dev here uses :3100).
+ * - Do not paste documentation ellipses as UI_AUDIT_ADMIN_PASSWORD; use the real /admin/login password.
+ * - If ADMIN_TOTP_SECRET is set, export UI_AUDIT_ADMIN_TOTP on its own line before `npm run test:nav` (not glued to the npm command).
+ * - npm `napi-postinstall` permission denied: use `npm run install:eslint-next` or `npm install … --ignore-scripts`.
+ */
 import fs from "node:fs";
 import path from "node:path";
 import { chromium } from "@playwright/test";
 
 const BASE_URL = (process.env.UI_AUDIT_BASE_URL || "http://localhost:3000").replace(/\/$/, "");
 const failures = [];
+
+/** True when the value is clearly a doc/example placeholder, not a real secret. */
+function looksLikeDocPlaceholderPassword(pwd) {
+  const s = String(pwd).trim();
+  if (!s) return false;
+  if (s === "…" || s === "\u2026" || s === "...") return true;
+  if (/^[·….]{1,3}$/u.test(s)) return true;
+  return false;
+}
+
+if (String(process.env.UI_AUDIT_ADMIN_PASSWORD || "").trim()) {
+  console.log(
+    `UI nav audit: UI_AUDIT_BASE_URL=${BASE_URL} (must be the running Next server). Dev default port is often 3100 — set UI_AUDIT_BASE_URL=http://localhost:3100 if npm run dev uses -p 3100.`
+  );
+}
 
 function fail(message) {
   failures.push(message);
@@ -63,6 +87,13 @@ async function loginAdminViaApi(baseUrl) {
   if (!password) {
     return { ok: false, error: "UI_AUDIT_ADMIN_PASSWORD is empty" };
   }
+  if (looksLikeDocPlaceholderPassword(password)) {
+    return {
+      ok: false,
+      error:
+        "UI_AUDIT_ADMIN_PASSWORD looks like a documentation placeholder (… or .). Set it to the exact password you use on /admin/login, or use UI_AUDIT_ADMIN_COOKIE_VALUE / UI_AUDIT_ADMIN_STORAGE_STATE instead.",
+    };
+  }
   const email = String(process.env.UI_AUDIT_ADMIN_EMAIL || "").trim();
   const totp = String(process.env.UI_AUDIT_ADMIN_TOTP || "").trim();
   const origin = new URL(baseUrl).origin;
@@ -81,14 +112,29 @@ async function loginAdminViaApi(baseUrl) {
   });
 
   if (!res.ok) {
+    const rawText = await res.text().catch(() => "");
     let detail = "";
+    let serverHint = "";
     try {
-      const j = await res.json();
-      detail = j?.error?.message || j?.message || JSON.stringify(j).slice(0, 200);
+      const j = JSON.parse(rawText);
+      detail = j?.error?.message || j?.message || JSON.stringify(j).slice(0, 240);
+      const h = j?.error?.details?.hint;
+      if (typeof h === "string" && h.trim()) {
+        serverHint = ` ${h.trim()}`;
+      }
     } catch {
-      detail = await res.text().catch(() => "");
+      detail =
+        rawText.replace(/\s+/g, " ").trim().slice(0, 280) || res.statusText || "(empty body)";
     }
-    return { ok: false, error: `POST /api/admin/login → ${res.status} ${detail}`.trim() };
+    const hint =
+      res.status === 503 && /session signing|ADMIN_SESSION_SECRET/i.test(detail)
+        ? " Server returned 503 — ensure ADMIN_SESSION_SECRET is set where the Next process runs."
+        : res.status >= 500
+          ? " Server error — check PM2 logs / disk permissions for data/admin-sessions.json (MINROSH_DATA_DIR), or wrong UI_AUDIT_BASE_URL."
+          : res.status === 401 && /invalid password/i.test(detail) && !serverHint
+            ? " If you use data/admin-auth.json, ADMIN_PASSWORD in .env may be ignored — see API error.details.hint on newer builds, or .env.example (ADMIN_ALLOW_ENV_PASSWORD)."
+            : "";
+    return { ok: false, error: `POST /api/admin/login → ${res.status} ${detail}${serverHint}${hint}`.trim() };
   }
 
   const lines = collectSetCookieLines(res);

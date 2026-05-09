@@ -54,6 +54,8 @@ module.exports = {
         NODE_ENV: "production",
         PORT: 3000,
         HOSTNAME: "0.0.0.0",
+        /** Explicit JSON dir so admin sessions always land next to synced data/ under standalone. */
+        MINROSH_DATA_DIR: path.join(rootDir, ".next", "standalone", "data"),
       },
     },
   ],

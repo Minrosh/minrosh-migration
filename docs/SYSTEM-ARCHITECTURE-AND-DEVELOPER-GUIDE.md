@@ -222,6 +222,7 @@ Cron route `app/api/cron/upload-retention/route.js` calls `lib/admin/upload-rete
 - `npm run lint` — ESLint.
 - `npm run test:contact`, `test:invoice`, `test:smtp` — targeted integration checks.
 - `npm run test:unit` — Vitest unit tests (`tests/*.test.mjs`).
+- `npm run test:nav` — Playwright smoke + public pathway; optional **authenticated admin sidebar** checks when `UI_AUDIT_BASE_URL` points at a running server and one of `UI_AUDIT_ADMIN_PASSWORD`, `UI_AUDIT_ADMIN_COOKIE_VALUE`, or `UI_AUDIT_ADMIN_STORAGE_STATE` is set (see `.env.example`). If `POST /api/admin/login` returns **401**, read `error.details.hint` (file-backed `data/admin-auth.json` vs `ADMIN_PASSWORD`) and use `npm run install:eslint-next` when `napi-postinstall` fails on the server.
 
 **Production build:** `output: "standalone"`; `serverExternalPackages` includes heavy native-ish deps (`tesseract.js`, `@resvg/resvg-js`).
 
