@@ -28,6 +28,16 @@ const nextConfig = {
         destination: "/migration-sri-lanka-to-australia",
         permanent: true,
       },
+      {
+        source: "/partner-visa",
+        destination: "/partner-visa-australia",
+        permanent: true,
+      },
+      {
+        source: "/visitor-visa",
+        destination: "/visitor-visas",
+        permanent: true,
+      },
     ];
   },
   async headers() {

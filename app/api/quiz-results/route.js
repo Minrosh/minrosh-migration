@@ -28,6 +28,27 @@ function safeField(value) {
   return text || "Not Provided";
 }
 
+function hasMeaningfulQuizDetails(details) {
+  if (details == null) return false;
+  if (Array.isArray(details)) {
+    return details.some((row) => {
+      if (row == null) return false;
+      if (typeof row === "object") {
+        return Object.values(/** @type {Record<string, unknown>} */ (row)).some(
+          (v) => String(v ?? "").trim().length > 0
+        );
+      }
+      return String(row).trim().length > 0;
+    });
+  }
+  if (typeof details === "object") {
+    return Object.values(/** @type {Record<string, unknown>} */ (details)).some(
+      (v) => String(v ?? "").trim().length > 0
+    );
+  }
+  return String(details).trim().length > 0;
+}
+
 function escapeHtml(value) {
   return String(value)
     .replace(/&/g, "&amp;")
@@ -159,10 +180,22 @@ export async function POST(request) {
   const nameRaw = String(body?.name ?? "").trim();
   const emailRaw = String(body?.email ?? "").trim();
   const scoreRaw = parseScore(body?.score);
-  const score = Number.isFinite(scoreRaw) && scoreRaw >= 0 && scoreRaw <= 500 ? scoreRaw : null;
+  const score = Number.isFinite(scoreRaw) && scoreRaw > 0 && scoreRaw <= 500 ? scoreRaw : null;
 
   const name = !nameRaw || nameRaw.length > MAX_NAME_LEN || hasCrLf(nameRaw) ? "" : nameRaw;
   const email = !emailRaw || hasCrLf(emailRaw) || !isValidEmailLinear(emailRaw) ? "" : emailRaw;
+  const hasDetails = hasMeaningfulQuizDetails(body?.details);
+
+  if (!name || !email || score === null || !hasDetails) {
+    return apiFail(
+      {
+        code: API_ERROR_CODES.VALIDATION_FAILED,
+        message: "Please complete all required quiz fields before submitting.",
+        status: 400,
+      },
+      context
+    );
+  }
 
   let detailsText = "";
   if (body?.details !== undefined && body?.details !== null) {

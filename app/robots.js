@@ -5,6 +5,14 @@ export default function robots() {
     host: SITE,
     rules: [
       {
+        userAgent: "GPTBot",
+        disallow: ["/"],
+      },
+      {
+        userAgent: "CCBot",
+        disallow: ["/"],
+      },
+      {
         userAgent: "*",
         allow: ["/", "/api/reviews", "/api/stats"],
         disallow: ["/admin", "/api", "/upload"],

@@ -18,6 +18,10 @@
 #   export CLOUDFLARE_PURGE_EVERYTHING=true
 #   bash scripts/update-server.sh
 #
+# Working tree: commit/push from dev first so origin/main matches what you expect. If this
+# checkout has local modifications, `git pull` will warn; resolve (stash/discard/commit) so
+# deploys always track a known commit.
+#
 # Maintenance mode behavior for this script:
 #   - force ON at the start of update-server.sh
 #   - keep ON while pre-upgrade checks, git/build/deploy, CDN purge, and smoke checks run

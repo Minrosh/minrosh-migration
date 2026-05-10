@@ -724,17 +724,17 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
           hidden={mobileStepper && !visibleFields?.has("resume")}
         >
           <span>CV / Resume (optional, PDF)</span>
-          <div className="mt-1 flex items-center gap-3">
+          <div className="contact-form__resume-row mt-1 flex items-center gap-3">
             <input
               type="file"
               name="resume"
               accept="application/pdf,.pdf"
               onChange={handleResumeFileChange}
-              className="w-[220px] max-w-[220px] shrink-0 text-sm text-brand-plum/80 file:mr-3 file:rounded-lg file:border-0 file:bg-brand-plum file:px-3 file:py-2 file:text-xs file:font-semibold file:text-white hover:file:bg-brand-rose"
+              className="contact-form__resume-input w-[220px] max-w-[220px] shrink-0 text-sm text-brand-plum/80 file:mr-3 file:rounded-lg file:border-0 file:bg-brand-plum file:px-3 file:py-2 file:text-xs file:font-semibold file:text-white hover:file:bg-brand-rose"
               aria-invalid={fieldErrors.resume ? "true" : undefined}
               aria-describedby={fieldErrors.resume ? "err-resume" : "hint-resume"}
             />
-            <span id="hint-resume" className="min-w-0 flex-1 text-xs text-brand-plum/55 leading-relaxed">
+            <span id="hint-resume" className="contact-form__resume-hint min-w-0 flex-1 text-xs text-brand-plum/55 leading-relaxed">
               Optional. PDF only, max 15MB. Uploaded to your lead folder when Drive is configured.
             </span>
           </div>

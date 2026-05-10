@@ -7,7 +7,7 @@ import { TrackedAnchor, TrackedLink } from "../tracked-link";
 /** LCP hero: Brisbane River, CBD skyline, CityCat (see `/public/images/hero-brisbane-river-cbd-hd.jpg`). */
 const HERO_BRISBANE_IMAGE = {
   src: "/images/hero-brisbane-river-cbd-hd.jpg",
-  alt: "Brisbane River and CBD skyline at dusk with a CityCat ferry on the water",
+  alt: "Brisbane CBD skyline and Brisbane River view from high-rise",
 };
 
 const plumDark = "#1F1020";
@@ -141,7 +141,7 @@ export function HomeHeroPremium({ whatsappHref }) {
             alt={HERO_BRISBANE_IMAGE.alt}
             fill
             className="object-cover object-[70%_center] md:object-bottom md:object-center"
-            sizes="(max-width: 768px) 100vw, 1600px"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 1600px, 100vw"
             priority
             fetchPriority="high"
             placeholder="blur"

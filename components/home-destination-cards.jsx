@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { PublicFileImg } from "./public-file-img";
+import Image from "next/image";
 
 /** Stable hub order for international positioning */
 const DESTINATION_KEYS = ["australia", "canada", "uk", "nz"];
@@ -71,13 +71,14 @@ export function HomeDestinationCards({ countries }) {
                   className="destination-card group flex h-full min-h-[48px] flex-col overflow-hidden rounded-[1.75rem] border border-brand-plum/10 bg-white shadow-[var(--shadow-lux)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-rose/25 hover:shadow-[var(--shadow-lux-lg)]"
                 >
                   <div className="relative aspect-[4/3] w-full min-h-[11rem] overflow-hidden bg-zinc-100">
-                    <PublicFileImg
+                    <Image
                       src={media.src}
                       alt={media.alt}
                       width={800}
                       height={600}
                       className={`absolute inset-0 h-full w-full transition-transform duration-500 ease-out group-hover:scale-[1.04] ${media.imgClass}`}
                       sizes="(max-width:640px) 100vw, (max-width:1024px) 50vw, 25vw"
+                      loading="lazy"
                     />
                     <div
                       className="absolute inset-0 bg-gradient-to-t from-[#1f1020]/55 via-transparent to-transparent opacity-80"

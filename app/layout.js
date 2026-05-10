@@ -95,6 +95,11 @@ export const metadata = {
     shortcut: "/images/minrosh-logo.v2.webp",
     apple: "/images/minrosh-logo.v2.webp",
   },
+  appleWebApp: {
+    capable: true,
+    title: "MinRosh Migration",
+    statusBarStyle: "default",
+  },
 };
 
 export default async function RootLayout({ children }) {

@@ -1,7 +1,7 @@
 # Stage 0 — Indexability audit
 
-Generated: 2026-05-01T23:43:18.106Z
-URLs audited: 81
+Generated: 2026-05-06T12:20:44.991Z
+URLs audited: 84
 
 ## Root cause hypotheses (automated heuristics)
 
@@ -11,7 +11,7 @@ URLs audited: 81
 
 - Re-run with `INDEXABILITY_BASE_URL=http://127.0.0.1:3000` after `npm run build && npm run start` to compare prod vs local.
 - Homepage probe: ok=true status=200
-- Response hints: `{"cf-ray":"9f52a598c859d715-BNE"}`
+- Response hints: `{"cf-ray":"9f77f09b3884d724-BNE"}`
 - **Deployed git SHA:** not in HTTP by default — check hosting/CI.
 
 ## robots.txt
@@ -48,7 +48,7 @@ URLs audited: 81
 ## sitemap.xml parity
 
 - https://minroshmigration.com.au/sitemap.xml → HTTP 200 ok=true
-- `<loc>` count: 81
+- `<loc>` count: 84
 
 ## Thin / duplicate destination sections (manual policy)
 

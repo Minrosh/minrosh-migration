@@ -1,6 +1,6 @@
 import Link from "next/link";
+import Image from "next/image";
 import { BreadcrumbsNav } from "./breadcrumbs-nav";
-import { PublicFileImg } from "./public-file-img";
 import { GlossaryParagraph } from "./glossary-paragraph";
 import { MotionReveal, MotionStagger, MotionItem } from "./ui/motion-wrapper";
 import { StructuredData } from "./structured-data";
@@ -166,14 +166,15 @@ export function ContentPage({
               ) : null}
             </div>
             <div className="content-hero__media" aria-hidden="true">
-              <PublicFileImg
+              <Image
                 src={heroImage.src}
                 alt={heroImage.alt}
                 width={1600}
                 height={900}
-              className="h-full w-full object-cover object-[70%_center] md:object-[center_bottom]"
+                className="h-full w-full object-cover object-[70%_center] md:object-[center_bottom]"
                 priority
-              sizes="(max-width: 768px) 100vw, 1600px"
+                fetchPriority="high"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 1600px, 100vw"
               />
             </div>
           </div>
