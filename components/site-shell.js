@@ -1,9 +1,10 @@
 import Link from "next/link";
-import { PublicFileImg } from "./public-file-img";
+import Image from "next/image";
 import { SiteFooter } from "./site-footer";
 import { SiteHeaderNav } from "./site-header-nav";
 import { SitePublicStickyHeader } from "./site-public-sticky-header";
 import { SiteHeaderMobileUtilities } from "./site-header-mobile-utilities";
+import { SiteMobileTabBar } from "./site-mobile-tab-bar";
 import { getFooterStats } from "../lib/site-stats";
 import { getDestinationNavLinks } from "../lib/destination-nav";
 import { GLOBAL_HEADER_PRIMARY_LINKS } from "../lib/public-indexable-routes";
@@ -43,7 +44,9 @@ export function SiteShell({
         : "site-header--backdrop-au";
 
   return (
-    <div className={`portal-shell${isPremiumHome ? " portal-shell--premium-home" : ""}`}>
+    <div
+      className={`portal-shell portal-shell--mobile-tab-bar${isPremiumHome ? " portal-shell--premium-home" : ""}`}
+    >
       <SitePublicStickyHeader
         backdropModifier={backdropModifier}
         className="site-header--marketing"
@@ -55,12 +58,14 @@ export function SiteShell({
             aria-label={brandAria}
           >
             <span className="brand__mark" aria-hidden="true">
-              <PublicFileImg
+              <Image
                 src="/images/minrosh-logo.v2.webp"
                 alt="MinRosh Migration logo"
-                width={52}
-                height={52}
-                priority
+                width={56}
+                height={56}
+                priority={!isPremiumHome}
+                {...(isPremiumHome ? {} : { fetchPriority: "high" })}
+                sizes="56px"
               />
             </span>
             <span className="brand__text">
@@ -83,8 +88,11 @@ export function SiteShell({
         <SiteHeaderMobileUtilities brand={publicBrand} whatsappHref={primaryWhatsAppUrl} />
       </SitePublicStickyHeader>
 
-      <main id="main-content" className="portal-main portal-main--immersive">{children}</main>
+      <main id="main-content" className="portal-main portal-main--immersive">
+        {children}
+      </main>
       <SiteFooter siteData={siteData} initialStats={footerStats} />
+      <SiteMobileTabBar />
     </div>
   );
 }

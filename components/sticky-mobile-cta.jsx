@@ -2,49 +2,46 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 
+/**
+ * Single pathway FAB above the mobile tab bar (avoids duplicating Book / Assessment strips).
+ */
 export function StickyMobileCTA() {
+  const pathname = usePathname() || "";
   const [isVisible, setIsVisible] = useState(false);
+
+  const hideOnAssessment = pathname === "/assessment" || pathname.startsWith("/assessment/");
 
   useEffect(() => {
     const handleScroll = () => {
-      // Show CTA after scrolling down 300px
-      if (window.scrollY > 300) {
-        setIsVisible(true);
-      } else {
-        setIsVisible(false);
-      }
+      if (window.scrollY > 300) setIsVisible(true);
+      else setIsVisible(false);
     };
-
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
     <AnimatePresence>
-      {isVisible && (
+      {isVisible && !hideOnAssessment ? (
         <motion.div
-          initial={{ y: 100 }}
-          animate={{ y: 0 }}
-          exit={{ y: 100 }}
-          transition={{ type: "spring", stiffness: 260, damping: 20 }}
-          className="fixed bottom-0 left-0 right-0 z-[65] flex items-center justify-between gap-2 border-t border-brand-plum/10 bg-white/95 p-3 px-4 pb-[max(12px,env(safe-area-inset-bottom))] shadow-[0_-8px_30px_rgba(0,0,0,0.08)] backdrop-blur-md md:hidden"
+          initial={{ y: 56, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: 56, opacity: 0 }}
+          transition={{ type: "spring", stiffness: 320, damping: 28 }}
+          className="mobile-sticky-quiz-cta-shell"
         >
           <Link
             href="/assessment"
-            className="flex min-h-[48px] flex-1 touch-manipulation items-center justify-center rounded-xl bg-brand-rose px-4 py-4 text-xs font-black uppercase tracking-widest text-white shadow-lg shadow-brand-rose/20 transition-transform active:scale-95"
+            className="mobile-sticky-quiz-cta touch-manipulation motion-safe:transition-transform motion-safe:active:scale-[0.98]"
           >
-            Free Assessment
-          </Link>
-          <Link
-            href="/book-consultation"
-            className="flex min-h-[48px] flex-1 touch-manipulation items-center justify-center rounded-xl border border-brand-plum/10 bg-brand-plum/5 px-4 py-4 text-xs font-black uppercase tracking-widest text-brand-plum transition-transform active:scale-95"
-          >
-            Book Now
+            Pathway check
           </Link>
         </motion.div>
-      )}
+      ) : null}
     </AnimatePresence>
   );
 }

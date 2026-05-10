@@ -9,7 +9,7 @@ import { SiteVisasMegaMenu } from "./site-visas-mega-menu";
 const VISA_HUB_PATHS = new Set(["/skilled-migration", "/partner-visa-australia", "/student-visa-australia"]);
 
 /**
- * Primary navigation for marketing pages (SiteShell): hamburger + drawer on small
+ * Primary navigation for marketing pages (SiteShell): hamburger + drawer (“More”) on small
  * viewports, horizontal nav from 921px up.
  */
 export function SiteHeaderNav({ navLinks, currentPath, enableVisaMega = false }) {
@@ -63,6 +63,18 @@ export function SiteHeaderNav({ navLinks, currentPath, enableVisaMega = false })
     syncHash();
   }, []);
 
+  /** Tab bar shell hides the hamburger at <=920px; ensure the drawer cannot stay open crossing breakpoints. */
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mq = window.matchMedia("(max-width: 920px)");
+    function onViewportChange() {
+      if (mq.matches) setMenuOpen(false);
+    }
+    onViewportChange();
+    mq.addEventListener("change", onViewportChange);
+    return () => mq.removeEventListener("change", onViewportChange);
+  }, []);
+
   function closeMenu() {
     setMenuOpen(false);
     menuToggleRef.current?.focus?.();
@@ -93,7 +105,7 @@ export function SiteHeaderNav({ navLinks, currentPath, enableVisaMega = false })
         className="menu-toggle touch-manipulation"
         aria-expanded={menuOpen ? "true" : "false"}
         aria-controls="site-header-primary-nav"
-        aria-label={menuOpen ? "Close menu" : "Open menu"}
+        aria-label={menuOpen ? "Close more navigation" : "Open more navigation"}
         onClick={() =>
           setMenuOpen((open) => {
             const next = !open;
@@ -112,7 +124,7 @@ export function SiteHeaderNav({ navLinks, currentPath, enableVisaMega = false })
         <button
           type="button"
           className="site-nav__backdrop touch-manipulation"
-          aria-label="Close menu"
+          aria-label="Close more navigation"
           onClick={closeMenu}
         />
       ) : null}

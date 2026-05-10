@@ -1,9 +1,10 @@
-const CACHE_NAME = "minrosh-static-v3";
+const CACHE_STATIC = "minrosh-static-v4";
+const CACHE_GUIDES = "minrosh-guides-v2";
 const PRECACHE_URLS = ["/manifest.webmanifest", "/images/minrosh-logo.png"];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(PRECACHE_URLS)).catch(() => Promise.resolve()),
+    caches.open(CACHE_STATIC).then((cache) => cache.addAll(PRECACHE_URLS)).catch(() => Promise.resolve()),
   );
   self.skipWaiting();
 });
@@ -13,11 +14,61 @@ self.addEventListener("activate", (event) => {
     caches
       .keys()
       .then((keys) =>
-        Promise.all(keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key))),
+        Promise.all(
+          keys
+            .filter((key) => key !== CACHE_STATIC && key !== CACHE_GUIDES)
+            .map((key) => caches.delete(key)),
+        ),
       ),
   );
   self.clients.claim();
 });
+
+/**
+ * Long-form guides (`*-guide`, etc.): network-first with offline fallback so repeat visits stay usable.
+ * Fresh HTML after deploy is preferred; stale cache only helps slow/offline reads.
+ */
+function isGuideDocumentPath(pathname) {
+  return pathname.endsWith("-guide") || pathname.includes("-guide/");
+}
+
+/** Long-form marketing guides (App Router pages) — always revalidate on navigation/refresh. */
+function isLongFormVisaGuidePath(pathname) {
+  return pathname === "/skilled-migration" || pathname === "/student-visa-australia";
+}
+
+function isCachedGuideNavigation(pathname) {
+  return isGuideDocumentPath(pathname) || isLongFormVisaGuidePath(pathname);
+}
+
+function guideNetworkFirst(request) {
+  const req =
+    request.mode === "navigate"
+      ? new Request(request.url, {
+          method: request.method,
+          headers: request.headers,
+          mode: "same-origin",
+          credentials: request.credentials,
+          redirect: request.redirect,
+          integrity: request.integrity,
+          cache: "no-store",
+        })
+      : request;
+  return caches.open(CACHE_GUIDES).then((cache) =>
+    fetch(req)
+      .then((networkResponse) => {
+        try {
+          if (networkResponse.ok) {
+            cache.put(request, networkResponse.clone());
+          }
+        } catch {
+          /* ignore cache write */
+        }
+        return networkResponse;
+      })
+      .catch(() => cache.match(request)),
+  );
+}
 
 self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET") return;
@@ -32,6 +83,11 @@ self.addEventListener("fetch", (event) => {
       requestUrl.pathname === "/manifest.webmanifest");
   const isNextStaticAsset =
     isSameOrigin && requestUrl.pathname.startsWith("/_next/static/");
+
+  if (isNavigationRequest && isSameOrigin && isCachedGuideNavigation(requestUrl.pathname)) {
+    event.respondWith(guideNetworkFirst(event.request));
+    return;
+  }
 
   if (isNavigationRequest) {
     event.respondWith(fetch(event.request).catch(() => caches.match(event.request)));
@@ -55,13 +111,13 @@ self.addEventListener("fetch", (event) => {
         .then((networkResponse) => {
           if (networkResponse.ok) {
             const cloned = networkResponse.clone();
-            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, cloned)).catch(() => {});
+            caches.open(CACHE_STATIC).then((cache) => cache.put(event.request, cloned)).catch(() => {});
           }
           return networkResponse;
         })
         .catch(() => cachedResponse);
 
       return cachedResponse || networkFetch;
-    })
+    }),
   );
 });

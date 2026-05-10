@@ -1100,7 +1100,7 @@ a.brand:hover .brand__mark {
   overflow-x: hidden;
 }
 
-/* Fixed mobile bottom bar (sticky-mobile-cta.jsx) is visible below the `md` breakpoint (768px). */
+/* Fixed mobile bottom clearance below ~768px; marketing `.portal-shell--mobile-tab-bar` overrides via higher specificity (920px block). */
 @media (max-width: 767px) {
   .portal-main {
     padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px));
@@ -4674,8 +4674,9 @@ h2 {
   color: #fff;
   background: #25d366;
   box-shadow: 0 18px 28px rgba(37, 211, 102, 0.3);
-  animation: pulse 2s infinite;
+  animation: pulse-scale 2s infinite;
   text-decoration: none;
+  will-change: transform;
 }
 
 .whatsapp-float svg {
@@ -5263,7 +5264,8 @@ h2 {
 
 /* Bottom marketing CTAs share the same corner as the concierge; hide while chat is open */
 body.ai-concierge-panel-open .mobile-sticky-cta,
-body.ai-concierge-panel-open .mobile-sticky-quiz-cta {
+body.ai-concierge-panel-open .mobile-sticky-quiz-cta,
+body.ai-concierge-panel-open .mobile-sticky-quiz-cta-shell {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
@@ -5782,15 +5784,13 @@ body.ai-concierge-panel-open .mobile-sticky-quiz-cta {
   color: var(--muted);
 }
 
-@keyframes pulse {
+@keyframes pulse-scale {
   0%,
   100% {
     transform: scale(1);
-    box-shadow: 0 18px 28px rgba(37, 211, 102, 0.3);
   }
   50% {
     transform: scale(1.06);
-    box-shadow: 0 18px 42px rgba(37, 211, 102, 0.42);
   }
 }
 
@@ -5993,6 +5993,11 @@ body.ai-concierge-panel-open .mobile-sticky-quiz-cta {
 
   .menu-toggle {
     display: inline-flex;
+  }
+
+  /* Bottom tab bar duplicates primary destinations; hide redundant drawer trigger. */
+  .portal-shell--mobile-tab-bar .menu-toggle {
+    display: none !important;
   }
 
   .site-nav__backdrop {
@@ -7138,6 +7143,35 @@ body.immersive-theme {
   color: var(--muted);
 }
 
+.content-page--contact .contact-page__layout > * {
+  min-width: 0;
+}
+
+.contact-form__resume-row {
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.contact-form__resume-hint {
+  flex: 1 1 280px;
+}
+
+@media (max-width: 640px) {
+  .contact-form__resume-row {
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .contact-form__resume-input {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .contact-form__resume-hint {
+    flex: 1 1 100%;
+  }
+}
+
 .contact-form__stepper {
   margin-bottom: 16px;
 }
@@ -8152,4 +8186,140 @@ button.glossary-term:focus-visible {
 .aus-visas-filter-tabs button:focus-visible {
   outline: none;
   box-shadow: 0 0 0 3px rgba(139, 29, 65, 0.25);
+}
+
+/* -------------------------------------------------------------------------
+ * Mobile thumb tab bar (SiteShell, <=920px) — aligned with header nav breakpoint
+ * ------------------------------------------------------------------------- */
+.mobile-sticky-quiz-cta-shell {
+  display: none;
+}
+
+@media (max-width: 920px) {
+  :root {
+    --site-mobile-tab-stack: calc(4.25rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  .portal-shell--mobile-tab-bar .portal-main.portal-main--immersive {
+    padding-bottom: var(--site-mobile-tab-stack);
+  }
+
+  .portal-shell--mobile-tab-bar footer.site-footer {
+    padding-bottom: var(--site-mobile-tab-stack);
+  }
+
+  .portal-shell--mobile-tab-bar .site-footer__legalbar {
+    padding-bottom: 16px;
+  }
+
+  .site-mobile-tab-bar {
+    box-sizing: border-box;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 60;
+    flex-direction: column;
+    align-items: stretch;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid rgba(202, 166, 77, 0.22);
+    background: linear-gradient(180deg, rgba(251, 246, 244, 0.98) 0%, var(--brand-cream) 100%);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 -10px 28px rgba(74, 29, 66, 0.08);
+  }
+
+  .site-mobile-tab-bar__inner {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: space-between;
+    gap: 2px;
+    min-height: 52px;
+    padding: 8px max(6px, env(safe-area-inset-left, 0px)) max(10px, env(safe-area-inset-bottom, 0px))
+      max(6px, env(safe-area-inset-right, 0px));
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .site-mobile-tab-bar__link {
+    flex: 1 1 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    min-height: 48px;
+    padding: 6px 4px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: inherit;
+    outline: none;
+  }
+
+  .site-mobile-tab-bar__link:not(.site-mobile-tab-bar__link--active):active {
+    background: rgba(202, 166, 77, 0.12);
+  }
+
+  .site-mobile-tab-bar__link:focus-visible {
+    box-shadow: 0 0 0 2px rgba(202, 166, 77, 0.55);
+  }
+
+  .site-mobile-tab-bar__link--active {
+    color: var(--brand-plum);
+    background: rgba(202, 166, 77, 0.14);
+  }
+
+  .site-mobile-tab-bar__label {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    line-height: 1.15;
+  }
+
+  /* Keep Ask MinRosh / WhatsApp dock fully clear of the fixed tab bar (thumb zone). */
+  .floating-tools {
+    bottom: calc(var(--site-mobile-tab-stack) + 80px);
+  }
+
+  .mobile-sticky-quiz-cta-shell {
+    display: block;
+    position: fixed;
+    left: max(14px, env(safe-area-inset-left, 0px));
+    bottom: calc(var(--site-mobile-tab-stack) + 14px);
+    z-index: 70;
+  }
+
+  .mobile-sticky-quiz-cta-shell .mobile-sticky-quiz-cta {
+    position: static;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    padding: 0 18px;
+    border-radius: 999px;
+    border: 0;
+    color: #fffaf8;
+    background: linear-gradient(135deg, var(--brand-rose) 0%, #8b1d41 100%);
+    box-shadow: 0 14px 28px rgba(139, 29, 65, 0.28);
+    font-weight: 800;
+    font-size: 0.82rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+
+  .mobile-sticky-quiz-cta-shell .mobile-sticky-quiz-cta:focus-visible {
+    outline: none;
+    box-shadow:
+      0 14px 28px rgba(139, 29, 65, 0.28),
+      0 0 0 3px rgba(139, 29, 65, 0.28);
+  }
 }
