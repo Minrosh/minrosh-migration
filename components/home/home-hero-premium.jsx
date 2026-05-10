@@ -144,6 +144,7 @@ export function HomeHeroPremium({ whatsappHref }) {
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 1600px, 100vw"
             priority
             fetchPriority="high"
+            decoding="async"
             placeholder="blur"
             blurDataURL={HERO_BRISBANE_BLUR_DATA_URL}
           />

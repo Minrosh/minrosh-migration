@@ -35,7 +35,7 @@ export default function ContactPage() {
           { name: "Contact", path: pageData.path },
         ])}
       />
-      <div className="conversion-premium-phase1 contact-page--flush-top -mt-20 md:-mt-16 bg-[var(--brand-cream)] pb-12 pt-0 md:pt-0">
+      <div className="conversion-premium-phase1 contact-page--flush-top bg-[var(--brand-cream)] pb-12 pt-2 md:pt-4">
       <div className="w-full max-w-[var(--content-max)] mx-auto px-[var(--content-pad)]">
       <section className="content-page content-page--contact">
         <section className="contact-page__layout grid gap-4 lg:grid-cols-[1fr_1.1fr] lg:items-start">
@@ -68,7 +68,7 @@ export default function ContactPage() {
                     eventName="cta_click"
                     eventParams={{ cta_id: "contact_panel_whatsapp", cta_location: "contact_panel", destination: "whatsapp" }}
                     aria-label="Chat on WhatsApp from contact panel"
-                    className={`${CONVERSION_PREMIUM_PRIMARY_CTA_CLASS} flex min-h-[48px] flex-1 justify-center gap-3 py-6 text-lg`}
+                    className={`${CONVERSION_PREMIUM_PRIMARY_CTA_CLASS} flex min-h-[48px] w-full min-w-0 justify-center gap-3 py-6 text-lg sm:w-auto sm:flex-1 sm:min-w-[12rem]`}
                   >
                     <span className="text-2xl">💬</span>
                     Chat on WhatsApp
@@ -77,19 +77,19 @@ export default function ContactPage() {
                 <div className="rounded-2xl bg-brand-plum/[0.03] p-5 border border-brand-plum/5">
                   <p className="text-[10px] font-black uppercase tracking-widest text-brand-plum/40 mb-4">Other ways to connect</p>
                   <div className="flex flex-wrap gap-4">
-                    <div className="min-w-[220px] flex-1 space-y-1 rounded-xl border border-brand-plum/10 bg-white/70 p-3">
+                    <div className="min-w-0 w-full min-[400px]:min-w-[200px] sm:flex-1 space-y-1 rounded-xl border border-brand-plum/10 bg-white/70 p-3">
                       <p className="text-xs font-black text-brand-plum uppercase tracking-wider">Email</p>
                       <p className="text-sm font-medium text-brand-plum/70">{supportEmailLabel || "Use the form"}</p>
                     </div>
                     {siteData.brand.phoneSecondary && (
-                      <div className="min-w-[220px] flex-1 space-y-1 rounded-xl border border-brand-plum/10 bg-white/70 p-3">
+                      <div className="min-w-0 w-full min-[400px]:min-w-[200px] sm:flex-1 space-y-1 rounded-xl border border-brand-plum/10 bg-white/70 p-3">
                         <p className="text-xs font-black text-brand-plum uppercase tracking-wider">Phone</p>
                         <a href={`tel:${siteData.brand.phoneSecondary.replace(/\s+/g, "")}`} className="text-sm font-medium text-brand-plum/70 hover:text-brand-rose transition-colors">
                           {siteData.brand.phoneSecondary}
                         </a>
                       </div>
                     )}
-                    <div className="min-w-[220px] flex-1 space-y-1 rounded-xl border border-brand-plum/10 bg-white/70 p-3">
+                    <div className="min-w-0 w-full min-[400px]:min-w-[200px] sm:flex-1 space-y-1 rounded-xl border border-brand-plum/10 bg-white/70 p-3">
                       <p className="text-xs font-black text-brand-plum uppercase tracking-wider">Social</p>
                       <SiteSocialIcons brand={siteData.brand} variant="contact" includeWhatsApp={false} />
                     </div>

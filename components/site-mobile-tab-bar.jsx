@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-/** Thumb-zone destinations; labels kept short for narrow viewports. */
+/** Thumb-zone: four primary destinations (48px+ tap targets via CSS). */
 const TABS = [
   {
     href: "/",
@@ -13,8 +13,8 @@ const TABS = [
   },
   {
     href: "/assessment",
-    label: "Check",
-    aria: "Pathway questionnaire",
+    label: "Quiz",
+    aria: "Visa quiz and pathway questionnaire",
     isActive: (p) => p === "/assessment" || p.startsWith("/assessment/"),
   },
   {
@@ -28,13 +28,6 @@ const TABS = [
     label: "Contact",
     aria: "Contact",
     isActive: (p) => p === "/contact" || p.startsWith("/contact/"),
-  },
-  {
-    href: "/australian-visas-official-sources",
-    label: "Visas",
-    aria: "Australian visas and official sources",
-    isActive: (p) =>
-      p === "/australian-visas-official-sources" || p.startsWith("/australian-visas-official-sources/"),
   },
 ];
 
@@ -97,22 +90,7 @@ function IconMail({ active }) {
   );
 }
 
-function IconVisas({ active }) {
-  const stroke = active ? "var(--brand-gold, #caa64d)" : "var(--brand-plum, #3d2432)";
-  return (
-    <svg className="size-[22px] shrink-0 motion-reduce:transition-none" viewBox="0 0 24 24" fill="none" aria-hidden>
-      <path
-        d="M9 12h6M9 8h6m-7 8h8a2 2 0 002-2V6a2 2 0 00-2-2H8a2 2 0 00-2 2v12a2 2 0 002 2z"
-        stroke={stroke}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-const ICONS = [IconHome, IconCheck, IconBook, IconMail, IconVisas];
+const ICONS = [IconHome, IconCheck, IconBook, IconMail];
 
 /**
  * Fixed bottom tab navigation for marketing shell viewports &lt;= 920px (aligned with header nav breakpoint).

@@ -97,8 +97,8 @@ export const metadata = {
   },
   appleWebApp: {
     capable: true,
-    title: "MinRosh Migration",
-    statusBarStyle: "default",
+    title: "MinRosh",
+    statusBarStyle: "black-translucent",
   },
 };
 

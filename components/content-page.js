@@ -171,7 +171,7 @@ export function ContentPage({
                 alt={heroImage.alt}
                 width={1600}
                 height={900}
-                className="h-full w-full object-cover object-[70%_center] md:object-[center_bottom]"
+                className="h-full w-full object-cover object-center sm:object-[70%_center] md:object-[center_bottom]"
                 priority
                 fetchPriority="high"
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 1600px, 100vw"

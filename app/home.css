@@ -393,10 +393,12 @@
   }
 }
 
-@media (max-width: 767px) {
-  .portal-shell--premium-home .home-hero-premium-section.home-hero-premium-section--viewport-fit {
-    min-height: 100svh;
-    height: 100svh;
+/* Premium hero: reserve thumb tab bar so primary CTAs stay above fixed nav (CWV / thumb-zone). */
+@media (max-width: 920px) {
+  .portal-shell--mobile-tab-bar.portal-shell--premium-home
+    .home-hero-premium-section.home-hero-premium-section--viewport-fit {
+    min-height: calc(100svh - var(--site-mobile-tab-stack, calc(4.25rem + env(safe-area-inset-bottom, 0px))));
+    height: calc(100svh - var(--site-mobile-tab-stack, calc(4.25rem + env(safe-area-inset-bottom, 0px))));
   }
 }
 

@@ -25,8 +25,9 @@ self.addEventListener("activate", (event) => {
 });
 
 /**
- * Long-form guides (`*-guide`, etc.): network-first with offline fallback so repeat visits stay usable.
- * Fresh HTML after deploy is preferred; stale cache only helps slow/offline reads.
+ * Long-form visa guides: network-first (try network, then fall back to Cache Storage).
+ * Successful responses are written to CACHE_GUIDES so repeat visits / spotty links open instantly
+ * from cache while still refreshing in the background on navigation.
  */
 function isGuideDocumentPath(pathname) {
   return pathname.endsWith("-guide") || pathname.includes("-guide/");

@@ -154,6 +154,11 @@
   box-shadow: var(--shadow-lux-lg);
 }
 
+/*
+ * Web fonts: this project uses `next/font` (see app/layout.js) with display: "swap" for Inter and
+ * Playfair Display — no local @font-face blocks here. If you add self-hosted fonts, always set
+ * font-display: swap (or optional) to avoid long FOIT on slow networks.
+ */
 *,
 *::before,
 *::after {
@@ -5241,7 +5246,8 @@ h2 {
 }
 
 .floating-tools__ai {
-  min-height: 50px;
+  min-height: 48px;
+  min-width: 48px;
   padding: 0 20px;
   border: 0;
   border-radius: 999px;
@@ -6340,7 +6346,8 @@ body.ai-concierge-panel-open .mobile-sticky-quiz-cta-shell {
   }
 
   .floating-tools__ai {
-    min-height: 46px;
+    min-height: 48px;
+    min-width: 48px;
     padding: 0 14px;
     font-size: 0.84rem;
   }
@@ -8234,7 +8241,7 @@ button.glossary-term:focus-visible {
     display: flex;
     flex-direction: row;
     align-items: stretch;
-    justify-content: space-between;
+    justify-content: space-evenly;
     gap: 2px;
     min-height: 52px;
     padding: 8px max(6px, env(safe-area-inset-left, 0px)) max(10px, env(safe-area-inset-bottom, 0px))
@@ -8245,14 +8252,14 @@ button.glossary-term:focus-visible {
 
   .site-mobile-tab-bar__link {
     flex: 1 1 0;
-    min-width: 0;
+    min-width: 48px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 4px;
-    min-height: 48px;
-    padding: 6px 4px;
+    min-height: 52px;
+    padding: 8px 4px;
     border-radius: 12px;
     text-decoration: none;
     font-size: 0.62rem;
@@ -8282,6 +8289,13 @@ button.glossary-term:focus-visible {
     text-overflow: ellipsis;
     white-space: nowrap;
     line-height: 1.15;
+  }
+
+  @media (max-width: 360px) {
+    .site-mobile-tab-bar__label {
+      font-size: 0.55rem;
+      letter-spacing: 0.04em;
+    }
   }
 
   /* Keep Ask MinRosh / WhatsApp dock fully clear of the fixed tab bar (thumb zone). */
@@ -8321,5 +8335,14 @@ button.glossary-term:focus-visible {
     box-shadow:
       0 14px 28px rgba(139, 29, 65, 0.28),
       0 0 0 3px rgba(139, 29, 65, 0.28);
+  }
+}
+
+/* Viewports under 768px: keep Ask MinRosh dock anchored with an explicit 80px band above the tab bar + home indicator. */
+@media (max-width: 767px) {
+  .portal-shell--mobile-tab-bar .floating-tools {
+    bottom: calc(var(--site-mobile-tab-stack, calc(4.25rem + env(safe-area-inset-bottom, 0px))) + 80px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    box-sizing: border-box;
   }
 }
