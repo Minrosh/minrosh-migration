@@ -2,7 +2,13 @@ import { PublicFileImg } from "../components/public-file-img";
 
 export default function Loading() {
   return (
-    <main id="main-content" className="loading-screen" aria-label="Loading MinRosh Migration">
+    <div
+      role="status"
+      aria-live="polite"
+      aria-busy="true"
+      className="loading-screen loading-screen--route-boundary"
+      aria-label="Loading MinRosh Migration"
+    >
       <section className="loading-screen__card">
         <div className="loading-screen__mark">
           <PublicFileImg
@@ -27,6 +33,6 @@ export default function Loading() {
           <span className="loading-screen__line loading-screen__line--sm" />
         </div>
       </section>
-    </main>
+    </div>
   );
 }

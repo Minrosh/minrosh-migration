@@ -67,9 +67,9 @@ if [[ "${DEPLOY_SKIP_GIT_PULL:-}" == "1" ]]; then
 else
   DEPLOY_GIT_BRANCH="${DEPLOY_GIT_BRANCH:-main}"
   echo "==> Fetch & fast-forward origin/${DEPLOY_GIT_BRANCH} (override with DEPLOY_GIT_BRANCH=…, or DEPLOY_SKIP_GIT_PULL=1)"
-  git fetch origin "$DEPLOY_GIT_BRANCH"
+  git fetch origin "refs/heads/${DEPLOY_GIT_BRANCH}:refs/remotes/origin/${DEPLOY_GIT_BRANCH}"
   git checkout "$DEPLOY_GIT_BRANCH"
-  git pull --ff-only origin "$DEPLOY_GIT_BRANCH"
+  git merge --ff-only "origin/${DEPLOY_GIT_BRANCH}"
 fi
 
 if [[ ! -f "$ENV_FILE" ]]; then

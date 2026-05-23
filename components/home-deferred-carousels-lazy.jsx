@@ -11,13 +11,15 @@ const HomeDeferredCarousels = dynamic(
         <section className="ultra-snap-section bg-brand-cream/30" aria-hidden="true">
           <div className="container mx-auto px-4 py-8 md:py-16">
             <div className="h-8 w-56 rounded bg-brand-plum/10" />
-            <div className="mt-6 h-[240px] rounded-3xl bg-white/70" />
+            {/* ~feedback band + horizontal card strip (mobile vs desktop grid) */}
+            <div className="mt-6 min-h-[min(92vh,560px)] rounded-3xl bg-white/70 sm:min-h-[440px] lg:min-h-[380px]" />
           </div>
         </section>
         <section className="ultra-snap-section bg-white" aria-hidden="true">
           <div className="container mx-auto px-4 py-8 md:py-16">
             <div className="h-8 w-56 rounded bg-brand-plum/10" />
-            <div className="mt-6 h-[240px] rounded-3xl bg-brand-cream/40" />
+            {/* News grid stacks on small screens — reserve vertical space to limit CLS */}
+            <div className="mt-6 min-h-[min(200vh,1280px)] rounded-3xl bg-brand-cream/40 sm:min-h-[920px] md:min-h-[720px] lg:min-h-[480px]" />
           </div>
         </section>
       </>

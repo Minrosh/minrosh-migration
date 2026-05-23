@@ -6,6 +6,7 @@ import { rateLimitAllow } from "@/lib/security/rate-limit";
 import { getClientIp } from "@/lib/security/request-ip";
 import { isValidEmailLinear } from "@/lib/validation/contact-schema";
 import { dualWriteQuizLeadToSupabase } from "@/lib/supabase/enquiries-dual-write";
+import { notifyAdminHighPriorityQuizLead } from "@/lib/push-notify-admin";
 import { obsLogger } from "@/lib/observability/logger";
 import { createSupabaseAdminClient } from "@/lib/supabase/server";
 
@@ -180,7 +181,8 @@ export async function POST(request) {
   const nameRaw = String(body?.name ?? "").trim();
   const emailRaw = String(body?.email ?? "").trim();
   const scoreRaw = parseScore(body?.score);
-  const score = Number.isFinite(scoreRaw) && scoreRaw > 0 && scoreRaw <= 500 ? scoreRaw : null;
+  /** Allow 0 for restricted-age profiles where the illustrative model totals zero. */
+  const score = Number.isFinite(scoreRaw) && scoreRaw >= 0 && scoreRaw <= 500 ? scoreRaw : null;
 
   const name = !nameRaw || nameRaw.length > MAX_NAME_LEN || hasCrLf(nameRaw) ? "" : nameRaw;
   const email = !emailRaw || hasCrLf(emailRaw) || !isValidEmailLinear(emailRaw) ? "" : emailRaw;
@@ -251,6 +253,10 @@ export async function POST(request) {
     );
   }
 
+  if (score != null && score >= 85) {
+    void notifyAdminHighPriorityQuizLead({ quizLeadId, name, score }).catch(() => {});
+  }
+
   const supabaseResult = await dualWriteQuizLeadToSupabase(quizLeadId, mirrorPayload);
   const supabasePersisted = Boolean(supabaseResult.ok && !supabaseResult.skipped);
 
@@ -261,6 +267,7 @@ export async function POST(request) {
       return apiOk(
         {
           success: true,
+          quizLeadId,
           warning:
             "Your quiz summary was stored securely; email delivery is offline on this server. Our team can still follow up from the backup record.",
         },
@@ -349,6 +356,7 @@ export async function POST(request) {
       return apiOk(
         {
           success: true,
+          quizLeadId,
           warning:
             "Your quiz summary was stored securely; our inbox email is temporarily unavailable. We will still retrieve your submission from our backup.",
         },
@@ -366,5 +374,5 @@ export async function POST(request) {
     );
   }
 
-  return apiOk({ success: true }, context);
+  return apiOk({ success: true, quizLeadId }, context);
 }

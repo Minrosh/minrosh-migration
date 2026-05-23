@@ -1,6 +1,7 @@
 import Link from "next/link";
 import siteData from "../../data/site.json";
 import { SiteShell } from "../../components/site-shell";
+import { PushNotificationPrimer } from "../../components/push-notification-primer";
 import { buildMetadata } from "../../lib/seo";
 import "../home.css";
 import { CONVERSION_PREMIUM_PRIMARY_CTA_CLASS } from "@/lib/conversion-premium-cta-class";
@@ -13,7 +14,17 @@ export const metadata = buildMetadata({
   robots: { index: false, follow: true },
 });
 
-export default function ThankYouPage() {
+export default async function ThankYouPage({ searchParams }) {
+  const sp = await searchParams;
+  const source = typeof sp?.source === "string" ? sp.source.trim() : "";
+  const enquiryRaw =
+    typeof sp?.enquiry === "string"
+      ? sp.enquiry.trim()
+      : typeof sp?.enquiry_id === "string"
+        ? sp.enquiry_id.trim()
+        : "";
+  const showQuizPrimer = source === "quiz";
+
   return (
     <SiteShell siteData={siteData} currentPath="/thank-you" headerBackdrop="neutral">
       <main className="relative flex min-h-[min(92vh,900px)] w-full flex-col items-center justify-center overflow-hidden bg-[var(--brand-cream)] px-5 py-16 sm:px-8 sm:py-20">
@@ -60,6 +71,7 @@ export default function ThankYouPage() {
             </Link>
           </div>
         </div>
+        <PushNotificationPrimer variant="dialog" autoOpen={showQuizPrimer} enquiryId={enquiryRaw} />
       </main>
     </SiteShell>
   );

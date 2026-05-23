@@ -6,7 +6,7 @@ import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import { buildWhatsAppUrl, WHATSAPP_LEAD_MESSAGE } from "@/lib/whatsapp-prefill";
 import { trackEvent } from "@/lib/client-analytics";
 
-/** Inline **bold** segments (Gemini/OpenAI often emit this). */
+/** Inline **bold** segments (Gemini often emits this). */
 function formatBoldSegments(text) {
   if (text == null || text === "") return null;
   const parts = text.split(/(\*\*[^*]+\*\*)/g);

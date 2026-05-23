@@ -1,15 +1,54 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { calculateQuizResult, quizOptions } from "@/lib/quiz";
 import { persistNavigatorSummary } from "@/lib/navigator-session";
 import { trackEvent } from "@/lib/client-analytics";
+import { REQUEST_ID_HEADER } from "@/lib/observability/request-id";
 import { QuizResultSkeleton as DefaultQuizResultSkeleton } from "./quiz-result-skeleton";
 import { isValidEmailClient } from "@/lib/validation/email-client";
 
 /** Free-text occupation field (wizard only; server quiz email path validates separately). */
 const MAX_QUIZ_OCCUPATION_NAME_CHARS = 200;
+/** Matches server `MAX_NAME_LEN` on POST /api/quiz-results. */
+const MAX_QUIZ_SUBMISSION_NAME_CHARS = 120;
+
+function optionLabel(list, value) {
+  const hit = list.find((item) => item.value === value);
+  return hit ? hit.label : String(value || "").trim() || "Not provided";
+}
+
+/**
+ * Structured Q&A for the quiz-results API (`details` must be meaningful).
+ * @param {typeof initialQuiz} quizForm
+ * @param {NonNullable<ReturnType<typeof calculateQuizResult>>} quizResult
+ */
+function buildQuizSubmissionDetails(quizForm, quizResult) {
+  return [
+    { question: "Source", answer: "MinRosh home points wizard (indicative planning only)" },
+    { question: "Occupation (as entered)", answer: quizForm.occupationName.trim() || "Not provided" },
+    { question: "Estimated points (wizard model)", answer: String(quizResult.score) },
+    { question: "Planning band", answer: quizResult.trafficLightLabel },
+    { question: "SID stream (selected)", answer: quizResult.sidStreamLabel },
+    { question: "Age", answer: optionLabel(quizOptions.age, quizForm.age) },
+    { question: "English", answer: optionLabel(quizOptions.english, quizForm.english) },
+    { question: "Nominated occupation / list alignment", answer: optionLabel(quizOptions.occupationStatus, quizForm.occupation) },
+    { question: "Sector", answer: optionLabel(quizOptions.occupationSector, quizForm.occupationSector) },
+    { question: "Overseas skilled experience", answer: optionLabel(quizOptions.overseasExperience, quizForm.overseasExperience) },
+    { question: "Australian skilled employment", answer: optionLabel(quizOptions.australianSkilled, quizForm.australianSkilled) },
+    { question: "Skills assessment readiness", answer: optionLabel(quizOptions.skillsReadiness, quizForm.skillsReadiness) },
+    { question: "Education", answer: optionLabel(quizOptions.education, quizForm.education) },
+    { question: "Hybrid / advisory capability", answer: optionLabel(quizOptions.hybridCapability, quizForm.hybridCapability) },
+    { question: "Partner", answer: optionLabel(quizOptions.partner, quizForm.partner) },
+    { question: "Pathway focus", answer: optionLabel(quizOptions.pathwayFocus, quizForm.pathwayFocus) },
+    ...quizResult.messages.map((message, index) => ({
+      question: `Planning note ${index + 1}`,
+      answer: message,
+    })),
+  ];
+}
 
 const quizSteps = [
   {
@@ -136,13 +175,17 @@ function fieldIsComplete(field, quizForm) {
 }
 
 export function QuizWizardPanel({ isActive, onGoToContact, resultSkeleton }) {
+  const router = useRouter();
   const [quizForm, setQuizForm] = useState(initialQuiz);
   const [quizStepIndex, setQuizStepIndex] = useState(0);
   const [resultSkeletonActive, setResultSkeletonActive] = useState(false);
   const [copySummaryState, setCopySummaryState] = useState("");
   const [showBreakdown, setShowBreakdown] = useState(false);
-  /** Optional email for future report delivery hooks; validated live when non-empty. */
+  /** Email for saving the summary to MinRosh (same field used for format validation when non-empty). */
   const [reportEmail, setReportEmail] = useState("");
+  const [submissionName, setSubmissionName] = useState("");
+  const [submitState, setSubmitState] = useState("idle");
+  const [submitError, setSubmitError] = useState("");
 
   const quizResult = useMemo(() => calculateQuizResult(quizForm), [quizForm]);
   const currentQuizStep = quizSteps[quizStepIndex];
@@ -159,6 +202,9 @@ export function QuizWizardPanel({ isActive, onGoToContact, resultSkeleton }) {
   const completionPercent = Math.round((completedStepsCount / quizSteps.length) * 100);
 
   const reportEmailInvalid = Boolean(reportEmail.trim() && !isValidEmailClient(reportEmail.trim()));
+  const submissionNameTrimmed = submissionName.trim();
+  const submissionNameTooLong = submissionNameTrimmed.length > MAX_QUIZ_SUBMISSION_NAME_CHARS;
+  const submissionNameInvalid = Boolean(submissionNameTrimmed && /[\r\n]/.test(submissionName));
 
   const summaryText = useMemo(() => {
     if (!quizResult || !quizComplete) return "";
@@ -252,6 +298,81 @@ export function QuizWizardPanel({ isActive, onGoToContact, resultSkeleton }) {
     anchor.click();
     URL.revokeObjectURL(url);
     trackEvent("quiz_summary_downloaded", { points_score: quizResult?.score ?? 0 });
+  }
+
+  async function submitQuizSummaryToMinrosh() {
+    if (submitState === "loading" || !quizResult || !quizComplete) return;
+    const name = submissionName.trim();
+    const email = reportEmail.trim();
+    setSubmitError("");
+    if (!name) {
+      setSubmitError("Please enter your name so our team can match this summary to you.");
+      return;
+    }
+    if (submissionNameTooLong || submissionNameInvalid) {
+      setSubmitError("Please shorten your name or remove line breaks (maximum 120 characters).");
+      return;
+    }
+    if (!email || reportEmailInvalid || !isValidEmailClient(email)) {
+      setSubmitError("Please enter a valid email address.");
+      return;
+    }
+    setSubmitState("loading");
+    try {
+      const res = await fetch("/api/quiz-results", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name,
+          email,
+          score: quizResult.score,
+          details: buildQuizSubmissionDetails(quizForm, quizResult),
+        }),
+      });
+      const rawText = await res.text();
+      let payload = {};
+      try {
+        payload = rawText ? JSON.parse(rawText) : {};
+      } catch {
+        const ref = String(res.headers.get(REQUEST_ID_HEADER) || "").trim();
+        setSubmitError(
+          ref
+            ? `Something went wrong reading the server response. Please try again. (Ref: ${ref})`
+            : "Something went wrong reading the server response. Please try again.",
+        );
+        setSubmitState("idle");
+        return;
+      }
+      const data = payload?.data && typeof payload.data === "object" ? payload.data : payload;
+      const err = payload?.error;
+      const errMsg =
+        typeof err === "object" && err != null && typeof err.message === "string" ? err.message : null;
+      if (!res.ok || !(payload?.ok ?? data?.ok)) {
+        const ref = String(payload?.requestId || "").trim();
+        setSubmitError(
+          (errMsg || "We could not save your summary right now. Please try again shortly.") +
+            (ref ? ` (Ref: ${ref})` : ""),
+        );
+        setSubmitState("idle");
+        return;
+      }
+      const quizLeadId = typeof data.quizLeadId === "string" ? data.quizLeadId.trim() : "";
+      if (!quizLeadId) {
+        setSubmitError(
+          "Your summary may have been saved, but a confirmation reference was missing. Please contact us with your email.",
+        );
+        setSubmitState("idle");
+        return;
+      }
+      trackEvent("quiz_saved_to_minrosh", {
+        points_score: quizResult.score,
+        quiz_lead_id: quizLeadId,
+      });
+      router.push(`/thank-you?source=quiz&enquiry=${encodeURIComponent(quizLeadId)}`);
+    } catch {
+      setSubmitError("We could not reach the server. Check your connection and try again.");
+      setSubmitState("idle");
+    }
   }
 
   return (
@@ -619,19 +740,40 @@ export function QuizWizardPanel({ isActive, onGoToContact, resultSkeleton }) {
                   <hr className="my-6 border-brand-plum/15" />
 
                   <div className="mb-6 rounded-2xl border border-brand-plum/10 bg-brand-cream/40 p-4">
+                    <p className="text-xs font-bold uppercase tracking-[0.12em] text-brand-plum/60 mb-3">
+                      Save this indicative summary to MinRosh
+                    </p>
                     <label className="block">
-                      <span className="text-xs font-bold uppercase tracking-[0.12em] text-brand-plum/60">
-                        Email (optional)
-                      </span>
+                      <span className="text-xs font-bold uppercase tracking-[0.12em] text-brand-plum/60">Your name</span>
+                      <input
+                        type="text"
+                        name="quizSubmissionName"
+                        value={submissionName}
+                        onChange={(e) =>
+                          setSubmissionName(String(e.target.value).slice(0, MAX_QUIZ_SUBMISSION_NAME_CHARS))
+                        }
+                        autoComplete="name"
+                        aria-invalid={submissionNameTooLong || submissionNameInvalid ? "true" : undefined}
+                        aria-describedby="quiz-save-hint"
+                        className={`mt-2 w-full rounded-xl border-2 px-3 py-2.5 text-sm font-medium outline-none transition focus:ring-4 focus:ring-brand-rose/20 ${
+                          submissionNameTooLong || submissionNameInvalid
+                            ? "border-[color:var(--brand-rose)]/55 bg-white"
+                            : "border-brand-plum/15 bg-white focus:border-brand-rose"
+                        }`}
+                        placeholder="Your full name"
+                      />
+                    </label>
+                    <label className="mt-3 block">
+                      <span className="text-xs font-bold uppercase tracking-[0.12em] text-brand-plum/60">Email</span>
                       <input
                         type="email"
                         name="quizReportEmail"
                         value={reportEmail}
                         onChange={(e) => setReportEmail(e.target.value)}
-                        placeholder="you@example.com — for future report delivery"
+                        placeholder="you@example.com"
                         autoComplete="email"
                         aria-invalid={reportEmailInvalid ? "true" : undefined}
-                        aria-describedby="quiz-report-email-hint"
+                        aria-describedby="quiz-save-hint"
                         className={`mt-2 w-full rounded-xl border-2 px-3 py-2.5 text-sm font-medium outline-none transition focus:ring-4 focus:ring-brand-rose/20 ${
                           reportEmailInvalid
                             ? "border-[color:var(--brand-rose)]/55 bg-white"
@@ -639,12 +781,34 @@ export function QuizWizardPanel({ isActive, onGoToContact, resultSkeleton }) {
                         }`}
                       />
                     </label>
-                    <p id="quiz-report-email-hint" className="mt-1.5 text-xs text-brand-plum/55">
-                      Optional. We validate format as you type so it is ready if you connect this wizard to email later.
+                    <p id="quiz-save-hint" className="mt-1.5 text-xs text-brand-plum/55">
+                      If you would like MinRosh to receive this indicative summary in our secure inbox, add your name and
+                      email, then tap Save. Subject to our privacy policy — you can still use the rest of the wizard without
+                      saving.
                     </p>
-                    {reportEmailInvalid ? (
+                    {reportEmailInvalid || submissionNameTooLong || submissionNameInvalid ? (
                       <p className="mt-2 text-xs font-semibold text-[color:var(--brand-rose)]" role="alert">
-                        Please enter a valid email address, or leave this field blank.
+                        {reportEmailInvalid
+                          ? "Please enter a valid email address, clear the field, or fix the typo."
+                          : "Please shorten your name or remove line breaks (maximum 120 characters)."}
+                      </p>
+                    ) : null}
+                    <button
+                      type="button"
+                      className="mt-4 w-full min-h-[48px] rounded-xl border-2 border-brand-plum/20 bg-white py-3 text-sm font-bold text-brand-plum shadow-sm transition hover:border-brand-rose/40 hover:bg-brand-cream/60 disabled:cursor-not-allowed disabled:opacity-55"
+                      onClick={submitQuizSummaryToMinrosh}
+                      disabled={
+                        submitState === "loading" ||
+                        reportEmailInvalid ||
+                        submissionNameTooLong ||
+                        submissionNameInvalid
+                      }
+                    >
+                      {submitState === "loading" ? "Saving…" : "Save summary to MinRosh team"}
+                    </button>
+                    {submitError ? (
+                      <p className="mt-3 text-sm font-semibold text-[color:var(--brand-rose)]" role="alert">
+                        {submitError}
                       </p>
                     ) : null}
                   </div>

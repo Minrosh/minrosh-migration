@@ -14,7 +14,7 @@ The codebase is a **single Next.js application** that serves:
 2. **Private admin workspace** (`/admin`) — CRM-style operations (leads, pipeline, inbox, tasks, automations), **customers**, **quotes**, **invoices**, **intelligence** (official-source scanning + AI-assisted drafts + social publishing hooks), **news** editing, **success stories**, **reports**, **audit log**, and **multi-user admin** management.
 3. **API routes** — public APIs (contact, chat, news, uploads, portal), authenticated `/api/admin/*`, cron endpoints, and webhooks.
 
-**Persistence model:** Most operational data lives in **JSON files under `data/`** (and private uploads under `storage/uploads/`), with **optional** integrations to Google Workspace (Calendar, Drive, Sheets), SMTP/Gmail, Meta (Facebook/Instagram), Gemini AI, OpenAI, Twilio, and Supabase. There is no mandatory SQL database for core CRM; Supabase is documented as optional for Postgres and public asset hosting.
+**Persistence model:** Most operational data lives in **JSON files under `data/`** (and private uploads under `storage/uploads/`), with **optional** integrations to Google Workspace (Calendar, Drive, Sheets), SMTP/Gmail, Meta (Facebook/Instagram), Gemini AI, Twilio, and Supabase. There is no mandatory SQL database for core CRM; Supabase is documented as optional for Postgres and public asset hosting.
 
 **Deployment:** Production builds use Next **`output: "standalone"`** (see `next.config.mjs`). Server deployment is scripted for Ubuntu + PM2 (see `scripts/deploy-ubuntu.sh` and related scripts).
 
@@ -30,7 +30,7 @@ The codebase is a **single Next.js application** that serves:
 | Auth (admin) | Password (+ optional TOTP), signed session cookie; Edge middleware verifies cookie with HMAC using **`ADMIN_SESSION_SECRET` only** (never `ADMIN_PASSWORD`) |
 | Data         | File-backed JSON stores + atomic writes; path constants in `lib/admin/paths.js`                                                           |
 | PDF / images | `pdf-lib`, `@resvg/resvg-js`, `satori`, `qrcode`                                                                                          |
-| AI           | Google Gemini (primary for intelligence + chat paths), OpenAI optional                                                                    |
+| AI           | Google Gemini (intelligence scans + `/api/chat` concierge)                                                                                  |
 | Email        | `nodemailer` (SMTP); optional Gmail API for nurture                                                                                       |
 | OCR          | `tesseract.js` (server-externalized in Next config)                                                                                       |
 
@@ -59,7 +59,6 @@ flowchart TB
   subgraph ext [External services]
     SMTP[SMTP / Gmail]
     Gemini[Gemini API]
-    OpenAI[OpenAI API]
     Google[Google APIs Calendar Drive Sheets]
     Meta[Meta Graph Facebook Instagram]
     Supa[Supabase optional]
@@ -73,7 +72,6 @@ flowchart TB
   API --> Storage
   API --> SMTP
   API --> Gemini
-  API --> OpenAI
   API --> Google
   API --> Meta
   API --> Supa
@@ -116,7 +114,7 @@ flowchart TB
 
 - Contact and brochure flows (`app/api/contact`, related `lib/contact.js`).
 - Public `**/immigration-news`** — reads curated items from `data/news.json` via `lib/news-store.js` and `app/api/news` / display components.
-- Optional `**/api/chat**` — AI concierge (Gemini/OpenAI per env).
+- Optional `**/api/chat**` — AI concierge (Gemini; requires `GEMINI_API_KEY`).
 - Client document upload via tokenized routes under `app/api/upload/*`.
 - Customer **portal** APIs under `app/api/portal/*` (profile, invoices, payment method as applicable).
 - `**/api/cron/*`** — scheduled jobs (nurture emails, CRM automation, invoice recurring/reminders/sync, intelligence scan, Facebook publish) protected by shared secrets in headers or query params (see `.env.example`).
@@ -195,6 +193,8 @@ Examples:
 - `app/api/webhooks/google-form` — secured with `GOOGLE_FORM_WEBHOOK_SECRET`.
 - `app/api/webhooks/whatsapp` — `WHATSAPP_WEBHOOK_SECRET`.
 - `app/api/admin/integrations/*` — integration tests and Supabase ping.
+- `POST /api/quiz-results` — home points wizard (`components/home/quiz-wizard-panel.jsx`) POSTs name, email, indicative score, and structured `details` after the user taps “Save summary to MinRosh team”; successful JSON responses include `quizLeadId` (`QUIZ-…`) for client redirect to `/thank-you?source=quiz&enquiry=…`.
+- `POST /api/notifications/subscribe` — optional Web Push: upserts browser `PushSubscription` JSON into Supabase `push_subscriptions` (migration `20260510120000_push_subscriptions.sql`) with optional `enquiry_id` (`QUIZ-…` / `ENR-…`). Public soft-prompt: `components/push-notification-primer.jsx` on `/thank-you?source=quiz` (modal) and `/assessment` (card). Service worker: `public/sw.js` (`push` + `notificationclick`). High-score quiz leads (`app/api/quiz-results/route.js`, score ≥ 85) can notify an admin device via `web-push` when `NEXT_PUBLIC_VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, and `INTERNAL_PUSH_SUBSCRIPTION_JSON` are set (see `.env.example`).
 
 ### 7.8 Upload retention (privacy hygiene)
 
@@ -237,7 +237,7 @@ Configuration is **environment-variable driven**. Major groups:
 - **Site:** `NEXT_PUBLIC_SITE_URL`, optional GA, Maps keys.
 - **Admin:** passwords, session secret, cookie secure flag, roles, TOTP, optional multi-user file.
 - **Mail:** SMTP_* and brochure path.
-- **AI:** `GEMINI_API_KEY`, `OPENAI_API_KEY`, model overrides.
+- **AI:** `GEMINI_API_KEY`, optional `GEMINI_MODEL` / intelligence overrides.
 - **Intelligence & social:** cron secrets, Meta tokens, optional Supabase bucket for images.
 - **Google Workspace:** service account / delegated user, Calendar, Drive, Sheets IDs.
 - **Automation:** nurture, CRM automation, invoice crons.

@@ -82,8 +82,8 @@ If any of the above must be changed, run a focused visual regression pass first 
   - Keep current trust/compliance text and about points intact.
 - [x] `app/globals.css`
   - Add trust-proof visual styles matching logo palette.
-- [ ] `components/home/google-reviews-panel.jsx` (if needed)
-  - Keep testimonial inventory; adjust spotlight presentation only.
+- [x] `components/home/google-reviews-panel.jsx` (if needed)
+  - Keep testimonial inventory; adjust spotlight presentation only. Verified: wired in `home-tab-server.jsx`; `GET /api/reviews` → 200 (2026-05-23); no presentation change required for this pass.
 
 ### Section 5 - Services simplified, full content retained
 
@@ -109,4 +109,4 @@ If any of the above must be changed, run a focused visual regression pass first 
 - [x] `npm run test:unit`
 - [x] `npm run build`
 - [x] Confirm route manifest still includes existing pages (no route loss).
-- [ ] Manual check: `/#quiz`, `/assessment`, `/contact`, `/book-consultation`.
+- [x] Manual check: `/#quiz`, `/assessment`, `/contact`, `/book-consultation`. Verified localhost HTTP 200 for all (2026-05-23); `npm run test:nav` passed.

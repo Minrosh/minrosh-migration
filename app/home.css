@@ -24,7 +24,9 @@
 .text-gradient-shine {
   background: linear-gradient(to right, #3d2432 20%, #9b4a6c 40%, #9b4a6c 60%, #3d2432 80%);
   background-size: 200% auto;
+  color: transparent;
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: shine-text 5s linear infinite;
 }
@@ -178,11 +180,11 @@
   -webkit-backdrop-filter: blur(20px);
 }
 
-@media (max-width: 720px) {
+@media (max-width: 920px) {
   .portal-shell--premium-home .premium-frosted-surface {
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
-    background: rgba(255, 253, 251, 0.96);
+    background: rgba(255, 253, 251, 0.98);
   }
 }
 
@@ -307,6 +309,11 @@
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0.86) 100%);
   backdrop-filter: saturate(1.2) blur(24px);
   -webkit-backdrop-filter: saturate(1.2) blur(24px);
+  @media (max-width: 720px) {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: #ffffff;
+  }
   border: 1px solid rgba(255, 255, 255, 0.82);
   box-shadow:
     0 -12px 40px rgba(31, 16, 32, 0.08),
@@ -330,6 +337,13 @@
 }
 
 @media (max-width: 720px) {
+  .portal-shell--mobile-tab-bar.portal-shell--premium-home
+    .home-hero-premium-section.home-hero-premium-section--viewport-fit {
+    /* Let content define height on small phones to avoid large dead space/clip. */
+    min-height: auto;
+    height: auto;
+  }
+
   .portal-shell--premium-home .home-hero-premium__bottom-bar,
   .portal-shell--premium-home .home-hero-premium__trust-shell {
     bottom: 0;
@@ -337,32 +351,33 @@
 
   .portal-shell--premium-home .home-hero-premium__fog-gradient {
     --hero-fog-fade-end: 100%;
-    /* Mobile readability: solid white top 30%, clear by bottom 30%. */
+    /* Mobile readability: stronger cream wash under copy, softer fade toward CTA/image. */
     background: linear-gradient(
       to bottom,
       rgba(255, 255, 255, 1) 0%,
-      rgba(255, 255, 255, 1) 30%,
-      rgba(255, 255, 255, 0.35) 55%,
-      rgba(255, 255, 255, 0) 70%
+      rgba(255, 255, 255, 0.96) 44%,
+      rgba(255, 255, 255, 0.62) 68%,
+      rgba(255, 255, 255, 0.2) 82%,
+      rgba(255, 255, 255, 0) 100%
     );
     -webkit-mask-image: linear-gradient(
       to bottom,
       #000 0%,
-      #000 30%,
-      rgba(0, 0, 0, 0.4) 55%,
-      transparent 70%
+      #000 42%,
+      rgba(0, 0, 0, 0.68) 70%,
+      transparent 100%
     );
     mask-image: linear-gradient(
       to bottom,
       #000 0%,
-      #000 30%,
-      rgba(0, 0, 0, 0.4) 55%,
-      transparent 70%
+      #000 42%,
+      rgba(0, 0, 0, 0.68) 70%,
+      transparent 100%
     );
     -webkit-mask-size: 100% 100%;
     mask-size: 100% 100%;
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
 
   .portal-shell--premium-home .home-hero-premium__bottom-bar {
@@ -388,6 +403,24 @@
     padding-inline: var(--content-pad);
   }
 
+  .portal-shell--premium-home .home-hero-premium__content-column {
+    position: relative;
+  }
+
+  .portal-shell--premium-home .home-hero-premium__content-column::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.22) 0%,
+      rgba(255, 255, 255, 0.1) 45%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    z-index: 0;
+  }
+
   .portal-shell--premium-home .home-section {
     padding-inline: var(--content-pad);
   }
@@ -399,6 +432,54 @@
     .home-hero-premium-section.home-hero-premium-section--viewport-fit {
     min-height: calc(100svh - var(--site-mobile-tab-stack, calc(4.25rem + env(safe-area-inset-bottom, 0px))));
     height: calc(100svh - var(--site-mobile-tab-stack, calc(4.25rem + env(safe-area-inset-bottom, 0px))));
+  }
+}
+
+@media (max-width: 767px) {
+  .portal-shell--mobile-tab-bar.portal-shell--premium-home
+    .home-hero-premium-section.home-hero-premium-section--viewport-fit {
+    /*
+     * Final mobile guardrail: avoid fixed viewport locks that can create large blank
+     * bands or clip hero copy when browser UI/safe areas change.
+     */
+    min-height: auto;
+    height: auto;
+  }
+
+  .portal-shell--premium-home .home-hero-premium__lane {
+    justify-content: flex-start;
+    /* Clear mobile utility strip below the sticky header so badge/title are never clipped. */
+    padding-top: clamp(7.8rem, 28vw, 9.8rem);
+    padding-bottom: clamp(7.6rem, 24vw, 9.4rem);
+  }
+
+  .portal-shell--premium-home .home-hero-premium__upper {
+    justify-content: flex-start;
+    padding-bottom: 0;
+  }
+
+  .portal-shell--premium-home .home-hero-premium__glass-inner.hero__glass {
+    border-radius: 1.35rem;
+    border: 1px solid rgba(255, 255, 255, 0.72);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.74) 0%, rgba(255, 250, 246, 0.58) 100%);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.82),
+      0 12px 32px rgba(31, 16, 32, 0.08);
+    padding: clamp(14px, 4.5vw, 20px);
+  }
+
+  .portal-shell--premium-home .home-hero-premium__heading {
+    font-size: clamp(2rem, 9.2vw, 2.45rem);
+    line-height: 1.06;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.56);
+  }
+
+  .portal-shell--premium-home .home-hero-premium__cta {
+    width: 100%;
+    min-height: 54px;
+    padding-inline: clamp(16px, 5.5vw, 24px);
+    font-size: clamp(0.95rem, 3.7vw, 1.08rem);
+    line-height: 1.2;
   }
 }
 

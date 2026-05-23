@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { Suspense } from "react";
+import { headers } from "next/headers";
 import { BreadcrumbsNav } from "../../components/breadcrumbs-nav";
 import siteData from "../../data/site.json";
 import { SiteShell } from "../../components/site-shell";
@@ -6,6 +8,7 @@ import { SmartNavigator } from "../../components/smart-navigator";
 import { StructuredData } from "../../components/structured-data";
 import { buildMetadata, breadcrumbJsonLd } from "../../lib/seo";
 import { TrackedLink } from "../../components/tracked-link";
+import { PushNotificationPrimer } from "../../components/push-notification-primer";
 import "../home.css";
 import { CONVERSION_PREMIUM_PRIMARY_CTA_CLASS } from "@/lib/conversion-premium-cta-class";
 
@@ -20,6 +23,16 @@ export const metadata = buildMetadata({
     "migration assessment Australia",
   ],
 });
+
+function AssessmentNavigatorFallback() {
+  return (
+    <div
+      className="rounded-[2rem] border border-brand-plum/10 bg-[rgba(255,255,255,0.55)] p-6 shadow-inner min-h-[280px] motion-safe:animate-pulse"
+      aria-busy="true"
+      aria-label="Loading Smart Navigator"
+    />
+  );
+}
 
 const assessmentSteps = [
   {
@@ -39,17 +52,20 @@ const assessmentSteps = [
   },
 ];
 
-export default function AssessmentPage() {
+export default async function AssessmentPage() {
+  const nonce = String((await headers()).get("x-csp-nonce") || "").trim();
+
   return (
     <SiteShell siteData={siteData} currentPath="/assessment">
       <StructuredData
+        nonce={nonce}
         data={breadcrumbJsonLd([
           { name: "Home", path: "/" },
           { name: "Assessment", path: "/assessment" },
         ])}
       />
 
-      <div className="conversion-premium-phase1 bg-[var(--brand-cream)] pb-16 pt-8 md:pt-12">
+      <div className="conversion-premium-phase1 page-assessment-shell bg-[var(--brand-cream)] pb-14 md:pb-16">
       <div className="w-full max-w-[var(--content-max)] mx-auto px-[var(--content-pad)]">
       <div className="content-page page-assessment-premium">
         <BreadcrumbsNav
@@ -60,14 +76,14 @@ export default function AssessmentPage() {
           ]}
         />
 
-        <div className="page-assessment-prototype pb-16">
+        <div className="page-assessment-prototype">
           <div className="page-assessment-prototype__split">
             <div className="min-w-0 glass-card rounded-[2rem] bg-[rgba(255,255,255,0.75)] p-6 shadow-[0_12px_40px_rgba(74,24,48,0.06)] backdrop-blur-[20px] md:p-8">
               <p className="section-label">Free assessment</p>
-              <h1 className="mt-2 text-3xl font-black tracking-tight text-brand-plum [font-family:var(--font-display),Georgia,serif] sm:text-4xl md:text-[2.4rem]">
+              <h1 className="page-assessment-intro__title mt-2 text-3xl font-black tracking-tight text-brand-plum [font-family:var(--font-display),Georgia,serif] sm:text-4xl md:text-[2.4rem]">
                 Check eligibility in a few minutes — then choose your next step with clarity
               </h1>
-              <p className="mt-4 text-base font-medium leading-relaxed text-brand-plum/75 sm:text-lg">
+              <p className="page-assessment-intro__lead mt-4 text-base font-medium text-brand-plum/75 sm:text-lg">
                 This guided flow points you toward the most relevant MinRosh pathway pages and tools. It does not
                 replace reading official criteria or booking advice when your case is time-sensitive.
               </p>
@@ -95,16 +111,16 @@ export default function AssessmentPage() {
                         <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#881337] text-sm font-black text-white">
                           {step.number}
                         </span>
-                        <div>
+                        <div className="min-w-0">
                           <p className="font-bold text-brand-plum">{step.title}</p>
-                          <p className="mt-1 text-sm text-brand-plum/70">{step.description}</p>
+                          <p className="page-assessment-step__desc mt-1 text-sm text-brand-plum/70">{step.description}</p>
                         </div>
                       </li>
                     ))}
                   </ol>
                 </div>
 
-                <div className="flex flex-wrap gap-3">
+                <div className="flex flex-wrap gap-x-3 gap-y-3 sm:gap-x-4">
                   <TrackedLink
                     href="/#quiz"
                     eventName="cta_click"
@@ -132,18 +148,20 @@ export default function AssessmentPage() {
               </div>
             </div>
 
-            <div className="page-assessment-prototype__navigator-shell glass-card min-w-0 rounded-[2rem] border border-brand-plum/10 bg-[rgba(255,255,255,0.75)] p-4 shadow-lux backdrop-blur-[20px] md:p-6">
-              <SmartNavigator
-                title="Step through the Smart Navigator"
-                description="Select the answers that best match your situation today. You can restart anytime — bring notes from the Department of Home Affairs visa listing if you already know a subclass."
-                primaryLabel="Continue"
-                finalHref="/book-consultation"
-              />
+            <div className="page-assessment-prototype__navigator-shell min-w-0">
+              <Suspense fallback={<AssessmentNavigatorFallback />}>
+                <SmartNavigator
+                  title="Step through the Smart Navigator"
+                  description="Select the answers that best match your situation today. You can restart anytime — bring notes from the Department of Home Affairs visa listing if you already know a subclass."
+                  primaryLabel="Continue"
+                  finalHref="/book-consultation"
+                />
+              </Suspense>
             </div>
           </div>
 
           <details
-            className="content-section content-accordion bento-hover glass-card mt-12 rounded-[2rem] border border-brand-plum/10 bg-[rgba(255,255,255,0.75)] p-4 backdrop-blur-[20px] md:p-6"
+            className="content-section content-accordion bento-hover glass-card mt-10 rounded-[2rem] border border-brand-plum/10 bg-[rgba(255,255,255,0.75)] p-4 backdrop-blur-[20px] md:mt-12 md:p-6"
             open
           >
             <summary className="content-accordion__summary">
@@ -162,6 +180,8 @@ export default function AssessmentPage() {
               </ul>
             </div>
           </details>
+
+          <PushNotificationPrimer variant="card" enquiryId="" />
         </div>
       </div>
       </div>

@@ -22,11 +22,14 @@ const PATHS = [
 ];
 
 async function waitForPublicMain(page) {
-  await page.locator("#main-content").waitFor({ state: "attached", timeout: 45_000 });
-  const overlay = page.locator("main.loading-screen").first();
+  const overlay = page.locator(".loading-screen--route-boundary").first();
   if ((await overlay.count()) > 0) {
-    await overlay.waitFor({ state: "hidden", timeout: 45_000 });
+    await overlay.waitFor({ state: "detached", timeout: 45_000 }).catch(() => {});
   }
+  await page.locator("main.portal-main--immersive#main-content").waitFor({
+    state: "visible",
+    timeout: 45_000,
+  });
 }
 
 (LIVE ? test.describe : test.describe.skip)("mobile layout — production (set PLAYWRIGHT_LIVE_URL)", () => {

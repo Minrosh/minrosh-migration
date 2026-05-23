@@ -2051,6 +2051,16 @@ h2 {
   transition: width 0.28s ease;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .quiz-progress__bar {
+    transition: none;
+  }
+
+  .quiz-option.is-selected {
+    animation: none;
+  }
+}
+
 .quiz-step {
   padding: 24px;
   border-radius: 24px;
@@ -2996,19 +3006,39 @@ h2 {
 .page-assessment-prototype {
   max-width: 80rem;
   margin-inline: auto;
-  padding-inline: 1rem;
+  /* Horizontal gutters come from parent `.max-w-[var(--content-max)]` + `px-[var(--content-pad)]`; extra padding here doubled inset and cramped Smart Navigator on mobile. */
+  padding-inline: 0;
 }
 
-@media (min-width: 640px) {
-  .page-assessment-prototype {
-    padding-inline: 1.5rem;
-  }
+/**
+ * Smart Navigator (shared `.section-head`) — keep exactly two flex items here (title stack + lead).
+ * Guidance copy lives in `.navigator-section__guidance` so tablets/desktop never squeeze three columns.
+ */
+.navigator-section {
+  min-width: 0;
 }
 
-@media (min-width: 1024px) {
-  .page-assessment-prototype {
-    padding-inline: 2rem;
-  }
+.navigator-section .navigator-section__head.section-head {
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 14px 24px;
+  margin-bottom: 0;
+}
+
+.navigator-section .navigator-section__head > div:first-child {
+  flex: 1 1 min(240px, 100%);
+  min-width: 0;
+}
+
+.navigator-section .navigator-section__lead.process-section__lead {
+  flex: 1 1 min(260px, 100%);
+  min-width: 0;
+  margin-bottom: 0;
+}
+
+.navigator-section__guidance {
+  margin-bottom: 18px;
 }
 
 .page-assessment-prototype__split {
@@ -3052,6 +3082,8 @@ h2 {
   background: #ffffff;
   box-shadow: var(--shadow-lux-lg);
   padding: clamp(16px, 3vw, 24px);
+  min-width: 0;
+  overflow-x: clip;
 }
 
 .contact-map-embed {
@@ -5936,6 +5968,21 @@ body.ai-concierge-panel-open .mobile-sticky-quiz-cta-shell {
     background: linear-gradient(180deg, rgba(255, 253, 251, 0.98) 0%, rgba(255, 253, 251, 0.94) 100%);
   }
 
+  /*
+   * Public marketing shell: compositor-heavy backdrop-filter on cards hurts TBT/INP on phones and small tablets.
+   * Strip Tailwind `backdrop-blur-*` utilities only here (hero fog uses home.css classes, not these).
+   */
+  .portal-shell [class*="backdrop-blur"] {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  /* .glass-card blur is already off at ≤720px globally; extend through 920px for portal routes only. */
+  .portal-shell .glass-card {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
   /* Utilities row lives in the sticky header; hide the duplicate strip above it. */
   .site-topbar {
     display: none !important;
@@ -7974,6 +8021,146 @@ button.glossary-term:focus-visible {
   color: var(--brand-rose);
 }
 
+/* /assessment — breathing room below fixed header without stacking extra hero-style pt. */
+.page-assessment-shell.conversion-premium-phase1 {
+  padding-top: clamp(0.5rem, 2vw, 1rem);
+  box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+  .page-assessment-shell.conversion-premium-phase1 {
+    padding-top: clamp(0.75rem, 2.2vw, 1.35rem);
+  }
+}
+
+.page-assessment-premium {
+  scroll-margin-top: calc(var(--site-header-chrome-height, var(--header-height, 88px)) + 12px);
+}
+
+.page-assessment-premium.content-page {
+  gap: clamp(1.1rem, 3vw, 1.75rem);
+}
+
+.page-assessment-intro__title {
+  line-height: 1.22;
+  text-wrap: balance;
+}
+
+@media (min-width: 640px) {
+  .page-assessment-intro__title {
+    line-height: 1.18;
+  }
+}
+
+.page-assessment-intro__lead {
+  line-height: 1.72;
+  max-width: 52rem;
+}
+
+.page-assessment-step__desc {
+  line-height: 1.55;
+}
+
+.page-assessment-premium .navigator-section__lead.process-section__lead {
+  line-height: 1.65;
+}
+
+/* Readability on /assessment only (home island keeps compact guidance). */
+.page-assessment-premium .navigator-section__guidance {
+  font-size: 0.875rem;
+  line-height: 1.55;
+}
+
+@media (min-width: 640px) {
+  .page-assessment-premium .navigator-section__guidance {
+    font-size: 0.875rem;
+    line-height: 1.55;
+    padding: 0.95rem 1rem;
+  }
+}
+
+.page-assessment-premium .navigator-section .quiz-wizard__actions {
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: stretch;
+}
+
+@media (max-width: 720px) {
+  .page-assessment-premium .navigator-section .quiz-wizard__actions .btn:last-child,
+  .page-assessment-premium .navigator-section .quiz-wizard__actions a:last-child {
+    margin-left: 0;
+  }
+}
+
+@media (min-width: 721px) {
+  .page-assessment-premium .navigator-section .quiz-wizard__actions {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .page-assessment-premium .navigator-section .quiz-wizard__actions .btn:last-child,
+  .page-assessment-premium .navigator-section .quiz-wizard__actions a:last-child {
+    margin-left: auto;
+  }
+}
+
+/* Tablets: avoid squeezed dual-column result tiles inside the navigator card on /assessment only. */
+@media (max-width: 900px) {
+  .page-assessment-premium .navigator-result-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .page-assessment-premium .navigator-readiness-pill {
+    width: 100%;
+    text-align: left;
+  }
+
+  .page-assessment-premium .navigator-result-grid,
+  .page-assessment-premium .quiz-result--completed .navigator-result-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/**
+ * Smart Navigator on /assessment: keep a stable single-column option stack so
+ * long labels never overflow inside nested premium cards.
+ */
+.page-assessment-premium .navigator-section .quiz-shell {
+  min-width: 0;
+}
+
+.page-assessment-premium .navigator-section .quiz-card,
+.page-assessment-premium .navigator-section .quiz-result {
+  min-width: 0;
+}
+
+.page-assessment-premium .navigator-section .quiz-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+@media (min-width: 640px) {
+  .page-assessment-premium .navigator-section .quiz-options {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+
+.page-assessment-premium .navigator-section .quiz-option {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
 .page-assessment-premium .process-card,
 .page-assessment-premium .content-section.content-accordion {
   border-radius: var(--radius-xl);
@@ -8344,5 +8531,17 @@ button.glossary-term:focus-visible {
     bottom: calc(var(--site-mobile-tab-stack, calc(4.25rem + env(safe-area-inset-bottom, 0px))) + 80px);
     padding-bottom: env(safe-area-inset-bottom, 0px);
     box-sizing: border-box;
+  }
+
+  .portal-shell:not(.portal-shell--premium-home) .portal-main.portal-main--immersive {
+    /*
+     * Header is sticky (in normal flow) on inner routes.
+     * Reset the large immersive top offset on phones to prevent blank bands before page content.
+     */
+    padding-top: 10px;
+  }
+
+  .portal-shell:not(.portal-shell--premium-home) .content-page {
+    gap: 24px;
   }
 }

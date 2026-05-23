@@ -61,11 +61,12 @@ export function SiteShell({
               <Image
                 src="/images/minrosh-logo.v2.webp"
                 alt="MinRosh Migration logo"
-                width={56}
-                height={56}
-                priority={!isPremiumHome}
-                {...(isPremiumHome ? {} : { fetchPriority: "high" })}
-                sizes="56px"
+                width={60}
+                height={60}
+                priority
+                fetchPriority="high"
+                decoding="sync"
+                sizes="(max-width: 720px) 44px, 52px"
               />
             </span>
             <span className="brand__text">

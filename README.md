@@ -6,7 +6,7 @@ MinRosh Migration is now a clean Next.js 15 App Router project with:
 - a multi-step visa quiz
 - pathway and services sections
 - success stories and contact capture
-- an OpenAI-backed assistant endpoint
+- a Gemini-powered assistant endpoint
 - Nodemailer-powered internal and thank-you emails
 
 ## Stack
@@ -41,6 +41,14 @@ npm run check
 ```
 
 This runs the production build and the contact-save test.
+
+Production dependency audit (transitive advisories only; not devDependencies):
+
+```bash
+npm run audit:production
+```
+
+As of 2026-05-23: **2 moderate** (`qs`, `ws` via googleapis and other transitive deps). `npm audit fix` may bump minors when upstream allows.
 
 ## Cleanup commands
 

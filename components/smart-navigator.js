@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import {
@@ -19,11 +19,11 @@ export function SmartNavigator({
   finalHref = "/book-consultation",
 }) {
   const searchParams = useSearchParams();
+  const emailFormRef = useRef(null);
   const [stepIndex, setStepIndex] = useState(0);
   const [answers, setAnswers] = useState({});
   const [intentHint, setIntentHint] = useState("");
   const [dailyUsageCount, setDailyUsageCount] = useState(null);
-  const [progressWidth, setProgressWidth] = useState("0%");
 
   const currentStep = navigatorSteps[stepIndex];
   const progress = ((stepIndex + 1) / (navigatorSteps.length + 1)) * 100;
@@ -38,10 +38,6 @@ export function SmartNavigator({
     trackEvent("ai_navigator_started", { path: window.location.pathname });
     setDailyUsageCount(14);
   }, []);
-
-  useEffect(() => {
-    setProgressWidth(`${progress}%`);
-  }, [progress]);
 
   useEffect(() => {
     const query = String(searchParams?.get("q") || "").trim();
@@ -120,18 +116,16 @@ export function SmartNavigator({
 
   return (
     <section className="navigator-section">
-      <div className="section-head">
-        <div>
+      <div className="section-head navigator-section__head">
+        <div className="min-w-0">
           <p className="section-label">Visa Decision Engine</p>
           <h2 className="[font-family:var(--font-display),Georgia,serif]">{title}</h2>
         </div>
-        <p className="process-section__lead">{description}</p>
-        
-        {/* GUIDANCE NOTICE */}
-        <div className="mt-6 p-4 rounded-xl border border-brand-plum/10 bg-brand-plum/5 text-xs text-brand-plum/70 font-medium leading-relaxed">
-          <strong className="text-brand-plum block mb-1">General Guidance Only</strong>
-          This tool provides preliminary routing based on your answers. It does not guarantee eligibility or constitute legal advice. Confirm all details with a registered agent or official sources before lodgement.
-        </div>
+        <p className="process-section__lead navigator-section__lead">{description}</p>
+      </div>
+      <div className="navigator-section__guidance mt-4 rounded-xl border border-brand-plum/10 bg-brand-plum/5 p-4 text-sm font-medium leading-relaxed text-brand-plum/70 sm:p-3.5 sm:text-xs">
+        <strong className="mb-1 block text-brand-plum">General guidance only</strong>
+        This tool provides preliminary routing based on your answers. It does not guarantee eligibility or constitute legal advice. Confirm all details with a registered agent or official sources before lodgement.
       </div>
       {intentHint ? (
         <p className="mt-2 rounded-xl border border-brand-rose/25 bg-brand-rose/10 px-3 py-2 text-sm text-brand-plum/80">
@@ -155,7 +149,7 @@ export function SmartNavigator({
           </div>
 
           <div className="quiz-progress" aria-hidden="true">
-            <span className="quiz-progress__bar" style={{ width: progressWidth }} />
+            <span className="quiz-progress__bar" style={{ width: `${progress}%` }} />
           </div>
 
           {!isEmailStep ? (
@@ -172,7 +166,7 @@ export function SmartNavigator({
               ))}
             </div>
           ) : (
-            <form onSubmit={handleEmailSubmit} className="my-6">
+            <form ref={emailFormRef} onSubmit={handleEmailSubmit} className="my-6">
               <div className="mb-6 p-4 rounded-2xl bg-brand-plum/5 border border-brand-plum/10 border-dashed text-center">
                  <p className="text-[0.6rem] uppercase tracking-widest font-bold text-brand-plum/40 mb-2">Preliminary Assessment</p>
                  <p className="text-sm font-bold text-brand-plum mb-1">
@@ -228,8 +222,7 @@ export function SmartNavigator({
                 type="button"
                 className={`${CONVERSION_PREMIUM_PRIMARY_CTA_CLASS} px-5 py-3 text-sm`}
                 onClick={() => {
-                  const form = document.querySelector("form");
-                  if (form) form.requestSubmit();
+                  emailFormRef.current?.requestSubmit();
                 }}
               >
                 See Results
