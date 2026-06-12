@@ -19,7 +19,12 @@ const base = (process.env.SITE_URL || "https://minroshmigration.com.au").replace
 const TOOL_PATHS = ["/tools/student-country-cost-planner", "/tools/pr-pathway-explorer"];
 
 /** Strings that indicate an older production bundle (pre roadmap homepage refresh). */
-const HOMEPAGE_FORBIDDEN = ["MinRosh Intelligence v3.4", "The Island.", "Live Activity</span>"];
+const HOMEPAGE_FORBIDDEN = [
+  "MinRosh Intelligence v3.4",
+  "The Island.",
+  "Live Activity</span>",
+  "Preparing your migration portal",
+];
 
 async function getStatus(path) {
   const url = `${base}${path}`;

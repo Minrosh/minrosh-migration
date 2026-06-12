@@ -112,6 +112,8 @@ export default function RootLayout({ children }) {
     <html lang="en-AU" className="light" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://minroshmigration.com.au" />
+        {/* eslint-disable-next-line @next/next/no-sync-scripts -- must run before hydration to dismiss stale route loaders */}
+        <script src="/scripts/dismiss-route-loading.js" />
         <script src="/scripts/theme-light.js" defer />
       </head>
       <body className={`${inter.variable} ${playfair.variable} immersive-theme`}>

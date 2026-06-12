@@ -5717,6 +5717,7 @@ body.ai-concierge-panel-open .mobile-sticky-quiz-cta-shell {
 /* If the root loading shell streams alongside real content, never block the page */
 body:has(#main-content) .loading-screen--route-boundary {
   display: none !important;
+  pointer-events: none;
 }
 
 .loading-screen {

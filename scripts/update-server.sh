@@ -84,6 +84,12 @@ if [[ ! -f "$ENV_FILE" ]]; then
   exit 1
 fi
 
+# Load deploy secrets (CLOUDFLARE_*, SITE_URL, etc.) without requiring manual export.
+set -a
+# shellcheck disable=SC1090
+source "$ENV_FILE"
+set +a
+
 trap on_update_error ERR
 enable_maintenance_mode
 
@@ -101,9 +107,10 @@ if [[ -n "${CLOUDFLARE_ZONE_ID:-}" && -n "${CLOUDFLARE_API_TOKEN:-}" ]]; then
     (
       cd "$ROOT"
       npm run purge:cdn
-    ) || echo "==> update-server: CDN purge failed (continuing deploy)"
+    )
   else
-    echo "==> update-server: purge-cdn.js not found; skipping CDN purge"
+    echo "ERROR: CLOUDFLARE_* is set but purge-cdn.js is missing." >&2
+    exit 1
   fi
 else
   echo "==> update-server: CDN env vars not set; skipping CDN purge"
@@ -111,14 +118,64 @@ fi
 
 echo "==> update-server: post-deploy HTTP smoke checks"
 SMOKE_BASE="${SITE_URL:-https://minroshmigration.com.au}"
+ORIGIN_SMOKE_URL="${ORIGIN_SMOKE_URL:-http://127.0.0.1:3000}"
+STALE_LOADING_TEXT="Preparing your migration portal"
+CACHE_BUST="v=$(date +%s)"
+
 for path in "/" "/student-visa-australia" "/contact" "/assessment" "/book-consultation"; do
-  code="$(curl -s -o /dev/null -w "%{http_code}" "${SMOKE_BASE}${path}?v=$(date +%s)" || true)"
+  code="$(curl -s -o /dev/null -w "%{http_code}" "${SMOKE_BASE}${path}?${CACHE_BUST}" || true)"
   if [[ "$code" != "200" ]]; then
     echo "==> update-server: WARNING ${SMOKE_BASE}${path} returned HTTP ${code}"
   else
     echo "==> update-server: OK ${SMOKE_BASE}${path}"
   fi
 done
+
+echo "==> update-server: verifying public homepage is not serving stale CDN HTML"
+PUBLIC_HTML="$(curl -fsS "${SMOKE_BASE}/?${CACHE_BUST}" || true)"
+if [[ -z "$PUBLIC_HTML" ]]; then
+  echo "ERROR: could not fetch public homepage at ${SMOKE_BASE}/" >&2
+  exit 1
+fi
+
+if echo "$PUBLIC_HTML" | grep -q "$STALE_LOADING_TEXT"; then
+  echo "ERROR: public homepage still contains stale loading overlay text." >&2
+  echo "       Set CLOUDFLARE_* in .env, run npm run purge:cdn, and redeploy." >&2
+  exit 1
+fi
+
+BUILD_CSS_DIR="$ROOT/.next/static/css"
+if [[ -d "$BUILD_CSS_DIR" ]]; then
+  FOUND_BUILD_CSS=0
+  for css_file in "$BUILD_CSS_DIR"/*.css; do
+    [[ -f "$css_file" ]] || continue
+    css_hash="$(basename "$css_file" .css)"
+    if echo "$PUBLIC_HTML" | grep -q "$css_hash"; then
+      FOUND_BUILD_CSS=1
+      break
+    fi
+  done
+  if [[ "$FOUND_BUILD_CSS" -eq 0 ]]; then
+    echo "ERROR: public homepage HTML does not reference any CSS hash from the current build." >&2
+    echo "       Cloudflare/CDN may still be serving stale HTML. Set CLOUDFLARE_* env vars and re-run purge." >&2
+    exit 1
+  fi
+fi
+
+ORIGIN_HTML="$(curl -fsS "${ORIGIN_SMOKE_URL}/?${CACHE_BUST}" 2>/dev/null || true)"
+if [[ -n "$ORIGIN_HTML" ]]; then
+  ORIGIN_BAD=0
+  EDGE_BAD=0
+  echo "$ORIGIN_HTML" | grep -q "$STALE_LOADING_TEXT" && ORIGIN_BAD=1
+  echo "$PUBLIC_HTML" | grep -q "$STALE_LOADING_TEXT" && EDGE_BAD=1
+  if [[ "$ORIGIN_BAD" -eq 0 && "$EDGE_BAD" -eq 1 ]]; then
+    echo "ERROR: origin is clean but public edge still serves stale loading HTML." >&2
+    exit 1
+  fi
+  echo "==> update-server: OK origin vs edge loading-overlay check"
+fi
+
+echo "==> update-server: OK public homepage HTML (no stale loading overlay, CSS hash matches build)"
 
 disable_maintenance_mode
 pm2 flush minrosh-next || true
