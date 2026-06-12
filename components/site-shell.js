@@ -9,6 +9,7 @@ import { getFooterStats } from "../lib/site-stats";
 import { getDestinationNavLinks } from "../lib/destination-nav";
 import { GLOBAL_HEADER_PRIMARY_LINKS } from "../lib/public-indexable-routes";
 import { buildWhatsAppUrl, WHATSAPP_LEAD_MESSAGE } from "../lib/whatsapp-prefill";
+import { MarketingHeadExtras } from "./marketing-head-extras";
 
 const globalPrimaryLinks = GLOBAL_HEADER_PRIMARY_LINKS;
 
@@ -44,9 +45,11 @@ export function SiteShell({
         : "site-header--backdrop-au";
 
   return (
-    <div
-      className={`portal-shell portal-shell--mobile-tab-bar${isPremiumHome ? " portal-shell--premium-home" : ""}`}
-    >
+    <>
+      <MarketingHeadExtras siteData={siteData} />
+      <div
+        className={`portal-shell portal-shell--mobile-tab-bar${isPremiumHome ? " portal-shell--premium-home" : ""}`}
+      >
       <SitePublicStickyHeader
         backdropModifier={backdropModifier}
         className="site-header--marketing"
@@ -63,9 +66,8 @@ export function SiteShell({
                 alt="MinRosh Migration logo"
                 width={60}
                 height={60}
-                priority
-                fetchPriority="high"
-                decoding="sync"
+                priority={!isPremiumHome}
+                {...(isPremiumHome ? {} : { fetchPriority: "high" })}
                 sizes="(max-width: 720px) 44px, 52px"
               />
             </span>
@@ -95,5 +97,6 @@ export function SiteShell({
       <SiteFooter siteData={siteData} initialStats={footerStats} />
       <SiteMobileTabBar />
     </div>
+    </>
   );
 }

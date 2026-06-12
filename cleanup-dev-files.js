@@ -34,6 +34,8 @@ const TARGETS = [
 
   // Unit / integration tests
   "tests",
+  "e2e",
+  "test-results",
 
   // Helper scripts for deployment and audits (safe after build + copy-standalone-assets)
   "scripts",

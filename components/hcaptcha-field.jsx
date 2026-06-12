@@ -45,7 +45,7 @@ export function HCaptchaField({ value = "", onTokenChange, error = "" }) {
     <div className="contact-grid__full">
       <Script
         src="https://js.hcaptcha.com/1/api.js?render=explicit"
-        strategy="afterInteractive"
+        strategy="lazyOnload"
         onLoad={() => setReady(true)}
       />
       <div ref={containerRef} className="hcaptcha-widget" />

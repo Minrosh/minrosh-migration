@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { AgentRegistrationStrip } from "@/components/agent-registration-strip";
 import { buildWhatsAppUrl, WHATSAPP_LEAD_MESSAGE } from "@/lib/whatsapp-prefill";
@@ -211,7 +212,7 @@ export function ContactChatPanel({ siteData, isActive }) {
           <div className="contact-details">
             <div>
               <span>Email</span>
-              <a href="/contact">{supportEmailLabel || "Email support via contact page"}</a>
+              <Link href="/contact">{supportEmailLabel || "Email support via contact page"}</Link>
             </div>
             <div>
               <span>Phone</span>
@@ -325,9 +326,9 @@ export function ContactChatPanel({ siteData, isActive }) {
             />
             <span>
               I have read the{" "}
-              <a href="/privacy-policy" className="text-primary underline">
+              <Link href="/privacy-policy" className="text-primary underline">
                 Privacy Policy
-              </a>{" "}
+              </Link>{" "}
               and agree you may use my details to respond.
             </span>
           </label>

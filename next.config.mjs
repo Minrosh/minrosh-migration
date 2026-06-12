@@ -1,7 +1,12 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import bundleAnalyzer from "@next/bundle-analyzer";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+const withBundleAnalyzer = bundleAnalyzer({
+  enabled: process.env.ANALYZE === "true",
+});
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -58,6 +63,10 @@ const nextConfig = {
     }
     return [
       {
+        source: "/scripts/:path*",
+        headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
+      },
+      {
         source: "/images/:path*",
         headers: [
           { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
@@ -79,11 +88,11 @@ const nextConfig = {
         source: "/:path*",
         headers: [
           ...globalSecurityHeaders,
-          /* CSP is set per-request in middleware (nonces + strict-dynamic). See lib/csp/build-csp-header.js */
+          /* CSP is set per-request in middleware: hash CSP + edge cache (public), nonce CSP (admin). See lib/csp/build-csp-header.js */
         ],
       },
     ];
   },
 };
 
-export default nextConfig;
+export default withBundleAnalyzer(nextConfig);

@@ -1,32 +1,30 @@
 import { Inter, Playfair_Display } from "next/font/google";
-import { headers } from "next/headers";
 import "./globals.css";
 import siteDataStatic from "../data/site.json";
 import { warnHcaptchaEnvIfMisconfigured } from "../lib/config";
 import { assertEnvValidForRuntime } from "../lib/env-validation";
 import { getRootLayoutPreparedData } from "../lib/home-site-data";
-import { StructuredData } from "../components/structured-data";
-import { GlobalClientWidgets } from "../components/global-client-widgets";
-import { GoogleAnalytics } from "../components/google-analytics";
-import { businessJsonLd } from "../lib/seo";
 import { ScrollRestorer } from "../components/scroll-restorer";
 import { PWARegister } from "../components/pwa-register";
 import { RuntimeChunkRecovery } from "../components/runtime-chunk-recovery";
+import { GlobalClientWidgetsLazy } from "../components/global-client-widgets-lazy";
 
-const { siteData, publicSiteData } = getRootLayoutPreparedData(siteDataStatic);
+const { publicSiteData } = getRootLayoutPreparedData(siteDataStatic);
 assertEnvValidForRuntime();
 warnHcaptchaEnvIfMisconfigured();
 
 const inter = Inter({
   subsets: ["latin"],
+  weight: ["400", "600", "700", "800"],
   variable: "--font-sans",
   display: "swap",
 });
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
+  weight: ["700", "800"],
   variable: "--font-display",
-  preload: true,
+  preload: false,
   display: "swap",
 });
 
@@ -89,6 +87,9 @@ export const metadata = {
   },
   alternates: {
     canonical: "/",
+    types: {
+      "application/rss+xml": "/feed.xml",
+    },
   },
   icons: {
     icon: "/images/minrosh-logo.v2.webp",
@@ -102,26 +103,24 @@ export const metadata = {
   },
 };
 
-export default async function RootLayout({ children }) {
-  const h = await headers();
-  const nonce = String(h.get("x-csp-nonce") || "").trim();
+export const revalidate = 3600;
 
+export default function RootLayout({ children }) {
   return (
-    <html lang="en-AU">
+    <html lang="en-AU" className="light" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://minroshmigration.com.au" />
+        <script src="/scripts/theme-light.js" defer />
       </head>
       <body className={`${inter.variable} ${playfair.variable} immersive-theme`}>
         <ScrollRestorer />
         <RuntimeChunkRecovery />
         <PWARegister />
-        <GoogleAnalytics nonce={nonce} />
         <a href="#main-content" className="skip-link">
           Skip to content
         </a>
-        <StructuredData data={businessJsonLd(siteData)} nonce={nonce} />
         {children}
-        <GlobalClientWidgets siteData={publicSiteData} />
+        <GlobalClientWidgetsLazy siteData={publicSiteData} />
       </body>
     </html>
   );

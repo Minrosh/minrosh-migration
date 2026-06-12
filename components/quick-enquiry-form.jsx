@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import {
@@ -461,9 +462,9 @@ export function QuickEnquiryForm({ className = "" }) {
         />
         <span>
           I have read the{" "}
-          <a href="/privacy-policy" className="text-primary underline">
+          <Link href="/privacy-policy" className="text-primary underline">
             Privacy Policy
-          </a>{" "}
+          </Link>{" "}
           and agree you may use my details to respond.
         </span>
       </label>

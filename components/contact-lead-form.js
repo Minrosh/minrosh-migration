@@ -9,7 +9,7 @@ import {
   quizSummaryFromNavigatorDetail,
   readNavigatorQuizSummaryLine,
 } from "@/lib/navigator-session";
-import { CONSULTATION_MIN_ADVANCE_HOURS, validateConsultationSlot } from "@/lib/consultation-slot-policy";
+import { validateConsultationSlot } from "@/lib/consultation-slot-policy";
 import { trackEvent } from "@/lib/client-analytics";
 import { retryAfterHint } from "@/lib/http/retry-after";
 import { REQUEST_ID_HEADER } from "@/lib/observability/request-id";
@@ -150,7 +150,12 @@ function mapContactErrorMessage(errorCode, fallbackMessage) {
   return fallbackMessage || "Could not submit enquiry.";
 }
 
-export function ContactLeadForm({ className = "", mode = "general" }) {
+export function ContactLeadForm({
+  className = "",
+  mode = "general",
+  /** Minimum hours before consultation start (from server env; default 24). */
+  consultationMinAdvanceHours = 24,
+}) {
   const searchParams = useSearchParams();
   const [form, setForm] = useState(initialForm);
   const [resumeFile, setResumeFile] = useState(null);
@@ -669,7 +674,7 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
               />
               <span id="hint-consultation-hours" className="text-xs text-brand-plum/60 mt-1 block leading-relaxed">
                 Date and time are in your selected time zone; bookings need at least{" "}
-                {CONSULTATION_MIN_ADVANCE_HOURS} hours&apos; notice. Available windows are enforced in{" "}
+                {consultationMinAdvanceHours} hours&apos; notice. Available windows are enforced in{" "}
                 <strong className="font-semibold text-brand-plum/80">Brisbane (AEST)</strong>:
                 Monday–Friday 7:00 pm–10:00 pm; Saturday–Sunday 9:00 am–10:00 pm (last start 9:30 pm Brisbane).
               </span>
@@ -800,9 +805,9 @@ export function ContactLeadForm({ className = "", mode = "general" }) {
           />
           <span className="text-xs font-medium text-brand-plum/70 leading-relaxed">
             I have read the{" "}
-            <a href="/privacy-policy" className="text-brand-rose underline font-bold" onClick={(e) => e.stopPropagation()}>
+            <Link href="/privacy-policy" className="text-brand-rose underline font-bold" onClick={(e) => e.stopPropagation()}>
               Privacy Policy
-            </a>{" "}
+            </Link>{" "}
             and agree you may use my details to respond to this enquiry. Submissions use HTTPS encryption.
           </span>
         </label>
