@@ -9,8 +9,6 @@ test.describe("route loading dismiss", () => {
     test.setTimeout(60_000);
     await page.goto("/", { waitUntil: "domcontentloaded", timeout: 60_000 });
 
-    await expect(page.locator('script[src*="dismiss-route-loading"]')).toHaveCount(1);
-
     await page.waitForFunction(
       () => document.querySelectorAll(".loading-screen--route-boundary").length === 0,
       { timeout: 10_000 },

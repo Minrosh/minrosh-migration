@@ -1,4 +1,4 @@
-const CACHE_STATIC = "minrosh-static-v4";
+const CACHE_STATIC = "minrosh-static-v5";
 const CACHE_GUIDES = "minrosh-guides-v2";
 const PRECACHE_URLS = ["/manifest.webmanifest", "/images/minrosh-logo.png"];
 

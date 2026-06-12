@@ -112,8 +112,12 @@ export default function RootLayout({ children }) {
     <html lang="en-AU" className="light" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://minroshmigration.com.au" />
-        {/* eslint-disable-next-line @next/next/no-sync-scripts -- must run before hydration to dismiss stale route loaders */}
-        <script src="/scripts/dismiss-route-loading.js" />
+        {/* eslint-disable-next-line @next/next/no-sync-scripts -- inline so HTML+fix deploy together; hides loader and reveals #main-content pre-hydration */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){function r(){var m=document.querySelector("#main-content");if(m&&m.hasAttribute("hidden"))m.removeAttribute("hidden");document.querySelectorAll('[id^="S:"][hidden]').forEach(function(n){n.removeAttribute("hidden")})}function d(){var h=!!document.querySelector("#main-content");document.querySelectorAll(".loading-screen--route-boundary").forEach(function(e){e.style.setProperty("display","none","important");e.style.pointerEvents="none";e.setAttribute("aria-hidden","true")});if(h)r()}if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",d);else d();setTimeout(d,4000)})();`,
+          }}
+        />
         <script src="/scripts/theme-light.js" defer />
       </head>
       <body className={`${inter.variable} ${playfair.variable} immersive-theme`}>
