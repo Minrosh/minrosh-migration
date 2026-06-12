@@ -8,6 +8,7 @@ import { ScrollRestorer } from "../components/scroll-restorer";
 import { PWARegister } from "../components/pwa-register";
 import { RuntimeChunkRecovery } from "../components/runtime-chunk-recovery";
 import { GlobalClientWidgetsLazy } from "../components/global-client-widgets-lazy";
+import { FooterDockGuard } from "../components/footer-dock-guard";
 
 const { publicSiteData } = getRootLayoutPreparedData(siteDataStatic);
 assertEnvValidForRuntime();
@@ -120,6 +121,7 @@ export default function RootLayout({ children }) {
           Skip to content
         </a>
         {children}
+        <FooterDockGuard />
         <GlobalClientWidgetsLazy siteData={publicSiteData} />
       </body>
     </html>

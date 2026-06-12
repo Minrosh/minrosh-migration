@@ -45,6 +45,9 @@ module.exports = {
           rose: "#8B1D41",
           gold: "#caa64d",
           cream: "#FBF6F4",
+          navy: "#0A3D62",
+          teal: "#007F7E",
+          amber: "#F4A259",
         },
       },
       keyframes: {
