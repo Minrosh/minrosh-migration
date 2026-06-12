@@ -9,7 +9,11 @@ import { PWARegister } from "../components/pwa-register";
 import { RuntimeChunkRecovery } from "../components/runtime-chunk-recovery";
 import { GlobalClientWidgetsLazy } from "../components/global-client-widgets-lazy";
 import { FooterDockGuard } from "../components/footer-dock-guard";
+import { getDeployBuildId } from "../lib/deploy-build-id";
+import { buildRouteLoadingBootstrapScript } from "../lib/route-loading-bootstrap-script";
 import { RouteLoadingDismiss } from "../components/route-loading-dismiss";
+
+const deployBuildId = getDeployBuildId();
 
 const { publicSiteData } = getRootLayoutPreparedData(siteDataStatic);
 assertEnvValidForRuntime();
@@ -112,10 +116,11 @@ export default function RootLayout({ children }) {
     <html lang="en-AU" className="light" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://minroshmigration.com.au" />
-        {/* eslint-disable-next-line @next/next/no-sync-scripts -- inline so HTML+fix deploy together; hides loader and reveals #main-content pre-hydration */}
+        <meta name="minrosh-build-id" content={deployBuildId} />
+        {/* eslint-disable-next-line @next/next/no-sync-scripts -- pre-hydration deploy cache bust + loader dismiss */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){function r(){var m=document.querySelector("#main-content");if(m&&m.hasAttribute("hidden"))m.removeAttribute("hidden");document.querySelectorAll('[id^="S:"][hidden]').forEach(function(n){n.removeAttribute("hidden")})}function d(){var h=!!document.querySelector("#main-content");document.querySelectorAll(".loading-screen--route-boundary").forEach(function(e){e.style.setProperty("display","none","important");e.style.pointerEvents="none";e.setAttribute("aria-hidden","true")});if(h)r()}if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",d);else d();setTimeout(d,4000)})();`,
+            __html: buildRouteLoadingBootstrapScript(deployBuildId),
           }}
         />
         <script src="/scripts/theme-light.js" defer />

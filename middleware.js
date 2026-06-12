@@ -71,8 +71,13 @@ export async function middleware(request) {
     return response;
   }
 
-  function continueRequest() {
-    return withCsp(NextResponse.next({ request: { headers: requestHeaders } }));
+  function continueRequest({ htmlNoStore = false } = {}) {
+    const response = withCsp(NextResponse.next({ request: { headers: requestHeaders } }));
+    if (htmlNoStore) {
+      response.headers.set("Cache-Control", "private, no-cache, max-age=0, must-revalidate");
+      response.headers.set("CDN-Cache-Control", "no-store");
+    }
+    return response;
   }
 
   const isAdminApp =
@@ -132,7 +137,7 @@ export async function middleware(request) {
     (isLocalhost || String(process.env.ADMIN_BYPASS_LOCAL || "").toLowerCase() === "true");
 
   if (!isAdminApp) {
-    return continueRequest();
+    return continueRequest({ htmlNoStore: true });
   }
 
   if (localAdminBypass) {

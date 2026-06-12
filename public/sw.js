@@ -1,6 +1,12 @@
-const CACHE_STATIC = "minrosh-static-v5";
-const CACHE_GUIDES = "minrosh-guides-v2";
+const CACHE_STATIC = "minrosh-static-v6";
+const CACHE_GUIDES = "minrosh-guides-v3";
 const PRECACHE_URLS = ["/manifest.webmanifest", "/images/minrosh-logo.png"];
+
+self.addEventListener("message", (event) => {
+  if (event.data?.type === "SKIP_WAITING") {
+    self.skipWaiting();
+  }
+});
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
@@ -13,15 +19,11 @@ self.addEventListener("activate", (event) => {
   event.waitUntil(
     caches
       .keys()
-      .then((keys) =>
-        Promise.all(
-          keys
-            .filter((key) => key !== CACHE_STATIC && key !== CACHE_GUIDES)
-            .map((key) => caches.delete(key)),
-        ),
-      ),
+      .then((keys) => Promise.all(keys.map((key) => caches.delete(key))))
+      .then(() => caches.open(CACHE_STATIC))
+      .then((cache) => cache.addAll(PRECACHE_URLS).catch(() => Promise.resolve()))
+      .then(() => self.clients.claim()),
   );
-  self.clients.claim();
 });
 
 /**
@@ -91,7 +93,19 @@ self.addEventListener("fetch", (event) => {
   }
 
   if (isNavigationRequest) {
-    event.respondWith(fetch(event.request).catch(() => caches.match(event.request)));
+    const req =
+      event.request.mode === "navigate"
+        ? new Request(event.request.url, {
+            method: event.request.method,
+            headers: event.request.headers,
+            mode: "same-origin",
+            credentials: event.request.credentials,
+            redirect: event.request.redirect,
+            integrity: event.request.integrity,
+            cache: "no-store",
+          })
+        : event.request;
+    event.respondWith(fetch(req));
     return;
   }
 

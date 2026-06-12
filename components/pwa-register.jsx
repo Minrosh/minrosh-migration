@@ -2,6 +2,11 @@
 
 import { useEffect } from "react";
 
+function readBuildId() {
+  if (typeof document === "undefined") return "";
+  return document.querySelector('meta[name="minrosh-build-id"]')?.getAttribute("content")?.trim() || "";
+}
+
 export function PWARegister() {
   useEffect(() => {
     if (typeof window === "undefined" || !("serviceWorker" in navigator)) return;
@@ -27,8 +32,31 @@ export function PWARegister() {
       return;
     }
 
-    navigator.serviceWorker.register("/sw.js").catch(() => {
-      // Non-blocking: app works normally if registration fails.
+    const buildId = readBuildId();
+    const swUrl = buildId ? `/sw.js?v=${encodeURIComponent(buildId)}` : "/sw.js";
+
+    navigator.serviceWorker
+      .register(swUrl)
+      .then((registration) => {
+        registration.addEventListener("updatefound", () => {
+          const worker = registration.installing;
+          if (!worker) return;
+          worker.addEventListener("statechange", () => {
+            if (worker.state === "installed" && navigator.serviceWorker.controller) {
+              worker.postMessage({ type: "SKIP_WAITING" });
+            }
+          });
+        });
+      })
+      .catch(() => {
+        // Non-blocking: app works normally if registration fails.
+      });
+
+    let reloaded = false;
+    navigator.serviceWorker.addEventListener("controllerchange", () => {
+      if (reloaded) return;
+      reloaded = true;
+      window.location.reload();
     });
   }, []);
 
