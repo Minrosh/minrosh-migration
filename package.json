@@ -34,6 +34,8 @@
     "routes:verify": "node scripts/reindex-verify.mjs",
     "reindex:verify": "node scripts/reindex-verify.mjs",
     "seo:smoke": "node scripts/reindex-verify.mjs",
+    "seo:audit": "node scripts/seo-auto-update.js",
+    "seo:auto-update": "node scripts/seo-auto-update.js --write",
     "verify:live-roadmap": "node scripts/live-roadmap-verify.mjs",
     "audit:indexability": "node scripts/indexability-audit.mjs",
     "audit:production": "npm audit --production",
