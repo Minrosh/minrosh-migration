@@ -9,6 +9,7 @@ import { PWARegister } from "../components/pwa-register";
 import { RuntimeChunkRecovery } from "../components/runtime-chunk-recovery";
 import { GlobalClientWidgetsLazy } from "../components/global-client-widgets-lazy";
 import { FooterDockGuard } from "../components/footer-dock-guard";
+import { RouteLoadingDismiss } from "../components/route-loading-dismiss";
 
 const { publicSiteData } = getRootLayoutPreparedData(siteDataStatic);
 assertEnvValidForRuntime();
@@ -115,6 +116,7 @@ export default function RootLayout({ children }) {
       </head>
       <body className={`${inter.variable} ${playfair.variable} immersive-theme`}>
         <ScrollRestorer />
+        <RouteLoadingDismiss />
         <RuntimeChunkRecovery />
         <PWARegister />
         <a href="#main-content" className="skip-link">

@@ -5714,6 +5714,11 @@ body.ai-concierge-panel-open .mobile-sticky-quiz-cta-shell {
   padding: 24px;
 }
 
+/* If the root loading shell streams alongside real content, never block the page */
+body:has(#main-content) .loading-screen--route-boundary {
+  display: none !important;
+}
+
 .loading-screen {
   background:
     radial-gradient(circle at top left, rgba(139, 61, 106, 0.08), transparent 24%),
