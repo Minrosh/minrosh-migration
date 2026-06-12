@@ -85,7 +85,7 @@ Optional: merge a Search Console export for per-URL `gscReason` columns:
 node scripts/indexability-audit.mjs --gsc-csv=./path/to/gsc-export.csv
 ```
 
-Outputs (by default): `reports/indexability-audit-stage-0.md` and `reports/indexability-audit-stage-0.csv`.
+Outputs (by default): `reports/indexability-audit-stage-0.md` (summary + flagged URL table).
 
 ## 3. After each deploy (automated check + manual GSC)
 

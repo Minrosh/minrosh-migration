@@ -8,7 +8,6 @@
  *   node scripts/indexability-audit.mjs --gsc-csv=./path/to/export.csv
  *
  * Outputs:
- *   reports/indexability-audit-stage-0.csv
  *   reports/indexability-audit-stage-0.md
  */
 
@@ -20,7 +19,6 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
 const DEFAULT_BASE = "https://minroshmigration.com.au";
 const OUT_MD = path.join(ROOT, "reports/indexability-audit-stage-0.md");
-const OUT_CSV = path.join(ROOT, "reports/indexability-audit-stage-0.csv");
 const UA =
   "Mozilla/5.0 (compatible; MinRoshIndexabilityAudit/1.0; +https://minroshmigration.com.au)";
 
@@ -122,10 +120,8 @@ function verifyAppRoute(routePath, destKeys, sectionIds) {
   return { ok: fs.existsSync(pageFile), detail: path.relative(ROOT, pageFile) };
 }
 
-function escapeCsv(field) {
-  const s = String(field ?? "");
-  if (/[",\n\r]/.test(s)) return `"${s.replace(/"/g, '""')}"`;
-  return s;
+function escapeMdCell(field) {
+  return String(field ?? "").replace(/\|/g, "\\|").replace(/\n/g, " ");
 }
 
 function extractCanonical(html) {
@@ -384,49 +380,7 @@ async function main() {
     rows.push(row);
   }
 
-  fs.mkdirSync(path.dirname(OUT_CSV), { recursive: true });
-
-  const csvHeader = [
-    "path",
-    "fullUrl",
-    "gscReason",
-    "routeFileOk",
-    "routeDetail",
-    "finalUrl",
-    "statusCode",
-    "redirected",
-    "canonicalHref",
-    "canonicalMatchesFinal",
-    "metaRobots",
-    "hasNoindex",
-    "title",
-    "metaDescription",
-    "h1Count",
-    "htmlBytes",
-    "soft404Signals",
-    "errorSnippet",
-    "fetchError",
-    "deployHintsJson",
-  ];
-
-  const csvLines = [
-    csvHeader.join(","),
-    ...rows.map((r) => csvHeader.map((k) => escapeCsv(r[k])).join(",")),
-  ];
-  fs.writeFileSync(OUT_CSV, csvLines.join("\n"), "utf8");
-
-  const md = buildMarkdown(
-    rows,
-    sitemapAnalysis,
-    robotsAnalysis,
-    rootProbe,
-    expectedPaths.length,
-    gscPath
-  );
-  fs.writeFileSync(OUT_MD, md, "utf8");
-
-  console.log(`Wrote ${OUT_CSV}`);
-  console.log(`Wrote ${OUT_MD}`);
+  fs.mkdirSync(path.dirname(OUT_MD), { recursive: true });
 
   const bad = rows.filter(
     (r) =>
@@ -440,7 +394,20 @@ async function main() {
       r.soft404Signals
   );
 
-  if (bad.length) console.error(`\n${bad.length} URLs need attention (see CSV).`);
+  const md = buildMarkdown(
+    rows,
+    bad,
+    sitemapAnalysis,
+    robotsAnalysis,
+    rootProbe,
+    expectedPaths.length,
+    gscPath
+  );
+  fs.writeFileSync(OUT_MD, md, "utf8");
+
+  console.log(`Wrote ${OUT_MD}`);
+
+  if (bad.length) console.error(`\n${bad.length} URLs need attention (see Markdown report).`);
 
   let code = 0;
   if (!sitemapAnalysis.ok || sitemapAnalysis.error) {
@@ -454,7 +421,7 @@ async function main() {
   process.exitCode = code;
 }
 
-function buildMarkdown(rows, sitemapAnalysis, robotsAnalysis, rootProbe, expectedCount, gscPath) {
+function buildMarkdown(rows, badRows, sitemapAnalysis, robotsAnalysis, rootProbe, expectedCount, gscPath) {
   const lines = [];
   lines.push("# Stage 0 — Indexability audit");
   lines.push("");
@@ -474,7 +441,7 @@ function buildMarkdown(rows, sitemapAnalysis, robotsAnalysis, rootProbe, expecte
   if (httpBad.length)
     lines.push(`- **HTTP errors / fetch failures:** ${httpBad.length} (see \`fetchError\`, \`statusCode\`).`);
   if (canonBad.length)
-    lines.push(`- **Canonical mismatch or missing:** ${canonBad.length} (see CSV \`canonicalMatchesFinal\`).`);
+    lines.push(`- **Canonical mismatch or missing:** ${canonBad.length} (see table below).`);
   if (noindexHits.length)
     lines.push(`- **noindex:** ${noindexHits.length} URLs — confirm intentional before changing code.`);
   if (routeBad.length)
@@ -527,16 +494,38 @@ function buildMarkdown(rows, sitemapAnalysis, robotsAnalysis, rootProbe, expecte
   }
 
   lines.push("");
+  lines.push("## URLs needing attention");
+  lines.push("");
+  if (!badRows.length) {
+    lines.push("- None flagged by heuristics.");
+  } else {
+    lines.push(
+      "| path | status | route | canonical | noindex | h1 | notes |",
+      "| --- | --- | --- | --- | --- | --- | --- |"
+    );
+    for (const r of badRows.slice(0, 100)) {
+      const notes = [r.fetchError, r.soft404Signals, r.routeDetail].filter(Boolean).join("; ");
+      lines.push(
+        `| ${escapeMdCell(r.path)} | ${escapeMdCell(r.statusCode)} | ${escapeMdCell(r.routeFileOk)} | ${escapeMdCell(r.canonicalMatchesFinal)} | ${escapeMdCell(r.hasNoindex)} | ${escapeMdCell(r.h1Count)} | ${escapeMdCell(notes)} |`
+      );
+    }
+    if (badRows.length > 100) {
+      lines.push("");
+      lines.push(`_Showing first 100 of ${badRows.length} flagged URLs._`);
+    }
+  }
+
+  lines.push("");
   lines.push("## Thin / duplicate destination sections (manual policy)");
   lines.push("");
   lines.push(
-    "- Review `/destinations/{slug}/about|contact|faq` in CSV; do **not** add `noindex` without stakeholder business reason (see roadmap guardrails)."
+    "- Review `/destinations/{slug}/about|contact|faq` in the table above; do **not** add `noindex` without stakeholder business reason (see roadmap guardrails)."
   );
 
   lines.push("");
   lines.push("## noindex / canonical recommendations");
   lines.push("");
-  lines.push("- See CSV; no automatic code changes from this report alone.");
+  lines.push("- See the attention table above; no automatic code changes from this report alone.");
 
   lines.push("");
   lines.push("## Stage 0 scope");

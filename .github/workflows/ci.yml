@@ -31,3 +31,22 @@ jobs:
         run: npm run test:e2e
       - name: Production dependency audit
         run: npm run audit:production
+      - name: Strip dev-only files for artifacts
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: npm run cleanup
+      - name: Upload production artifact
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        uses: actions/upload-artifact@v4
+        with:
+          name: minrosh-production
+          retention-days: 14
+          path: |
+            .next/standalone
+            ecosystem.config.js
+            data
+            storage
+            public
+            package.json
+            package-lock.json
+            next.config.mjs
+            middleware.js
