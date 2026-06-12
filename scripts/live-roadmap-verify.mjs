@@ -23,8 +23,17 @@ const HOMEPAGE_FORBIDDEN = [
   "MinRosh Intelligence v3.4",
   "The Island.",
   "Live Activity</span>",
-  "Preparing your migration portal",
 ];
+
+/** Stale streamed root loader markup (ignore strings inside inline bootstrap scripts). */
+const HOMEPAGE_STALE_LOADER_MARKERS = [
+  "loading-screen--route-boundary",
+  "<h1>Preparing your migration portal</h1>",
+];
+
+function htmlWithoutInlineScripts(html) {
+  return html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "");
+}
 
 async function getStatus(path) {
   const url = `${base}${path}`;
@@ -125,10 +134,18 @@ async function main() {
       failed = true;
     } else {
       const html = await homeRes.text();
+      const htmlBody = htmlWithoutInlineScripts(html);
       let homepageDeprecated = false;
       for (const needle of HOMEPAGE_FORBIDDEN) {
-        if (html.includes(needle)) {
+        if (htmlBody.includes(needle)) {
           console.error(`FAIL homepage still contains deprecated snippet: ${needle}`);
+          homepageDeprecated = true;
+          failed = true;
+        }
+      }
+      for (const needle of HOMEPAGE_STALE_LOADER_MARKERS) {
+        if (htmlBody.includes(needle)) {
+          console.error(`FAIL homepage still contains stale loader markup: ${needle}`);
           homepageDeprecated = true;
           failed = true;
         }

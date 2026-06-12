@@ -119,8 +119,11 @@ fi
 echo "==> update-server: post-deploy HTTP smoke checks"
 SMOKE_BASE="${SITE_URL:-https://minroshmigration.com.au}"
 ORIGIN_SMOKE_URL="${ORIGIN_SMOKE_URL:-http://127.0.0.1:3000}"
-STALE_LOADING_TEXT="Preparing your migration portal"
 CACHE_BUST="v=$(date +%s)"
+
+strip_inline_scripts() {
+  printf '%s' "$1" | python3 -c 'import re,sys; print(re.sub(r"<script\b[^>]*>[\s\S]*?</script>", "", sys.stdin.read(), flags=re.I))'
+}
 
 for path in "/" "/student-visa-australia" "/contact" "/assessment" "/book-consultation"; do
   code="$(curl -s -o /dev/null -w "%{http_code}" "${SMOKE_BASE}${path}?${CACHE_BUST}" || true)"
@@ -138,8 +141,9 @@ if [[ -z "$PUBLIC_HTML" ]]; then
   exit 1
 fi
 
-if echo "$PUBLIC_HTML" | grep -q "$STALE_LOADING_TEXT"; then
-  echo "ERROR: public homepage still contains stale loading overlay text." >&2
+PUBLIC_HTML_BODY="$(strip_inline_scripts "$PUBLIC_HTML")"
+if echo "$PUBLIC_HTML_BODY" | grep -q 'loading-screen--route-boundary'; then
+  echo "ERROR: public homepage still contains stale loading overlay markup." >&2
   echo "       Set CLOUDFLARE_* in .env, run npm run purge:cdn, and redeploy." >&2
   exit 1
 fi
@@ -166,8 +170,9 @@ ORIGIN_HTML="$(curl -fsS "${ORIGIN_SMOKE_URL}/?${CACHE_BUST}" 2>/dev/null || tru
 if [[ -n "$ORIGIN_HTML" ]]; then
   ORIGIN_BAD=0
   EDGE_BAD=0
-  echo "$ORIGIN_HTML" | grep -q "$STALE_LOADING_TEXT" && ORIGIN_BAD=1
-  echo "$PUBLIC_HTML" | grep -q "$STALE_LOADING_TEXT" && EDGE_BAD=1
+  ORIGIN_HTML_BODY="$(strip_inline_scripts "$ORIGIN_HTML")"
+  echo "$ORIGIN_HTML_BODY" | grep -q 'loading-screen--route-boundary' && ORIGIN_BAD=1
+  echo "$PUBLIC_HTML_BODY" | grep -q 'loading-screen--route-boundary' && EDGE_BAD=1
   if [[ "$ORIGIN_BAD" -eq 0 && "$EDGE_BAD" -eq 1 ]]; then
     echo "ERROR: origin is clean but public edge still serves stale loading HTML." >&2
     exit 1
