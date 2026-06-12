@@ -6,10 +6,10 @@
  * Run after build/tests complete — build still needs scripts/ until then.
  *
  * Usage:
- *   node cleanup-dev-files.js
- *   CLEANUP_DRY_RUN=1 node cleanup-dev-files.js
+ *   DEPLOY_CLEANUP=1 npm run cleanup
  *   node cleanup-dev-files.js --dry-run
  *
+ * Safety: requires DEPLOY_CLEANUP=1 or --force (prevents accidental dev-machine wipe).
  * Set CLEANUP_KEEP_WORKFLOWS=1 to skip removing .github/workflows/ (e.g. keep CI in artifact).
  */
 
@@ -18,43 +18,35 @@ const path = require("node:path");
 
 const ROOT = path.resolve(__dirname);
 
+const force =
+  process.argv.includes("--force") ||
+  process.env.DEPLOY_CLEANUP === "1" ||
+  process.env.DEPLOY_CLEANUP === "true";
+
+const dryRun =
+  process.argv.includes("--dry-run") ||
+  process.env.CLEANUP_DRY_RUN === "1" ||
+  process.env.CLEANUP_DRY_RUN === "true";
+
 /** Paths relative to project root (files and directories). */
 const TARGETS = [
-  // Development log
   "website/development/DEVELOPMENT_TRACKER.md",
-
-  // Audit / design reports
   "reports/indexability-audit-stage-0.csv",
   "reports/indexability-audit-stage-0.md",
   "reports/stage2-review",
-
-  // Development-only patch files (canonical copy: mobile-fix-unified.diff)
   "patches/README-WINDOWS.md",
   "patches/mobile-fix-unified.diff",
-
-  // Unit / integration tests
   "tests",
   "e2e",
   "test-results",
-
-  // Helper scripts for deployment and audits (safe after build + copy-standalone-assets)
   "scripts",
-
-  // CI workflows — comment out the next line (or set CLEANUP_KEEP_WORKFLOWS=1) to keep them
   ...(process.env.CLEANUP_KEEP_WORKFLOWS === "1" ? [] : [".github/workflows"]),
-
-  // Tooling / config
   ".lighthouserc.json",
   "playwright.config.mjs",
   "vitest.config.mjs",
   ".eslintrc.json",
   ".vscode/settings.json",
 ];
-
-const dryRun =
-  process.argv.includes("--dry-run") ||
-  process.env.CLEANUP_DRY_RUN === "1" ||
-  process.env.CLEANUP_DRY_RUN === "true";
 
 function safeRemove(relativePath) {
   const absolutePath = path.join(ROOT, relativePath);
@@ -73,6 +65,14 @@ function safeRemove(relativePath) {
 }
 
 function main() {
+  if (!dryRun && !force) {
+    console.error(
+      "cleanup-dev-files: refused — set DEPLOY_CLEANUP=1 or pass --force (use --dry-run to preview)."
+    );
+    console.error("  Safe deploy path: npm run build:deploy");
+    process.exit(1);
+  }
+
   console.log(
     dryRun
       ? "cleanup-dev-files: dry run (no files deleted)"

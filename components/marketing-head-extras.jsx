@@ -1,7 +1,7 @@
 import { GoogleAnalytics } from "./google-analytics";
 import { StructuredData } from "./structured-data";
 import { WebVitalsReporter } from "./web-vitals-reporter";
-import { businessJsonLd, jsonLdGraph, organizationJsonLd } from "@/lib/seo";
+import { businessJsonLd } from "@/lib/seo";
 
 /**
  * Marketing-only head/body extras (GA + org schema). Kept out of root layout so public
@@ -12,7 +12,7 @@ export function MarketingHeadExtras({ siteData }) {
     <>
       <GoogleAnalytics />
       <WebVitalsReporter />
-      <StructuredData data={jsonLdGraph(organizationJsonLd(siteData), businessJsonLd(siteData))} />
+      <StructuredData data={businessJsonLd(siteData)} />
     </>
   );
 }

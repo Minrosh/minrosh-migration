@@ -33,7 +33,7 @@ jobs:
         run: npm run audit:production
       - name: Strip dev-only files for artifacts
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: npm run cleanup
+        run: DEPLOY_CLEANUP=1 npm run cleanup
       - name: Upload production artifact
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         uses: actions/upload-artifact@v4
