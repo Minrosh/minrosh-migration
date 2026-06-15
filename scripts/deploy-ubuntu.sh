@@ -174,7 +174,9 @@ npm ci
 node scripts/verify-required-assets.mjs
 echo "==> Clean previous Next build artifacts"
 rm -rf .next
+export ACKNOWLEDGE_SHARED_RISK=1
 export DEPLOY_SKIP_SYNC_PREBUILD=1
+echo "==> deploy: shared-risk prebuild check acknowledged (production deploy — tree synced to HEAD)"
 npm run build
 
 if [[ ! -f "$ROOT/.next/standalone/server.js" ]]; then

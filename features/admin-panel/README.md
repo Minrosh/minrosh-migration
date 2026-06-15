@@ -1,13 +1,37 @@
-# Admin panel feature zone
+# Admin panel zone
 
-Code for the private CRM workspace lives here as **logical aliases** to the App Router
-and library paths below. Routes stay at `/admin` and `/api/admin/*` (Next.js App Router).
+**Owner:** `/admin`, `/admin/*`, `/api/admin/*`
 
-| Concern | Physical path |
-|---------|----------------|
-| Pages | `app/admin/` |
-| API | `app/api/admin/` |
-| UI components | `components/admin/` |
-| Server logic | `lib/admin/` |
+## Physical layout
 
-When editing admin-only behaviour, prefer these folders. See `docs/ADMIN_PUBLIC_SEPARATION.md`.
+| Path | Purpose |
+|------|---------|
+| `app/admin/` | Next.js routes (do not move — URLs must stay) |
+| `app/api/admin/` | Admin API routes |
+| `features/admin-panel/components/` | **Canonical** admin UI (dashboard, CRM, shell, drawers) |
+| `components/admin/` | Thin re-exports → `features/admin-panel/components/` (legacy import path) |
+| `lib/admin/` | Auth, sessions, CRM stores, server helpers |
+| `app/admin/admin.css` | Scoped admin styles (`.admin-root`) |
+
+## Import rules
+
+Prefer new imports from the feature folder:
+
+```js
+import { AdminShell } from "@/features/admin-panel/components/admin-shell";
+```
+
+Legacy path still works:
+
+```js
+import { AdminShell } from "@/components/admin/admin-shell";
+```
+
+Do **not** import admin components from public pages (except `PublicUploadForm` on `/upload/[token]`).
+
+## Test after changes
+
+- `/admin/login`
+- `/admin` (dashboard must not freeze on loading)
+- `/api/admin/health`
+- `/api/admin/stats`

@@ -1,77 +1,89 @@
 # Development workflow (MinRosh Migration)
 
-Step-by-step guide for safe changes to the public website or admin panel inside one repository.
+Simple guide for safe changes to the **public website** or **admin panel** in one repository.
 
-## Daily workflow
+## Before you start
 
-1. **Pull latest** from `main` before starting work.
-2. **Run the dev server:** `npm run dev` → http://localhost:3100
-3. **Make focused edits** in the correct zone (see `docs/ADMIN_PUBLIC_SEPARATION.md`).
-4. **Before committing**, run:
-   ```bash
-   npm run check:sync
-   npm run lint
-   npm run build
-   ```
-5. **Manual smoke test** the areas you touched (public and/or admin).
-6. **Commit and push only when you explicitly want to** — do not deploy unless requested.
+```bash
+git pull origin main
+npm run dev    # http://localhost:3100
+```
 
-## Asking Cursor / Codex to edit **public website only**
+## Which folder should I edit?
 
-Include instructions like:
+| I want to change… | Edit these zones |
+|-------------------|------------------|
+| Homepage, contact, service pages | `app/` (not admin), `components/home/`, `components/site-*`, `features/public-site/` |
+| Admin dashboard, CRM, invoices | `app/admin/`, `app/api/admin/`, `features/admin-panel/components/`, `lib/admin/` |
+| Login, security, CSP, layout | **Shared** — `middleware.js`, `app/layout.js`, `lib/csp/` — test **both** surfaces |
 
-> Edit only the public website zone: `app/` pages (not `app/admin/`), `components/home/`, `components/site-*`, public APIs under `app/api/` (not `app/api/admin/`). Do not change `middleware.js`, `app/layout.js`, or `lib/admin/` unless required. Run homepage + contact smoke test.
+Full map: `docs/ADMIN_PUBLIC_SEPARATION.md`
 
-## Asking Cursor / Codex to edit **admin panel only**
+## Asking Cursor to edit **public only**
 
-> Edit only the admin zone: `app/admin/`, `app/api/admin/`, `components/admin/`, `lib/admin/`. Do not change marketing pages, homepage hero, or `app/home.css`. Test `/admin/login` and `/admin` after changes.
+> Edit only the public website zone. Do not change `app/admin/`, `lib/admin/`, or `middleware.js` unless required. Do not change homepage hero baseline. Test `/`, `/contact`, `/assessment`.
 
-## QA commands
+## Asking Cursor to edit **admin only**
+
+> Edit only the admin zone: `app/admin/`, `app/api/admin/`, `features/admin-panel/components/`, `lib/admin/`. Do not change marketing pages or `app/home.css`. Test `/admin/login` and `/admin`.
+
+## Asking Cursor to edit **shared** code
+
+> This touches shared zone. Test public homepage AND admin dashboard. Run `npm run check:sync -- --acknowledge-shared-risk` only after both pass.
+
+## Before every commit
+
+```bash
+npm run check:sync
+npm run lint
+npm run build
+```
+
+If `check:sync` fails on **shared** changes:
+
+1. Test public routes (/, /contact, /assessment)
+2. Test admin (/admin/login, /admin, /api/admin/health)
+3. Then: `npm run check:sync -- --acknowledge-shared-risk`
+
+## When to commit / push / deploy
+
+| Step | Who decides |
+|------|-------------|
+| Commit | When you are happy with local tests |
+| Push to GitHub | When you want the server to pull changes |
+| Deploy (`bash scripts/update-server.sh`) | **Owner only** — never deploy without asking |
+
+Never commit: `.env`, `.env.local`, secrets, `.next/`, `node_modules/`
+
+## QA command reference
 
 | Command | Purpose |
 |---------|---------|
-| `npm run check:sync` | Warn when public/admin/shared zones change together |
-| `npm run lint` | ESLint (Next.js) |
-| `npm run build` | Production build (runs `prebuild` → sync check) |
-| `npm run qa` | lint + build |
-| `npm run test:unit` | Vitest unit tests |
-| `npm run test:e2e` | Playwright (when configured) |
+| `npm run check:sync` | Zone safety gate |
+| `npm run lint` | ESLint |
+| `npm run build` | Production build (runs check:sync in prebuild) |
+| `npm run test:unit` | Unit tests |
+| `npm run test:e2e` | Playwright |
+| `npm run verify:deploy-html` | Post-deploy HTML/CSS check |
 
-## Avoid breaking the live website
+## Avoid breaking the live site
 
-- Do **not** commit, push, or run deploy scripts unless the owner asks.
-- Do **not** change homepage hero baseline (`components/home/home-hero-premium.jsx`, `app/home.css`) without an explicit audit.
-- Do **not** remove SEO metadata, routes, or forms without approval.
-- Use maintenance mode on the server only when planned (`npm run maintenance:on` / `off`).
-- After deploy, verify HTML with `npm run verify:deploy-html` (see `docs/POST-DEPLOY-VERIFY.md`).
+- Do not remove routes or SEO metadata
+- Do not publish MARN numbers
+- Do not change visual design without approval
+- After deploy: `docs/POST-DEPLOY-VERIFY.md`
 
-## GitHub rules
-
-- Work on `main` or feature branches; open PRs for large changes when possible.
-- Never force-push `main`.
-- Never commit `.env` or secrets.
-- Use `npm run check:sync -- --acknowledge-shared-risk` only after you have tested **both** surfaces.
-
-## Admin login troubleshooting
-
-| Symptom | Likely cause |
-|---------|----------------|
-| Stuck on “Loading dashboard…” | API 401 while UI loaded without session; sign in at `/admin/login` |
-| Login returns “Invalid password” | `ADMIN_PASSWORD` in `.env` does not match `data/admin-auth.json` — see `.env.example` |
-| Login returns session signing error | Set `ADMIN_SESSION_SECRET` (≥24 random chars): `npm run generate:admin-session-secret` |
-| Admin blank page in production | CSP blocking scripts — check browser console on `/admin` |
-
-## Project structure reference
+## Project structure (after zone separation)
 
 ```
-app/                    # Next.js routes (public + admin)
-app/admin/              # Admin panel pages
-app/api/admin/          # Admin APIs
-components/admin/       # Admin UI
-components/home/        # Public homepage
-lib/admin/              # Admin server logic
-lib/zone-manifest.mjs   # Zone classifier for sync script
-features/               # Zone README pointers (logical separation)
+app/                              # Next.js routes (URLs stay here)
+app/admin/                        # Admin routes
+app/api/admin/                    # Admin APIs
+features/admin-panel/components/  # Admin UI (canonical)
+components/admin/                 # Re-exports → features/admin-panel
+features/public-site/components/  # Public-only components
+components/home/                  # Homepage sections
+lib/admin/                        # Admin server logic
+lib/zone-manifest.mjs             # Zone classifier
 scripts/check-public-admin-sync.mjs
-docs/ADMIN_PUBLIC_SEPARATION.md
 ```

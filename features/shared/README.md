@@ -1,13 +1,28 @@
-# Shared feature zone
+# Shared zone
 
-Cross-cutting code used by **both** the public website and admin panel. Changes here require testing both surfaces.
+**Owner:** Code used by **both** public website and admin panel, or global framework.
 
-| Concern | Physical path |
-|---------|----------------|
-| Root layout / middleware | `app/layout.js`, `middleware.js` |
-| UI primitives | `components/ui/` |
-| API helpers | `lib/api/` |
-| Security / CSP | `lib/csp/`, `lib/security/` |
-| Contact pipeline | `lib/contact.js` |
+## Physical layout (not moved — documented here)
 
-Run `npm run check:sync` before merging shared changes.
+| Path | Purpose |
+|------|---------|
+| `app/layout.js` | Root layout, metadata defaults |
+| `middleware.js` | Maintenance, admin auth, CSP |
+| `lib/csp/` | Content-Security-Policy builders |
+| `lib/api/` | Shared API utilities |
+| `lib/security/` | Security helpers |
+| `lib/contact.js` | Contact form / email |
+| `lib/env-validation.js` | Env parsing |
+| `components/ui/` | Shared UI primitives (Button, Card, Input) |
+| `components/hcaptcha-field.jsx` | Used by public forms |
+| `next.config.mjs`, `package.json`, `scripts/` | Framework & deploy |
+
+## Rules
+
+- Any change here requires testing **both** public and admin.
+- Run `npm run check:sync -- --acknowledge-shared-risk` only after both pass.
+- Do not scope marketing-only CSS globally — admin uses `app/admin/admin.css`.
+
+## Test after changes
+
+Public **and** admin smoke tests (see `docs/ADMIN_PUBLIC_SEPARATION.md`).

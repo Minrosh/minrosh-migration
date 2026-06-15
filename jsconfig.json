@@ -20,7 +20,10 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "@/features/admin-panel/*": ["features/admin-panel/*"],
+      "@/features/public-site/*": ["features/public-site/*"],
+      "@/features/shared/*": ["features/shared/*"]
     },
     "types": []
   },
