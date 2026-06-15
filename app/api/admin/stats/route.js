@@ -6,17 +6,32 @@ import { readAdminSuccessStories, readAudit } from "@/lib/admin/json-store";
 import { getLeadSheetSummary } from "@/lib/google-sheets-crm";
 import { apiOk, requestContextFromRequest } from "@/lib/api/response";
 
+const SHEET_SUMMARY_TIMEOUT_MS = 4_000;
+
+function withTimeout(promise, ms, fallback) {
+  return Promise.race([
+    promise,
+    new Promise((resolve) => {
+      setTimeout(() => resolve(fallback), ms);
+    }),
+  ]);
+}
+
 export async function GET(request) {
   const context = requestContextFromRequest(request);
-  if (!(await verifyAdminRequest())) return adminJsonUnauthorized(request);
+  if (!(await verifyAdminRequest(request))) return adminJsonUnauthorized(request);
   const { customers = [] } = readCustomers();
   const { stories = [] } = readAdminSuccessStories();
   const { entries = [] } = readAudit();
-  let sheetSummary = { ok: false };
+  let sheetSummary = { ok: false, reason: "not_loaded" };
   try {
-    sheetSummary = await getLeadSheetSummary();
+    sheetSummary = await withTimeout(
+      getLeadSheetSummary(),
+      SHEET_SUMMARY_TIMEOUT_MS,
+      { ok: false, reason: "timeout" }
+    );
   } catch {
-    sheetSummary = { ok: false };
+    sheetSummary = { ok: false, reason: "error" };
   }
   return apiOk({
     enquiries: readEnquiriesList().length,

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { verifyAdminSessionCookie } from "./lib/admin/session-signed-cookie";
 import { getAdminSessionValueFromRequestCookies } from "./lib/admin/session-cookie";
+import { isLocalAdminDevBypassFromHost } from "./lib/admin/dev-bypass";
 import { buildContentSecurityPolicy } from "./lib/csp/build-csp-header";
 import { getOrCreateRequestId, REQUEST_ID_HEADER } from "./lib/observability/request-id";
 
@@ -44,8 +45,9 @@ function newCspNonce() {
 }
 
 /**
- * Edge middleware: maintenance gate + admin session + CSP nonce for HTML routes.
- * Nonce is forwarded on the request (`x-csp-nonce`) so `app/layout.js` can pass it to `<Script nonce>`.
+ * Edge middleware: maintenance gate + admin session + CSP for HTML routes.
+ * Public pages use hash-friendly CSP (`'self'` + `'unsafe-inline'`) so statically cached
+ * HTML script tags keep working. Admin uses per-request nonce + `strict-dynamic`.
  */
 export async function middleware(request) {
   const host = request.headers.get("host") || "";
@@ -63,7 +65,15 @@ export async function middleware(request) {
   requestHeaders.set(REQUEST_ID_HEADER, requestId);
 
   const production = process.env.NODE_ENV === "production";
-  const csp = buildContentSecurityPolicy(nonce, { production });
+  const isAdminApp =
+    pathname === "/admin" ||
+    pathname.startsWith("/admin/") ||
+    pathname.startsWith("/api/admin/");
+
+  const csp = buildContentSecurityPolicy(nonce, {
+    production,
+    mode: isAdminApp ? "admin" : "public",
+  });
 
   function withCsp(response) {
     response.headers.set("Content-Security-Policy", csp);
@@ -79,11 +89,6 @@ export async function middleware(request) {
     }
     return response;
   }
-
-  const isAdminApp =
-    pathname === "/admin" ||
-    pathname.startsWith("/admin/") ||
-    pathname.startsWith("/api/admin/");
 
   const maintenanceMode = production
     ? MAINTENANCE_VALUES.has(String(process.env.MAINTENANCE_MODE || "").toLowerCase())
@@ -131,22 +136,20 @@ export async function middleware(request) {
     return withCsp(response);
   }
 
-  const isLocalhost = host.startsWith("localhost:") || host.startsWith("127.0.0.1:");
-  const localAdminBypass =
-    !production &&
-    (isLocalhost || String(process.env.ADMIN_BYPASS_LOCAL || "").toLowerCase() === "true");
-
   if (!isAdminApp) {
     return continueRequest({ htmlNoStore: true });
   }
 
-  if (localAdminBypass) {
+  if (isLocalAdminDevBypassFromHost(host)) {
     return continueRequest();
   }
 
   if (pathname.startsWith("/admin/login")) return continueRequest();
 
   if (pathname === "/api/admin/login") return continueRequest();
+
+  /** Setup probe — no secrets; used by login page and local diagnostics. */
+  if (pathname === "/api/admin/health" && request.method === "GET") return continueRequest();
 
   /** Public link from verification email (no session yet). */
   if (pathname === "/api/admin/verify-admin-email") return continueRequest();

@@ -3,74 +3,214 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import {
+  adminApiErrorMessage,
+  fetchAdminApi,
+  parseJsonResponseSafe,
+} from "@/lib/admin/fetch-admin-api";
 
 function enquiryLabel(e) {
   const name = [e?.firstName, e?.lastName].filter(Boolean).join(" ").trim();
   return name || e?.email || "Enquiry";
 }
 
-async function parseJsonResponseSafe(response) {
-  const rawText = await response.text();
-  try {
-    return rawText ? JSON.parse(rawText) : {};
-  } catch {
-    return {};
+function devDashLog(event, detail) {
+  if (process.env.NODE_ENV === "production") return;
+  console.info("[admin-dashboard]", event, detail);
+}
+
+function isAbortError(cause) {
+  return cause instanceof DOMException && cause.name === "AbortError";
+}
+
+function SectionError({ message, needsLogin }) {
+  return (
+    <div className="rounded-md border border-destructive/30 bg-destructive/5 p-3 text-sm text-destructive">
+      <p>{message}</p>
+      {needsLogin ? (
+        <Link href="/admin/login?from=/admin" className="mt-2 inline-block font-medium underline-offset-4 hover:underline">
+          Sign in to admin
+        </Link>
+      ) : null}
+    </div>
+  );
+}
+
+function StatCard({ label, value, href, hint, loading, error }) {
+  if (loading) {
+    return (
+      <Card className="h-full border-border">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-sm font-medium text-muted-foreground">{label}</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="h-9 w-16 animate-pulse rounded bg-muted" />
+          <div className="mt-2 h-3 w-24 animate-pulse rounded bg-muted" />
+        </CardContent>
+      </Card>
+    );
   }
+
+  if (error) {
+    return (
+      <Card className="h-full border-destructive/30">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-sm font-medium text-muted-foreground">{label}</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm text-destructive">{error}</p>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  return (
+    <Link
+      href={href}
+      className="group block rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+    >
+      <Card className="h-full border-border transition-colors group-hover:border-primary/40 group-hover:shadow-md">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-sm font-medium text-muted-foreground">{label}</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-3xl font-bold tabular-nums">{value}</p>
+          <p className="mt-2 text-xs text-primary group-hover:underline">{hint} →</p>
+        </CardContent>
+      </Card>
+    </Link>
+  );
 }
 
 export function AdminDashboard() {
   const [stats, setStats] = useState(null);
+  const [statsLoading, setStatsLoading] = useState(true);
+  const [statsError, setStatsError] = useState("");
+  const [statsNeedsLogin, setStatsNeedsLogin] = useState(false);
+
   const [recentEnquiries, setRecentEnquiries] = useState([]);
+  const [enquiriesLoading, setEnquiriesLoading] = useState(true);
+  const [enquiriesError, setEnquiriesError] = useState("");
+
   const [recentAudit, setRecentAudit] = useState([]);
+  const [auditLoading, setAuditLoading] = useState(true);
+  const [auditError, setAuditError] = useState("");
+
   const [integrations, setIntegrations] = useState(null);
+  const [integrationsLoading, setIntegrationsLoading] = useState(true);
   const [integrationTest, setIntegrationTest] = useState(null);
   const [supabaseTest, setSupabaseTest] = useState(null);
   const [testing, setTesting] = useState(false);
   const [testingDb, setTestingDb] = useState(false);
-  const [err, setErr] = useState("");
 
   useEffect(() => {
+    devDashLog("mounted", {});
     let cancelled = false;
-    (async () => {
+
+    async function loadStats() {
+      devDashLog("fetch:start", { url: "/api/admin/stats" });
+      setStatsLoading(true);
+      setStatsError("");
       try {
-        const [statsRes, enqRes, audRes] = await Promise.all([
-          fetch("/api/admin/stats"),
-          fetch("/api/admin/enquiries?limit=5&offset=0"),
-          fetch("/api/admin/audit?limit=5&offset=0"),
-        ]);
-        const statsP = await parseJsonResponseSafe(statsRes);
-        const statsD = statsP?.data && typeof statsP.data === "object" ? statsP.data : statsP;
-        const enqD = enqRes.ok ? await parseJsonResponseSafe(enqRes) : {};
-        const audP = audRes.ok ? await parseJsonResponseSafe(audRes) : {};
-        const audD = audP?.data && typeof audP.data === "object" ? audP.data : audP;
+        const res = await fetchAdminApi("/api/admin/stats", {}, 20_000);
+        const payload = await parseJsonResponseSafe(res);
         if (cancelled) return;
-        if (statsP?.error?.message || statsD.error) setErr(statsP?.error?.message || statsD.error);
-        else setStats(statsD);
-        setRecentEnquiries(Array.isArray(enqD.enquiries) ? enqD.enquiries : []);
-        setRecentAudit(Array.isArray(audD.entries) ? audD.entries : []);
-      } catch {
-        if (!cancelled) setErr("Could not load dashboard");
+        devDashLog("fetch:done", { url: "/api/admin/stats", status: res.status, ok: res.ok });
+        if (!res.ok || payload?.error?.message) {
+          setStatsError(adminApiErrorMessage(res, payload));
+          setStatsNeedsLogin(res.status === 401);
+          setStats(null);
+        } else {
+          const data = payload?.data && typeof payload.data === "object" ? payload.data : payload;
+          setStats(data);
+        }
+      } catch (cause) {
+        if (cancelled || isAbortError(cause)) return;
+        devDashLog("fetch:fail", { url: "/api/admin/stats", error: String(cause) });
+        setStatsError("Could not load stats. Check your connection or sign in again.");
+        setStatsNeedsLogin(true);
+      } finally {
+        if (!cancelled) setStatsLoading(false);
       }
-    })();
-    fetch("/api/admin/integrations")
-      .then((r) => parseJsonResponseSafe(r))
-      .then((payload) => {
-        const d = payload?.data && typeof payload.data === "object" ? payload.data : payload;
-        if (!payload?.error && !d.error) setIntegrations(d);
-      })
-      .catch(() => {});
+    }
+
+    async function loadEnquiries() {
+      setEnquiriesLoading(true);
+      setEnquiriesError("");
+      try {
+        const res = await fetchAdminApi("/api/admin/enquiries?limit=5&offset=0");
+        const payload = await parseJsonResponseSafe(res);
+        if (cancelled) return;
+        if (!res.ok) {
+          setEnquiriesError(adminApiErrorMessage(res, payload));
+          setRecentEnquiries([]);
+        } else {
+          const data = payload?.data && typeof payload.data === "object" ? payload.data : payload;
+          setRecentEnquiries(Array.isArray(data.enquiries) ? data.enquiries : []);
+        }
+      } catch (cause) {
+        if (cancelled || isAbortError(cause)) return;
+        setEnquiriesError("Could not load recent enquiries.");
+      } finally {
+        if (!cancelled) setEnquiriesLoading(false);
+      }
+    }
+
+    async function loadAudit() {
+      setAuditLoading(true);
+      setAuditError("");
+      try {
+        const res = await fetchAdminApi("/api/admin/audit?limit=5&offset=0");
+        const payload = await parseJsonResponseSafe(res);
+        if (cancelled) return;
+        if (!res.ok) {
+          setAuditError(adminApiErrorMessage(res, payload));
+          setRecentAudit([]);
+        } else {
+          const data = payload?.data && typeof payload.data === "object" ? payload.data : payload;
+          setRecentAudit(Array.isArray(data.entries) ? data.entries : []);
+        }
+      } catch (cause) {
+        if (cancelled || isAbortError(cause)) return;
+        setAuditError("Could not load recent activity.");
+      } finally {
+        if (!cancelled) setAuditLoading(false);
+      }
+    }
+
+    async function loadIntegrations() {
+      setIntegrationsLoading(true);
+      try {
+        const res = await fetchAdminApi("/api/admin/integrations");
+        const payload = await parseJsonResponseSafe(res);
+        if (cancelled) return;
+        if (res.ok && !payload?.error?.message) {
+          const data = payload?.data && typeof payload.data === "object" ? payload.data : payload;
+          if (!data.error) setIntegrations(data);
+        }
+      } catch {
+        /* optional panel */
+      } finally {
+        if (!cancelled) setIntegrationsLoading(false);
+      }
+    }
+
+    loadStats();
+    loadEnquiries();
+    loadAudit();
+    loadIntegrations();
+
     return () => {
       cancelled = true;
+      devDashLog("unmounted", {});
     };
   }, []);
-
-  if (err) return <p className="text-destructive">{err}</p>;
-  if (!stats) return <p className="text-muted-foreground">Loading…</p>;
 
   async function runIntegrationTest() {
     setTesting(true);
     try {
-      const res = await fetch("/api/admin/integrations/test", { method: "POST" });
+      const res = await fetchAdminApi("/api/admin/integrations/test", { method: "POST" });
       const payload = await parseJsonResponseSafe(res);
       const data = payload?.data && typeof payload.data === "object" ? payload.data : payload;
       setIntegrationTest(data);
@@ -83,7 +223,7 @@ export function AdminDashboard() {
   async function runSupabaseProbe() {
     setTestingDb(true);
     try {
-      const res = await fetch("/api/admin/integrations/supabase");
+      const res = await fetchAdminApi("/api/admin/integrations/supabase");
       const payload = await parseJsonResponseSafe(res);
       const data = payload?.data && typeof payload.data === "object" ? payload.data : payload;
       setSupabaseTest(data);
@@ -93,79 +233,53 @@ export function AdminDashboard() {
     setTestingDb(false);
   }
 
-  const items = [
-    {
-      label: "Website enquiries",
-      value: stats.enquiries,
-      href: "/admin/crm",
-      hint: "CRM & enquiries",
-    },
-    {
-      label: "Customers",
-      value: stats.customers,
-      href: "/admin/customers",
-      hint: "All customers",
-    },
-    {
-      label: "Prospective (for campaigns)",
-      value: stats.prospective,
-      href: "/admin/customers?tab=prospective",
-      hint: "Prospective tab",
-    },
-    {
-      label: "Invoices",
-      value: stats.invoices,
-      href: "/admin/invoices",
-      hint: "All invoices",
-    },
-    {
-      label: "Pending invoices",
-      value: stats.pendingInvoices,
-      href: "/admin/invoices?status=pending",
-      hint: "Pending only",
-    },
-    {
-      label: "Success stories (admin list)",
-      value: stats.successStories,
-      href: "/admin/success-stories",
-      hint: "Edit homepage stories",
-    },
-    {
-      label: "Audit log entries",
-      value: stats.auditEntries,
-      href: "/admin/audit",
-      hint: "Activity log",
-    },
-    {
-      label: "Google Sheets leads",
-      value: stats.leadSheet?.ok ? stats.leadSheet.totalRows : "—",
-      href: "/admin/crm",
-      hint: "Sheet-backed CRM rows",
-    },
-  ];
+  const statItems = stats
+    ? [
+        { label: "Website enquiries", value: stats.enquiries, href: "/admin/crm", hint: "CRM & enquiries" },
+        { label: "Customers", value: stats.customers, href: "/admin/customers", hint: "All customers" },
+        {
+          label: "Prospective (for campaigns)",
+          value: stats.prospective,
+          href: "/admin/customers?tab=prospective",
+          hint: "Prospective tab",
+        },
+        { label: "Invoices", value: stats.invoices, href: "/admin/invoices", hint: "All invoices" },
+        {
+          label: "Pending invoices",
+          value: stats.pendingInvoices,
+          href: "/admin/invoices?status=pending",
+          hint: "Pending only",
+        },
+        {
+          label: "Success stories (admin list)",
+          value: stats.successStories,
+          href: "/admin/success-stories",
+          hint: "Edit homepage stories",
+        },
+        { label: "Audit log entries", value: stats.auditEntries, href: "/admin/audit", hint: "Activity log" },
+        {
+          label: "Google Sheets leads",
+          value: stats.leadSheet?.ok ? stats.leadSheet.totalRows : "—",
+          href: "/admin/crm",
+          hint: "Sheet-backed CRM rows",
+        },
+      ]
+    : [];
 
   return (
     <div className="space-y-6">
+      {statsError && !statsLoading ? (
+        <SectionError message={statsError} needsLogin={statsNeedsLogin} />
+      ) : null}
+
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {items.map((item) => (
-          <Link
-            key={item.label}
-            href={item.href}
-            className="group block rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-          >
-            <Card className="h-full border-border transition-colors group-hover:border-primary/40 group-hover:shadow-md">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">{item.label}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-3xl font-bold tabular-nums">{item.value}</p>
-                <p className="mt-2 text-xs text-primary group-hover:underline">
-                  {item.hint} →
-                </p>
-              </CardContent>
-            </Card>
-          </Link>
-        ))}
+        {statsLoading
+          ? Array.from({ length: 8 }).map((_, i) => (
+              <StatCard key={`sk-${i}`} label="Loading" value="" href="#" hint="" loading />
+            ))
+          : statItems.map((item) => (
+              <StatCard key={item.label} {...item} loading={false} error="" />
+            ))}
       </div>
 
       <div className="grid gap-4 lg:grid-cols-2">
@@ -173,12 +287,15 @@ export function AdminDashboard() {
           <CardHeader className="pb-3">
             <CardTitle className="text-base">Recent enquiries</CardTitle>
             <CardDescription>
-              Five newest website submissions (newest first, same as CRM). There is no separate read/unread flag in
-              storage yet—use CRM to follow up.
+              Five newest website submissions (newest first, same as CRM).
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-0">
-            {recentEnquiries.length === 0 ? (
+            {enquiriesLoading ? (
+              <p className="text-sm text-muted-foreground">Loading enquiries…</p>
+            ) : enquiriesError ? (
+              <p className="text-sm text-destructive">{enquiriesError}</p>
+            ) : recentEnquiries.length === 0 ? (
               <p className="text-sm text-muted-foreground">No enquiries on file.</p>
             ) : (
               <ul className="divide-y divide-border">
@@ -209,7 +326,11 @@ export function AdminDashboard() {
             <CardDescription>Latest five events from the audit log (newest first).</CardDescription>
           </CardHeader>
           <CardContent className="space-y-0">
-            {recentAudit.length === 0 ? (
+            {auditLoading ? (
+              <p className="text-sm text-muted-foreground">Loading activity…</p>
+            ) : auditError ? (
+              <p className="text-sm text-destructive">{auditError}</p>
+            ) : recentAudit.length === 0 ? (
               <p className="text-sm text-muted-foreground">No audit events yet.</p>
             ) : (
               <ul className="divide-y divide-border">
@@ -234,7 +355,9 @@ export function AdminDashboard() {
         </Card>
       </div>
 
-      {integrations ? (
+      {integrationsLoading ? (
+        <p className="text-sm text-muted-foreground">Loading integrations check…</p>
+      ) : integrations ? (
         <Card>
           <CardHeader>
             <CardTitle className="text-base">Integrations & environment readiness</CardTitle>

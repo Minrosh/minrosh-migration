@@ -4,7 +4,7 @@ import { apiOk, requestContextFromRequest } from "@/lib/api/response";
 
 export async function GET(request) {
   const context = requestContextFromRequest(request);
-  if (!(await verifyAdminRequest())) return adminJsonUnauthorized(request);
+  if (!(await verifyAdminRequest(request))) return adminJsonUnauthorized(request);
   const { searchParams } = new URL(request.url);
   const limit = Math.min(500, Math.max(1, Number(searchParams.get("limit")) || 200));
   const offset = Math.max(0, Number(searchParams.get("offset")) || 0);
