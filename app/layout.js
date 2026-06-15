@@ -1,4 +1,5 @@
 import { Inter, Playfair_Display } from "next/font/google";
+import { headers } from "next/headers";
 import "./globals.css";
 import siteDataStatic from "../data/site.json";
 import { warnHcaptchaEnvIfMisconfigured } from "../lib/config";
@@ -7,11 +8,9 @@ import { getRootLayoutPreparedData } from "../lib/home-site-data";
 import { ScrollRestorer } from "../components/scroll-restorer";
 import { PWARegister } from "../components/pwa-register";
 import { RuntimeChunkRecovery } from "../components/runtime-chunk-recovery";
-import { GlobalClientWidgetsLazy } from "../components/global-client-widgets-lazy";
-import { FooterDockGuard } from "../components/footer-dock-guard";
+import { PublicSiteWidgetsGate } from "../components/public-site-widgets-gate";
 import { getDeployBuildId } from "../lib/deploy-build-id";
 import { buildRouteLoadingBootstrapScript } from "../lib/route-loading-bootstrap-script";
-import { RouteLoadingDismiss } from "../components/route-loading-dismiss";
 
 const deployBuildId = getDeployBuildId();
 
@@ -111,7 +110,10 @@ export const metadata = {
 
 export const revalidate = 3600;
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  const headersList = await headers();
+  const nonce = headersList.get("x-csp-nonce") || undefined;
+
   return (
     <html lang="en-AU" className="light" suppressHydrationWarning>
       <head>
@@ -119,23 +121,22 @@ export default function RootLayout({ children }) {
         <meta name="minrosh-build-id" content={deployBuildId} />
         {/* eslint-disable-next-line @next/next/no-sync-scripts -- pre-hydration deploy cache bust + loader dismiss */}
         <script
+          nonce={nonce}
           dangerouslySetInnerHTML={{
             __html: buildRouteLoadingBootstrapScript(deployBuildId),
           }}
         />
-        <script src="/scripts/theme-light.js" defer />
+        <script src="/scripts/theme-light.js" defer nonce={nonce} />
       </head>
       <body className={`${inter.variable} ${playfair.variable} immersive-theme`}>
         <ScrollRestorer />
-        <RouteLoadingDismiss />
         <RuntimeChunkRecovery />
         <PWARegister />
         <a href="#main-content" className="skip-link">
           Skip to content
         </a>
         {children}
-        <FooterDockGuard />
-        <GlobalClientWidgetsLazy siteData={publicSiteData} />
+        <PublicSiteWidgetsGate siteData={publicSiteData} />
       </body>
     </html>
   );

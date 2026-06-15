@@ -31,6 +31,9 @@ data/nurture-queue.json
 codex_out.txt
 test-results/
 artifacts/
+jsconfig.tsbuildinfo
+next-env.d.ts
+maintenance.lock
 
 # Large local homepage preview exports (section thumbnails still tracked under reports/stage2-review/)
 reports/stage2-review/*fullpage.png

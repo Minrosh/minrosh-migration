@@ -25,15 +25,20 @@ set_env_value() {
   fi
 }
 
+pm2_exists() {
+  pm2 describe minrosh-next >/dev/null 2>&1
+}
+
 reload_runtime_for_env() {
   echo "==> Reload runtime to apply env changes"
   # PM2 restart --update-env can reuse persisted env and miss fresh .env merges from ecosystem.config.js.
   # Always rebuild the process from ecosystem so MAINTENANCE_MODE changes are guaranteed.
-  pm2 delete minrosh-next || true
   if [[ ! -f "$ROOT/.next/standalone/server.js" ]]; then
-    echo "WARN: $ROOT/.next/standalone/server.js missing — skip PM2 start (normal before first build or during rm -rf .next)."
-    echo "    Deploy continues with npm ci && npm run build; PM2 starts once standalone exists."
+    echo "NOTE: Standalone server not present yet; this is normal before build. PM2 start will happen after build."
     return 0
+  fi
+  if pm2_exists; then
+    pm2 delete minrosh-next
   fi
   pm2 start ecosystem.config.js
   pm2 save
@@ -76,6 +81,33 @@ if [[ ! -f "$ENV_FILE" ]]; then
   echo "ERROR: $ROOT/.env is missing. Create it (see .env.example) before deploy."
   exit 1
 fi
+
+sync_production_tree_to_head() {
+  local dirty
+  dirty="$(git status --porcelain 2>/dev/null || true)"
+  if [[ -z "$dirty" ]]; then
+    echo "==> deploy: git working tree clean at $(git rev-parse --short HEAD)"
+    return 0
+  fi
+  echo "==> deploy: dirty working tree detected — resetting to HEAD before build"
+  echo "$dirty" | head -25
+  if [[ "$(echo "$dirty" | wc -l)" -gt 25 ]]; then
+    echo "  … ($(echo "$dirty" | wc -l) entries total)"
+  fi
+  echo "==> deploy: git reset --hard HEAD (gitignored files such as .env are untouched)"
+  git reset --hard HEAD
+  echo "==> deploy: removing untracked files (gitignored paths are preserved)"
+  git clean -fd
+  dirty="$(git status --porcelain 2>/dev/null || true)"
+  if [[ -n "$dirty" ]]; then
+    echo "ERROR: working tree still dirty after reset — resolve manually, then re-run deploy." >&2
+    echo "$dirty" >&2
+    exit 1
+  fi
+  echo "==> deploy: tree clean at $(git rev-parse --short HEAD)"
+}
+
+sync_production_tree_to_head
 
 if [[ "${DEPLOY_MAINTENANCE_MANAGED_EXTERNALLY:-}" == "1" ]]; then
   echo "==> Maintenance mode is managed by caller; skipping internal enable/disable"
@@ -142,6 +174,7 @@ npm ci
 node scripts/verify-required-assets.mjs
 echo "==> Clean previous Next build artifacts"
 rm -rf .next
+export DEPLOY_SKIP_SYNC_PREBUILD=1
 npm run build
 
 if [[ ! -f "$ROOT/.next/standalone/server.js" ]]; then
@@ -175,7 +208,9 @@ else
 fi
 
 if [[ "${SKIP_REINDEX_VERIFY:-}" == "1" ]]; then
-  echo "==> Skipping reindex:verify (SKIP_REINDEX_VERIFY=1)"
+  echo "==> Skipping live public checks (SKIP_REINDEX_VERIFY=1; caller runs them after maintenance OFF)"
+elif [[ "${DEPLOY_MAINTENANCE_MANAGED_EXTERNALLY:-}" == "1" ]]; then
+  echo "==> Skipping live public checks (maintenance managed by caller; run after maintenance OFF)"
 else
   echo "==> Crawl signal check (/, /sitemap.xml, /robots.txt). Override base: SITE_URL=https://… npm run reindex:verify"
   (cd "$ROOT" && npm run reindex:verify) || echo "WARNING: reindex:verify failed (network, DNS, or SITE_URL). See docs/SEARCH-CONSOLE-REINDEX.md"

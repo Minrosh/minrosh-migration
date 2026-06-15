@@ -63,8 +63,12 @@ const nextConfig = {
     }
     return [
       {
+        source: "/sw.js",
+        headers: [{ key: "Cache-Control", value: "public, max-age=0, must-revalidate" }],
+      },
+      {
         source: "/scripts/:path*",
-        headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
+        headers: [{ key: "Cache-Control", value: "public, max-age=0, must-revalidate" }],
       },
       {
         source: "/images/:path*",
@@ -88,7 +92,8 @@ const nextConfig = {
         source: "/:path*",
         headers: [
           ...globalSecurityHeaders,
-          /* CSP is set per-request in middleware: hash CSP + edge cache (public), nonce CSP (admin). See lib/csp/build-csp-header.js */
+          /* HTML cache: middleware sets private/no-store for public routes (matcher excludes _next/static).
+             Do not add Cache-Control here — this catch-all would override /_next/static immutable headers. */
         ],
       },
     ];
