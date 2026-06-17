@@ -39,6 +39,18 @@ npm run lint
 npm run build
 ```
 
+### Tailwind content scan reminder
+
+When moving components or UI code into a new folder, confirm Tailwind is scanning that folder **before** deployment. If Tailwind does not scan the new folder, responsive and layout utility classes (for example `md:ml-56`) may be removed from the production CSS. Layouts can look fine in local dev but break only after `npm run build` and deploy.
+
+Before deploying after folder moves, check:
+
+- `tailwind.config.js` `content` paths include every folder that holds JSX/TSX with Tailwind classes (`app/`, `components/`, `features/`, and any new zone you add)
+- `npm run build` completes without errors
+- A production-like visual check on affected pages (admin layout if admin UI moved; public layout if public UI moved)
+
+Current scan paths: `app/`, `components/`, `features/`. Do not add broad globs like `./**/*` unless necessary.
+
 If `check:sync` fails on **shared** changes:
 
 1. Test public routes (/, /contact, /assessment)
