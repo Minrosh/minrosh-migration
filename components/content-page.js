@@ -395,15 +395,23 @@ export function ContentPage({
                 Free Assessment
               </Link>
             </div>
-            <div className="mt-6 pt-6 border-t border-brand-plum/10">
-              <div className="flex items-center gap-3">
-                <div className="h-8 w-8 rounded bg-brand-plum/5 flex items-center justify-center text-[10px] font-black text-brand-plum/40 border border-brand-plum/10">MARA</div>
-                <p className="text-[10px] font-bold text-brand-plum/60 leading-tight">
-                  Registered Migration Agent <br />
-                  <span className="text-brand-rose">MARN 1801042</span>
-                </p>
-              </div>
-            </div>
+            {(() => {
+              const marn = String(process.env.NEXT_PUBLIC_MARN || "").trim();
+              if (!marn) return null;
+              return (
+                <div className="mt-6 border-t border-brand-plum/10 pt-6">
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-8 w-8 items-center justify-center rounded border border-brand-plum/10 bg-brand-plum/5 text-[10px] font-black text-brand-plum/40">
+                      MARA
+                    </div>
+                    <p className="text-[10px] font-bold leading-tight text-brand-plum/60">
+                      Registered Migration Agent <br />
+                      <span className="text-brand-rose">MARN {marn}</span>
+                    </p>
+                  </div>
+                </div>
+              );
+            })()}
           </div>
 
           {dedupedRelated.length ? (

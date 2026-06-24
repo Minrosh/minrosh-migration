@@ -19,6 +19,8 @@ import { DestinationCommandCenter } from "../../../components/destination-comman
 import { DestinationRouteGraph } from "../../../components/destination-route-graph";
 import { DestinationCommandPalette } from "../../../components/destination-command-palette";
 import { DestinationConfidenceStrip } from "../../../components/destination-confidence-strip";
+import { DestinationPlanningBlocks } from "../../../components/destinations/destination-planning-blocks";
+import destinationPlanningBlocks from "../../../data/destination-planning-blocks.json";
 
 export function generateStaticParams() {
   return Object.keys(destinations).map((slug) => ({ slug }));
@@ -124,6 +126,10 @@ export default async function DestinationPage({ params }) {
               guide={lifestyleGuide}
               first14={first14}
               transport={transport}
+            />
+            <DestinationPlanningBlocks
+              destinationName={page.name}
+              blocks={destinationPlanningBlocks[slug] ?? []}
             />
           </>
         }

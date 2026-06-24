@@ -185,11 +185,11 @@ export function HomeHeroPremium({ whatsappHref }) {
                     className="home-hero-premium__heading relative z-10 max-w-none text-balance font-bold leading-[1.12] tracking-[-0.02em] text-[clamp(1.65rem,4vw,2.85rem)]"
                     style={{ color: plumDark }}
                   >
-                    Clear migration and study{" "}
+                    Plan your move to{" "}
                     <span className="font-bold" style={{ color: plumMid }}>
-                      pathway guidance
+                      Australia, Canada, UK or New Zealand
                     </span>{" "}
-                    from Brisbane to the world
+                    with clear visa and study pathway guidance
                   </h1>
 
                   <div
@@ -204,33 +204,29 @@ export function HomeHeroPremium({ whatsappHref }) {
                       href="/assessment"
                       eventName="cta_click"
                       eventParams={{
-                        cta_id: "hero_pathway_questionnaire",
+                        cta_id: "hero_pathway_check",
                         cta_location: "home_hero",
                         destination: "/assessment",
                       }}
-                      aria-label="Start the pathway questionnaire"
+                      aria-label="Start free pathway check"
                       className="home-hero-premium__cta inline-flex min-h-[52px] w-full items-center justify-center rounded-full border-2 border-white px-7 py-3.5 text-center text-base font-bold text-white shadow-[0_14px_36px_rgba(136,19,55,0.28)] outline-none ring-offset-2 ring-offset-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-[0_18px_44px_rgba(136,19,55,0.35)] focus-visible:ring-2 focus-visible:ring-[#881337]/45 sm:w-auto sm:min-w-[280px]"
                       style={{ backgroundColor: plumMid }}
                     >
-                      Start the pathway questionnaire →
+                      Start Free Pathway Check →
                     </TrackedLink>
 
-                    <p className="text-sm font-medium leading-relaxed text-[#1F1020]/72 sm:text-[0.9375rem]">
-                      Need quick human help?{" "}
-                      <TrackedAnchor
-                        id="hero-cta-whatsapp"
-                        href={whatsappHref}
-                        eventName="cta_click"
-                        eventParams={{ cta_id: "hero_whatsapp", cta_location: "home_hero", destination: "whatsapp" }}
-                        aria-label="Open WhatsApp chat with MinRosh"
-                        className="font-bold transition hover:opacity-90"
-                        style={{ color: plumMid }}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        Chat on WhatsApp
-                      </TrackedAnchor>
-                    </p>
+                    <TrackedAnchor
+                      id="hero-cta-whatsapp"
+                      href={whatsappHref}
+                      eventName="whatsapp_clicked"
+                      eventParams={{ cta_id: "hero_whatsapp", cta_location: "home_hero", destination: "whatsapp" }}
+                      aria-label="Talk to a human on WhatsApp"
+                      className="home-hero-premium__cta inline-flex min-h-[52px] w-full items-center justify-center rounded-full border-2 border-[#881337]/25 bg-white/90 px-7 py-3.5 text-center text-base font-bold text-[#881337] shadow-sm outline-none ring-offset-2 transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-[#881337]/40 focus-visible:ring-2 focus-visible:ring-[#881337]/35 sm:w-auto sm:min-w-[280px]"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Talk to a Human on WhatsApp
+                    </TrackedAnchor>
                   </div>
                 </div>
               </div>

@@ -1,5 +1,6 @@
 {
-  "version": 1,
+  "version": 2,
+  "disclaimer": "This is a planning estimate only. Visa charges, work rights, funds requirements, processing times and PR options change regularly. Always confirm with official sources or speak with a migration professional before making decisions.",
   "countries": [
     {
       "id": "australia",
@@ -9,7 +10,38 @@
       "tuitionAnnualHigh": 52000,
       "livingMonthlyLow": 1700,
       "livingMonthlyHigh": 2800,
-      "officialNote": "Use Department of Home Affairs student visa financial requirements for your cohort; figures here are indicative planning bands only."
+      "visaFeeEstimate": 710,
+      "healthInsuranceMonthly": 55,
+      "fundsShowMoneyMonths": 12,
+      "workHoursPerWeek": 24,
+      "officialNote": "Use Department of Home Affairs student visa financial requirements for your cohort; figures here are indicative planning bands only.",
+      "prPathwayNote": "Some graduates may pursue Temporary Graduate then skilled routes—occupation lists and points still apply; PR is never automatic after study.",
+      "nextVisaStage": "Student visa → possible Temporary Graduate (subclass 485) → skilled or employer-sponsored routes if criteria met",
+      "mainFinancialRisk": "Underestimating living costs in major cities or assuming part-time wages cover full expenses during study terms",
+      "regions": [
+        { "id": "nsw", "label": "NSW (Sydney)", "livingMultiplier": 1.15 },
+        { "id": "vic", "label": "VIC (Melbourne)", "livingMultiplier": 1.1 },
+        { "id": "qld", "label": "QLD (Brisbane)", "livingMultiplier": 1.0 },
+        { "id": "sa", "label": "SA (Adelaide)", "livingMultiplier": 0.92 },
+        { "id": "wa", "label": "WA (Perth)", "livingMultiplier": 0.95 }
+      ],
+      "studyLevels": [
+        { "id": "vet", "label": "VET / diploma", "tuitionMultiplier": 0.75 },
+        { "id": "bachelor", "label": "Bachelor", "tuitionMultiplier": 1.0 },
+        { "id": "masters", "label": "Masters", "tuitionMultiplier": 1.15 }
+      ],
+      "providerTypes": [
+        { "id": "public", "label": "Public university", "tuitionMultiplier": 1.0 },
+        { "id": "private", "label": "Private college", "tuitionMultiplier": 0.85 }
+      ],
+      "jobTypes": [
+        { "id": "hospitality", "label": "Hospitality / retail", "hourlyLow": 24, "hourlyHigh": 32 },
+        { "id": "admin", "label": "Admin / campus", "hourlyLow": 26, "hourlyHigh": 35 },
+        { "id": "skilled", "label": "Skilled part-time (if experienced)", "hourlyLow": 32, "hourlyHigh": 45 }
+      ],
+      "rentShareOfLiving": 0.45,
+      "transportShareOfLiving": 0.12,
+      "foodShareOfLiving": 0.28
     },
     {
       "id": "canada",
@@ -19,7 +51,38 @@
       "tuitionAnnualHigh": 45000,
       "livingMonthlyLow": 1400,
       "livingMonthlyHigh": 2400,
-      "officialNote": "IRCC publishes minimum funds for study permits by location and family size — treat planner output as orientation, not a funds guarantee."
+      "visaFeeEstimate": 235,
+      "healthInsuranceMonthly": 80,
+      "fundsShowMoneyMonths": 12,
+      "workHoursPerWeek": 24,
+      "officialNote": "IRCC publishes minimum funds for study permits by location and family size — treat planner output as orientation, not a funds guarantee.",
+      "prPathwayNote": "Post-graduation work permits may bridge to Express Entry or PNP for some profiles—CRS competitiveness and program rules change.",
+      "nextVisaStage": "Study permit → possible PGWP → Canadian experience class or provincial nomination if criteria met",
+      "mainFinancialRisk": "Toronto/Vancouver living costs and winter expenses exceeding part-time income during study terms",
+      "regions": [
+        { "id": "on", "label": "Ontario (Toronto)", "livingMultiplier": 1.15 },
+        { "id": "bc", "label": "British Columbia (Vancouver)", "livingMultiplier": 1.12 },
+        { "id": "ab", "label": "Alberta (Calgary)", "livingMultiplier": 1.0 },
+        { "id": "qc", "label": "Quebec (Montreal)", "livingMultiplier": 0.95 },
+        { "id": "mb", "label": "Manitoba (Winnipeg)", "livingMultiplier": 0.88 }
+      ],
+      "studyLevels": [
+        { "id": "college", "label": "College diploma", "tuitionMultiplier": 0.8 },
+        { "id": "bachelor", "label": "Bachelor", "tuitionMultiplier": 1.0 },
+        { "id": "masters", "label": "Masters", "tuitionMultiplier": 1.1 }
+      ],
+      "providerTypes": [
+        { "id": "university", "label": "University", "tuitionMultiplier": 1.0 },
+        { "id": "college", "label": "Public college", "tuitionMultiplier": 0.78 }
+      ],
+      "jobTypes": [
+        { "id": "retail", "label": "Retail / food service", "hourlyLow": 16, "hourlyHigh": 22 },
+        { "id": "campus", "label": "On-campus roles", "hourlyLow": 17, "hourlyHigh": 24 },
+        { "id": "coop", "label": "Co-op (if on program)", "hourlyLow": 20, "hourlyHigh": 32 }
+      ],
+      "rentShareOfLiving": 0.42,
+      "transportShareOfLiving": 0.14,
+      "foodShareOfLiving": 0.3
     },
     {
       "id": "united-kingdom",
@@ -29,7 +92,38 @@
       "tuitionAnnualHigh": 38000,
       "livingMonthlyLow": 1100,
       "livingMonthlyHigh": 2000,
-      "officialNote": "GOV.UK maintenance amounts for the Student route change; verify the current published figure before budgeting lodgement."
+      "visaFeeEstimate": 490,
+      "healthInsuranceMonthly": 47,
+      "fundsShowMoneyMonths": 9,
+      "workHoursPerWeek": 20,
+      "officialNote": "GOV.UK maintenance amounts for the Student route change; verify the current published figure before budgeting lodgement.",
+      "prPathwayNote": "Graduate Route is temporary; settlement (ILR) requires qualifying years on eligible visas—not automatic after study.",
+      "nextVisaStage": "Student visa → possible Graduate Route → Skilled Worker sponsorship if role and salary thresholds met",
+      "mainFinancialRisk": "London maintenance requirements and NHS surcharge adding to upfront costs beyond tuition",
+      "regions": [
+        { "id": "london", "label": "London", "livingMultiplier": 1.25 },
+        { "id": "south", "label": "South England", "livingMultiplier": 1.05 },
+        { "id": "midlands", "label": "Midlands", "livingMultiplier": 0.95 },
+        { "id": "north", "label": "North England", "livingMultiplier": 0.9 },
+        { "id": "scotland", "label": "Scotland", "livingMultiplier": 0.92 }
+      ],
+      "studyLevels": [
+        { "id": "foundation", "label": "Foundation / pathway", "tuitionMultiplier": 0.85 },
+        { "id": "bachelor", "label": "Bachelor", "tuitionMultiplier": 1.0 },
+        { "id": "masters", "label": "Masters (1 year)", "tuitionMultiplier": 1.12 }
+      ],
+      "providerTypes": [
+        { "id": "university", "label": "University", "tuitionMultiplier": 1.0 },
+        { "id": "college", "label": "College / pathway", "tuitionMultiplier": 0.8 }
+      ],
+      "jobTypes": [
+        { "id": "hospitality", "label": "Hospitality", "hourlyLow": 11, "hourlyHigh": 14 },
+        { "id": "retail", "label": "Retail", "hourlyLow": 11, "hourlyHigh": 13 },
+        { "id": "tutor", "label": "Tutoring / campus", "hourlyLow": 13, "hourlyHigh": 20 }
+      ],
+      "rentShareOfLiving": 0.48,
+      "transportShareOfLiving": 0.1,
+      "foodShareOfLiving": 0.26
     },
     {
       "id": "new-zealand",
@@ -39,7 +133,38 @@
       "tuitionAnnualHigh": 42000,
       "livingMonthlyLow": 1500,
       "livingMonthlyHigh": 2400,
-      "officialNote": "Immigration New Zealand sets funds and fees expectations per application type — align any budget story with their checklist."
+      "visaFeeEstimate": 430,
+      "healthInsuranceMonthly": 65,
+      "fundsShowMoneyMonths": 12,
+      "workHoursPerWeek": 20,
+      "officialNote": "Immigration New Zealand sets funds and fees expectations per application type — align any budget story with their checklist.",
+      "prPathwayNote": "Post-study work visas depend on qualification level; skilled residence uses points and may require job offers.",
+      "nextVisaStage": "Student visa → possible post-study work visa → skilled migrant category if points and policy allow",
+      "mainFinancialRisk": "Auckland living costs and smaller job market limiting part-time hours for some students",
+      "regions": [
+        { "id": "auckland", "label": "Auckland", "livingMultiplier": 1.12 },
+        { "id": "wellington", "label": "Wellington", "livingMultiplier": 1.05 },
+        { "id": "christchurch", "label": "Christchurch", "livingMultiplier": 0.95 },
+        { "id": "dunedin", "label": "Dunedin", "livingMultiplier": 0.9 },
+        { "id": "regional", "label": "Regional NZ", "livingMultiplier": 0.85 }
+      ],
+      "studyLevels": [
+        { "id": "diploma", "label": "Diploma / level 5–6", "tuitionMultiplier": 0.82 },
+        { "id": "bachelor", "label": "Bachelor", "tuitionMultiplier": 1.0 },
+        { "id": "masters", "label": "Masters", "tuitionMultiplier": 1.08 }
+      ],
+      "providerTypes": [
+        { "id": "university", "label": "University", "tuitionMultiplier": 1.0 },
+        { "id": "polytechnic", "label": "Polytechnic / institute", "tuitionMultiplier": 0.88 }
+      ],
+      "jobTypes": [
+        { "id": "hospitality", "label": "Hospitality", "hourlyLow": 23, "hourlyHigh": 28 },
+        { "id": "retail", "label": "Retail", "hourlyLow": 23, "hourlyHigh": 27 },
+        { "id": "orchard", "label": "Seasonal / horticulture", "hourlyLow": 24, "hourlyHigh": 30 }
+      ],
+      "rentShareOfLiving": 0.44,
+      "transportShareOfLiving": 0.11,
+      "foodShareOfLiving": 0.29
     }
   ]
 }

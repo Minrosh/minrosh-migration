@@ -11,7 +11,7 @@ const baseURL = liveUrl || localBase;
 const webServer = liveUrl
   ? undefined
   : {
-      command: `bash -lc 'npm run build && PORT=${port} HOSTNAME=127.0.0.1 node .next/standalone/server.js'`,
+      command: `bash -lc 'ACKNOWLEDGE_SHARED_RISK=1 npm run build && PORT=${port} HOSTNAME=127.0.0.1 node .next/standalone/server.js'`,
       url: baseURL,
       /** Non-CI: reuse an already-running server on the chosen port. CI: always start fresh on ${port}. */
       reuseExistingServer: !process.env.CI,

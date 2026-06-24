@@ -476,7 +476,7 @@ export function ContactLeadForm({
       if (typeof window !== "undefined") {
         window.dispatchEvent(new Event("minrosh:enquiry-created"));
       }
-      trackEvent("contact_form_submit_success", {
+      trackEvent("contact_form_submitted", {
         form_mode: mode,
         consultation_booked: Boolean(data.consultationBooked),
         preferred_country: form.preferredCountry,

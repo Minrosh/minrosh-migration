@@ -8413,7 +8413,13 @@ button.glossary-term:focus-visible {
   }
 
   .portal-shell--mobile-tab-bar .portal-main.portal-main--immersive {
-    padding-bottom: calc(var(--site-mobile-tab-stack) + var(--site-mobile-floating-dock) + 20px);
+    padding-bottom: calc(var(--site-mobile-tab-stack) + var(--site-mobile-floating-dock) + 32px);
+  }
+
+  .portal-shell--mobile-tab-bar .portal-main.portal-main--immersive:has(.page-assessment-shell),
+  .portal-shell--mobile-tab-bar .portal-main.portal-main--immersive:has(.page-contact-shell),
+  .portal-shell--mobile-tab-bar .portal-main.portal-main--immersive:has(.content-page form) {
+    padding-bottom: calc(var(--site-mobile-tab-stack) + var(--site-mobile-floating-dock) + 56px);
   }
 
   .portal-shell--mobile-tab-bar footer.site-footer {

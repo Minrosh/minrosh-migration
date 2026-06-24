@@ -35,7 +35,7 @@ export default function ContactPage() {
           { name: "Contact", path: pageData.path },
         ])}
       />
-      <div className="conversion-premium-phase1 contact-page--flush-top bg-[var(--brand-cream)] pb-12 pt-2 md:pt-4">
+      <div className="conversion-premium-phase1 page-contact-shell contact-page--flush-top bg-[var(--brand-cream)] pb-12 pt-2 md:pt-4">
       <div className="w-full max-w-[var(--content-max)] mx-auto px-[var(--content-pad)]">
       <section className="content-page content-page--contact">
         <section className="contact-page__layout grid gap-4 lg:grid-cols-[1fr_1.1fr] lg:items-start">
@@ -61,11 +61,11 @@ export default function ContactPage() {
                   </div>
                 ) : null}
                 <div className="my-5 flex flex-wrap gap-3">
-                  <TrackedAnchor 
-                    href={waPrimary} 
-                    target="_blank" 
+                  <TrackedAnchor
+                    href={waPrimary}
+                    target="_blank"
                     rel="noreferrer"
-                    eventName="cta_click"
+                    eventName="whatsapp_clicked"
                     eventParams={{ cta_id: "contact_panel_whatsapp", cta_location: "contact_panel", destination: "whatsapp" }}
                     aria-label="Chat on WhatsApp from contact panel"
                     className={`${CONVERSION_PREMIUM_PRIMARY_CTA_CLASS} flex min-h-[48px] w-full min-w-0 justify-center gap-3 py-6 text-lg sm:w-auto sm:flex-1 sm:min-w-[12rem]`}

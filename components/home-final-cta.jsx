@@ -13,11 +13,11 @@ export function HomeFinalCta() {
       <div className="relative z-10 mx-auto w-full min-w-0 py-14 text-center sm:py-16 lg:py-20">
         <p className="text-[10px] font-black uppercase tracking-[0.35em] text-brand-gold sm:text-xs">Next step</p>
         <h2 className="mt-4 text-2xl font-black leading-tight tracking-tight text-white sm:text-4xl md:text-5xl">
-          Ready to plan your next steps?
+          Not sure where to start?
         </h2>
         <p className="mx-auto mt-4 max-w-2xl text-sm font-medium leading-relaxed text-brand-cream/85 sm:text-base">
-          Use the questionnaire for indicative direction, or book a consultation when you want tailored guidance.
-          Neither replaces official departmental decisions.
+          Take the 2-minute pathway check for indicative direction, or book a consultation when you want tailored
+          guidance. Neither replaces official departmental decisions.
         </p>
 
         <div className="mx-auto mt-10 flex w-full max-w-lg flex-col gap-3 sm:max-w-none sm:flex-row sm:flex-wrap sm:justify-center sm:gap-4">
@@ -33,7 +33,7 @@ export function HomeFinalCta() {
             aria-label="Start the pathway questionnaire from homepage footer"
             className="btn flex min-h-[48px] w-full touch-manipulation items-center justify-center bg-white px-8 py-4 text-base font-black text-brand-plum shadow-xl transition-all hover:-translate-y-0.5 active:scale-[0.98] sm:w-auto sm:text-lg"
           >
-            Start the pathway questionnaire
+            Start Free Pathway Check
           </TrackedLink>
           <TrackedLink
             id="footer-cta-consultation"

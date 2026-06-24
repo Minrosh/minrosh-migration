@@ -1,0 +1,202 @@
+{
+  "australia": [
+    {
+      "id": "why-australia",
+      "title": "Why choose Australia",
+      "body": "Australia combines strong education exports, post-study work options for many graduates, and skilled migration pathways linked to occupation demand. Planning should balance course quality, regional living costs, and how study fits any longer-term goals—not assume PR follows automatically.",
+      "bullets": ["World-class universities and VET in major cities and regional centres", "Temporary Graduate visa may follow eligible study—confirm current rules", "Skilled lists and state nomination change with policy cycles"]
+    },
+    {
+      "id": "student-pathway",
+      "title": "Student visa pathway",
+      "body": "Student visas are temporary. You need a confirmed enrolment, genuine student intent, health insurance (OSHC), and funds evidence that match Department thresholds for your cohort.",
+      "bullets": ["CoE from a registered provider before lodgement", "OSHC for the visa period", "Work rights are capped—check current hours on your grant"]
+    },
+    {
+      "id": "skilled-pathway",
+      "title": "Skilled migration pathway",
+      "body": "Points-tested visas (189/190/491) depend on occupation lists, skills assessment, English scores, and invitation rounds. Study alone does not guarantee skilled eligibility.",
+      "bullets": ["Skills assessment timing can add months", "State nomination may require regional residence", "Compare independent vs sponsored routes early"]
+    },
+    {
+      "id": "work-rights",
+      "title": "Work rights overview",
+      "body": "Most student visa holders may work limited hours during study terms and more in scheduled breaks—verify conditions on your visa grant letter.",
+      "bullets": ["Casual hospitality and retail are common first jobs", "Tax and super apply from day one", "Do not breach work-hour conditions"]
+    },
+    {
+      "id": "costs",
+      "title": "Estimated study and living costs",
+      "body": "Sydney and Melbourne sit at the top of living bands; Brisbane and Adelaide are often lower. Tuition varies sharply between university and VET providers.",
+      "bullets": ["Budget AUD 22k–52k+ tuition per year for many courses", "Living often AUD 1,700–2,800/month in major cities", "Use our student cost planner for indicative bands"]
+    },
+    {
+      "id": "pr-overview",
+      "title": "PR pathway overview",
+      "body": "Some graduates pursue Temporary Graduate then skilled or employer-sponsored routes. Occupation ceilings, age, and English thresholds still apply—PR is a separate application with no guarantee.",
+      "bullets": ["Graduate work visa is time-limited", "Skilled points and employer sponsorship are distinct tracks", "Policy changes can close pathways you planned around"]
+    },
+    {
+      "id": "refusal-risks",
+      "title": "Common refusal or risk factors",
+      "body": "Genuine temporary entrant concerns, inconsistent funds, course misalignment with background, or incomplete health/character documents are frequent issues.",
+      "bullets": ["Funds that do not match declared sources", "Course level unrelated to prior study/work", "Gaps in employment or study history without explanation"]
+    },
+    {
+      "id": "documents",
+      "title": "Documents to prepare",
+      "body": "Start a document pack early: identity, enrolment, funds, English results, health insurance, and any relationship or dependent records.",
+      "bullets": ["Passport, birth/marriage certificates", "Bank statements and income evidence", "OSHC policy and CoE"]
+    }
+  ],
+  "canada": [
+    {
+      "id": "why-canada",
+      "title": "Why choose Canada",
+      "body": "Canada offers diverse provinces with different living costs, strong post-secondary institutions, and pathways from study permits to post-graduation work permits and Express Entry for some profiles.",
+      "bullets": ["DLI acceptance is central to study permits", "Provincial nominee programs vary by region", "Bilingual markets can affect job options in Quebec"]
+    },
+    {
+      "id": "student-pathway",
+      "title": "Student visa pathway",
+      "body": "Study permits require acceptance from a designated learning institution, proof of funds, and often a provincial attestation letter where applicable.",
+      "bullets": ["Letter of acceptance before applying", "Funds per IRCC tables for your province", "Biometrics and medical exams may apply"]
+    },
+    {
+      "id": "skilled-pathway",
+      "title": "Skilled migration pathway",
+      "body": "Express Entry and provincial nominee streams use separate points and selection rules. Canadian work experience and language scores heavily influence outcomes.",
+      "bullets": ["Credential assessments (ECA) for foreign qualifications", "CRS score competitiveness changes each draw", "PNP may require job offers or regional ties"]
+    },
+    {
+      "id": "work-rights",
+      "title": "Work rights overview",
+      "body": "Study permit holders may work on-campus always; off-campus work has hour limits that IRCC updates—check your permit conditions.",
+      "bullets": ["Co-op programs need a co-op work permit", "Spousal open work permits may be available in some cases", "SIN required for legal employment"]
+    },
+    {
+      "id": "costs",
+      "title": "Estimated study and living costs",
+      "body": "Toronto and Vancouver are expensive; prairie cities often lower. Tuition for international students exceeds domestic rates significantly.",
+      "bullets": ["CAD 18k–45k+ annual tuition bands for many programs", "Living CAD 1,400–2,400/month depending on city", "GIC or proof of funds per IRCC guidance"]
+    },
+    {
+      "id": "pr-overview",
+      "title": "PR pathway overview",
+      "body": "Post-graduation work permits can bridge to Canadian experience class or provincial nomination—but caps, program length, and policy changes affect who qualifies.",
+      "bullets": ["PGWP length ties to program duration", "Express Entry is competitive, not automatic", "Quebec has a separate selection system"]
+    },
+    {
+      "id": "refusal-risks",
+      "title": "Common refusal or risk factors",
+      "body": "Insufficient funds, study plan not credible, prior refusals, or misaligned program choices are common themes in refusals.",
+      "bullets": ["Funds not held long enough", "Program unrelated to career story", "Incomplete PAL or DLI documentation"]
+    },
+    {
+      "id": "documents",
+      "title": "Documents to prepare",
+      "body": "Gather acceptance letters, financial proof, identity documents, and any police certificates required for your country of residence.",
+      "bullets": ["DLI letter of acceptance", "Proof of funds / GIC where used", "Medical exam if requested"]
+    }
+  ],
+  "united-kingdom": [
+    {
+      "id": "why-uk",
+      "title": "Why choose the United Kingdom",
+      "body": "The UK offers shorter postgraduate degrees for many courses, global graduate route options for eligible completions, and skilled worker sponsorship for in-demand roles—each with strict sponsor and maintenance rules.",
+      "bullets": ["Russell Group and specialist colleges across regions", "Graduate Route may follow eligible study—check current policy", "London living costs exceed most other UK cities"]
+    },
+    {
+      "id": "student-pathway",
+      "title": "Student visa pathway",
+      "body": "Student route visas need a CAS from a licensed sponsor, maintenance funds, and English evidence at the required level for your course.",
+      "bullets": ["CAS issued by licensed sponsor", "Maintenance held for 28+ days in many cases", "TB test from listed countries"]
+    },
+    {
+      "id": "skilled-pathway",
+      "title": "Skilled migration pathway",
+      "body": "Skilled Worker visas need employer sponsorship, eligible occupation, salary thresholds, and English requirements. Points-based skilled routes differ from student routes.",
+      "bullets": ["Certificate of Sponsorship from licensed employer", "Salary must meet going rates for the role", "Health and care visa has separate lists"]
+    },
+    {
+      "id": "work-rights",
+      "title": "Work rights overview",
+      "body": "Student visa work limits apply during term time; full-time work may be allowed in vacations—confirm your vignette and BRP/digital status conditions.",
+      "bullets": ["Part-time roles common in retail and hospitality", "Placements must align with course requirements", "Self-employment is generally restricted"]
+    },
+    {
+      "id": "costs",
+      "title": "Estimated study and living costs",
+      "body": "London maintenance requirements exceed other regions. Tuition for international students varies widely between classroom and lab-based degrees.",
+      "bullets": ["GBP 14k–38k+ tuition bands for many courses", "Living GBP 1,100–2,000/month by city", "NHS health surcharge payable with application"]
+    },
+    {
+      "id": "pr-overview",
+      "title": "PR pathway overview",
+      "body": "Settlement (ILR) usually requires years of eligible visa residence—not automatic after study. Graduate Route is temporary bridging for many.",
+      "bullets": ["Graduate Route does not count toward all settlement routes equally", "Skilled Worker can lead to ILR after qualifying years", "Rules change with Home Office policy statements"]
+    },
+    {
+      "id": "refusal-risks",
+      "title": "Common refusal or risk factors",
+      "body": "Maintenance shortfalls, credibility of study intent, prior immigration breaches, or incorrect CAS details trigger refusals.",
+      "bullets": ["Funds in wrong account type or timing", "Course progression not explained", "Previous UK overstays or refusals"]
+    },
+    {
+      "id": "documents",
+      "title": "Documents to prepare",
+      "body": "CAS, financial evidence, passports, TB certificate if required, and academic transcripts supporting your study plan.",
+      "bullets": ["Valid CAS reference", "Bank statements meeting GOV.UK amounts", "English test results if required"]
+    }
+  ],
+  "new-zealand": [
+    {
+      "id": "why-nz",
+      "title": "Why choose New Zealand",
+      "body": "New Zealand offers smaller cities, outdoor lifestyle appeal, and study-to-work transitions for some qualifications—but the market is smaller and skilled lists are selective.",
+      "bullets": ["Institutions in Auckland, Wellington, Christchurch and regions", "Post-study work visas depend on qualification level", "Partnership and skilled categories have separate criteria"]
+    },
+    {
+      "id": "student-pathway",
+      "title": "Student visa pathway",
+      "body": "Fee-paying student visas need an offer of place, funds, genuine intent, and health/character clearance.",
+      "bullets": ["Offer of place from approved provider", "Funds per INZ tables for your stay", "Medical and police certificates if required"]
+    },
+    {
+      "id": "skilled-pathway",
+      "title": "Skilled migration pathway",
+      "body": "Skilled Migrant Category uses points for age, work experience, qualifications, and job offers. Green List roles may have streamlined residence pathways.",
+      "bullets": ["Job offer may be required for many skilled routes", "Qualification recognition varies", "Policy caps affect invitation timing"]
+    },
+    {
+      "id": "work-rights",
+      "title": "Work rights overview",
+      "body": "Student visa holders may work part-time during study and full-time in scheduled breaks if conditions allow—check your visa label.",
+      "bullets": ["Hospitality and agriculture seasonal work exist regionally", "Minimum wage applies", "Breaching conditions risks visa cancellation"]
+    },
+    {
+      "id": "costs",
+      "title": "Estimated study and living costs",
+      "body": "Auckland is typically the most expensive city; regional study can reduce living costs but may limit job variety.",
+      "bullets": ["NZD 22k–42k+ tuition bands for many international courses", "Living NZD 1,500–2,400/month", "Funds evidence per INZ checklist"]
+    },
+    {
+      "id": "pr-overview",
+      "title": "PR pathway overview",
+      "body": "Post-study work visas can bridge to skilled residence for some occupations—not all courses lead to residence eligibility.",
+      "bullets": ["Qualification level affects post-study work length", "Green List occupations change", "Residence is never automatic after study"]
+    },
+    {
+      "id": "refusal-risks",
+      "title": "Common refusal or risk factors",
+      "body": "Genuine intent, funds source, health issues, or prior immigration history are common refusal themes.",
+      "bullets": ["Insufficient funds history", "Study plan inconsistent with background", "Incomplete medical or character docs"]
+    },
+    {
+      "id": "documents",
+      "title": "Documents to prepare",
+      "body": "Offer letter, funds proof, passport, photos, and any relationship documents for partners or dependents.",
+      "bullets": ["Offer of place and fee payment evidence", "Bank statements or sponsorship letters", "Police certificates where required"]
+    }
+  ]
+}

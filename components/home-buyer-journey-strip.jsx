@@ -7,21 +7,27 @@ const MAROON = "var(--brand-rose)";
 const STEPS = [
   {
     kicker: "Step 1",
-    title: "Define your goal",
-    body: "Clarify whether you are leaning toward study, skilled migration, partner reunion, employer-sponsored support or an exploratory visit—then we map what to read next.",
+    title: "Understand your goal",
+    body: "Clarify whether you are leaning toward study, skilled migration, partner reunion, employer sponsorship or a short visit—then we map what to read next.",
     chips: ["Study", "Migrate", "Work", "Partner", "Visit"],
   },
   {
     kicker: "Step 2",
-    title: "Shape your pathway lens",
+    title: "Compare pathways",
     body: "Stress-test timing, skills context and location preferences against official programme outlines—not quick guarantees—so your next steps stay grounded.",
     chips: ["Points", "Skills", "Location", "Timing"],
   },
   {
     kicker: "Step 3",
-    title: "Pick your next action",
-    body: "Move into the pathway questionnaire for indicative sequencing, browse hubs for detail, or book a consultation when you want case-specific guidance.",
-    chips: ["Plan", "Documents", "Timeline", "Advice"],
+    title: "Prepare documents",
+    body: "Build a realistic evidence list—funds, identity, relationship or employment records—aligned to the route you are exploring.",
+    chips: ["Funds", "Identity", "English", "Evidence"],
+  },
+  {
+    kicker: "Step 4",
+    title: "Proceed with confidence",
+    body: "Use the pathway check, planning tools, or book a consultation when you want case-specific guidance before you lodge.",
+    chips: ["Plan", "Tools", "Advice", "Official sources"],
   },
 ];
 
@@ -60,14 +66,14 @@ export function HomeBuyerJourneyStrip() {
           className="mt-3 text-center text-2xl font-bold tracking-tight text-brand-plum sm:text-3xl md:text-[2.15rem] md:leading-tight"
           style={{ fontFamily: "var(--font-sans), ui-sans-serif, system-ui, sans-serif" }}
         >
-          Compare pathways in one clear flow
+          How MinRosh works
         </h2>
         <p className="mx-auto mt-4 max-w-2xl text-center text-sm font-medium leading-relaxed text-brand-plum/70 sm:text-base">
           A calm sequence for offshore and onshore applicants. Information stays indicative until your circumstances are
           reviewed in consultation—not outcome guarantees.
         </p>
 
-        <ol className="mx-auto mt-10 list-none space-y-6 pl-0 md:mt-12 md:grid md:grid-cols-3 md:gap-8 md:space-y-0 lg:gap-10">
+        <ol className="mx-auto mt-10 list-none space-y-6 pl-0 md:mt-12 md:grid md:grid-cols-2 md:gap-6 md:space-y-0 lg:grid-cols-4 lg:gap-6">
           {STEPS.map((step) => (
             <li key={step.kicker} className="home-journey-card min-w-0">
               <div className="flex h-full min-h-[248px] flex-col rounded-[1.5rem] border border-brand-plum/10 bg-white p-6 shadow-[var(--shadow-lux)] transition-shadow duration-300 hover:shadow-[var(--shadow-lux-lg)] sm:p-8">

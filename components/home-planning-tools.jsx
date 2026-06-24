@@ -13,16 +13,16 @@ export function HomePlanningTools() {
           }}
         />
         <div className="relative z-10 mx-auto w-full min-w-0">
-        <p className="text-center text-[11px] font-bold uppercase tracking-[0.28em] text-brand-rose">Decision support</p>
+        <p className="text-center text-[11px] font-bold uppercase tracking-[0.28em] text-brand-rose">Student planning</p>
         <h2
           id="home-tools-heading"
           className="mt-3 text-center text-2xl font-black tracking-tight text-brand-plum sm:text-3xl md:text-4xl"
         >
-          Planning tools
+          Know costs before you apply
         </h2>
         <p className="mx-auto mt-3 max-w-3xl text-center text-sm font-medium leading-relaxed text-brand-plum/70 sm:text-base">
-          Educational aids to compare ideas before you invest in preparation.{" "}
-          <strong className="font-black text-brand-plum">Indicative only. Not eligibility advice or a guarantee of outcomes.</strong>
+          Know your course cost, living cost, work income and PR options before you apply.{" "}
+          <strong className="font-black text-brand-plum">Planning estimates only—not eligibility advice.</strong>
         </p>
 
         <ul className="mt-8 grid min-w-0 list-none grid-cols-1 gap-[clamp(24px,4vw,48px)] pl-0 md:mt-10 md:grid-cols-2">
@@ -33,8 +33,8 @@ export function HomePlanningTools() {
             >
               <h3 className="text-xl font-black text-brand-plum">Student country cost planner</h3>
               <p className="mt-3 flex-1 text-sm font-medium leading-relaxed text-brand-plum/65">
-                Rough budgeting context across destinations—confirm fees, charges and rules on official sites before you
-                decide.
+                Compare tuition, living costs, work income bands and PR pathway notes across Australia, Canada, the UK
+                and New Zealand—before you commit to a course.
               </p>
               <span className="mt-5 inline-flex min-h-[48px] items-center font-black text-brand-plum underline decoration-2 underline-offset-4">
                 Open tool <span className="ml-2">→</span>

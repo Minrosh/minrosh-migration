@@ -1,5 +1,5 @@
-import nodemailer from "nodemailer";
-import { smtpSocketTimeoutFields, withSmtpDeadline } from "@/lib/smtp-timeout";
+import { getMailTransport } from "@/lib/contact";
+import { withSmtpDeadline } from "@/lib/smtp-timeout";
 import { requireAdminWrite } from "@/lib/admin/auth-route";
 import { appendAudit } from "@/lib/admin/audit";
 import { AUDIT_ACTIONS } from "@/lib/admin/audit-actions";
@@ -9,22 +9,6 @@ import { isMarketingSuppressedEmail } from "@/lib/newsletter";
 import { rateLimitAllow } from "@/lib/security/rate-limit";
 import { getClientIp } from "@/lib/security/request-ip";
 import { logSecurityEvent } from "@/lib/security/monitoring-log";
-
-function getMailTransport() {
-  const smtpHost = process.env.SMTP_HOST;
-  const smtpPort = Number(process.env.SMTP_PORT || 587);
-  const smtpSecure = String(process.env.SMTP_SECURE || "false").toLowerCase() === "true";
-  const smtpUser = process.env.SMTP_USER;
-  const smtpPass = process.env.SMTP_PASS;
-  if (!smtpHost || !smtpUser || !smtpPass) return null;
-  return nodemailer.createTransport({
-    host: smtpHost,
-    port: smtpPort,
-    secure: smtpSecure,
-    ...smtpSocketTimeoutFields(),
-    auth: { user: smtpUser, pass: smtpPass.replace(/\s+/g, "") },
-  });
-}
 
 export async function POST(request) {
   const context = requestContextFromRequest(request);

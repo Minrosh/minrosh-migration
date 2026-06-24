@@ -83,54 +83,46 @@ export function HomeDeferredCarousels({ newsItems = [] }) {
         </div>
       </section>
 
-      <section className="home-section relative isolate overflow-x-clip rounded-[2rem] border border-brand-plum/10 bg-gradient-to-b from-[#FBF6F4]/85 via-white to-[#FBF6F4]/75 p-5 shadow-[var(--shadow-lux)] sm:p-7">
-          <div
-            className="pointer-events-none absolute inset-0 z-0 rounded-[2rem]"
-            aria-hidden
-            style={{
-              background:
-                "radial-gradient(130% 100% at 50% 0%, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0) 62%), radial-gradient(120% 100% at 50% 100%, rgba(136,19,55,0.06) 0%, rgba(136,19,55,0) 65%)",
-            }}
-          />
-          <div className="relative z-10 mx-auto w-full min-w-0">
-          <div className="mb-8 flex flex-col justify-between gap-6 sm:mb-10 md:flex-row md:items-end">
+      <section className="home-section relative isolate overflow-x-clip rounded-[2rem] border border-brand-plum/8 bg-gradient-to-b from-white/90 via-[#FBF6F4]/60 to-white/90 p-4 shadow-sm sm:p-6">
+        <div className="relative z-10 mx-auto w-full min-w-0">
+          <div className="mb-6 flex flex-col justify-between gap-4 sm:mb-8 md:flex-row md:items-end">
             <div>
-              <p className="text-[10px] font-black uppercase tracking-[0.28em] text-brand-rose sm:text-xs">
-                Knowledge base
+              <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-brand-plum/50 sm:text-xs">
+                News &amp; updates
               </p>
-              <h2 className="mt-3 text-2xl font-black tracking-tight text-brand-plum sm:text-3xl md:text-4xl">
-                Latest insights
+              <h2 className="mt-2 text-xl font-bold tracking-tight text-brand-plum sm:text-2xl">
+                Immigration news
               </h2>
             </div>
             <Link
               href="/immigration-news"
-              className="inline-flex min-h-[48px] touch-manipulation items-center font-black text-brand-plum underline decoration-2 underline-offset-8 transition-colors hover:text-brand-rose"
+              className="inline-flex min-h-[48px] touch-manipulation items-center text-sm font-bold text-brand-plum underline decoration-2 underline-offset-8 transition-colors hover:text-brand-rose"
             >
               View all news <span className="ml-2">→</span>
             </Link>
           </div>
 
           <div className="relative">
-            <ul className="relative z-10 mt-10 grid min-w-0 list-none grid-cols-1 gap-[clamp(24px,4vw,48px)] pl-0 sm:mt-12 sm:grid-cols-2 lg:grid-cols-4">
+            <ul className="relative z-10 grid min-w-0 list-none grid-cols-1 gap-4 pl-0 sm:grid-cols-2 lg:grid-cols-4">
               {newsItems.map((item) => (
                 <li key={item.id} className="min-w-0">
                   <Link href={item.href} className="group block h-full">
-                    <div className="glass-card flex h-full flex-col rounded-[1.75rem] border border-brand-plum/[0.06] bg-white/95 p-6 shadow-[var(--shadow-lux)] transition-all hover:border-brand-rose/25 hover:bg-[#FBF6F4]/40 hover:shadow-[var(--shadow-lux-lg)] sm:p-8">
-                      <div className="mb-6 flex items-center justify-between">
-                        <span className="rounded-full bg-brand-plum/5 px-3 py-1 text-[10px] font-black uppercase tracking-wider text-brand-plum">
+                    <div className="flex h-full flex-col rounded-2xl border border-brand-plum/[0.06] bg-white/95 p-5 shadow-sm transition-all hover:border-brand-rose/20 sm:p-6">
+                      <div className="mb-4 flex items-center justify-between">
+                        <span className="rounded-full bg-brand-plum/5 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-brand-plum">
                           {item.country}
                         </span>
-                        <span className="text-[10px] font-bold uppercase tracking-widest text-brand-plum/40">
+                        <span className="text-[10px] font-medium uppercase tracking-widest text-brand-plum/40">
                           {item.date}
                         </span>
                       </div>
-                      <h3 className="mb-4 text-xl font-black leading-tight text-brand-plum transition-colors group-hover:text-brand-rose">
+                      <h3 className="mb-3 text-base font-bold leading-tight text-brand-plum transition-colors group-hover:text-brand-rose">
                         {item.title}
                       </h3>
-                      <p className="mb-8 line-clamp-3 flex-1 text-sm font-medium leading-relaxed text-brand-plum/55">
+                      <p className="mb-4 line-clamp-3 flex-1 text-sm font-medium leading-relaxed text-brand-plum/55">
                         {item.summary}
                       </p>
-                      <div className="mt-auto flex min-h-[48px] items-center gap-2 text-xs font-black uppercase tracking-widest text-brand-plum transition-all group-hover:gap-3">
+                      <div className="mt-auto flex min-h-[44px] items-center gap-2 text-xs font-bold uppercase tracking-widest text-brand-plum/70 transition-all group-hover:gap-3">
                         Read article <span aria-hidden="true">→</span>
                       </div>
                     </div>
@@ -139,7 +131,7 @@ export function HomeDeferredCarousels({ newsItems = [] }) {
               ))}
             </ul>
           </div>
-          </div>
+        </div>
       </section>
     </>
   );

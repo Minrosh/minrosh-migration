@@ -1,11 +1,21 @@
 import { describe, expect, it } from "vitest";
-import { estimateStudentStudyCosts, getStudentPlannerCountries } from "../lib/student-planner.js";
+import {
+  estimateStudentStudyCosts,
+  estimateStudentCountryPlan,
+  getStudentPlannerCountries,
+  getStudentPlannerDisclaimer,
+} from "../lib/student-planner.js";
 
 describe("student-planner", () => {
   it("lists countries", () => {
     const c = getStudentPlannerCountries();
     expect(c.length).toBeGreaterThanOrEqual(4);
     expect(c.map((x) => x.id)).toContain("australia");
+  });
+
+  it("exposes planner disclaimer", () => {
+    const d = getStudentPlannerDisclaimer();
+    expect(d.toLowerCase()).toContain("planning estimate");
   });
 
   it("scales tuition and living by months", () => {
@@ -22,5 +32,17 @@ describe("student-planner", () => {
     expect(low.studyMonths).toBe(1);
     const high = estimateStudentStudyCosts("canada", 999);
     expect(high.studyMonths).toBe(120);
+  });
+
+  it("estimateStudentCountryPlan returns planning estimates without eligibility language", () => {
+    const plan = estimateStudentCountryPlan({
+      countryId: "australia",
+      studyMonths: 12,
+    });
+    expect(plan.firstYearCostEstimate).toBeGreaterThan(0);
+    expect(plan.monthlyLivingEstimate).toBeGreaterThan(0);
+    expect(plan.fortnightlyIncomeEstimate).toBeGreaterThan(0);
+    expect(plan.prPathwayNote.toLowerCase()).not.toContain("guaranteed");
+    expect(plan.recommendedNextStep).toMatch(/consultation/i);
   });
 });

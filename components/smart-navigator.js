@@ -35,7 +35,7 @@ export function SmartNavigator({
 
   useEffect(() => {
     // Track when the navigator is first viewed
-    trackEvent("ai_navigator_started", { path: window.location.pathname });
+    trackEvent("assessment_started", { path: window.location.pathname });
     setDailyUsageCount(14);
   }, []);
 
@@ -63,7 +63,7 @@ export function SmartNavigator({
     window.dispatchEvent(new CustomEvent("minrosh:navigator-summary", { detail }));
     
     // Track when results are successfully generated
-    trackEvent("ai_navigator_results_generated", {
+    trackEvent("assessment_completed", {
       main_need: recommendation.mainNeed,
       confidence: recommendation.confidenceScore
     });
@@ -283,7 +283,7 @@ export function SmartNavigator({
               )}
 
               <div className="navigator-result-card navigator-result-card--strategy">
-                <span className="navigator-result-card-label">Adaptive Strategy (AI v3)</span>
+                <span className="navigator-result-card-label">Adaptive strategy (planning estimate)</span>
                 <p className="navigator-result-mini">
                   Strategy: <span className="font-normal">{recommendation.strategyPlan}</span>
                 </p>
