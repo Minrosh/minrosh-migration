@@ -23,7 +23,15 @@ export async function PUT(request) {
   }
   try {
     const footer = writeFooterSettings(
-      { complianceLine: body.complianceLine, linkGroups: body.linkGroups },
+      {
+        complianceLine: body.complianceLine,
+        linkGroups: body.linkGroups,
+        footerTagline: body.footerTagline,
+        footerSummary: body.footerSummary,
+        contactPhone: body.contactPhone,
+        contactEmailLabel: body.contactEmailLabel,
+        social: body.social,
+      },
       body.updatedBy || "admin"
     );
     appendAudit(AUDIT_ACTIONS.WEBSITE_FOOTER_UPDATE, "footer", {

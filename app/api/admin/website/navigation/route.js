@@ -23,7 +23,11 @@ export async function PUT(request) {
   }
   try {
     const navigation = writeNavigationSettings(
-      { primaryLinks: body.primaryLinks },
+      {
+        primaryLinks: body.primaryLinks,
+        headerCtaLabel: body.headerCtaLabel,
+        headerCtaHref: body.headerCtaHref,
+      },
       body.updatedBy || "admin"
     );
     appendAudit(AUDIT_ACTIONS.WEBSITE_NAVIGATION_UPDATE, "navigation", {

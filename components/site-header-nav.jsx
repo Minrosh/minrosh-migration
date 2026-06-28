@@ -12,7 +12,10 @@ const VISA_HUB_PATHS = new Set(["/skilled-migration", "/partner-visa-australia",
  * Primary navigation for marketing pages (SiteShell): hamburger + drawer (“More”) on small
  * viewports, horizontal nav from 921px up.
  */
-export function SiteHeaderNav({ navLinks, currentPath, enableVisaMega = false }) {
+export function SiteHeaderNav({ navLinks, currentPath, enableVisaMega = false, headerCta }) {
+  const cta = headerCta?.label && headerCta?.href
+    ? headerCta
+    : { label: "Book consultation", href: "/book-consultation" };
   const [menuOpen, setMenuOpen] = useState(false);
   const [currentHash, setCurrentHash] = useState("");
   const menuToggleRef = useRef(null);
@@ -185,12 +188,12 @@ export function SiteHeaderNav({ navLinks, currentPath, enableVisaMega = false })
         <div className="site-nav__toolbar">
           <div className="site-nav__cta-cluster">
             <Link
-              href="/book-consultation"
+              href={cta.href}
               scroll
               className="btn btn-primary site-nav__cta site-nav__cta--primary touch-manipulation"
-              onClick={(event) => handleNavClick(event, "/book-consultation")}
+              onClick={(event) => handleNavClick(event, cta.href)}
             >
-              Book consultation
+              {cta.label}
             </Link>
           </div>
         </div>
