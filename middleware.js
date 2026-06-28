@@ -87,7 +87,16 @@ export async function middleware(request) {
       response.headers.set("Cache-Control", "private, no-cache, max-age=0, must-revalidate");
       response.headers.set("CDN-Cache-Control", "no-store");
     }
+    if (isStagingSite(host) && !isAdminApp) {
+      response.headers.set("X-Robots-Tag", "noindex, nofollow");
+    }
     return response;
+  }
+
+  function isStagingSite(hostHeader) {
+    const h = String(hostHeader || "").toLowerCase();
+    if (h.includes("staging.minroshmigration.com.au")) return true;
+    return String(process.env.STAGING_SITE || "").trim().toLowerCase() === "true";
   }
 
   const maintenanceMode = production
