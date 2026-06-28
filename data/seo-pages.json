@@ -551,6 +551,50 @@
         }
       ]
     },
+    "faqHub": {
+      "path": "/faq",
+      "title": "FAQ",
+      "metaTitle": "Migration FAQ | MinRosh Migration",
+      "metaDescription": "Read MinRosh Migration's frequently asked questions covering Australian visa timing, migration agent support, costs, and common next-step concerns.",
+      "speakableDescription": "Voice-friendly migration FAQ covering partner, skilled, and student pathway questions for Australia.",
+      "keywords": [
+        "migration FAQ Australia",
+        "visa questions Brisbane",
+        "MinRosh migration FAQ"
+      ],
+      "headline": "Frequently asked questions about migration pathways and next steps",
+      "intro": "These answers cover some of the most common questions MinRosh receives before consultation. They are general in nature and should not replace advice tailored to your own circumstances. For subclass-specific rules, always use the Department of Home Affairs visa listing and the page for your visa. For a walkthrough of those tools with links to MinRosh services, see the official sources hub.",
+      "officialResources": [
+        {
+          "label": "Department of Home Affairs — visa listing",
+          "href": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing"
+        },
+        {
+          "label": "Department of Home Affairs — Visa Finder",
+          "href": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-finder"
+        }
+      ],
+      "related": [
+        { "href": "/australian-visas-official-sources", "title": "Australian visas official sources hub" },
+        { "href": "/assessment", "title": "Free Assessment" },
+        { "href": "/book-consultation", "title": "Book Consultation" },
+        { "href": "/contact", "title": "Contact MinRosh" }
+      ],
+      "faq": [
+        {
+          "question": "How can I get an Australian partner visa if we are not married yet?",
+          "answer": "You may still qualify as de facto partners if you can show evidence of a genuine and continuing relationship. You usually need documents across financial, social, and household categories, plus timeline consistency."
+        },
+        {
+          "question": "How long does a skilled visa usually take after I lodge?",
+          "answer": "Processing timelines vary by visa subclass, case complexity, and policy settings. MinRosh uses official Home Affairs updates as the baseline and then maps likely timing risks from your profile."
+        },
+        {
+          "question": "Can I move from student visa to permanent residency in Australia?",
+          "answer": "Some students later move into skilled, employer-sponsored, or partner pathways. The best route depends on your occupation, location strategy, English profile, and evidence readiness."
+        }
+      ]
+    },
     "sriLankaMigration": {
       "path": "/migration-sri-lanka-to-australia",
       "title": "Migration from Sri Lanka to Australia",
