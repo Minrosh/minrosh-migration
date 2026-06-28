@@ -381,6 +381,125 @@
         }
       ]
     },
+    "postStudyVisa": {
+      "path": "/post-study-visa-australia",
+      "title": "Post-Study Visa Australia",
+      "metaTitle": "Post-Study Visa Australia – Graduate Work Pathways",
+      "metaDescription": "Plan post-study work visas after Australian study with Brisbane guidance on subclass 485 eligibility, timing, and realistic skilled migration next steps.",
+      "keywords": [
+        "post study visa Australia",
+        "subclass 485 visa",
+        "485 visa Australia",
+        "Temporary Graduate visa",
+        "post study work rights Australia",
+        "graduate visa Australia",
+        "485 visa eligibility",
+        "post study work visa consultation Brisbane",
+        "485 visa requirements",
+        "after study visa Australia"
+      ],
+      "headline": "Post-Study Visa Australia guidance for graduate work rights and clearer next steps",
+      "intro": "Completing an Australian qualification can open post-study work options, but eligibility depends on your course level, study location, and current visa settings—not automatic permanent residence. MinRosh helps graduates understand Temporary Graduate (subclass 485) pathways, timing, and how post-study work may fit longer-term skilled migration planning. Always confirm legal requirements on the Department of Home Affairs visa listing before you lodge.",
+      "officialResources": [
+        {
+          "label": "Department of Home Affairs — visa listing",
+          "href": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing"
+        },
+        {
+          "label": "Temporary Graduate visa (subclass 485)",
+          "href": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/temporary-graduate-485"
+        },
+        {
+          "label": "Studying in Australia (Home Affairs)",
+          "href": "https://immi.homeaffairs.gov.au/visas/studying"
+        }
+      ],
+      "sections": [
+        {
+          "title": "What post-study visas usually involve",
+          "body": "Post-study pathways most often centre on the Temporary Graduate visa (subclass 485), which can allow eligible graduates to live and work in Australia for a defined period after completing a qualifying Australian course. Streams, work rights, and validity periods depend on your qualification level, where you studied, and current legislative settings—not on course marketing alone.",
+          "bullets": [
+            "Confirm your qualification meets the relevant 485 stream criteria",
+            "Understand application timing relative to course completion and visa expiry",
+            "Treat post-study work as a bridge—not a guarantee of permanent residence"
+          ]
+        },
+        {
+          "title": "Subclass 485 streams in practical terms",
+          "body": "The Graduate Work stream and Post-Study Work stream serve different profiles. Graduate Work typically requires a skills assessment in an occupation on a relevant list, while Post-Study Work is linked to higher education qualifications obtained in Australia. Eligibility rules, validity periods, and regional study settings change—verify the current subclass 485 page rather than relying on outdated summaries."
+        },
+        {
+          "title": "Timing, compliance, and student visa history",
+          "body": "485 applications usually need careful sequencing around your final results, completion letters, health and character requirements, and the expiry of your student visa. Gaps in compliance during study—such as course progress issues or condition breaches—can affect later applications. A structured timeline reduces last-minute lodgement pressure."
+        },
+        {
+          "title": "Work rights and employer expectations",
+          "body": "Post-study work visas can help graduates gain Australian experience, but employers still assess skills, visa duration, and role fit independently. Use the work period to build evidence that may support future skilled or employer-sponsored pathways where eligible, while staying within visa conditions at all times."
+        },
+        {
+          "title": "Linking post-study work to skilled migration",
+          "body": "Many graduates later explore points-tested or employer-sponsored skilled visas. Those pathways have separate eligibility rules, occupation lists, and competitiveness thresholds. Post-study work can strengthen experience narratives, but it does not replace skills assessments, English scores, or nomination requirements where they apply.",
+          "bullets": [
+            "Map occupation and ANZSCO alignment early if skilled migration is a long-term goal",
+            "Keep employment references consistent with duties you may later nominate",
+            "Use the official visa listing to compare 485 with 189, 190, 491, and employer streams"
+          ]
+        },
+        {
+          "title": "Why work with MinRosh Migration",
+          "body": "MinRosh focuses on practical sequencing rather than outcome promises. We help graduates understand whether 485 is realistic for their qualification, what documents to prioritise, and how post-study plans interact with compliance and future pathway options.",
+          "bullets": [
+            "Plain-English orientation on 485 streams and timing",
+            "Document sequencing before lodgement deadlines",
+            "Context for skilled migration planning without overselling PR pathways"
+          ]
+        },
+        {
+          "title": "Book a consultation for post-study planning",
+          "body": "If you are approaching course completion or your student visa is nearing expiry, a focused consultation can clarify whether a 485 application fits your facts and what to prepare first."
+        }
+      ],
+      "faq": [
+        {
+          "question": "What is the main post-study work visa in Australia?",
+          "answer": "The Temporary Graduate visa (subclass 485) is the primary post-study work pathway for many eligible graduates. Streams and criteria depend on qualification level, study location, and current Home Affairs settings."
+        },
+        {
+          "question": "Does completing study automatically lead to permanent residence?",
+          "answer": "No. Post-study work visas are temporary. Permanent residence requires separate eligible pathways such as skilled migration or employer sponsorship, each with its own criteria and competitiveness."
+        },
+        {
+          "question": "When should I apply for subclass 485?",
+          "answer": "Timing depends on course completion evidence, visa expiry, and stream requirements. Applying too late can create status gaps—plan several months before your student visa ends where possible."
+        },
+        {
+          "question": "Where can I verify 485 requirements officially?",
+          "answer": "Use the Department of Home Affairs visa listing and the Temporary Graduate visa (subclass 485) page for authoritative criteria, fees, and document checklists."
+        },
+        {
+          "question": "Can I work full time on a post-study visa?",
+          "answer": "Work rights depend on the visa grant and conditions attached to your subclass. Always read your grant letter and the official visa conditions rather than assuming unlimited work."
+        }
+      ],
+      "relatedGuides": [
+        {
+          "title": "Student Visa Australia overview",
+          "href": "/student-visa-australia"
+        },
+        {
+          "title": "Skilled Migration Australia overview",
+          "href": "/skilled-migration"
+        },
+        {
+          "title": "Australian visas: official sources hub",
+          "href": "/australian-visas-official-sources"
+        },
+        {
+          "title": "Student visa requirements explained",
+          "href": "/student-visa-australia-requirements"
+        }
+      ]
+    },
     "bookConsultation": {
       "path": "/book-consultation",
       "title": "Book a Consultation",
