@@ -10,3 +10,10 @@ Same flow via npm (from repo root):
   cd ~/minrosh-migration && npm run deploy:server
 
 Wrong (missing space or &&): cd ~/minrosh-migrationgit pull...
+
+Uptime monitor (install once on server — checks every 5 min, auto-recovers, emails admin):
+  crontab -e
+  */5 * * * * bash /home/YOUR_USER/minrosh-migration/scripts/uptime-watch.sh >>/tmp/minrosh-uptime-watch.log 2>&1
+
+Manual test:
+  cd ~/minrosh-migration && npm run uptime:watch

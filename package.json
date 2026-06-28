@@ -21,6 +21,7 @@
     "maintenance:off": "bash scripts/toggle-maintenance.sh off",
     "maintenance:status": "bash scripts/toggle-maintenance.sh status",
     "deploy:update": "bash scripts/update-server.sh",
+    "uptime:watch": "bash scripts/uptime-watch.sh",
     "lint": "next lint",
     "test": "npm run test:unit",
     "test:contact": "node scripts/test-contact-save.mjs",

@@ -34,6 +34,7 @@ artifacts/
 jsconfig.tsbuildinfo
 next-env.d.ts
 maintenance.lock
+data/uptime-watch-state.json
 
 # Large local homepage preview exports (section thumbnails still tracked under reports/stage2-review/)
 reports/stage2-review/*fullpage.png
