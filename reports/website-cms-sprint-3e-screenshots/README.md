@@ -1,11 +1,12 @@
-# Sprint 3e screenshot checklist
+# Sprint 3e — Staging screenshots
 
-| Filename | What to capture |
-|----------|-----------------|
-| `post-study-fallback-desktop.png` | `/post-study-visa-australia` CMS flag OFF — legacy ContentPage guide |
-| `post-study-fallback-mobile.png` | Same, mobile viewport (390×844) |
-| `post-study-cms-desktop.png` | CMS hero + text — flag ON, published content |
-| `post-study-cms-mobile.png` | Same, mobile viewport |
-| `admin-post-study-edit-publish.png` | `/admin/website/pages/post-study-visa-australia` |
+Formal staging verification (2026-06-28).
 
-SEO/schema verified via curl: canonical, OG tags, `BreadcrumbList`, `FAQPage` JSON-LD; sitemap includes `/post-study-visa-australia`.
+| File | Description |
+|------|-------------|
+| `post-study-legacy-desktop-cms-off.png` | Legacy guide — `NEXT_PUBLIC_WEBSITE_CMS_ENABLED=false` |
+| `post-study-cms-desktop-cms-on.png` | CMS blocks — flag on, published content |
+| `post-study-cms-mobile-cms-on.png` | CMS blocks — mobile (390×844) |
+| `admin-post-study-edit-publish.png` | Admin Website Manager editor (prior capture) |
+
+Staging instance: PM2 `minrosh-staging` on port **3001** (`feature/website-cms` build).
