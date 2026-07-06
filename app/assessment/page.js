@@ -66,19 +66,17 @@ export default async function AssessmentPage() {
       />
 
       <div className="conversion-premium-phase1 page-assessment-shell bg-[var(--brand-cream)] pb-14 md:pb-16">
-      <div className="w-full max-w-[var(--content-max)] mx-auto px-[var(--content-pad)]">
-      <div className="content-page page-assessment-premium">
-        <BreadcrumbsNav
-          currentPath="/assessment"
-          items={[
-            { label: "Home", href: "/" },
-            { label: "Free assessment", href: "/assessment" },
-          ]}
-        />
+        <div className="w-full max-w-[var(--content-max)] mx-auto px-[var(--content-pad)]">
+          <div className="content-page page-assessment-premium">
+            <BreadcrumbsNav
+              currentPath="/assessment"
+              items={[
+                { label: "Home", href: "/" },
+                { label: "Free assessment", href: "/assessment" },
+              ]}
+            />
 
-        <div className="page-assessment-prototype">
-          <div className="page-assessment-prototype__split">
-            <div className="min-w-0 glass-card rounded-[2rem] bg-[rgba(255,255,255,0.75)] p-6 shadow-[0_12px_40px_rgba(74,24,48,0.06)] backdrop-blur-[20px] md:p-8">
+            <section className="page-assessment-hero glass-card rounded-[2rem] bg-[rgba(255,255,255,0.75)] p-6 shadow-[0_12px_40px_rgba(74,24,48,0.06)] backdrop-blur-[20px] md:p-8">
               <p className="section-label">Free assessment</p>
               <h1 className="page-assessment-intro__title mt-2 text-3xl font-black tracking-tight text-brand-plum [font-family:var(--font-display),Georgia,serif] sm:text-4xl md:text-[2.4rem]">
                 Check eligibility in a few minutes — then choose your next step with clarity
@@ -98,34 +96,34 @@ export default async function AssessmentPage() {
                   No obligation
                 </span>
               </div>
+            </section>
 
-              <div className="mt-10 space-y-6">
-                <div>
-                  <p className="text-[11px] font-black uppercase tracking-[0.18em] text-brand-rose">What happens next</p>
-                  <ol className="mt-4 space-y-4">
-                    {assessmentSteps.map((step) => (
-                      <li
-                        key={step.title}
-                        className="glass-card flex gap-4 rounded-2xl border border-brand-plum/10 bg-[rgba(255,255,255,0.75)] p-4 shadow-sm backdrop-blur-[20px]"
-                      >
-                        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#881337] text-sm font-black text-white">
-                          {step.number}
-                        </span>
-                        <div className="min-w-0">
-                          <p className="font-bold text-brand-plum">{step.title}</p>
-                          <p className="page-assessment-step__desc mt-1 text-sm text-brand-plum/70">{step.description}</p>
-                        </div>
-                      </li>
-                    ))}
-                  </ol>
-                </div>
+            <div className="page-assessment-prototype__split">
+              <section className="page-assessment-steps min-w-0 glass-card rounded-[2rem] border border-brand-plum/10 bg-[rgba(255,255,255,0.75)] p-5 shadow-lux backdrop-blur-[20px] md:p-7">
+                <p className="text-[11px] font-black uppercase tracking-[0.18em] text-brand-rose">What happens next</p>
+                <ol className="mt-4 space-y-4">
+                  {assessmentSteps.map((step) => (
+                    <li
+                      key={step.title}
+                      className="flex gap-4 rounded-2xl border border-brand-plum/10 bg-white/80 p-4 shadow-sm"
+                    >
+                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#881337] text-sm font-black text-white">
+                        {step.number}
+                      </span>
+                      <div className="min-w-0">
+                        <p className="font-bold text-brand-plum">{step.title}</p>
+                        <p className="page-assessment-step__desc mt-1 text-sm text-brand-plum/70">{step.description}</p>
+                      </div>
+                    </li>
+                  ))}
+                </ol>
 
-                <div className="flex flex-wrap gap-x-3 gap-y-3 sm:gap-x-4">
+                <div className="page-assessment-cta-row mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                   <TrackedLink
                     href="/#quiz"
                     eventName="cta_click"
                     eventParams={{ cta_id: "assessment_points_wizard", cta_location: "assessment_split", destination: "/#quiz" }}
-                    className={`${CONVERSION_PREMIUM_PRIMARY_CTA_CLASS} inline-flex px-5`}
+                    className={`${CONVERSION_PREMIUM_PRIMARY_CTA_CLASS} inline-flex w-full justify-center px-5 sm:w-auto`}
                   >
                     Open points wizard
                   </TrackedLink>
@@ -137,54 +135,55 @@ export default async function AssessmentPage() {
                       cta_location: "assessment_split",
                       destination: "/book-consultation",
                     }}
-                    className={`${CONVERSION_PREMIUM_PRIMARY_CTA_CLASS} inline-flex px-5`}
+                    className={`${CONVERSION_PREMIUM_PRIMARY_CTA_CLASS} inline-flex w-full justify-center px-5 sm:w-auto`}
                   >
                     Book consultation
                   </TrackedLink>
-                  <Link href="/contact" className="btn btn-ghost inline-flex min-h-[48px] items-center justify-center rounded-full px-5">
+                  <Link
+                    href="/contact"
+                    className="btn btn-ghost inline-flex min-h-[48px] w-full items-center justify-center rounded-full px-5 sm:w-auto"
+                  >
                     Contact form
                   </Link>
                 </div>
+              </section>
+
+              <div className="page-assessment-prototype__navigator-shell min-w-0">
+                <Suspense fallback={<AssessmentNavigatorFallback />}>
+                  <SmartNavigator
+                    title="Step through the Smart Navigator"
+                    description="Select the answers that best match your situation today. You can restart anytime — bring notes from the Department of Home Affairs visa listing if you already know a subclass."
+                    primaryLabel="Continue"
+                    finalHref="/book-consultation"
+                  />
+                </Suspense>
               </div>
             </div>
 
-            <div className="page-assessment-prototype__navigator-shell min-w-0">
-              <Suspense fallback={<AssessmentNavigatorFallback />}>
-                <SmartNavigator
-                  title="Step through the Smart Navigator"
-                  description="Select the answers that best match your situation today. You can restart anytime — bring notes from the Department of Home Affairs visa listing if you already know a subclass."
-                  primaryLabel="Continue"
-                  finalHref="/book-consultation"
-                />
-              </Suspense>
-            </div>
+            <details
+              className="content-section content-accordion bento-hover glass-card rounded-[2rem] border border-brand-plum/10 bg-[rgba(255,255,255,0.75)] p-4 backdrop-blur-[20px] md:p-6"
+              open
+            >
+              <summary className="content-accordion__summary">
+                <h2 className="[font-family:var(--font-display),Georgia,serif]">Before you start — quick preparation</h2>
+              </summary>
+              <div className="content-accordion__body">
+                <p className="text-brand-plum/80">
+                  Stronger inputs produce clearer routing. If you can, have your occupation or study goal, destination
+                  preference, and rough timeline ready. When you are unsure which Australian stream applies, skim the
+                  official visa listing first, then return here.
+                </p>
+                <ul className="feature-list mt-4">
+                  <li>English test status and partner details (if relevant)</li>
+                  <li>Whether you need urgent human review versus self-paced research</li>
+                  <li>Links or screenshots from official sources you are already using</li>
+                </ul>
+              </div>
+            </details>
+
+            <PushNotificationPrimer variant="card" enquiryId="" />
           </div>
-
-          <details
-            className="content-section content-accordion bento-hover glass-card mt-10 rounded-[2rem] border border-brand-plum/10 bg-[rgba(255,255,255,0.75)] p-4 backdrop-blur-[20px] md:mt-12 md:p-6"
-            open
-          >
-            <summary className="content-accordion__summary">
-              <h2 className="[font-family:var(--font-display),Georgia,serif]">Before you start — quick preparation</h2>
-            </summary>
-            <div className="content-accordion__body">
-              <p className="text-brand-plum/80">
-                Stronger inputs produce clearer routing. If you can, have your occupation or study goal, destination
-                preference, and rough timeline ready. When you are unsure which Australian stream applies, skim the
-                official visa listing first, then return here.
-              </p>
-              <ul className="feature-list mt-4">
-                <li>English test status and partner details (if relevant)</li>
-                <li>Whether you need urgent human review versus self-paced research</li>
-                <li>Links or screenshots from official sources you are already using</li>
-              </ul>
-            </div>
-          </details>
-
-          <PushNotificationPrimer variant="card" enquiryId="" />
         </div>
-      </div>
-      </div>
       </div>
     </SiteShell>
   );

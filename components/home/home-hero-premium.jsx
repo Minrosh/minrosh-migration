@@ -221,7 +221,7 @@ export function HomeHeroPremium({ whatsappHref }) {
                       eventName="whatsapp_clicked"
                       eventParams={{ cta_id: "hero_whatsapp", cta_location: "home_hero", destination: "whatsapp" }}
                       aria-label="Talk to a human on WhatsApp"
-                      className="home-hero-premium__cta inline-flex min-h-[52px] w-full items-center justify-center rounded-full border-2 border-[#881337]/25 bg-white/90 px-7 py-3.5 text-center text-base font-bold text-[#881337] shadow-sm outline-none ring-offset-2 transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-[#881337]/40 focus-visible:ring-2 focus-visible:ring-[#881337]/35 sm:w-auto sm:min-w-[280px]"
+                      className="home-hero-premium__cta home-hero-premium__cta--secondary inline-flex min-h-[52px] w-full items-center justify-center rounded-full border-2 border-[#881337]/25 bg-white/90 px-7 py-3.5 text-center text-base font-bold text-[#881337] shadow-sm outline-none ring-offset-2 ring-offset-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-[#881337]/40 hover:bg-white focus-visible:ring-2 focus-visible:ring-[#881337]/35 sm:w-auto sm:min-w-[280px]"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
