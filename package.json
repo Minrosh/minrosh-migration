@@ -29,6 +29,7 @@
     "test:smtp": "node --env-file=.env scripts/test-smtp.mjs",
     "test:smtp:shell": "node scripts/test-smtp.mjs",
     "test:unit": "vitest run",
+    "migrate:website-cms-seed": "node scripts/migrate-website-cms-seed.mjs",
     "test:e2e": "playwright test",
     "test:e2e:live-mobile": "playwright test e2e/mobile-layout-live.spec.mjs",
     "purge:cdn": "node scripts/purge-cdn.js",

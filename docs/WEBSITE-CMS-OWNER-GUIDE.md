@@ -18,20 +18,25 @@ Plain-language guide for editing MinRosh website wording from the admin panel.
 ## Save draft
 
 - Click **Save draft**
-- Changes are stored in `data/website-pages.json` only
-- The **live public website does not change** until CMS is wired and enabled (not yet in Sprint 2)
+- Changes are stored in `data/website-pages.json`
+- With CMS flag **off** on production, visitors still see legacy content
 
 ## Preview
 
-- Click **Preview** to open an admin-only preview tab
-- Or visit `/admin/website/preview/about` (replace `about` with the page slug)
-- Preview shows your **draft** content — visitors do not see it
+- Click **Preview** or visit `/admin/website/preview/about` (use the page slug)
+- Preview shows **draft** content — not visible to the public until publish + CMS flag on
 
 ## Publish
 
 - Click **Publish** after saving a draft
-- This copies the draft into the **published** JSON snapshot and adds a **version history** entry
-- Until public pages are connected on staging, publish updates data only — not the live site
+- Copies draft to **published** JSON and records **version history**
+- Public pages update only when `NEXT_PUBLIC_WEBSITE_CMS_ENABLED=true` on that environment
+
+## Homepage (special rules)
+
+- The **hero always stays the legacy homepage hero** — CMS hero blocks on `/` are ignored
+- Production homepage publish requires **owner approval** and owner/super role
+- Complete desktop + mobile visual comparison before publishing homepage to production
 
 ## Rollback
 
@@ -61,8 +66,8 @@ Plain-language guide for editing MinRosh website wording from the admin panel.
 
 - CRM, Leads, Invoices, Quotes, Users, Intelligence pipelines
 - Do not edit code or CSS from this panel
-- **Homepage** will be connected last — use About or Contact first when staging wiring begins
-- Do not enable `NEXT_PUBLIC_WEBSITE_CMS_ENABLED=true` on production without developer/owner sign-off
+- **Homepage hero** is protected — CMS only changes bands below the hero
+- Do not enable `NEXT_PUBLIC_WEBSITE_CMS_ENABLED=true` on production without owner sign-off
 
 ## Need help?
 

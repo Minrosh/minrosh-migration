@@ -15,12 +15,32 @@ const PAGES = [
   { slug: "/skilled-migration", pageTitle: "Skilled Migration", heading: "CMS Skilled Migration — Staging Verify 3d" },
   { slug: "/post-study-visa-australia", pageTitle: "Post-Study Visa Australia", heading: "CMS Post-Study Visa — Staging Verify 3e" },
   { slug: "/faq", pageTitle: "FAQ", heading: "CMS FAQ — Staging Verify 3f" },
+  {
+    slug: "/",
+    pageTitle: "Homepage",
+    heading: "CMS Homepage — Staging Verify 3h",
+    sectionsOnly: [
+      {
+        id: "text-home-staging",
+        type: "text",
+        props: {
+          heading: "CMS Homepage — Staging Verify 3h",
+          body: "Homepage CMS band below legacy hero for formal staging verification.",
+        },
+      },
+    ],
+  },
+  {
+    slug: "/destinations/australia",
+    pageTitle: "Australia",
+    heading: "CMS Destination Australia — Staging Verify 3h",
+  },
 ];
 
 const now = new Date().toISOString();
 
 const pages = PAGES.map((page) => {
-  const sections = [
+  const sections = page.sectionsOnly ?? [
     {
       id: `hero-${page.slug.replace(/\//g, "")}`,
       type: "hero",

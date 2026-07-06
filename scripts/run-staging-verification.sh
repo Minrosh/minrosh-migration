@@ -10,6 +10,7 @@ PAGES=(
   "/skilled-migration|CMS Skilled Migration — Staging Verify 3d|SkillSelect"
   "/post-study-visa-australia|CMS Post-Study Visa — Staging Verify 3e|Post-Study"
   "/faq|CMS FAQ — Staging Verify 3f|Frequently asked questions about migration pathways"
+  "/destinations/australia|CMS Destination Australia — Staging Verify 3h|Australia"
 )
 
 log() { echo "[verify] $*"; }
@@ -64,8 +65,11 @@ done
 
 code="$(curl -sS -o /tmp/home.html -w "%{http_code}" "${BASE}/")"
 [[ "$code" == "200" ]]
-echo "$(cat /tmp/home.html)" | grep -q 'portal-shell--premium-home' && log "PASS homepage shell present"
-echo "$(cat /tmp/home.html)" | grep -q 'CMS About' && { echo "FAIL homepage shows CMS about marker"; exit 1; } || log "PASS homepage not CMS-wired"
+home_html="$(cat /tmp/home.html)"
+echo "$home_html" | grep -q 'portal-shell--premium-home' || { echo "FAIL homepage missing legacy hero shell"; exit 1; }
+log "PASS homepage legacy hero shell present"
+echo "$home_html" | grep -qF 'CMS Homepage — Staging Verify 3h' || { echo "FAIL homepage missing CMS band below hero"; exit 1; }
+log "PASS homepage CMS band below hero"
 
 log "=== corrupt JSON fallback ==="
 PAGES_FILE="/home/minrosh/minrosh-migration/.next/standalone/data/website-pages.json"
