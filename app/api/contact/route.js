@@ -82,8 +82,23 @@ export async function POST(request) {
 
   const validated = parseContactSubmission(body);
   if (!validated.ok) {
+    obsLogger.warn("contact_validation_failed", {
+      requestId: context.requestId,
+      reason: validated.error,
+    });
     return apiFail({ code: API_ERROR_CODES.VALIDATION_FAILED, message: validated.error, status: 400 }, context);
   }
+
+  const enquiryId = validated.value.id;
+  const hasConsultationSlotInput = Boolean(
+    validated.value.preferredDate && validated.value.preferredTime && validated.value.email,
+  );
+  obsLogger.info("contact_post_accepted", {
+    requestId: context.requestId,
+    enquiryId,
+    consultationRequested: hasConsultationSlotInput,
+    bookingType: validated.value.bookingType || "",
+  });
 
   if (String(process.env.REQUIRE_PRIVACY_CONSENT_ON_CONTACT || "").toLowerCase() === "true") {
     if (validated.value.privacyPolicyAccepted !== true) {
@@ -160,6 +175,11 @@ export async function POST(request) {
   };
 
   saveEnquiry(enquiryRecord);
+  obsLogger.info("contact_enquiry_saved_local", {
+    requestId: context.requestId,
+    enquiryId: enquiryRecord.id,
+    consultationRequested: Boolean(enquiryRecord.preferredDate && enquiryRecord.preferredTime),
+  });
   try {
     let customerId = "";
     try {
@@ -223,10 +243,25 @@ export async function POST(request) {
       } else {
         calendarResult = { created: false, reason: "slot_unavailable" };
       }
-    } catch {
+    } catch (calendarErr) {
+      obsLogger.warn("contact_calendar_provider_error", {
+        requestId: context.requestId,
+        enquiryId: enquiryRecord.id,
+        reason: String(/** @type {{ message?: string }} */ (calendarErr)?.message || "calendar_error").slice(0, 200),
+      });
       calendarResult = { created: false, reason: "calendar_error" };
     }
   }
+
+  obsLogger.info("contact_calendar_result", {
+    requestId: context.requestId,
+    enquiryId: enquiryRecord.id,
+    consultationRequested: hasConsultationSlot,
+    booked: Boolean(calendarResult.created),
+    calendarReason: calendarResult.reason || availabilityResult.reason || "",
+    slotChecked: Boolean(availabilityResult.checked),
+    slotAvailable: availabilityResult.available,
+  });
 
   const calendarWarning =
     !hasConsultationSlot
@@ -283,14 +318,16 @@ export async function POST(request) {
   };
   const supabaseResult = await dualWriteEnquiryToSupabase(enquiryMirrorPayload);
   if (supabaseResult.skipped) {
-    processing.supabaseDualWrite = supabaseResult.ok ? "skipped_env" : "skipped";
+    processing.supabaseDualWrite =
+      supabaseResult.reason === "supabase_not_configured" ? "skipped_env" : "skipped";
   } else {
     processing.supabaseDualWrite = supabaseResult.ok ? "ok" : "failed";
   }
   const supabasePersisted = Boolean(supabaseResult.ok && !supabaseResult.skipped);
 
-  if (!supabaseResult.ok) {
+  if (!supabaseResult.ok && !supabaseResult.skipped) {
     obsLogger.error("contact_supabase_dual_write_failed_pre_email", {
+      requestId: context.requestId,
       enquiryId: enquiryRecord.id,
       reason: String(supabaseResult.error || "unknown"),
     });
@@ -298,7 +335,7 @@ export async function POST(request) {
       {
         code: API_ERROR_CODES.UPSTREAM_ERROR,
         message:
-          "Your enquiry could not be saved to our secure records right now, so we have not sent emails yet. Please retry in a few minutes.",
+          "Your enquiry was saved on our server, but the secure backup database is temporarily unavailable. Please retry in a few minutes or contact us directly so we can confirm your booking.",
         status: 503,
         details: {
           reason: supabaseResult.error || "supabase_dual_write_failed",
@@ -313,6 +350,10 @@ export async function POST(request) {
 
   if (!mailResult.internalSent) {
     if (mailResult.reason === "smtp_not_configured") {
+      obsLogger.warn("contact_smtp_not_configured", {
+        requestId: context.requestId,
+        enquiryId: enquiryRecord.id,
+      });
       return apiOk(
         {
           id: enquiryRecord.id,
@@ -327,17 +368,21 @@ export async function POST(request) {
           leadDriveFolderUrl: enquiryRecord.leadDriveFolderUrl || undefined,
           checkoutUrl: checkoutUrl || undefined,
           processing,
-          warning: "Enquiry saved, but SMTP is not configured yet.",
+          warning: calendarWarning
+            ? `${calendarWarning} Enquiry saved, but SMTP is not configured yet. Our team will follow up manually.`
+            : "Enquiry saved, but SMTP is not configured yet. Our team will follow up manually.",
         },
         context
       );
     }
     if (supabasePersisted) {
       obsLogger.warn("contact_internal_mail_failed_after_supabase", {
+        requestId: context.requestId,
         enquiryId: enquiryRecord.id,
         reason: mailResult.reason || "smtp_error",
       });
       console.error("[contact] internal mail failed after enquiries_mirror success", {
+        requestId: context.requestId,
         enquiryId: enquiryRecord.id,
         reason: mailResult.reason,
       });

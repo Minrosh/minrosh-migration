@@ -142,7 +142,10 @@ function mapContactErrorMessage(errorCode, fallbackMessage) {
     return fallbackMessage || "This request conflicts with recent activity. Please review and try again.";
   }
   if (errorCode === "INTERNAL_ERROR" || errorCode === "UPSTREAM_ERROR") {
-    return "We are having trouble completing your request right now. Please try again shortly.";
+    if (/secure backup database|supabase/i.test(fallbackMessage || "")) {
+      return fallbackMessage;
+    }
+    return "We are having trouble completing your request right now. Please try again shortly, or contact us by phone or email.";
   }
   if (errorCode === "MAIL_DELIVERY_FAILED") {
     return "We could not send your enquiry by email right now. Please try again in a few minutes, or contact us by phone or email.";
