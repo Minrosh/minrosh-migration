@@ -25,6 +25,7 @@ const clusters = {
     description: "Start your Australian education journey with our student visa requirements and course guides.",
     links: [
       { href: "/student-visa-australia", label: "Student Visa Overview" },
+      { href: "/post-study-visa-australia", label: "Post-Study Visa Guide" },
       { href: "/student-visa-australia-requirements", label: "Visa Requirements" },
       { href: "/education-consultation", label: "Book Education Consultation" },
     ]

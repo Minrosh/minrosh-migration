@@ -47,6 +47,9 @@ export function SiteHeaderMobileUtilities({ brand, whatsappHref = "" }) {
   const destinationPickerRef = useRef(null);
   const topbarBrand = { ...brand, whatsappSecondary: "" };
   const showWhatsApp = typeof whatsappHref === "string" && /wa\.me\/\d+/.test(whatsappHref);
+  const phoneRaw = String(brand?.phone || "").trim();
+  const telHref = phoneRaw ? `tel:${phoneRaw.replace(/\s+/g, "")}` : "";
+  const phoneAria = phoneRaw ? `Call ${phoneRaw}` : "Call MinRosh";
 
   function closeDestinationPicker() {
     if (destinationPickerRef.current) destinationPickerRef.current.open = false;
@@ -73,9 +76,11 @@ export function SiteHeaderMobileUtilities({ brand, whatsappHref = "" }) {
         <Link className="site-header__icon-btn" href="/contact" aria-label="Open contact page for email enquiries">
           <IconMail />
         </Link>
-        <a className="site-header__icon-btn" href="tel:0478100542" aria-label="Call 0478 100 542">
-          <IconPhone />
-        </a>
+        {telHref ? (
+          <a className="site-header__icon-btn" href={telHref} aria-label={phoneAria}>
+            <IconPhone />
+          </a>
+        ) : null}
         {showWhatsApp ? (
           <a
             className="site-header__icon-btn"

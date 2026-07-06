@@ -1,89 +1,61 @@
 import Link from "next/link";
-import { FOOTER_SERVICE_LINKS } from "../lib/public-indexable-routes";
 import { SiteFooterInteractive } from "./site-footer-interactive";
-import { SiteHeaderMetaRow } from "./site-header-meta-row";
 
-const serviceLinks = FOOTER_SERVICE_LINKS;
-
-const businessLinks = [
-  { href: "/about", label: "About" },
-  { href: "/assessment", label: "Free Assessment" },
-  { href: "/faq", label: "FAQ" },
-  { href: "/contact", label: "Contact" },
-];
-
-const destinationLinks = [
-  { href: "/destinations/australia", label: "Australia" },
-  { href: "/destinations/new-zealand", label: "New Zealand" },
-  { href: "/destinations/canada", label: "Canada" },
-  { href: "/destinations/united-kingdom", label: "United Kingdom" },
-];
-
-const legalLinks = [
-  { href: "/privacy-policy", label: "Privacy Policy" },
-  { href: "/disclaimer", label: "Disclaimer" },
-  { href: "/complaints", label: "Complaints" },
-  { href: "/code-of-conduct", label: "Code of Conduct" },
-  { href: "/terms-of-use", label: "Terms of Use" },
-  { href: "/sitemap.xml", label: "Sitemap" },
-];
-
-export function SiteFooter({ siteData, initialStats }) {
-  const publicBrand = { ...siteData.brand, email: "" };
+/**
+ * @param {{
+ *   siteData: object,
+ *   initialStats: object,
+ *   chrome: import("@/lib/website/site-chrome-loader").getResolvedSiteChrome extends () => infer R ? R : never,
+ *   brand: object,
+ * }} props
+ */
+export function SiteFooter({ siteData, initialStats, chrome, brand }) {
+  const publicBrand = { ...brand, email: "" };
+  const contactEmailLabel = chrome.contactEmailLabel || "Email support via contact page";
 
   return (
     <footer className="site-footer site-footer--rich">
       <div className="site-footer__inner site-footer__inner--rich">
-        <SiteFooterInteractive brand={publicBrand} initialStats={initialStats}>
+        <SiteFooterInteractive
+          brand={publicBrand}
+          initialStats={initialStats}
+          footerTagline={chrome.footerTagline}
+          footerSummary={chrome.footerSummary}
+          contactEmailLabel={contactEmailLabel}
+        >
           <>
-            <div className="site-footer__nav-col">
-              <strong>Services</strong>
-              {serviceLinks.slice(0, 7).map((link) => (
-                <Link key={link.href} href={link.href}>
-                  {link.label}
-                </Link>
-              ))}
-            </div>
-
-            <div className="site-footer__nav-col">
-              <strong>Visa Guides</strong>
-              {serviceLinks.slice(7).map((link) => (
-                <Link key={link.href} href={link.href}>
-                  {link.label}
-                </Link>
-              ))}
-            </div>
-
-            <div className="site-footer__nav-col">
-              <strong>Destinations</strong>
-              {destinationLinks.map((link) => (
-                <Link key={link.href} href={link.href}>
-                  {link.label}
-                </Link>
-              ))}
-            </div>
-
-            <div className="site-footer__nav-col">
-              <strong>Business</strong>
-              {businessLinks.map((link) => (
-                <Link key={link.href} href={link.href}>
-                  {link.label}
-                </Link>
-              ))}
-            </div>
+            {chrome.footerLinkGroups.map((group) => (
+              <div key={group.title} className="site-footer__nav-col">
+                <strong>{group.title}</strong>
+                {group.links.map((link) => (
+                  <Link key={`${group.title}-${link.href}`} href={link.href}>
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
+            ))}
           </>
         </SiteFooterInteractive>
       </div>
 
-      <div className="site-footer__notice-wrap">
-        <div className="site-footer__notice">
-          General information only. Personal circumstances should be reviewed in consultation.
+      {chrome.showMarn && chrome.marnText ? (
+        <div className="site-footer__notice-wrap">
+          <div className="site-footer__notice">MARN: {chrome.marnText}</div>
         </div>
+      ) : null}
+
+      {chrome.disclaimerText ? (
+        <div className="site-footer__notice-wrap">
+          <div className="site-footer__notice">{chrome.disclaimerText}</div>
+        </div>
+      ) : null}
+
+      <div className="site-footer__notice-wrap">
+        <div className="site-footer__notice">{chrome.footerNotice}</div>
       </div>
 
-
       <div className="site-footer__legalbar">
-        {legalLinks.map((link) => (
+        {chrome.legalLinks.map((link) => (
           <Link key={link.href} href={link.href}>
             {link.label}
           </Link>

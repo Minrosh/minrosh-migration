@@ -9,7 +9,14 @@ import { SiteSocialIcons } from "./site-social-icons";
 /**
  * Client island: brand + stats, optional middle columns (nav), newsletter last.
  */
-export function SiteFooterInteractive({ brand, initialStats, children }) {
+export function SiteFooterInteractive({
+  brand,
+  initialStats,
+  children,
+  footerTagline = "Unlock New Horizons for better tomorrow",
+  footerSummary = "Clear migration and education guidance for clients across Australia (and destination hubs worldwide).",
+  contactEmailLabel = "Email support via contact page",
+}) {
   const [stats, setStats] = useState(initialStats);
 
   useEffect(() => {
@@ -68,17 +75,17 @@ export function SiteFooterInteractive({ brand, initialStats, children }) {
           </span>
           <span className="brand__text">
             <strong>{brand.name}</strong>
-            <span>Unlock New Horizons for better tomorrow</span>
+            <span>{footerTagline}</span>
           </span>
         </Link>
-        <p className="site-footer__summary">
-          Clear migration and education guidance for clients across Australia (and destination hubs worldwide).
-        </p>
+        <p className="site-footer__summary">{footerSummary}</p>
         <div className="site-footer__quick-contact">
           <Link href="/contact" aria-label="Open contact page for email enquiries">
-            Email support via contact page
+            {contactEmailLabel}
           </Link>
-          <a href={`tel:${brand.phone.replace(/\s+/g, "")}`}>{brand.phone}</a>
+          {brand.phone ? (
+            <a href={`tel:${brand.phone.replace(/\s+/g, "")}`}>{brand.phone}</a>
+          ) : null}
         </div>
         <SiteSocialIcons brand={brand} variant="footer" />
         <div className="site-footer__stats">
