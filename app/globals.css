@@ -3055,13 +3055,39 @@ h2 {
   display: grid;
   gap: 28px;
   align-items: start;
+  min-width: 0;
 }
 
 @media (min-width: 1024px) {
   .page-assessment-prototype__split {
-    grid-template-columns: minmax(0, 1fr) minmax(320px, 1fr);
+    grid-template-columns: minmax(0, 0.92fr) minmax(360px, 1fr);
     gap: 36px;
   }
+}
+
+.page-assessment-hero {
+  min-width: 0;
+}
+
+.page-assessment-steps {
+  min-width: 0;
+}
+
+.page-assessment-cta-row .btn,
+.page-assessment-cta-row a {
+  min-width: 0;
+}
+
+.page-assessment-premium .navigator-section .navigator-section__head.section-head {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 12px;
+}
+
+.page-assessment-premium .navigator-section .navigator-section__lead.process-section__lead {
+  flex: 1 1 auto;
+  width: 100%;
+  max-width: none;
 }
 
 .page-assessment-prototype__badges {
@@ -8043,10 +8069,40 @@ button.glossary-term:focus-visible {
   box-sizing: border-box;
 }
 
+.page-book-consultation-shell.conversion-premium-phase1 {
+  padding-top: clamp(0.5rem, 2vw, 1rem);
+  box-sizing: border-box;
+}
+
 @media (min-width: 768px) {
   .page-assessment-shell.conversion-premium-phase1 {
     padding-top: clamp(0.75rem, 2.2vw, 1.35rem);
   }
+
+  .page-book-consultation-shell.conversion-premium-phase1 {
+    padding-top: clamp(0.75rem, 2.2vw, 1.35rem);
+  }
+}
+
+.page-book-consultation-premium.content-page {
+  gap: clamp(1.25rem, 3vw, 2rem);
+  min-width: 0;
+}
+
+.page-book-consultation-grid {
+  min-width: 0;
+}
+
+.conversion-premium-phase1 {
+  min-width: 0;
+  overflow-x: clip;
+}
+
+.portal-shell--premium-header:not(.portal-shell--premium-home) > main#main-content.portal-main.portal-main--immersive {
+  max-width: none;
+  width: 100%;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 .page-assessment-premium {
@@ -8417,6 +8473,7 @@ button.glossary-term:focus-visible {
   }
 
   .portal-shell--mobile-tab-bar .portal-main.portal-main--immersive:has(.page-assessment-shell),
+  .portal-shell--mobile-tab-bar .portal-main.portal-main--immersive:has(.page-book-consultation-shell),
   .portal-shell--mobile-tab-bar .portal-main.portal-main--immersive:has(.page-contact-shell),
   .portal-shell--mobile-tab-bar .portal-main.portal-main--immersive:has(.content-page form) {
     padding-bottom: calc(var(--site-mobile-tab-stack) + var(--site-mobile-floating-dock) + 56px);
