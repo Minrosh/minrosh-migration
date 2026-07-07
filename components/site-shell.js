@@ -35,7 +35,8 @@ export function SiteShell({
   const brandAria = "Go to MinRosh homepage";
 
   const isPremiumHome = currentPath === "/";
-  const headerBackdrop = isPremiumHome ? "none" : initialHeaderBackdrop;
+  const usePremiumHeader = !destinationContext;
+  const headerBackdrop = usePremiumHeader ? "none" : initialHeaderBackdrop;
 
   const backdropModifier =
     headerBackdrop === "neutral"
@@ -44,12 +45,19 @@ export function SiteShell({
         ? "site-header--backdrop-none"
         : "site-header--backdrop-au";
 
+  const shellClassName = [
+    "portal-shell",
+    "portal-shell--mobile-tab-bar",
+    isPremiumHome ? "portal-shell--premium-home" : "",
+    usePremiumHeader ? "portal-shell--premium-header" : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+
   return (
     <>
       <MarketingHeadExtras siteData={siteData} />
-      <div
-        className={`portal-shell portal-shell--mobile-tab-bar${isPremiumHome ? " portal-shell--premium-home" : ""}`}
-      >
+      <div className={shellClassName}>
       <SitePublicStickyHeader
         backdropModifier={backdropModifier}
         className="site-header--marketing"
@@ -75,7 +83,7 @@ export function SiteShell({
               <strong className="brand__name text-brand-plum">
                 {siteData.brand.name}
               </strong>
-              {isPremiumHome ? (
+              {usePremiumHeader ? (
                 <span className="brand__tagline">
                   Your Pathway. Our Guidance. Your Future.
                 </span>
