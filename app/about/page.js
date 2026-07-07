@@ -6,6 +6,17 @@ import { buildMetadata, breadcrumbJsonLd } from "../../lib/seo";
 import { PublicFileImg } from "../../components/public-file-img";
 import { AboutTeamMagnetic } from "../../components/about-team-magnetic";
 import storySignals from "../../data/about-story-signals.json";
+import {
+  PremiumCTAGroup,
+  PremiumGlassCard,
+  PremiumPageHero,
+  PremiumPageShell,
+  PremiumSectionHeader,
+} from "../../components/premium";
+import { TrackedLink } from "../../components/tracked-link";
+import { PREMIUM_BADGE_CLASS } from "../../lib/premium-page-classes";
+import { CONVERSION_PREMIUM_PRIMARY_CTA_CLASS } from "@/lib/conversion-premium-cta-class";
+import "../home.css";
 
 export const metadata = buildMetadata({
   title: "About MinRosh Migration | Brisbane Migration Guidance",
@@ -60,90 +71,108 @@ export default function AboutPage() {
           { name: "About", path: "/about" },
         ])}
       />
-      <div className="about-team-premium-shell relative min-w-0 bg-[var(--brand-cream)] pb-16 pt-8 md:pt-12">
-        <div className="w-full max-w-[var(--content-max)] mx-auto px-[var(--content-pad)]">
-          <article className="content-page">
-            <BreadcrumbsNav
-              currentPath="/about"
-              items={[
-                { label: "Home", href: "/" },
-                { label: "About", href: "/about" },
-              ]}
-            />
-            <section className="content-hero relative overflow-hidden rounded-[var(--radius-xl)] border border-white/50 shadow-[var(--shadow-lux)]">
-              <div
-                className="pointer-events-none absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_72%_18%,rgba(202,166,77,0.11),transparent_48%),radial-gradient(circle_at_12%_42%,rgba(139,29,65,0.07),transparent_45%),radial-gradient(circle_at_88%_78%,rgba(251,246,244,0.85),transparent_42%)]"
-                aria-hidden
+      <PremiumPageShell>
+        <BreadcrumbsNav
+          currentPath="/about"
+          items={[
+            { label: "Home", href: "/" },
+            { label: "About", href: "/about" },
+          ]}
+        />
+
+        <PremiumPageHero
+          eyebrow="About MinRosh"
+          title="A migration story built around clarity, care, and confident decisions"
+          lead={siteData.about.body}
+        >
+          <div className="mt-5 flex flex-wrap gap-2" role="list">
+            <span className={PREMIUM_BADGE_CLASS} role="listitem">
+              Brisbane-based
+            </span>
+            <span className={PREMIUM_BADGE_CLASS} role="listitem">
+              Australia, Canada, UK &amp; NZ pathways
+            </span>
+            <span className={PREMIUM_BADGE_CLASS} role="listitem">
+              Plain-English guidance
+            </span>
+          </div>
+          <ul className="feature-list mt-6">
+            {siteData.about.points.map((point) => (
+              <li key={point}>{point}</li>
+            ))}
+          </ul>
+          <PremiumCTAGroup>
+            <TrackedLink href="/assessment" className={CONVERSION_PREMIUM_PRIMARY_CTA_CLASS}>
+              Start free assessment
+            </TrackedLink>
+            <TrackedLink href="/book-consultation" className="btn btn-ghost min-h-[48px] rounded-full px-5">
+              Book consultation
+            </TrackedLink>
+          </PremiumCTAGroup>
+        </PremiumPageHero>
+
+        <PremiumGlassCard className="mt-8 overflow-hidden p-0 md:mt-10">
+          <div className="grid min-h-[220px] md:grid-cols-[1.05fr_0.95fr]">
+            <div className="relative min-h-[200px] md:min-h-[280px]">
+              <PublicFileImg
+                src="/images/hero-brisbane-river-cbd-hd.jpg"
+                alt="Brisbane CBD skyline and River at dusk"
+                width={1600}
+                height={900}
+                className="absolute inset-0 h-full w-full object-cover object-bottom md:object-[center_bottom]"
               />
-              <div className="content-hero__grid relative z-[1]">
-                <div className="content-hero__copy">
-                  <p className="section-label">About MinRosh</p>
-                  <h1 className="text-[var(--brand-navy)] [font-family:var(--font-display),Georgia,serif]">
-                    A migration story built around clarity, care, and confident decisions
-                  </h1>
-                  <p>{siteData.about.body}</p>
-                  <ul className="feature-list">
-                    {siteData.about.points.map((point) => (
-                      <li key={point}>{point}</li>
-                    ))}
-                  </ul>
-                </div>
-                <div className="content-hero__media" aria-hidden="true">
-                  <PublicFileImg
-                    src="/images/hero-brisbane-river-cbd-hd.jpg"
-                    alt="Brisbane CBD skyline and River at dusk"
-                    width={1600}
-                    height={900}
-                    className="h-full w-full object-cover object-bottom md:object-[center_bottom]"
-                  />
-                </div>
-              </div>
-            </section>
-
-            {trustSignals.length ? (
-              <section
-                className="about-premium-stats-strip glass-card premium-frosted-surface border-brand-plum/10 bg-[rgba(255,255,255,0.75)] shadow-[var(--shadow-lux-lg)] backdrop-blur-[20px]"
-                aria-labelledby="about-stats-heading"
-              >
-                <p className="section-label">Trust &amp; clarity</p>
-                <h2
-                  id="about-stats-heading"
-                  className="mt-2 text-xl font-bold tracking-tight text-[var(--brand-navy)] [font-family:var(--font-display),Georgia,serif] sm:text-2xl"
-                >
-                  Signals clients reference after early sessions
-                </h2>
-                <div className="about-premium-stats-strip__grid mt-6">
-                  {trustSignals.map((item) => (
-                    <div key={item.id} className="about-premium-stats-strip__item glass-card rounded-xl border border-brand-plum/10 bg-[rgba(255,255,255,0.75)] p-4 backdrop-blur-[20px]">
-                      <strong>{item.value}</strong>
-                      <span>{item.label}</span>
-                    </div>
-                  ))}
-                </div>
-              </section>
-            ) : null}
-
-            <section className="content-section">
-              <p className="section-label">Story timeline</p>
-              <h2 className="text-[var(--brand-navy)] [font-family:var(--font-display),Georgia,serif]">
-                How your journey unfolds with our team
+            </div>
+            <div className="flex flex-col justify-center p-6 md:p-8">
+              <p className="section-label">Brisbane-based identity</p>
+              <h2 className="mt-2 text-2xl font-bold text-brand-plum [font-family:var(--font-display),Georgia,serif]">
+                Local experts with a global outlook
               </h2>
-              <div className="timeline mt-6 space-y-4">
-                {timeline.map((item, idx) => (
-                  <article
-                    key={item.title}
-                    className="glass-card premium-frosted-surface rounded-2xl border border-brand-plum/12 bg-[rgba(255,255,255,0.75)] p-5 shadow-[var(--shadow-lux)] backdrop-blur-[20px]"
-                  >
-                    <div className="grid gap-3 md:grid-cols-[auto_1fr] md:items-center">
-                      <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-brand-plum text-sm font-bold text-white">
-                        {idx + 1}
-                      </span>
-                      <div>
-                        <p className="text-xs font-semibold uppercase tracking-[0.12em] text-brand-rose">{item.year}</p>
-                        <h3 className="text-lg font-bold text-[var(--brand-navy)] [font-family:var(--font-display),Georgia,serif]">
-                          {item.title}
-                        </h3>
-                        <p className="mt-1 text-sm text-brand-plum/70">{item.body}</p>
+              <p className="mt-3 text-sm leading-relaxed text-brand-plum/75 sm:text-base">
+                We help clients plan skilled, student, partner, and employer-sponsored pathways with structured guidance
+                grounded in official sources — not guesswork.
+              </p>
+            </div>
+          </div>
+        </PremiumGlassCard>
+
+        {trustSignals.length ? (
+          <PremiumGlassCard className="mt-8 p-6 md:mt-10 md:p-8" aria-labelledby="about-stats-heading">
+            <PremiumSectionHeader
+              eyebrow="Trust & clarity"
+              title="Signals clients reference after early sessions"
+            />
+            <div className="about-premium-stats-strip__grid mt-6">
+              {trustSignals.map((item) => (
+                <div
+                  key={item.id}
+                  className="about-premium-stats-strip__item rounded-2xl border border-brand-plum/10 bg-white/80 p-4 shadow-sm"
+                >
+                  <strong>{item.value}</strong>
+                  <span>{item.label}</span>
+                </div>
+              ))}
+            </div>
+          </PremiumGlassCard>
+        ) : null}
+
+        <section className="mt-8 md:mt-10">
+          <PremiumSectionHeader
+            eyebrow="Story timeline"
+            title="How your journey unfolds with our team"
+          />
+          <div className="mt-6 space-y-4">
+            {timeline.map((item, idx) => (
+              <PremiumGlassCard key={item.title} className="p-5">
+                <div className="grid gap-3 md:grid-cols-[auto_1fr] md:items-center">
+                  <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-brand-plum text-sm font-bold text-white">
+                    {idx + 1}
+                  </span>
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.12em] text-brand-rose">{item.year}</p>
+                    <h3 className="text-lg font-bold text-brand-plum [font-family:var(--font-display),Georgia,serif]">
+                      {item.title}
+                    </h3>
+                    <p className="mt-1 text-sm text-brand-plum/70">{item.body}</p>
                     {timelineAmplifiers[idx]?.proof ? (
                       <p className="mt-2 rounded-xl border border-brand-rose/20 bg-brand-rose/5 px-3 py-2 text-xs font-medium text-brand-plum/80">
                         Social proof: {timelineAmplifiers[idx].proof}
@@ -151,21 +180,21 @@ export default function AboutPage() {
                     ) : null}
                   </div>
                 </div>
-              </article>
+              </PremiumGlassCard>
             ))}
           </div>
         </section>
 
-            <section className="content-section">
-              <p className="section-label">Meet the team</p>
-              <h2 className="text-[var(--brand-navy)] [font-family:var(--font-display),Georgia,serif]">
-                The human faces behind your migration plan
-              </h2>
-              <AboutTeamMagnetic members={team} />
-            </section>
-          </article>
-        </div>
-      </div>
+        <section className="mt-8 md:mt-10">
+          <PremiumSectionHeader
+            eyebrow="Meet the team"
+            title="The human faces behind your migration plan"
+          />
+          <div className="mt-6">
+            <AboutTeamMagnetic members={team} />
+          </div>
+        </section>
+      </PremiumPageShell>
     </SiteShell>
   );
 }

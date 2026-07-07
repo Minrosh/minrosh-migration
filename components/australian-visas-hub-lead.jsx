@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { CONVERSION_PREMIUM_PRIMARY_CTA_CLASS } from "@/lib/conversion-premium-cta-class";
+import { PremiumCTAGroup } from "./premium/premium-cta-group";
 
 const FILTERS = [
   { id: "all", label: "All" },
@@ -59,7 +61,7 @@ export function AustralianVisasHubLead() {
 
   return (
     <section
-      className="premium-surface-card px-5 py-8 sm:px-8 sm:py-10"
+      className="premium-glass-card premium-surface-card px-5 py-8 sm:px-8 sm:py-10"
       aria-labelledby="aus-visas-pathways-heading"
     >
       <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between lg:gap-10">
@@ -77,20 +79,14 @@ export function AustralianVisasHubLead() {
             habits in plain language before you lodge.
           </p>
         </div>
-        <div className="flex shrink-0 flex-wrap gap-3">
-          <Link
-            href="/book-consultation"
-            className="btn btn-primary inline-flex min-h-[48px] touch-manipulation items-center justify-center rounded-full px-5 text-center transition-all hover:-translate-y-0.5"
-          >
+        <PremiumCTAGroup className="mt-0 shrink-0 lg:mt-0">
+          <Link href="/book-consultation" className={`${CONVERSION_PREMIUM_PRIMARY_CTA_CLASS} w-full justify-center sm:w-auto`}>
             Book consultation
           </Link>
-          <Link
-            href="/assessment"
-            className="btn btn-ghost inline-flex min-h-[48px] touch-manipulation items-center justify-center rounded-full px-5 text-center transition-all hover:-translate-y-0.5"
-          >
+          <Link href="/assessment" className="btn btn-ghost inline-flex min-h-[48px] items-center justify-center rounded-full px-5">
             Free assessment
           </Link>
-        </div>
+        </PremiumCTAGroup>
       </div>
 
       <div className="aus-visas-filter-tabs mt-8" role="toolbar" aria-label="Filter visa hubs">

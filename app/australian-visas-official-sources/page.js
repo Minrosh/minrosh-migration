@@ -4,7 +4,9 @@ import { AustralianVisasHubLead } from "../../components/australian-visas-hub-le
 import { ContentPage } from "../../components/content-page";
 import { SiteShell } from "../../components/site-shell";
 import { StructuredData } from "../../components/structured-data";
+import { PremiumPageShell } from "../../components/premium";
 import { articleJsonLd, breadcrumbJsonLd, buildMetadata, faqJsonLd } from "../../lib/seo";
+import "../home.css";
 
 const guideData = seoPages.guidePages.australianVisasOfficialSources;
 
@@ -33,31 +35,34 @@ export default function AustralianVisasOfficialSourcesPage() {
           datePublished: guideData.published,
         })}
       />
-      <ContentPage
-        eyebrow="Australian visas"
-        title={guideData.headline}
-        intro={guideData.intro}
-        heroImage={{
-          src: "/images/hero-brisbane-river-cbd-hd.jpg",
-          alt: "Brisbane River and CBD skyline at dusk for Australian visa planning guidance",
-        }}
-        belowHero={<AustralianVisasHubLead />}
-        articleClassName="content-page--aus-visas-hub"
-        officialResources={guideData.officialResources ?? []}
-        sections={guideData.sections}
-        faq={guideData.faq}
-        currentPath={guideData.path}
-        related={[
-          guideData.relatedService,
-          { href: "/skilled-migration", title: "Skilled migration Australia" },
-          { href: "/partner-visa-australia", title: "Partner visa Australia" },
-          { href: "/student-visa-australia", title: "Student visa Australia" },
-          { href: "/employer-sponsored-visas", title: "Employer-sponsored visas" },
-          { href: "/visitor-visas", title: "Visitor visas" },
-          { href: "/assessment", title: "Free assessment" },
-          { href: "/tools", title: "Client tools" },
-        ]}
-      />
+      <PremiumPageShell className="page-aus-visas-official-shell" contentClassName="premium-public-page__content--guide">
+        <ContentPage
+          eyebrow="Australian visas"
+          title={guideData.headline}
+          intro={guideData.intro}
+          heroImage={{
+            src: "/images/hero-brisbane-river-cbd-hd.jpg",
+            alt: "Brisbane River and CBD skyline at dusk for Australian visa planning guidance",
+          }}
+          belowHero={<AustralianVisasHubLead />}
+          articleClassName="content-page--aus-visas-hub content-page--premium-public"
+          enablePremiumGuideSurfaces
+          officialResources={guideData.officialResources ?? []}
+          sections={guideData.sections}
+          faq={guideData.faq}
+          currentPath={guideData.path}
+          related={[
+            guideData.relatedService,
+            { href: "/skilled-migration", title: "Skilled migration Australia" },
+            { href: "/partner-visa-australia", title: "Partner visa Australia" },
+            { href: "/student-visa-australia", title: "Student visa Australia" },
+            { href: "/employer-sponsored-visas", title: "Employer-sponsored visas" },
+            { href: "/visitor-visas", title: "Visitor visas" },
+            { href: "/assessment", title: "Free assessment" },
+            { href: "/tools", title: "Client tools" },
+          ]}
+        />
+      </PremiumPageShell>
     </SiteShell>
   );
 }
