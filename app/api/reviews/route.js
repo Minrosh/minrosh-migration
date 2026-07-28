@@ -1,7 +1,17 @@
 import { API_ERROR_CODES, apiFail, apiOk, requestContextFromRequest } from "@/lib/api/response";
+import { rateLimitAllow } from "@/lib/security/rate-limit";
+import { getClientIp } from "@/lib/security/request-ip";
 
 export async function GET(request) {
   const context = requestContextFromRequest(request);
+  const ip = getClientIp(request);
+  if (!rateLimitAllow(`reviews:${ip}`, { windowMs: 15 * 60 * 1000, max: 120 })) {
+    return apiFail(
+      { code: API_ERROR_CODES.RATE_LIMITED, message: "Too many requests. Try again later.", status: 429 },
+      context
+    );
+  }
+
   const apiKey = String(process.env.GOOGLE_PLACES_API_KEY || "").trim();
   const placeId = String(process.env.GOOGLE_PLACES_PLACE_ID || "").trim();
   if (!apiKey || !placeId) {

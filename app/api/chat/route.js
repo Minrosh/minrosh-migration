@@ -31,7 +31,9 @@ Official reference URLs (for suggestions only; do not quote long text from them)
 Internal site pages you may mention when relevant: /skilled-migration, /migration-sri-lanka-to-australia, /student-visa-australia, /partner-visa-australia, /book-consultation, /assessment, /destinations/australia, /destinations/new-zealand, /destinations/canada, /destinations/united-kingdom`;
 
 /** Stable ID for Google AI Studio generateContent — see https://ai.google.dev/gemini-api/docs/models/gemini */
-const defaultGeminiModel = process.env.GEMINI_MODEL || "gemini-2.5-flash";
+function serverGeminiModel() {
+  return process.env.GEMINI_MODEL || "gemini-2.5-flash";
+}
 const requestTimeoutMs = 20000;
 
 function normalizeMessages(raw) {
@@ -124,11 +126,9 @@ export async function POST(request) {
   const timeout = setTimeout(() => controller.abort(), requestTimeoutMs);
 
   try {
-    const geminiModel =
-      typeof body?.model === "string" && body.model.startsWith("gemini") ? body.model : defaultGeminiModel;
     const result = await geminiChatCompletion(systemPrompt, boundedMessages, {
       apiKey,
-      model: geminiModel,
+      model: serverGeminiModel(),
       signal: controller.signal,
     });
     if (!result.ok) {
