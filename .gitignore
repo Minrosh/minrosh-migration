@@ -26,6 +26,7 @@ data/crm-leads.json
 data/crm-tasks.json
 data/crm-automations.json
 data/nurture-queue.json
+data/.smtp-daily-send.json
 
 # Tooling noise
 codex_out.txt
