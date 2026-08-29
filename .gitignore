@@ -26,6 +26,7 @@ data/crm-leads.json
 data/crm-tasks.json
 data/crm-automations.json
 data/nurture-queue.json
+data/.smtp-daily-send.json
 
 # Tooling noise
 codex_out.txt
@@ -37,3 +38,4 @@ maintenance.lock
 
 # Large local homepage preview exports (section thumbnails still tracked under reports/stage2-review/)
 reports/stage2-review/*fullpage.png
+reports/seo-meta-audit.md

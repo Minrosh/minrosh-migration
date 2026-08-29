@@ -23,13 +23,13 @@ Why this happens:
       nano .env
 
     Add one line per variable. If the app password has spaces, use quotes in .env:
-      SMTP_PASS='ilfv xbnk fqlk prwe'
+      SMTP_PASS='xxxx xxxx xxxx xxxx'
     (Google app passwords are 16 letters — no underscores; do not replace spaces with _.)
 
   • Or export in the shell and use the script that inherits your session:
       export SMTP_HOST=smtp.gmail.com SMTP_PORT=587 SMTP_SECURE=false
       export SMTP_USER=info@minroshmigration.com.au
-      export SMTP_PASS='ilfv xbnk fqlk prwe'
+      export SMTP_PASS='xxxx xxxx xxxx xxxx'
       export SMTP_FROM=info@minroshmigration.com.au
       npm run test:smtp:shell
 

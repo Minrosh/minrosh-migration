@@ -2,6 +2,7 @@ import { saveNewsletterEntry, sendNewsletterWelcomeEmail } from "../../../lib/ne
 import { parseNewsletterSubmission, getMaxNewsletterBodyBytes } from "../../../lib/validation/newsletter-schema";
 import { rateLimitAllow } from "../../../lib/security/rate-limit";
 import { getClientIp } from "../../../lib/security/request-ip";
+import { verifyPublicFormHCaptcha } from "../../../lib/security/hcaptcha";
 import { API_ERROR_CODES, apiFail, apiOk, requestContextFromRequest } from "@/lib/api/response";
 
 export async function POST(request) {
@@ -40,6 +41,11 @@ export async function POST(request) {
   const parsed = parseNewsletterSubmission(body);
   if (!parsed.ok) {
     return apiFail({ code: API_ERROR_CODES.VALIDATION_FAILED, message: parsed.error, status: 400 }, context);
+  }
+
+  const captcha = await verifyPublicFormHCaptcha(body, ip);
+  if (!captcha.ok) {
+    return apiFail({ code: API_ERROR_CODES.VALIDATION_FAILED, message: captcha.message, status: 400 }, context);
   }
 
   const result = saveNewsletterEntry(parsed.email, { marketingConsent: parsed.marketingConsent });

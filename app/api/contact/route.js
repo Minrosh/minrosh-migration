@@ -14,7 +14,7 @@ import { findOrCreateCustomerByIdentity } from "../../../lib/admin/customers-ser
 import { dualWriteEnquiryToSupabase } from "@/lib/supabase/enquiries-dual-write";
 import { obsLogger } from "@/lib/observability/logger";
 import { API_ERROR_CODES, apiFail, apiOk, requestContextFromRequest } from "@/lib/api/response";
-import { hCaptchaEnabledOnServer, verifyHCaptchaToken } from "@/lib/security/hcaptcha";
+import { hCaptchaEnabledOnServer, verifyPublicFormHCaptcha } from "@/lib/security/hcaptcha";
 import { consultationChargeAmountCents, createStripeCheckoutSession, stripeEnabled } from "@/lib/payments/stripe";
 
 const MULTIPART_MAX_BYTES = 18 * 1024 * 1024;
@@ -99,19 +99,9 @@ export async function POST(request) {
   }
 
   if (hCaptchaEnabledOnServer()) {
-    const captchaToken = String(body?.hCaptchaToken || "").trim();
-    if (!captchaToken) {
-      return apiFail(
-        { code: API_ERROR_CODES.VALIDATION_FAILED, message: "Please complete captcha verification before submitting.", status: 400 },
-        context
-      );
-    }
-    const verification = await verifyHCaptchaToken({ token: captchaToken, remoteIp: ip });
-    if (!verification.ok) {
-      return apiFail(
-        { code: API_ERROR_CODES.VALIDATION_FAILED, message: "Captcha verification failed. Please retry.", status: 400 },
-        context
-      );
+    const captcha = await verifyPublicFormHCaptcha(body, ip);
+    if (!captcha.ok) {
+      return apiFail({ code: API_ERROR_CODES.VALIDATION_FAILED, message: captcha.message, status: 400 }, context);
     }
   }
 
@@ -328,6 +318,27 @@ export async function POST(request) {
           checkoutUrl: checkoutUrl || undefined,
           processing,
           warning: "Enquiry saved, but SMTP is not configured yet.",
+        },
+        context
+      );
+    }
+    if (mailResult.reason === "smtp_daily_cap") {
+      return apiOk(
+        {
+          id: enquiryRecord.id,
+          internalSent: false,
+          thankYouSent: false,
+          brochureAttached: false,
+          consultationBooked: Boolean(calendarResult.created),
+          slotAvailable: availabilityResult.available,
+          calendarReason: calendarResult.reason || undefined,
+          meetUrl: calendarResult.meetUrl || undefined,
+          leadDriveFolderId: enquiryRecord.leadDriveFolderId || undefined,
+          leadDriveFolderUrl: enquiryRecord.leadDriveFolderUrl || undefined,
+          checkoutUrl: checkoutUrl || undefined,
+          processing,
+          warning:
+            "Your enquiry was saved. Our email system has reached its daily send limit — we will still follow up using the details you provided.",
         },
         context
       );

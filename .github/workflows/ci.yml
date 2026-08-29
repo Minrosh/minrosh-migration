@@ -9,6 +9,10 @@ on:
 jobs:
   ci:
     runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_SITE_URL: https://ci.example.test
+      ADMIN_SESSION_SECRET: ci-test-session-secret-min-24-chars
+      ADMIN_PASSWORD: ci-test-admin-password-not-a-placeholder
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -30,6 +34,8 @@ jobs:
         run: npm run lint
       - name: Unit tests
         run: npm run test:unit
+      - name: Remove CI-generated SEO report before build
+        run: rm -f reports/seo-meta-audit.md
       - name: Production build
         run: npm run build
       - name: Install Playwright browser
