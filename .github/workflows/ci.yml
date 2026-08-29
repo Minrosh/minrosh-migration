@@ -30,6 +30,8 @@ jobs:
         run: npm run lint
       - name: Unit tests
         run: npm run test:unit
+      - name: Remove CI-generated SEO report before build
+        run: rm -f reports/seo-meta-audit.md
       - name: Production build
         run: npm run build
       - name: Install Playwright browser

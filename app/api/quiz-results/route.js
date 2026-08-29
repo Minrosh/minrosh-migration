@@ -1,6 +1,6 @@
 import crypto from "node:crypto";
-import { contactInbox, getMailTransport } from "@/lib/contact";
-import { sendSmtpMail } from "@/lib/smtp-timeout";
+import { contactInbox } from "@/lib/contact";
+import { deliverPublicEmail, isPublicMailConfigured } from "@/lib/public-mail-delivery";
 import { API_ERROR_CODES, apiFail, apiOk, requestContextFromRequest } from "@/lib/api/response";
 import { rateLimitAllow } from "@/lib/security/rate-limit";
 import { getClientIp } from "@/lib/security/request-ip";
@@ -266,8 +266,7 @@ export async function POST(request) {
   const supabaseResult = await dualWriteQuizLeadToSupabase(quizLeadId, mirrorPayload);
   const supabasePersisted = Boolean(supabaseResult.ok && !supabaseResult.skipped);
 
-  const transporter = getMailTransport();
-  if (!transporter) {
+  if (!isPublicMailConfigured()) {
     if (supabasePersisted) {
       obsLogger.warn("quiz_results_smtp_missing_after_supabase", { quizLeadId });
       return apiOk(
@@ -290,7 +289,6 @@ export async function POST(request) {
     );
   }
 
-  const smtpFrom = process.env.SMTP_FROM || contactInbox;
   const { displayName, scoreLabel } = safeSubjectFragment(name, score ?? NaN);
   const quizDetailsRows = normalizeQuizDetails(body?.details);
   const detailsRowsHtml = quizDetailsRows.length
@@ -308,10 +306,9 @@ export async function POST(request) {
   const normalizedName = safeField(name);
   const normalizedEmail = safeField(email);
   const normalizedScore = safeField(score);
-  const mailOptions = {
-    from: smtpFrom,
+  const mailPayload = {
     to: contactInbox,
-    ...(email ? { replyTo: email } : {}),
+    replyTo: email || undefined,
     subject: `Visa quiz: ${displayName} — ${scoreLabel} pts`,
     text: [
       "New visa / points quiz submission (website)",
@@ -351,7 +348,32 @@ export async function POST(request) {
   };
 
   try {
-    await sendSmtpMail(transporter, mailOptions, { enforceDailyCap: true });
+    const mailResult = await deliverPublicEmail({ ...mailPayload, enforceDailyCap: true });
+    if (!mailResult.sent) {
+      if (supabasePersisted) {
+        obsLogger.warn("quiz_results_mail_failed_after_supabase", {
+          quizLeadId,
+          reason: mailResult.reason || "send_failed",
+        });
+        return apiOk(
+          {
+            success: true,
+            quizLeadId,
+            warning:
+              "Your quiz summary was stored securely; our inbox email is temporarily unavailable. We will still retrieve your submission from our backup.",
+          },
+          context
+        );
+      }
+      return apiFail(
+        {
+          code: API_ERROR_CODES.MAIL_DELIVERY_FAILED,
+          message: "Could not deliver your quiz summary by email. Please try again shortly.",
+          status: 503,
+        },
+        context
+      );
+    }
   } catch (err) {
     console.error("quiz-results sendMail:", err);
     if (supabasePersisted) {
