@@ -3,6 +3,10 @@
 import { useRef, useState } from "react";
 import { retryAfterHint } from "@/lib/http/retry-after";
 import { REQUEST_ID_HEADER } from "@/lib/observability/request-id";
+import { isHcaptchaPublicEnabled } from "@/lib/config";
+import { HCaptchaField } from "./hcaptcha-field";
+
+const CAPTCHA_ENABLED = isHcaptchaPublicEnabled();
 
 function validateNewsletterForm(form) {
   const errors = {};
@@ -14,6 +18,9 @@ function validateNewsletterForm(form) {
   }
   if (!form.marketingConsent) {
     errors.marketingConsent = "Please confirm consent before subscribing.";
+  }
+  if (CAPTCHA_ENABLED && !String(form.hCaptchaToken || "").trim()) {
+    errors.hCaptchaToken = "Please complete the captcha verification.";
   }
   return errors;
 }
@@ -43,6 +50,7 @@ function mapNewsletterErrorMessage(errorCode, fallbackMessage) {
 export function NewsletterForm({ onSubscribed }) {
   const [email, setEmail] = useState("");
   const [marketingConsent, setMarketingConsent] = useState(false);
+  const [hCaptchaToken, setHCaptchaToken] = useState("");
   const [status, setStatus] = useState({ type: "idle", message: "" });
   const [fieldErrors, setFieldErrors] = useState({});
   const hpRef = useRef(null);
@@ -63,7 +71,7 @@ export function NewsletterForm({ onSubscribed }) {
 
   async function handleSubmit(event) {
     event.preventDefault();
-    const errors = validateNewsletterForm({ email, marketingConsent });
+    const errors = validateNewsletterForm({ email, marketingConsent, hCaptchaToken });
     setFieldErrors(errors);
     if (Object.keys(errors).length > 0) {
       setStatus({
@@ -87,6 +95,7 @@ export function NewsletterForm({ onSubscribed }) {
         body: JSON.stringify({
           email,
           marketingConsent,
+          hCaptchaToken: String(hCaptchaToken || "").trim(),
           company: hpRef.current?.value || "",
         }),
       });
@@ -130,6 +139,7 @@ export function NewsletterForm({ onSubscribed }) {
       setStatus({ type: "success", message: data.message });
       setEmail("");
       setMarketingConsent(false);
+      setHCaptchaToken("");
       setFieldErrors({});
     } catch (error) {
       setStatus({ type: "error", message: error.message || "Could not subscribe right now." });
@@ -188,6 +198,22 @@ export function NewsletterForm({ onSubscribed }) {
           <p id="newsletter-err-consent" className="field-error" role="alert">
             {fieldErrors.marketingConsent}
           </p>
+        ) : null}
+
+        {CAPTCHA_ENABLED ? (
+          <HCaptchaField
+            value={hCaptchaToken}
+            onTokenChange={(normalized) => {
+              setHCaptchaToken(normalized);
+              setFieldErrors((current) => {
+                if (!current.hCaptchaToken) return current;
+                const next = { ...current };
+                delete next.hCaptchaToken;
+                return next;
+              });
+            }}
+            error={fieldErrors.hCaptchaToken || ""}
+          />
         ) : null}
 
         <div className="site-footer__newsletter-form__actions">

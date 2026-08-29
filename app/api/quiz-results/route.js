@@ -1,6 +1,6 @@
 import crypto from "node:crypto";
 import { contactInbox, getMailTransport } from "@/lib/contact";
-import { withSmtpDeadline } from "@/lib/smtp-timeout";
+import { sendSmtpMail } from "@/lib/smtp-timeout";
 import { API_ERROR_CODES, apiFail, apiOk, requestContextFromRequest } from "@/lib/api/response";
 import { rateLimitAllow } from "@/lib/security/rate-limit";
 import { getClientIp } from "@/lib/security/request-ip";
@@ -8,6 +8,7 @@ import { isValidEmailLinear } from "@/lib/validation/contact-schema";
 import { dualWriteQuizLeadToSupabase } from "@/lib/supabase/enquiries-dual-write";
 import { notifyAdminHighPriorityQuizLead } from "@/lib/push-notify-admin";
 import { obsLogger } from "@/lib/observability/logger";
+import { verifyPublicFormHCaptcha } from "@/lib/security/hcaptcha";
 import { createSupabaseAdminClient } from "@/lib/supabase/server";
 
 const MAX_BODY_BYTES = 64 * 1024;
@@ -199,6 +200,11 @@ export async function POST(request) {
     );
   }
 
+  const captcha = await verifyPublicFormHCaptcha(body, ip);
+  if (!captcha.ok) {
+    return apiFail({ code: API_ERROR_CODES.VALIDATION_FAILED, message: captcha.message, status: 400 }, context);
+  }
+
   let detailsText = "";
   if (body?.details !== undefined && body?.details !== null) {
     try {
@@ -345,7 +351,7 @@ export async function POST(request) {
   };
 
   try {
-    await withSmtpDeadline(transporter.sendMail(mailOptions));
+    await sendSmtpMail(transporter, mailOptions, { enforceDailyCap: true });
   } catch (err) {
     console.error("quiz-results sendMail:", err);
     if (supabasePersisted) {
