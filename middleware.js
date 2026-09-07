@@ -4,6 +4,7 @@ import { getAdminSessionValueFromRequestCookies } from "./lib/admin/session-cook
 import { isLocalAdminDevBypassFromHost } from "./lib/admin/dev-bypass";
 import { buildContentSecurityPolicy } from "./lib/csp/build-csp-header";
 import { getOrCreateRequestId, REQUEST_ID_HEADER } from "./lib/observability/request-id";
+import { applyStagingRobotsHeader } from "./lib/seo-robots";
 
 const MAINTENANCE_VALUES = new Set(["1", "true", "on", "yes"]);
 
@@ -137,7 +138,8 @@ export async function middleware(request) {
   }
 
   if (!isAdminApp) {
-    return continueRequest({ htmlNoStore: true });
+    const response = continueRequest({ htmlNoStore: true });
+    return applyStagingRobotsHeader(response);
   }
 
   if (isLocalAdminDevBypassFromHost(host)) {

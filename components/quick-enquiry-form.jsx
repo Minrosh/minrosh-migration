@@ -36,17 +36,8 @@ const initial = {
 };
 
 function processingSummaryNote(processing) {
-  if (!processing || typeof processing !== "object") return "";
-  const labels = {
-    driveFolder: "Drive folder",
-    supabaseDualWrite: "Supabase sync",
-    crmLeadCapture: "CRM sync",
-    sheetSync: "Sheet sync",
-  };
-  const failed = Object.entries(processing)
-    .filter(([, status]) => status === "failed")
-    .map(([key]) => labels[key] || key);
-  return failed.length ? ` Background sync pending: ${failed.join(", ")}.` : "";
+  void processing;
+  return "";
 }
 
 function mapQuickEnquiryErrorMessage(errorCode, fallbackMessage) {

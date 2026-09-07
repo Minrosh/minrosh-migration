@@ -74,15 +74,19 @@ export default function StudentCountryCostPlannerPage() {
         <section className="content-section bento-hover">
           <h2>Next steps</h2>
           <p className="max-w-2xl text-brand-plum/80">
-            When your numbers look realistic, move to{" "}
+            Continue with the{" "}
             <Link href="/assessment" className="font-semibold text-brand-rose underline underline-offset-4">
-              the free assessment
-            </Link>{" "}
-            or{" "}
+              Official Information Finder
+            </Link>
+            ,{" "}
+            <Link href="/education-consultation" className="font-semibold text-brand-rose underline underline-offset-4">
+              Education Course Enquiry
+            </Link>
+            , or{" "}
             <Link href="/book-information-session" className="font-semibold text-brand-rose underline underline-offset-4">
-              book a consultation
+              book an information session
             </Link>{" "}
-            for sequencing, evidence, and course-to-visa alignment.
+            for general questions. These steps do not assess eligibility or recommend a visa.
           </p>
         </section>
       </article>

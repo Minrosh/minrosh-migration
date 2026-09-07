@@ -30,7 +30,12 @@ vi.mock("../lib/nurture-sequences.js", () => ({
 }));
 
 vi.mock("../lib/google-sheets-crm.js", () => ({
-  appendLeadToSheet: vi.fn(async () => {}),
+  appendLeadToSheet: vi.fn(async () => ({ appended: false, reason: "sheets_crm_not_configured" })),
+  resolveSheetSyncStatus: vi.fn((result) => {
+    if (result?.appended === true) return "success";
+    if (result?.reason === "sheets_crm_not_configured") return "not_configured";
+    return "skipped";
+  }),
 }));
 
 vi.mock("../lib/crm/leads-service.js", () => ({
@@ -121,6 +126,33 @@ describe("POST /api/contact", () => {
     const payload = await res.json();
     const j = payload?.data && typeof payload.data === "object" ? payload.data : payload;
     expect(j.id).toBeTruthy();
+    expect(j.processing).toBeUndefined();
+    expect(j.leadDriveFolderId).toBeUndefined();
+    expect(j.leadDriveFolderUrl).toBeUndefined();
+  });
+
+  it("does not expose a successful sheetSync when Sheets CRM is not configured", async () => {
+    rateLimitAllow.mockReturnValue(true);
+    const { appendLeadToSheet } = await import("../lib/google-sheets-crm.js");
+    appendLeadToSheet.mockResolvedValueOnce({ appended: false, reason: "sheets_crm_not_configured" });
+    const res = await POST(
+      req({
+        firstName: "A",
+        lastName: "B",
+        email: "a@example.com",
+        phone: "+61000000000",
+        enquiryType: "general_information",
+        mainNeed: "General Enquiry",
+        message: "Hello general information about student visas",
+        privacyPolicyAccepted: true,
+        formAcknowledgementAccepted: true,
+      }),
+    );
+    expect(res.status).toBe(200);
+    const payload = await res.json();
+    const j = payload?.data && typeof payload.data === "object" ? payload.data : payload;
+    expect(j.processing).toBeUndefined();
+    expect(JSON.stringify(j)).not.toMatch(/"sheetSync"\s*:\s*"(ok|success)"/);
   });
 
   it("returns 503 MAIL_DELIVERY_FAILED when internal SMTP send fails (configured)", async () => {

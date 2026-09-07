@@ -33,17 +33,20 @@ export default function NotFound() {
         <p className="not-found-premium__404" aria-hidden="true">
           404
         </p>
-        <p className="section-label">Page not found</p>
-        <h1>That page isn&apos;t available right now.</h1>
+        <h1>Page not found</h1>
         <p>
-          Return to the MinRosh portal to continue with the pathway questionnaire, visa hubs, or contact options.
+          The page you requested may have moved or may no longer be available. You can browse our general
+          information pages, visit the Education Course Enquiry page, or return to the homepage.
         </p>
         <div className="mt-6 flex flex-wrap justify-center gap-3">
           <Link href="/" className="btn btn-primary min-h-[48px] rounded-full px-6">
-            Go to homepage
+            Return Home
           </Link>
-          <Link href="/contact" className="btn btn-ghost min-h-[48px] rounded-full px-6">
-            Contact us
+          <Link href="/australian-visas-official-sources" className="btn btn-ghost min-h-[48px] rounded-full px-6">
+            Browse General Information
+          </Link>
+          <Link href="/education-consultation" className="btn btn-ghost min-h-[48px] rounded-full px-6">
+            Education Course Enquiry
           </Link>
         </div>
       </div>

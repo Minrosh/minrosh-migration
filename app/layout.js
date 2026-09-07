@@ -11,6 +11,7 @@ import { RuntimeChunkRecovery } from "../components/runtime-chunk-recovery";
 import { PublicSiteWidgetsGate } from "../components/public-site-widgets-gate";
 import { getDeployBuildId } from "../lib/deploy-build-id";
 import { buildRouteLoadingBootstrapScript } from "../lib/route-loading-bootstrap-script";
+import { rootRobotsMetadata } from "../lib/seo-robots";
 
 const deployBuildId = getDeployBuildId();
 
@@ -81,10 +82,7 @@ export const metadata = {
       "Independent migration information and education support using publicly available sources. Not immigration assistance or legal advice.",
     images: ["/images/hero-brisbane-river-cbd.jpg"],
   },
-  robots: {
-    index: true,
-    follow: true,
-  },
+  robots: rootRobotsMetadata(),
   alternates: {
     canonical: "/",
     types: {

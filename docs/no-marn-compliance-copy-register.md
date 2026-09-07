@@ -39,10 +39,23 @@ Approved public copy used on branch `compliance/no-marn-update`. CMS fields live
 | Booking appointment types | General Information Enquiry; Education Course and Admissions Enquiry |
 | Mandatory acknowledgement | `compliance.formAcknowledgementText` (server-enforced) |
 | Analytics events | `information_finder_started`, `information_topic_selected`, `official_link_opened`, `information_results_viewed` |
+| 404 page | Heading “Page not found”; CTAs Return Home / Browse General Information / Education Course Enquiry |
+| Tools hub | “General Information Tools” with scope disclaimer; no disabled personalised tool cards |
+| Permanent Migration Information Explorer | `/tools/pr-pathway-explorer` — topic → official links only |
 
 ## Intentionally remaining “registered migration agent” wording
 
 Referral / educational only (not self-claims): disclaimer, FAQ answers clarifying MinRosh is **not** an RMA, OMARA Code page as third-party information, lawyer-vs-agent educational guide, Information Finder “who can help” topic.
+
+## Staging-only configuration (not production)
+
+- `SITE_ENVIRONMENT=staging` enables noindex/nofollow meta, `X-Robots-Tag`, and `robots.txt` Disallow all.
+- Private loopback staging: `127.0.0.1:3001`, isolated data dir, mail/payments/analytics unset.
+- Production must leave `SITE_ENVIRONMENT` unset or `production`.
+
+## Deliberately disabled functions
+
+- Public AI chat, AI pathway funnel, personalised quiz results, public migration upload portal, Smart Navigator, destination confidence/route-strategy UI.
 
 ## Remaining items requiring external legal or privacy review
 
@@ -53,4 +66,5 @@ Referral / educational only (not self-claims): disclaimer, FAQ answers clarifyin
 5. CMS rollback controls for pre-compliance copy.
 6. Historical invoice descriptions and Google Sheet matter mirrors.
 7. Remaining `public-needs-review` “client” hits in the terminology inventory.
+8. Rotation of SMTP and Google credentials previously present on the old staging PM2 process (see technical report).
 

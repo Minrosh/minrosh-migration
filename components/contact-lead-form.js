@@ -112,17 +112,9 @@ const initialForm = {
 };
 
 function processingSummaryNote(processing) {
-  if (!processing || typeof processing !== "object") return "";
-  const labels = {
-    driveFolder: "Drive folder",
-    supabaseDualWrite: "Supabase sync",
-    crmLeadCapture: "CRM sync",
-    sheetSync: "Sheet sync",
-  };
-  const failed = Object.entries(processing)
-    .filter(([, status]) => status === "failed")
-    .map(([key]) => labels[key] || key);
-  return failed.length ? ` Background sync pending: ${failed.join(", ")}.` : "";
+  // Integration telemetry is no longer returned on public contact responses.
+  void processing;
+  return "";
 }
 
 function mapContactErrorMessage(errorCode, fallbackMessage) {

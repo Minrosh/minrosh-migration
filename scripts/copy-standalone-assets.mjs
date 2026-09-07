@@ -98,8 +98,22 @@ const nextServerWebDest = path.join(
 );
 if (fs.existsSync(nextServerWebSrc)) {
   fs.mkdirSync(path.dirname(nextServerWebDest), { recursive: true });
-  fs.cpSync(nextServerWebSrc, nextServerWebDest, { recursive: true, force: true });
-  console.log("Standalone: merged next/dist/server/web (sandbox + fetch helpers).");
+  let sameTree = false;
+  try {
+    sameTree =
+      fs.existsSync(nextServerWebDest) &&
+      fs.realpathSync(nextServerWebSrc) === fs.realpathSync(nextServerWebDest);
+  } catch {
+    sameTree = false;
+  }
+  if (sameTree) {
+    console.log(
+      "Standalone: next/dist/server/web already shared via symlink — skip merge copy.",
+    );
+  } else {
+    fs.cpSync(nextServerWebSrc, nextServerWebDest, { recursive: true, force: true });
+    console.log("Standalone: merged next/dist/server/web (sandbox + fetch helpers).");
+  }
 } else {
   console.warn(
     "copy-standalone-assets: node_modules/next/dist/server/web missing — run npm ci before build.",

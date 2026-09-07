@@ -74,13 +74,24 @@
 
 ## Verification (local, continuation pass)
 
-- Unit tests: **81 passed** (includes `tests/chat-compliance.test.mjs`)
-- Lint: **clean**
-- Typecheck: no project `tsc` script / dedicated typecheck target (JS-first repo); lint covers ESLint
-- Build: **passed** with `ACKNOWLEDGE_SHARED_RISK=1 ACKNOWLEDGE_UNKNOWN_RISK=1`
-- Rendered `.next/server/app` scan: **0 hits** for Available on request / Migration Agent Brisbane / registered migration practice / our migration agents / MARN Available
-- Screenshots: `docs/no-marn-compliance-screenshots/`
+- Unit tests: **93 passed** (includes staging robots / sheet-sync / contact telemetry tests)
+- Lint: run before commit
+- Build: use `ACKNOWLEDGE_SHARED_RISK=1` when shared zones changed; unknown zones classified in `lib/zone-manifest.mjs` (prefer classification over `ACKNOWLEDGE_UNKNOWN_RISK`)
+- Private staging: `SITE_ENVIRONMENT=staging` on `127.0.0.1:3001` only
+- Screenshots: `docs/no-marn-compliance-screenshots/` and `docs/staging-no-marn-review/`
 - **Nothing deployed to production**
+
+## Staging review remediation (resolved)
+
+| Issue | Status |
+| --- | --- |
+| Outdated 404 pathway/portal copy | Resolved |
+| `/tools` personalised cards / estimator | Resolved — General Information Tools |
+| PR pathway explorer personalised sequencing | Resolved — Permanent Migration Information Explorer |
+| False `sheetSync: "ok"` | Resolved — accurate statuses; omitted from public API |
+| Unclassified `data/*` zones | Resolved in zone-manifest |
+| Staging noindex via untracked overlay | Resolved — `SITE_ENVIRONMENT=staging` |
+| Credential exposure | Documented for admin rotation (not auto-rotated) |
 
 ## Remaining items requiring external legal or privacy review
 
@@ -92,4 +103,5 @@
 6. CMS version rollback safeguards so pre-compliance copy cannot be republished without explicit admin confirmation.
 7. Invoice/payment products historically sold as migration assistance — commercial/legal review of past charges (invoice line guard is forward-looking only).
 8. External Google Sheets/Drive/Calendar mirrors of migration matter status — access and retention review.
+9. Administrator rotation of SMTP and Google credentials previously present on the old staging PM2 process (see technical report).
 

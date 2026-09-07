@@ -13,16 +13,20 @@ export function HomePlanningTools() {
           }}
         />
         <div className="relative z-10 mx-auto w-full min-w-0">
-        <p className="text-center text-[11px] font-bold uppercase tracking-[0.28em] text-brand-rose">Student planning</p>
+        <p className="text-center text-[11px] font-bold uppercase tracking-[0.28em] text-brand-rose">
+          General information tools
+        </p>
         <h2
           id="home-tools-heading"
           className="mt-3 text-center text-2xl font-black tracking-tight text-brand-plum sm:text-3xl md:text-4xl"
         >
-          Know costs before you apply
+          Organise costs and official sources
         </h2>
         <p className="mx-auto mt-3 max-w-3xl text-center text-sm font-medium leading-relaxed text-brand-plum/70 sm:text-base">
-          Know your course cost, living cost, work income and PR options before you apply.{" "}
-          <strong className="font-black text-brand-plum">Planning estimates only—not eligibility advice.</strong>
+          These tools organise publicly available cost bands and official links.{" "}
+          <strong className="font-black text-brand-plum">
+            They do not assess eligibility, recommend a visa, or provide immigration assistance.
+          </strong>
         </p>
 
         <ul className="mt-8 grid min-w-0 list-none grid-cols-1 gap-[clamp(24px,4vw,48px)] pl-0 md:mt-10 md:grid-cols-2">
@@ -33,11 +37,11 @@ export function HomePlanningTools() {
             >
               <h3 className="text-xl font-black text-brand-plum">Student country cost planner</h3>
               <p className="mt-3 flex-1 text-sm font-medium leading-relaxed text-brand-plum/65">
-                Compare tuition, living costs, work income bands and PR pathway notes across Australia, Canada, the UK
-                and New Zealand—before you commit to a course.
+                Compare indicative tuition and living-cost bands across Australia, Canada, the UK and New Zealand using
+                publicly discussed ranges.
               </p>
               <span className="mt-5 inline-flex min-h-[48px] items-center font-black text-brand-plum underline decoration-2 underline-offset-4">
-                Open tool <span className="ml-2">→</span>
+                Open cost planner <span className="ml-2">→</span>
               </span>
             </Link>
           </li>
@@ -46,13 +50,12 @@ export function HomePlanningTools() {
               href="/tools/pr-pathway-explorer"
               className="premium-frosted-surface flex h-full min-h-[48px] flex-col rounded-[1.75rem] border border-brand-gold/30 bg-gradient-to-b from-white to-brand-gold/[0.06] p-6 shadow-[var(--shadow-lux)] transition-all hover:border-brand-rose/28 hover:shadow-[var(--shadow-lux-lg)] sm:p-7"
             >
-              <h3 className="text-xl font-black text-brand-plum">Pathway explorer</h3>
+              <h3 className="text-xl font-black text-brand-plum">Permanent Migration Information Explorer</h3>
               <p className="mt-3 flex-1 text-sm font-medium leading-relaxed text-brand-plum/65">
-                Explore common long-term residence sequences people discuss—individual eligibility depends on changing
-                rules and personal circumstances.
+                Browse general permanent and long-term visa category topics with links to official Home Affairs sources.
               </p>
               <span className="mt-5 inline-flex min-h-[48px] items-center font-black text-brand-plum underline decoration-2 underline-offset-4">
-                Open tool <span className="ml-2">→</span>
+                Browse topics <span className="ml-2">→</span>
               </span>
             </Link>
           </li>

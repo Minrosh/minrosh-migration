@@ -1,6 +1,22 @@
+import { isStagingEnvironment } from "../lib/site-environment.js";
+
 const SITE = "https://minroshmigration.com.au";
 
-export default function robots() {
+/**
+ * @param {NodeJS.ProcessEnv} [env]
+ */
+export function buildRobotsConfig(env = process.env) {
+  if (isStagingEnvironment(env)) {
+    return {
+      rules: [
+        {
+          userAgent: "*",
+          disallow: ["/"],
+        },
+      ],
+    };
+  }
+
   return {
     host: SITE,
     rules: [
@@ -20,4 +36,8 @@ export default function robots() {
     ],
     sitemap: `${SITE}/sitemap.xml`,
   };
+}
+
+export default function robots() {
+  return buildRobotsConfig();
 }

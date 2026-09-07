@@ -7,7 +7,7 @@ import { getClientIp } from "../../../lib/security/request-ip";
 import { checkConsultationAvailability, createConsultationCalendarEvent } from "../../../lib/google-calendar";
 import { createLeadDriveFolder } from "../../../lib/google-drive";
 import { enqueueNurtureLead } from "../../../lib/nurture-sequences";
-import { appendLeadToSheet } from "../../../lib/google-sheets-crm";
+import { appendLeadToSheet, resolveSheetSyncStatus } from "../../../lib/google-sheets-crm";
 import { createLead } from "../../../lib/crm/leads-service";
 import { runAutomationRules } from "../../../lib/crm/automation-runner";
 import { findOrCreateCustomerByIdentity } from "../../../lib/admin/customers-service";
@@ -26,6 +26,41 @@ import siteData from "../../../data/site.json";
 const MULTIPART_MAX_BYTES = 18 * 1024 * 1024;
 /** Public contact forms do not accept migration/resume document uploads. */
 const PUBLIC_RESUME_UPLOADS_ENABLED = false;
+
+/**
+ * Public contact success payload — omits integration telemetry and internal folder IDs.
+ * @param {Record<string, unknown>} fields
+ */
+function publicContactSuccessPayload(fields) {
+  const {
+    id,
+    ok,
+    outcome,
+    restrictedEnquiryMessage,
+    warning,
+    internalSent,
+    thankYouSent,
+    brochureAttached,
+    consultationBooked,
+    slotAvailable,
+    meetUrl,
+    checkoutUrl,
+  } = fields;
+  return {
+    ...(id != null ? { id } : {}),
+    ...(ok != null ? { ok } : {}),
+    ...(outcome != null ? { outcome } : {}),
+    ...(restrictedEnquiryMessage != null ? { restrictedEnquiryMessage } : {}),
+    ...(warning != null ? { warning } : {}),
+    ...(internalSent != null ? { internalSent } : {}),
+    ...(thankYouSent != null ? { thankYouSent } : {}),
+    ...(brochureAttached != null ? { brochureAttached } : {}),
+    ...(consultationBooked != null ? { consultationBooked } : {}),
+    ...(slotAvailable != null ? { slotAvailable } : {}),
+    ...(meetUrl ? { meetUrl } : {}),
+    ...(checkoutUrl ? { checkoutUrl } : {}),
+  };
+}
 
 export async function POST(request) {
   const context = requestContextFromRequest(request);
@@ -178,7 +213,7 @@ export async function POST(request) {
       /* best-effort */
     }
     return apiOk(
-      {
+      publicContactSuccessPayload({
         id: restrictedRecord.id,
         ok: true,
         outcome: "referred_to_authorised_professional",
@@ -187,13 +222,7 @@ export async function POST(request) {
         internalSent: false,
         thankYouSent: false,
         consultationBooked: false,
-        processing: {
-          driveFolder: "skipped",
-          supabaseDualWrite: "skipped",
-          crmLeadCapture: "skipped",
-          sheetSync: "skipped",
-        },
-      },
+      }),
       context
     );
   }
@@ -291,8 +320,8 @@ export async function POST(request) {
   }
   enqueueNurtureLead(enquiryRecord);
   try {
-    await appendLeadToSheet(enquiryRecord);
-    processing.sheetSync = "ok";
+    const sheetResult = await appendLeadToSheet(enquiryRecord);
+    processing.sheetSync = resolveSheetSyncStatus(sheetResult);
   } catch {
     // Sheets CRM sync is best-effort and should not block enquiries.
     processing.sheetSync = "failed";
@@ -398,24 +427,28 @@ export async function POST(request) {
 
   const mailResult = await sendContactEmails(enquiryRecord);
 
+  obsLogger.info("contact_processing_snapshot", {
+    enquiryId: enquiryRecord.id,
+    sheetSync: processing.sheetSync,
+    driveFolder: processing.driveFolder,
+    crmLeadCapture: processing.crmLeadCapture,
+    supabaseDualWrite: processing.supabaseDualWrite,
+  });
+
   if (!mailResult.internalSent) {
     if (mailResult.reason === "smtp_not_configured") {
       return apiOk(
-        {
+        publicContactSuccessPayload({
           id: enquiryRecord.id,
           internalSent: false,
           thankYouSent: false,
           brochureAttached: false,
           consultationBooked: Boolean(calendarResult.created),
           slotAvailable: availabilityResult.available,
-          calendarReason: calendarResult.reason || undefined,
           meetUrl: calendarResult.meetUrl || undefined,
-          leadDriveFolderId: enquiryRecord.leadDriveFolderId || undefined,
-          leadDriveFolderUrl: enquiryRecord.leadDriveFolderUrl || undefined,
           checkoutUrl: checkoutUrl || undefined,
-          processing,
           warning: "Enquiry saved, but SMTP is not configured yet.",
-        },
+        }),
         context
       );
     }
@@ -431,21 +464,17 @@ export async function POST(request) {
       const mailDownWarning =
         "Your enquiry was received and stored securely. Our email notification is delayed; we will still follow up using the details you provided.";
       return apiOk(
-        {
+        publicContactSuccessPayload({
           id: enquiryRecord.id,
           internalSent: false,
           thankYouSent: false,
           brochureAttached: false,
           consultationBooked: Boolean(calendarResult.created),
           slotAvailable: availabilityResult.available,
-          calendarReason: calendarResult.reason || undefined,
           meetUrl: calendarResult.meetUrl || undefined,
-          leadDriveFolderId: enquiryRecord.leadDriveFolderId || undefined,
-          leadDriveFolderUrl: enquiryRecord.leadDriveFolderUrl || undefined,
           checkoutUrl: checkoutUrl || undefined,
-          processing,
           warning: mailDownWarning,
-        },
+        }),
         context
       );
     }
@@ -470,21 +499,17 @@ export async function POST(request) {
       : calendarWarning;
 
   return apiOk(
-    {
+    publicContactSuccessPayload({
       id: enquiryRecord.id,
       internalSent: mailResult.internalSent,
       thankYouSent: mailResult.thankYouSent,
       brochureAttached: mailResult.brochureAttached || false,
       consultationBooked: Boolean(calendarResult.created),
       slotAvailable: availabilityResult.available,
-      calendarReason: calendarResult.reason || undefined,
       meetUrl: calendarResult.meetUrl || undefined,
-      leadDriveFolderId: enquiryRecord.leadDriveFolderId || undefined,
-      leadDriveFolderUrl: enquiryRecord.leadDriveFolderUrl || undefined,
       checkoutUrl: checkoutUrl || undefined,
-      processing,
       warning: mailWarning,
-    },
+    }),
     context
   );
 }
