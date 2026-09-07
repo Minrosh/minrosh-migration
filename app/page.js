@@ -12,16 +12,16 @@ import { buildMetadata } from "../lib/seo";
 const { siteData, homeHeroWhatsAppHref } = getHomePagePreparedData(siteDataStatic);
 
 export const metadata = buildMetadata({
-  title: "Migration Agent Brisbane | Start Your Pathway Check",
+  title: "MinRosh Migration | General Migration Information & Education Support",
   description:
-    "Brisbane-based migration and education guidance for Australia, Canada, the UK and New Zealand. Start with a free pathway check and planning tools.",
+    "Explore general Australian migration information from publicly available sources and receive education-course enquiry support. MinRosh does not provide immigration assistance or legal advice.",
   path: "/",
   keywords: [
-    "migration agent Brisbane",
-    "Australia visa guidance",
-    "student visa Australia",
-    "skilled migration planning",
-    "partner visa guidance",
+    "Australian migration information",
+    "official visa information",
+    "education course support",
+    "study in Australia information",
+    "MinRosh Migration",
   ],
 });
 

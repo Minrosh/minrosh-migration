@@ -85,7 +85,7 @@ export function SiteShell({
               </strong>
               {usePremiumHeader ? (
                 <span className="brand__tagline">
-                  Your Pathway. Our Guidance. Your Future.
+                  Independent migration information and education support.
                 </span>
               ) : null}
             </span>

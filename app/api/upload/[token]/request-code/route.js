@@ -6,8 +6,20 @@ import { sendTwilioSms } from "@/lib/twilio-sms";
 import { rateLimitAllow } from "@/lib/security/rate-limit";
 import { getClientIp } from "@/lib/security/request-ip";
 import { normalizeUploadTokenParam } from "@/lib/upload-token";
+import { COMPLIANCE_FEATURE_FLAGS, DISABLED_PENDING_AUTHORISED_PROFESSIONAL_REVIEW } from "@/lib/compliance";
 
 export async function POST(request, { params }) {
+  if (!COMPLIANCE_FEATURE_FLAGS.PUBLIC_MIGRATION_MATTER_PORTAL) {
+    return Response.json(
+      {
+        error:
+          "The public migration document portal is disabled. Historical records remain available to admin only.",
+        code: "FEATURE_DISABLED",
+        marker: DISABLED_PENDING_AUTHORISED_PROFESSIONAL_REVIEW,
+      },
+      { status: 410 }
+    );
+  }
   const ip = getClientIp(request);
   if (!rateLimitAllow(`upload-sms-req:${ip}`, { windowMs: 15 * 60 * 1000, max: 8 })) {
     return Response.json({ error: "Too many code requests. Try again later." }, { status: 429 });
@@ -33,7 +45,7 @@ export async function POST(request, { params }) {
   }
   const mobile = String(customer.mobile || "").trim();
   if (!mobile) {
-    return Response.json({ error: "No mobile number on file for this client." }, { status: 403 });
+    return Response.json({ error: "No mobile number on file for this enquirer." }, { status: 403 });
   }
 
   const code = generateSixDigitCode();

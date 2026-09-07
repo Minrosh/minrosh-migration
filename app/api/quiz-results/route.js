@@ -1,3 +1,4 @@
+import { COMPLIANCE_FEATURE_FLAGS, DISABLED_PENDING_AUTHORISED_PROFESSIONAL_REVIEW } from "@/lib/compliance";
 import crypto from "node:crypto";
 import { contactInbox, getMailTransport } from "@/lib/contact";
 import { withSmtpDeadline } from "@/lib/smtp-timeout";
@@ -146,8 +147,24 @@ function safeSubjectFragment(name, score) {
  * POST JSON: { name, email, score, details? }
  * Sends an internal notification to the site inbox using configured SMTP (see lib/contact.js).
  */
+/**
+ * DISABLED_PENDING_AUTHORISED_PROFESSIONAL_REVIEW
+ * Personalised quiz score / eligibility emails must not run publicly without an authorised RMA model.
+ */
 export async function POST(request) {
   const context = requestContextFromRequest(request);
+  if (!COMPLIANCE_FEATURE_FLAGS.PERSONALISED_QUIZ_RESULTS) {
+    return apiFail(
+      {
+        code: "FEATURE_DISABLED",
+        message:
+          "Personalised quiz results are disabled. Use the Official Information Finder for topic-based official links.",
+        status: 410,
+        details: { flag: DISABLED_PENDING_AUTHORISED_PROFESSIONAL_REVIEW },
+      },
+      context
+    );
+  }
   const ip = getClientIp(request);
   if (!rateLimitAllow(`quiz-results:${ip}`, { windowMs: 15 * 60 * 1000, max: 12 })) {
     return apiFail({ code: API_ERROR_CODES.RATE_LIMITED, message: "Too many requests. Try again later.", status: 429 }, context);

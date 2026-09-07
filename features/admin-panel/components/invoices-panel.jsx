@@ -749,7 +749,7 @@ export function InvoicesPanel() {
               />
             </div>
             <div className="space-y-2 sm:col-span-2">
-              <Label>Client email (for PDF and optional send)</Label>
+              <Label>Customer email (for PDF and optional send)</Label>
               <Input
                 type="email"
                 value={customerEmail}
@@ -758,16 +758,16 @@ export function InvoicesPanel() {
               />
             </div>
             <div className="space-y-2 sm:col-span-2">
-              <Label>Client contact (phone/email)</Label>
+              <Label>Customer contact (phone/email)</Label>
               <Input
                 value={customerContact}
                 onChange={(e) => setCustomerContact(e.target.value)}
-                placeholder="e.g. 0478 100 542 or client@email.com"
+                placeholder="e.g. 0478 100 542 or customer@email.com"
                 required
               />
             </div>
             <div className="space-y-2 sm:col-span-2">
-              <Label>Client address</Label>
+              <Label>Customer address</Label>
               <Input
                 value={customerAddress}
                 onChange={(e) => setCustomerAddress(e.target.value)}
@@ -1162,11 +1162,11 @@ export function InvoicesPanel() {
                 onChange={applyEditCustomer}
               />
               <div className="space-y-2">
-                <Label>Client name</Label>
+                <Label>Customer name</Label>
                 <Input value={editCustomerName} onChange={(e) => setEditCustomerName(e.target.value)} required />
               </div>
               <div className="space-y-2">
-                <Label>Client email</Label>
+                <Label>Customer email</Label>
                 <Input
                   type="email"
                   value={editCustomerEmail}
@@ -1174,7 +1174,7 @@ export function InvoicesPanel() {
                 />
               </div>
               <div className="space-y-2">
-                <Label>Client contact</Label>
+                <Label>Customer contact</Label>
                 <Input
                   value={editCustomerContact}
                   onChange={(e) => setEditCustomerContact(e.target.value)}
@@ -1187,7 +1187,7 @@ export function InvoicesPanel() {
                 <Input type="date" value={editDueDate} onChange={(e) => setEditDueDate(e.target.value)} required />
               </div>
               <div className="space-y-2 sm:col-span-2">
-                <Label>Client address</Label>
+                <Label>Customer address</Label>
                 <Input
                   value={editCustomerAddress}
                   onChange={(e) => setEditCustomerAddress(e.target.value)}

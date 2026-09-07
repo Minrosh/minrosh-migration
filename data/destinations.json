@@ -83,7 +83,7 @@
     ],
     "relatedSiteLinks": [
       { "href": "/contact", "title": "Contact MinRosh" },
-      { "href": "/book-consultation", "title": "Book consultation" }
+      { "href": "/book-information-session", "title": "Book consultation" }
     ]
   },
   "canada": {
@@ -159,7 +159,7 @@
     ],
     "relatedSiteLinks": [
       { "href": "/contact", "title": "Contact MinRosh" },
-      { "href": "/book-consultation", "title": "Book consultation" }
+      { "href": "/book-information-session", "title": "Book consultation" }
     ]
   }
 }

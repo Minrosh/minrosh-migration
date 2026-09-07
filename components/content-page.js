@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { BreadcrumbsNav } from "./breadcrumbs-nav";
 import { GlossaryParagraph } from "./glossary-paragraph";
+import { GeneralInformationBanner } from "./general-information-banner";
 import { MotionReveal, MotionStagger, MotionItem } from "./ui/motion-wrapper";
 import { StructuredData } from "./structured-data";
 import { faqJsonLd } from "../lib/seo";
@@ -75,6 +76,10 @@ export function ContentPage({
   currentPath = "",
   /** Optional regulatory / compliance callout (e.g. TSMIT). */
   alertBanner = null,
+  /** Category-page general-information banner (shown after hero; works with heroSlot). */
+  complianceBanner = "",
+  /** Category-page footer note (referral / no assistance claim). */
+  complianceFooter = "",
   heroImage = { src: "/images/brisbane-skyline.v2.webp", alt: "Brisbane skyline and riverfront" },
   ctaTitle = "",
   ctaBody = "",
@@ -180,6 +185,12 @@ export function ContentPage({
           </div>
         </MotionReveal>
       )}
+
+      {complianceBanner ? (
+        <div className="mx-auto mt-6 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+          <GeneralInformationBanner text={complianceBanner} />
+        </div>
+      ) : null}
 
       {belowHero ? <div className="content-page__below-hero">{belowHero}</div> : null}
 
@@ -386,32 +397,18 @@ export function ContentPage({
             <GlossaryParagraph text={ctaBody || personalizedCta.body} />
             <div className="content-aside-card__actions">
               <Link
-                href="/book-consultation"
+                href="/contact"
                 className={`${primaryCtaClassName || "btn btn-primary"} min-h-[48px] touch-manipulation`}
               >
-                Book Consultation
+                General Information Enquiry
               </Link>
               <Link href="/assessment" className="btn btn-ghost min-h-[48px] touch-manipulation">
-                Free Assessment
+                Official Information Finder
               </Link>
             </div>
-            {(() => {
-              const marn = String(process.env.NEXT_PUBLIC_MARN || "").trim();
-              if (!marn) return null;
-              return (
-                <div className="mt-6 border-t border-brand-plum/10 pt-6">
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-8 w-8 items-center justify-center rounded border border-brand-plum/10 bg-brand-plum/5 text-[10px] font-black text-brand-plum/40">
-                      MARA
-                    </div>
-                    <p className="text-[10px] font-bold leading-tight text-brand-plum/60">
-                      Registered Migration Agent <br />
-                      <span className="text-brand-rose">MARN {marn}</span>
-                    </p>
-                  </div>
-                </div>
-              );
-            })()}
+            <p className="mt-4 text-[11px] leading-relaxed text-brand-plum/60">
+              MinRosh provides general information and education support only — not immigration assistance or legal advice.
+            </p>
           </div>
 
           {dedupedRelated.length ? (
@@ -430,6 +427,12 @@ export function ContentPage({
           ) : null}
         </aside>
       </div>
+
+      {complianceFooter ? (
+        <div className="mx-auto w-full max-w-7xl px-4 pb-4 sm:px-6 lg:px-8">
+          <GeneralInformationBanner text={complianceFooter} variant="footer" />
+        </div>
+      ) : null}
       </ContentBodyWithOptionalLeftRail>
     </article>
   );

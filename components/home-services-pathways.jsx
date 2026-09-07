@@ -82,8 +82,8 @@ export function HomeServicesPathways() {
             Pathways we guide most often
           </h2>
           <p className="mx-auto mt-3 max-w-3xl text-center text-sm font-medium leading-relaxed text-brand-plum/70 sm:text-base">
-            Registered migration guidance led from Brisbane, with online consultations for clients worldwide. We cite
-            official sources and highlight what departments publish—not forum summaries alone.
+            General migration information and education support led from Brisbane, with online enquiries for clients
+            worldwide. We cite official sources and highlight what departments publish—not forum summaries alone.
           </p>
         </div>
 

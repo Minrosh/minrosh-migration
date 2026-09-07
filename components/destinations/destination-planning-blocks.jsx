@@ -45,9 +45,9 @@ export function DestinationPlanningBlocks({ destinationName, blocks = [] }) {
           Start free pathway check
         </TrackedLink>
         <TrackedLink
-          href="/book-consultation"
+          href="/book-information-session"
           eventName="consultation_booking_clicked"
-          eventParams={{ cta_id: "destination_book_consult", cta_location: "destination_planning", destination: "/book-consultation" }}
+          eventParams={{ cta_id: "destination_book_consult", cta_location: "destination_planning", destination: "/book-information-session" }}
           className="btn btn-ghost inline-flex min-h-[48px] items-center justify-center rounded-full px-6"
         >
           Book consultation

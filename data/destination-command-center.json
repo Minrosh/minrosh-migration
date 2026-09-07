@@ -1,91 +1,182 @@
 {
   "default": {
-    "intents": [
+    "topics": [
       {
-        "id": "secure-plan",
-        "label": "Secure a low-risk plan",
-        "tagline": "Clarity first, execution second",
-        "recommendedSection": "skilled",
-        "confidence": 68,
-        "timeHorizon": "3-6 months",
-        "why": [
-          "You remove guesswork before committing to tests and documents",
-          "You front-load risk checks and reduce avoidable rework"
+        "id": "visa-categories",
+        "label": "Visa category information",
+        "summary": "Browse general information about publicly listed visa categories for this destination.",
+        "section": "skilled",
+        "officialLinks": [
+          {
+            "name": "Home Affairs — Visa listing",
+            "url": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing"
+          }
         ],
-        "milestones": ["Profile triage", "Evidence map", "Submission runway"]
+        "points": [
+          "Summaries are general and may not reflect every circumstance",
+          "Always verify current criteria on the official source",
+          "MinRosh does not assess eligibility or recommend a visa"
+        ]
       },
       {
-        "id": "fast-trajectory",
-        "label": "Move as fast as possible",
-        "tagline": "Speed with guardrails",
-        "recommendedSection": "updates",
-        "confidence": 62,
-        "timeHorizon": "1-3 months",
-        "why": [
-          "You monitor changing policy signals before locking critical decisions",
-          "You sequence the highest-impact actions in the first 14 days"
+        "id": "education",
+        "label": "Education and study information",
+        "summary": "Find general education-provider and study-topic information, separate from immigration assistance.",
+        "section": "student",
+        "officialLinks": [
+          {
+            "name": "Study Australia",
+            "url": "https://www.studyaustralia.gov.au/"
+          }
         ],
-        "milestones": ["Signal check", "Priority actions", "Fast-lane review"]
+        "points": [
+          "Course marketing is not the same as visa criteria",
+          "Education enquiry support does not include student-visa preparation",
+          "Confirm provider and official government pages yourself"
+        ]
+      },
+      {
+        "id": "official-sources",
+        "label": "Official sources and updates",
+        "summary": "Locate institutional and government information pages for this destination.",
+        "section": "updates",
+        "officialLinks": [
+          {
+            "name": "Home Affairs",
+            "url": "https://immi.homeaffairs.gov.au/"
+          }
+        ],
+        "points": [
+          "Policy and fees can change without notice",
+          "Use last-checked habits before acting",
+          "Seek an authorised professional for personalised advice"
+        ]
       }
     ]
   },
   "australia": {
-    "intents": [
+    "topics": [
       {
-        "id": "pr-path",
-        "label": "Build PR momentum",
-        "tagline": "Points, invitation probability, and pathway fit",
-        "recommendedSection": "skilled",
-        "confidence": 77,
-        "timeHorizon": "4-8 months",
-        "why": [
-          "You align occupation and points strategy before paying for wrong steps",
-          "You compare independent, state, and regional tracks with one decision lens"
+        "id": "skilled-info",
+        "label": "Skilled category information",
+        "summary": "Public information themes for points-tested and related skilled categories.",
+        "section": "skilled",
+        "officialLinks": [
+          {
+            "name": "Home Affairs — Visa listing",
+            "url": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing"
+          },
+          {
+            "name": "SkillSelect",
+            "url": "https://immi.homeaffairs.gov.au/visas/working-in-australia/skillselect"
+          }
         ],
-        "milestones": ["Occupation lock", "Points strategy", "EOI timing map"]
+        "points": [
+          "Read official subclass pages before acting",
+          "Occupation lists and invitation settings change over time",
+          "This hub does not calculate points or eligibility"
+        ]
       },
       {
-        "id": "partner-certainty",
-        "label": "De-risk a partner pathway",
-        "tagline": "Evidence confidence before lodgement",
-        "recommendedSection": "partner",
-        "confidence": 73,
-        "timeHorizon": "3-7 months",
-        "why": [
-          "You convert relationship history into a structured evidence narrative",
-          "You eliminate contradictions that cause avoidable delays"
+        "id": "partner-info",
+        "label": "Partner and family category information",
+        "summary": "General information about partner and family visa categories from public sources.",
+        "section": "partner",
+        "officialLinks": [
+          {
+            "name": "Home Affairs — Partner visas",
+            "url": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/partner-onshore"
+          }
         ],
-        "milestones": ["Timeline proofing", "Evidence matrix", "Readiness review"]
+        "points": [
+          "Evidence requirements are published by Home Affairs",
+          "MinRosh does not prepare partner applications",
+          "Seek authorised help for personalised advice"
+        ]
       },
       {
-        "id": "study-to-opportunity",
-        "label": "Study now, keep options open",
-        "tagline": "Course choice with future optionality",
-        "recommendedSection": "student",
-        "confidence": 70,
-        "timeHorizon": "2-5 months",
-        "why": [
-          "You choose education pathways with realistic migration awareness",
-          "You avoid course decisions that weaken long-term flexibility"
+        "id": "student-info",
+        "label": "Student and education information",
+        "summary": "General student-visa category themes and education-course enquiry context.",
+        "section": "student",
+        "officialLinks": [
+          {
+            "name": "Student visa (subclass 500)",
+            "url": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/student-500"
+          },
+          {
+            "name": "Study Australia",
+            "url": "https://www.studyaustralia.gov.au/"
+          }
         ],
-        "milestones": ["Course fit scan", "Funds readiness", "Visa evidence set"]
+        "points": [
+          "Education support is separate from immigration assistance",
+          "Confirm CoE, financial, and provider instructions officially",
+          "Do not treat course choice as a visa strategy from MinRosh"
+        ]
       }
     ]
   },
   "canada": {
-    "intents": [
+    "topics": [
       {
-        "id": "canada-plan",
-        "label": "Canada pathway confidence",
-        "tagline": "Decision clarity in a changing policy landscape",
-        "recommendedSection": "skilled",
-        "confidence": 64,
-        "timeHorizon": "4-9 months",
-        "why": [
-          "You prioritize verified eligibility over forum speculation",
-          "You create fallback pathways early to avoid dead ends"
+        "id": "canada-info",
+        "label": "Canada public information",
+        "summary": "General orientation to official Canadian immigration and study information pages.",
+        "section": "updates",
+        "officialLinks": [
+          {
+            "name": "IRCC",
+            "url": "https://www.canada.ca/en/immigration-refugees-citizenship.html"
+          }
         ],
-        "milestones": ["Eligibility scan", "Document lane", "Decision checkpoint"]
+        "points": [
+          "Verify current rules on IRCC pages",
+          "MinRosh provides general information only",
+          "Authorised Canadian advice may be required for personal matters"
+        ]
+      }
+    ]
+  },
+  "new-zealand": {
+    "topics": [
+      {
+        "id": "nz-info",
+        "label": "New Zealand public information",
+        "summary": "General orientation to official Immigration New Zealand information.",
+        "section": "updates",
+        "officialLinks": [
+          {
+            "name": "Immigration New Zealand",
+            "url": "https://www.immigration.govt.nz/"
+          }
+        ],
+        "points": [
+          "Use official NZ tools and pages",
+          "General information only from MinRosh",
+          "Seek authorised advice for personal circumstances"
+        ]
+      }
+    ]
+  },
+  "united-kingdom": {
+    "topics": [
+      {
+        "id": "uk-info",
+        "label": "United Kingdom public information",
+        "summary": "General orientation to official UK visas and immigration pages.",
+        "section": "updates",
+        "officialLinks": [
+          {
+            "name": "GOV.UK visas and immigration",
+            "url": "https://www.gov.uk/browse/visas-immigration"
+          }
+        ],
+        "points": [
+          "Confirm current rules on GOV.UK",
+          "MinRosh provides general information only",
+          "Seek authorised advice for personal circumstances"
+        ]
       }
     ]
   }

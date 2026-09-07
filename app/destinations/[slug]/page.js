@@ -19,6 +19,10 @@ import { DestinationCommandCenter } from "../../../components/destination-comman
 import { DestinationRouteGraph } from "../../../components/destination-route-graph";
 import { DestinationCommandPalette } from "../../../components/destination-command-palette";
 import { DestinationConfidenceStrip } from "../../../components/destination-confidence-strip";
+
+/** Soft-disabled: confidence / outcome / predictive-route framing is not compliant for public no-MARN mode. */
+const SHOW_DESTINATION_CONFIDENCE_TOOLS = false;
+const SHOW_DESTINATION_ROUTE_STRATEGY_TOOLS = false;
 import { DestinationPlanningBlocks } from "../../../components/destinations/destination-planning-blocks";
 import destinationPlanningBlocks from "../../../data/destination-planning-blocks.json";
 
@@ -36,8 +40,8 @@ export async function generateMetadata({ params }) {
     path: `/destinations/${slug}`,
     keywords: [
       page.name,
-      "migration",
-      "visa guidance",
+      "migration information",
+      "visa category information",
       `${page.name} visa information`,
     ],
   });
@@ -49,8 +53,8 @@ export default async function DestinationPage({ params }) {
   if (!page) notFound();
 
   const path = `/destinations/${slug}`;
-  const defaultCenter = destinationCommandCenterData.default?.intents ?? [];
-  const commandIntents = destinationCommandCenterData[slug]?.intents ?? defaultCenter;
+  const defaultTopics = destinationCommandCenterData.default?.topics ?? [];
+  const hubTopics = destinationCommandCenterData[slug]?.topics ?? defaultTopics;
   const defaultGraph = destinationRouteGraphData.default ?? { nodes: [], routes: [] };
   const routeGraph = destinationRouteGraphData[slug] ?? defaultGraph;
   const routeNodeGuides = {
@@ -98,30 +102,34 @@ export default async function DestinationPage({ params }) {
             <DestinationCommandCenter
               slug={slug}
               destinationName={page.name}
-              intents={commandIntents}
+              topics={hubTopics}
             />
-            <DestinationConfidenceStrip
-              title={confidenceStrip.title ?? "Decision Confidence Strip"}
-              summary={
-                confidenceStrip.summary ??
-                `Use this strip to stay momentum-led while planning your ${page.name} pathway.`
-              }
-              metrics={confidenceStrip.metrics ?? []}
-              proof={confidenceStrip.proof ?? []}
-              nextMilestones={confidenceStrip.nextMilestones ?? []}
-            />
+            {SHOW_DESTINATION_CONFIDENCE_TOOLS ? (
+              <DestinationConfidenceStrip
+                title={confidenceStrip.title ?? "Decision Confidence Strip"}
+                summary={
+                  confidenceStrip.summary ??
+                  `Use this strip to stay momentum-led while planning your ${page.name} pathway.`
+                }
+                metrics={confidenceStrip.metrics ?? []}
+                proof={confidenceStrip.proof ?? []}
+                nextMilestones={confidenceStrip.nextMilestones ?? []}
+              />
+            ) : null}
             <DestinationCommandPalette
               destinationName={page.name}
               links={paletteLinks}
               prompts={destinationCommandPaletteData.defaultPrompts ?? []}
               intentHints={destinationCommandPaletteData.intentHints ?? {}}
             />
-            <DestinationRouteGraph
-              destinationName={page.name}
-              nodes={routeGraph.nodes}
-              routes={routeGraph.routes}
-              nodeGuides={routeNodeGuides}
-            />
+            {SHOW_DESTINATION_ROUTE_STRATEGY_TOOLS ? (
+              <DestinationRouteGraph
+                destinationName={page.name}
+                nodes={routeGraph.nodes}
+                routes={routeGraph.routes}
+                nodeGuides={routeNodeGuides}
+              />
+            ) : null}
             <LifestyleExperienceBlock
               guide={lifestyleGuide}
               first14={first14}

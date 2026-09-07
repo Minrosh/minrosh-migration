@@ -31,6 +31,19 @@ import {
   mergeRequirements,
   templateLibraryForCustomer,
 } from "@/lib/client-portal/document-center";
+import { COMPLIANCE_FEATURE_FLAGS, DISABLED_PENDING_AUTHORISED_PROFESSIONAL_REVIEW } from "@/lib/compliance";
+
+function migrationMatterPortalDisabledResponse() {
+  return Response.json(
+    {
+      error:
+        "The public migration document portal is disabled. Historical records are retained for authorised admin review only. For education-course document requests, contact MinRosh directly.",
+      code: "FEATURE_DISABLED",
+      marker: DISABLED_PENDING_AUTHORISED_PROFESSIONAL_REVIEW,
+    },
+    { status: 410 }
+  );
+}
 
 const MAX_FILES = 20;
 const MAX_BYTES_PER_FILE = 15 * 1024 * 1024;
@@ -188,6 +201,9 @@ function withClientUrls(token, customer) {
 }
 
 export async function POST(request, { params }) {
+  if (!COMPLIANCE_FEATURE_FLAGS.PUBLIC_MIGRATION_MATTER_PORTAL) {
+    return migrationMatterPortalDisabledResponse();
+  }
   const ip = getClientIp(request);
   if (!rateLimitAllow(`upload-post:${ip}`, { windowMs: 15 * 60 * 1000, max: 40 })) {
     return Response.json({ error: "Too many uploads. Try again later." }, { status: 429 });
@@ -255,6 +271,9 @@ export async function POST(request, { params }) {
 }
 
 export async function GET(request, { params }) {
+  if (!COMPLIANCE_FEATURE_FLAGS.PUBLIC_MIGRATION_MATTER_PORTAL) {
+    return migrationMatterPortalDisabledResponse();
+  }
   const ip = getClientIp(request);
   if (!rateLimitAllow(`upload-get:${ip}`, { windowMs: 15 * 60 * 1000, max: 120 })) {
     return Response.json({ error: "Too many requests. Try again later." }, { status: 429 });

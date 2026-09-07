@@ -18,12 +18,12 @@ import { HCaptchaField } from "./hcaptcha-field";
 import { isValidEmailClient } from "@/lib/validation/email-client";
 import { MAX_CONTACT_MESSAGE_CHARS } from "@/lib/validation/contact-schema";
 import { CONVERSION_PREMIUM_PRIMARY_CTA_CLASS } from "@/lib/conversion-premium-cta-class";
+import { DEFAULT_COMPLIANCE } from "@/lib/compliance";
+import { mainNeedFromEnquiryType } from "@/lib/validation/contact-schema";
 
 const CAPTCHA_ENABLED = isHcaptchaPublicEnabled();
 
-const MAX_RESUME_BYTES = 15 * 1024 * 1024;
-
-function validateLeadForm(form, mode, resumeFile) {
+function validateLeadForm(form, mode) {
   /** @type {Record<string, string>} */
   const errors = {};
   if (!String(form.firstName || "").trim()) {
@@ -41,9 +41,14 @@ function validateLeadForm(form, mode, resumeFile) {
     errors.phone = "Please check your phone number.";
   }
 
+  const enquiryType = String(form.enquiryType || "").trim();
+  if (enquiryType !== "general_information" && enquiryType !== "education_enquiry") {
+    errors.enquiryType = "Please choose an enquiry type.";
+  }
+
   const message = String(form.message || "").trim();
   if (!message) {
-    errors.message = "Please describe your situation.";
+    errors.message = "Please describe your general information or education enquiry.";
   } else if (message.length < 5) {
     errors.message = "Please provide a brief description.";
   } else if (message.length > MAX_CONTACT_MESSAGE_CHARS) {
@@ -68,18 +73,11 @@ function validateLeadForm(form, mode, resumeFile) {
       }
     }
     if (!String(form.bookingType || "").trim()) {
-      errors.bookingType = "Please choose consultation type.";
+      errors.bookingType = "Please choose discussion type.";
     }
   }
-  if (resumeFile) {
-    if (resumeFile.size > MAX_RESUME_BYTES) {
-      errors.resume = "Resume must be 15MB or smaller.";
-    } else {
-      const name = String(resumeFile.name || "").toLowerCase();
-      if (!name.endsWith(".pdf")) {
-        errors.resume = "Please upload a PDF resume only.";
-      }
-    }
+  if (!form.formAcknowledgementAccepted) {
+    errors.formAcknowledgementAccepted = "Please confirm the acknowledgement before submitting.";
   }
   if (!form.privacyPolicyAccepted) {
     errors.privacyPolicyAccepted = "Please confirm you have read the Privacy Policy before submitting.";
@@ -96,7 +94,8 @@ const initialForm = {
   email: "",
   phone: "",
   preferredCountry: "Australia",
-  mainNeed: "Skilled Migration",
+  enquiryType: "general_information",
+  mainNeed: "General Enquiry",
   preferredDate: "",
   preferredTime: "",
   consultationDurationMins: "30",
@@ -105,6 +104,7 @@ const initialForm = {
   timeZone: "Australia/Brisbane",
   message: "",
   privacyPolicyAccepted: false,
+  formAcknowledgementAccepted: false,
   hCaptchaToken: "",
   referralSource: "",
   referralCode: "",
@@ -155,10 +155,21 @@ export function ContactLeadForm({
   mode = "general",
   /** Minimum hours before consultation start (from server env; default 24). */
   consultationMinAdvanceHours = 24,
+  acknowledgementText = "",
+  defaultEnquiryType = "general_information",
+  lockEnquiryType = false,
 }) {
   const searchParams = useSearchParams();
-  const [form, setForm] = useState(initialForm);
-  const [resumeFile, setResumeFile] = useState(null);
+  const [form, setForm] = useState(() => ({
+    ...initialForm,
+    enquiryType:
+      defaultEnquiryType === "education_enquiry" ? "education_enquiry" : "general_information",
+    mainNeed: mainNeedFromEnquiryType(
+      defaultEnquiryType === "education_enquiry" ? "education_enquiry" : "general_information"
+    ),
+  }));
+  const acknowledgementLabel =
+    String(acknowledgementText || "").trim() || DEFAULT_COMPLIANCE.formAcknowledgementText;
   const [quizSummaryLine, setQuizSummaryLine] = useState("");
   const [state, setState] = useState({ status: "idle", message: "" });
   const [fieldErrors, setFieldErrors] = useState({});
@@ -171,14 +182,14 @@ export function ContactLeadForm({
     mode === "consultation"
       ? [
           ["firstName", "lastName", "email", "phone"],
-          ["preferredCountry", "mainNeed", "preferredDate", "preferredTime", "timeZone"],
-          ["bookingType", "consultationOffer", "resume"],
-          ["message", "privacyPolicyAccepted"],
+          ["preferredCountry", "enquiryType", "preferredDate", "preferredTime", "timeZone"],
+          ["bookingType", "consultationOffer"],
+          ["message", "formAcknowledgementAccepted", "privacyPolicyAccepted"],
         ]
       : [
           ["firstName", "lastName", "email", "phone"],
-          ["preferredCountry", "mainNeed"],
-          ["resume", "message", "privacyPolicyAccepted"],
+          ["preferredCountry", "enquiryType"],
+          ["message", "formAcknowledgementAccepted", "privacyPolicyAccepted"],
         ];
 
   const visibleFields = mobileStepper ? new Set(stepFieldGroups[currentStep] || []) : null;
@@ -197,7 +208,12 @@ export function ContactLeadForm({
     setForm((current) => ({
       ...current,
       preferredCountry: "Australia",
-      mainNeed: mode === "consultation" ? "Student Pathway" : current.mainNeed,
+      enquiryType: pathwayGoal.toLowerCase().includes("student") || pathwayGoal.toLowerCase().includes("study")
+        ? "education_enquiry"
+        : current.enquiryType,
+      mainNeed: pathwayGoal.toLowerCase().includes("student") || pathwayGoal.toLowerCase().includes("study")
+        ? "Student Pathway"
+        : current.mainNeed,
       message:
         fromCity || pathwayGoal
           ? `Pathway map prefill:\nFrom city: ${fromCity || "Sri Lanka"}\nGoal: ${
@@ -256,24 +272,20 @@ export function ContactLeadForm({
       window.removeEventListener("minrosh:navigator-summary", handleNavigatorSummary);
   }, []);
 
-  function handleResumeFileChange(event) {
-    const file = event.target.files?.[0];
-    setResumeFile(file || null);
-    setFieldErrors((current) => {
-      if (!current.resume) return current;
-      const next = { ...current };
-      delete next.resume;
-      return next;
-    });
-  }
 
   function handleChange(event) {
     const { name, value, type, checked } = event.target;
     const nextVal = type === "checkbox" ? checked : value;
-    setForm((current) => ({
-      ...current,
-      [name]: nextVal,
-    }));
+    setForm((current) => {
+      const next = {
+        ...current,
+        [name]: nextVal,
+      };
+      if (name === "enquiryType") {
+        next.mainNeed = mainNeedFromEnquiryType(String(nextVal || ""));
+      }
+      return next;
+    });
     setFieldErrors((current) => {
       const next = { ...current };
       if (name === "email") {
@@ -314,7 +326,7 @@ export function ContactLeadForm({
   }
 
   function stepErrorsFor(stepIndex) {
-    const allErrors = validateLeadForm(form, mode, resumeFile);
+    const allErrors = validateLeadForm(form, mode);
     const fields = new Set(stepFieldGroups[stepIndex] || []);
     return Object.fromEntries(Object.entries(allErrors).filter(([field]) => fields.has(field)));
   }
@@ -363,7 +375,7 @@ export function ContactLeadForm({
       handleNextStep();
       return;
     }
-    const errors = validateLeadForm(form, mode, resumeFile);
+    const errors = validateLeadForm(form, mode);
     const errorEntries = Object.entries(errors);
     setFieldErrors(errors);
     if (errorEntries.length > 0) {
@@ -385,55 +397,27 @@ export function ContactLeadForm({
     });
     setState({ status: "loading", message: "" });
     try {
-      const useMultipart = resumeFile instanceof File && resumeFile.size > 0;
       let response;
-      if (useMultipart) {
-        const fd = new FormData();
-        fd.append("firstName", String(form.firstName || ""));
-        fd.append("lastName", String(form.lastName || ""));
-        fd.append("email", String(form.email || ""));
-        fd.append("phone", String(form.phone || ""));
-        fd.append("preferredCountry", String(form.preferredCountry || ""));
-        fd.append("mainNeed", String(form.mainNeed || ""));
-        fd.append("preferredDate", String(form.preferredDate || ""));
-        fd.append("preferredTime", String(form.preferredTime || ""));
-        fd.append("consultationDurationMins", "30");
-        fd.append("timeZone", String(form.timeZone || ""));
-        fd.append("bookingType", String(form.bookingType || "video"));
-        fd.append("consultationOffer", String(form.consultationOffer || "first_15_free"));
-        fd.append("message", String(form.message || ""));
-        fd.append("privacyPolicyAccepted", form.privacyPolicyAccepted ? "true" : "false");
-        fd.append("quizSummary", quizSummaryLine || "");
-        fd.append("hCaptchaToken", String(form.hCaptchaToken || "").trim());
-        fd.append("referralSource", String(form.referralSource || "").trim());
-        fd.append("referralCode", String(form.referralCode || "").trim());
-        fd.append("utmSource", String(form.utmSource || "").trim());
-        fd.append("company", hpRef.current?.value || "");
-        fd.append("resume", resumeFile);
-        response = await fetch("/api/contact", {
-          method: "POST",
-          headers: { Accept: "application/json" },
-          body: fd,
-        });
-      } else {
-        response = await fetch("/api/contact", {
-          method: "POST",
-          headers: { "Content-Type": "application/json", Accept: "application/json" },
-          body: JSON.stringify({
-            ...form,
-            consultationDurationMins: "30",
-            privacyPolicyAccepted: Boolean(form.privacyPolicyAccepted),
-            company: hpRef.current?.value || "",
-            quizSummary: quizSummaryLine,
-            hCaptchaToken: String(form.hCaptchaToken || "").trim(),
-            referralSource: String(form.referralSource || "").trim(),
-            referralCode: String(form.referralCode || "").trim(),
-            utmSource: String(form.utmSource || "").trim(),
-            bookingType: String(form.bookingType || "video").trim(),
-            consultationOffer: String(form.consultationOffer || "first_15_free").trim(),
-          }),
-        });
-      }
+      response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          ...form,
+          enquiryType: String(form.enquiryType || "general_information").trim(),
+          mainNeed: mainNeedFromEnquiryType(String(form.enquiryType || "general_information")),
+          consultationDurationMins: "30",
+          privacyPolicyAccepted: Boolean(form.privacyPolicyAccepted),
+          formAcknowledgementAccepted: Boolean(form.formAcknowledgementAccepted),
+          company: hpRef.current?.value || "",
+          quizSummary: quizSummaryLine,
+          hCaptchaToken: String(form.hCaptchaToken || "").trim(),
+          referralSource: String(form.referralSource || "").trim(),
+          referralCode: String(form.referralCode || "").trim(),
+          utmSource: String(form.utmSource || "").trim(),
+          bookingType: String(form.bookingType || "video").trim(),
+          consultationOffer: String(form.consultationOffer || "first_15_free").trim(),
+        }),
+      });
       const rawText = await response.text();
       let payload;
       try {
@@ -466,11 +450,27 @@ export function ContactLeadForm({
       if (!response.ok || !(payload?.ok ?? data?.ok)) {
         throw new Error(withRequestId(`${mapContactErrorMessage(errorCode, errorMessage)}${retryHint}`));
       }
+      if (data.outcome === "referred_to_authorised_professional") {
+        setState({
+          status: "success",
+          message:
+            data.restrictedEnquiryMessage ||
+            data.warning ||
+            DEFAULT_COMPLIANCE.restrictedEnquiryMessage,
+        });
+        setForm((current) => ({
+          ...initialForm,
+          enquiryType: current.enquiryType,
+          mainNeed: mainNeedFromEnquiryType(current.enquiryType),
+        }));
+        setFieldErrors({});
+        return;
+      }
       const syncNote = processingSummaryNote(data.processing);
       setState({
         status: "success",
         message: data.consultationBooked
-          ? `Consultation booked successfully.${data.meetUrl ? ` Meet link: ${data.meetUrl}` : ""}${data.checkoutUrl ? ` Secure payment: ${data.checkoutUrl}` : ""}${syncNote}`
+          ? `Discussion booked successfully.${data.meetUrl ? ` Meet link: ${data.meetUrl}` : ""}${data.checkoutUrl ? ` Secure payment: ${data.checkoutUrl}` : ""}${syncNote}`
           : (data.warning || "Your enquiry has been received. We will review it and respond shortly.") + syncNote,
       });
       if (typeof window !== "undefined") {
@@ -485,7 +485,6 @@ export function ContactLeadForm({
       setForm(initialForm);
       setFieldErrors({});
       setQuizSummaryLine("");
-      setResumeFile(null);
       clearNavigatorSummarySession();
     } catch (error) {
       trackEvent("contact_form_submit_error", {
@@ -503,7 +502,7 @@ export function ContactLeadForm({
     <form ref={formRef} className={`contact-form bento-hover ${className}`.trim()} onSubmit={handleSubmit}>
       <div className="mb-8 border-b border-brand-plum/5 pb-6">
         <h3 className="text-2xl font-black text-brand-plum mb-2">Send an enquiry</h3>
-        <p className="text-sm text-brand-plum/60 font-medium mb-4">Our team triages submissions within 1 business day.</p>
+        <p className="text-sm text-brand-plum/60 font-medium mb-4">General information or education-course enquiries only. We usually reply within 1 business day.</p>
         
         <div className="flex flex-wrap gap-4">
           <div className="flex items-center gap-2 bg-brand-rose/5 px-3 py-1.5 rounded-full border border-brand-rose/10">
@@ -518,17 +517,11 @@ export function ContactLeadForm({
 
       {mode === "consultation" ? (
         <div className="mb-6 rounded-2xl border border-brand-plum/10 bg-brand-cream/50 p-4 text-sm text-brand-plum/80">
-          <p className="font-semibold text-brand-plum">Points wizard</p>
+          <p className="font-semibold text-brand-plum">What this discussion covers</p>
           <p className="mt-1 leading-relaxed">
-            Run the 2026 points wizard first if you can — your summary saves in this browser session and appears here
-            when you return.             Open{" "}
-            <Link
-              href="/#quiz"
-              className="font-semibold text-brand-rose underline decoration-brand-rose/40 underline-offset-4 transition-colors hover:text-brand-plum"
-            >
-              Points wizard (same tab recommended)
-            </Link>
-            , then use your browser back button or book again to see prefilled results.
+            Book a general information discussion or education-course conversation. We do not assess visa eligibility,
+            recommend a visa, or prepare or lodge applications. For personalised immigration assistance, use a registered
+            migration agent or Australian legal practitioner.
           </p>
         </div>
       ) : null}
@@ -618,18 +611,27 @@ export function ContactLeadForm({
             <option>United Kingdom</option>
           </select>
         </label>
-        <label hidden={mobileStepper && !visibleFields?.has("mainNeed")}>
-          <span>Main need</span>
-          <select name="mainNeed" value={form.mainNeed} onChange={handleChange}>
-            <option value="">Not sure yet</option>
-            <option>Skilled Migration</option>
-            <option>Partner Visa</option>
-            <option>Student Visa</option>
-            <option>Student Pathway</option>
-            <option>Employer-Sponsored</option>
-            <option>Family / Complex Case</option>
-            <option>General Enquiry</option>
+        <label
+          className={fieldErrors.enquiryType ? "has-error" : ""}
+          hidden={mobileStepper && !visibleFields?.has("enquiryType")}
+        >
+          <span>Enquiry type</span>
+          <select
+            name="enquiryType"
+            value={form.enquiryType}
+            onChange={handleChange}
+            disabled={lockEnquiryType}
+            aria-invalid={fieldErrors.enquiryType ? "true" : undefined}
+            aria-describedby={fieldErrors.enquiryType ? "err-enquiryType" : undefined}
+          >
+            <option value="general_information">General information / official source link</option>
+            <option value="education_enquiry">Education course or admissions enquiry</option>
           </select>
+          {fieldErrors.enquiryType ? (
+            <span className="field-error" id="err-enquiryType" role="alert">
+              {fieldErrors.enquiryType}
+            </span>
+          ) : null}
         </label>
         {mode === "consultation" ? (
           <>
@@ -692,12 +694,12 @@ export function ContactLeadForm({
                 <option value="Australia/Brisbane">Australia/Brisbane</option>
               </select>
               <span className="text-xs text-brand-plum/60 mt-1 block">
-                Consultation length is fixed at 30 minutes (matches calendar and payment). Windows above refer to
+                Discussion length is fixed at 30 minutes (matches calendar and payment). Windows above refer to
                 Brisbane local time even when another zone is selected for display.
               </span>
             </label>
             <label className={fieldErrors.bookingType ? "has-error" : ""} hidden={mobileStepper && !visibleFields?.has("bookingType")}>
-              <span>Consultation type</span>
+              <span>Discussion type</span>
               <select
                 name="bookingType"
                 value={form.bookingType}
@@ -705,9 +707,9 @@ export function ContactLeadForm({
                 aria-invalid={fieldErrors.bookingType ? "true" : undefined}
                 aria-describedby={fieldErrors.bookingType ? "err-bookingType" : undefined}
               >
-                <option value="video">Video consultation (Google Meet)</option>
-                <option value="phone">Phone consultation</option>
-                <option value="in_person">In-person consultation</option>
+                <option value="video">Video discussion (Google Meet)</option>
+                <option value="phone">Phone discussion</option>
+                <option value="in_person">In-person discussion</option>
               </select>
               {fieldErrors.bookingType ? (
                 <span className="field-error" id="err-bookingType" role="alert">
@@ -716,39 +718,14 @@ export function ContactLeadForm({
               ) : null}
             </label>
             <label hidden={mobileStepper && !visibleFields?.has("consultationOffer")}>
-              <span>Consultation offer</span>
+              <span>Discussion offer</span>
               <select name="consultationOffer" value={form.consultationOffer} onChange={handleChange}>
                 <option value="first_15_free">First 15 minutes free</option>
-                <option value="standard">Standard consultation</option>
+                <option value="standard">Standard discussion</option>
               </select>
             </label>
           </>
         ) : null}
-        <label
-          className={`contact-grid__full${fieldErrors.resume ? " has-error" : ""}`}
-          hidden={mobileStepper && !visibleFields?.has("resume")}
-        >
-          <span>CV / Resume (optional, PDF)</span>
-          <div className="contact-form__resume-row mt-1 flex items-center gap-3">
-            <input
-              type="file"
-              name="resume"
-              accept="application/pdf,.pdf"
-              onChange={handleResumeFileChange}
-              className="contact-form__resume-input w-[220px] max-w-[220px] shrink-0 text-sm text-brand-plum/80 file:mr-3 file:rounded-lg file:border-0 file:bg-brand-plum file:px-3 file:py-2 file:text-xs file:font-semibold file:text-white hover:file:bg-brand-rose"
-              aria-invalid={fieldErrors.resume ? "true" : undefined}
-              aria-describedby={fieldErrors.resume ? "err-resume" : "hint-resume"}
-            />
-            <span id="hint-resume" className="contact-form__resume-hint min-w-0 flex-1 text-xs text-brand-plum/55 leading-relaxed">
-              Optional. PDF only, max 15MB. Uploaded to your lead folder when Drive is configured.
-            </span>
-          </div>
-          {fieldErrors.resume ? (
-            <span className="field-error" id="err-resume" role="alert">
-              {fieldErrors.resume}
-            </span>
-          ) : null}
-        </label>
         <div 
           className={`contact-grid__full${fieldErrors.message ? " has-error" : ""}`}
           hidden={mobileStepper && !visibleFields?.has("message")}
@@ -762,7 +739,7 @@ export function ContactLeadForm({
               value={form.message}
               onChange={handleChange}
               maxLength={MAX_CONTACT_MESSAGE_CHARS}
-              placeholder="Tell us about your situation, timeline, and the visa pathway you want to explore."
+              placeholder="Ask a general information question or describe your education-course / admissions enquiry. Please do not send passport or visa documents."
               required
               aria-invalid={fieldErrors.message ? "true" : undefined}
               aria-describedby={fieldErrors.message ? "err-message msg-char-count" : "msg-char-count"}
@@ -774,8 +751,8 @@ export function ContactLeadForm({
           {quizSummaryLine ? (
             <div className="mb-4 p-3 rounded-lg bg-brand-rose/5 border border-brand-rose/10 text-[10px] sm:text-xs font-medium text-brand-rose">
               <p>
-                We will send your points / navigator summary with this enquiry. You can add more detail in your message
-                below.
+                A session note from this browser may be included with your enquiry. Add any extra general or education
+                detail in your message.
               </p>
             </div>
           ) : null}
@@ -790,6 +767,28 @@ export function ContactLeadForm({
       </div>
 
       <div className="flex flex-col gap-6 mt-8">
+        <label
+          className={`flex items-start gap-3 text-sm p-4 rounded-xl border border-brand-plum/5 bg-brand-plum/[0.02] cursor-pointer hover:bg-brand-plum/[0.04] transition-colors${fieldErrors.formAcknowledgementAccepted ? " has-error border-[color:var(--brand-rose)]/35 bg-[color:var(--brand-rose)]/[0.06]" : ""}`}
+          hidden={mobileStepper && !visibleFields?.has("formAcknowledgementAccepted")}
+        >
+          <input
+            type="checkbox"
+            name="formAcknowledgementAccepted"
+            checked={Boolean(form.formAcknowledgementAccepted)}
+            onChange={handleChange}
+            className="mt-1 h-4 w-4 rounded border-brand-plum/20 text-brand-rose focus:ring-brand-rose"
+            aria-invalid={fieldErrors.formAcknowledgementAccepted ? "true" : undefined}
+            aria-describedby={fieldErrors.formAcknowledgementAccepted ? "err-formAcknowledgementAccepted" : undefined}
+            required
+          />
+          <span className="text-xs font-medium text-brand-plum/70 leading-relaxed">{acknowledgementLabel}</span>
+        </label>
+        {fieldErrors.formAcknowledgementAccepted ? (
+          <p className="field-error -mt-4 px-4" id="err-formAcknowledgementAccepted" role="alert">
+            {fieldErrors.formAcknowledgementAccepted}
+          </p>
+        ) : null}
+
         <label
           className={`flex items-start gap-3 text-sm p-4 rounded-xl border border-brand-plum/5 bg-brand-plum/[0.02] cursor-pointer hover:bg-brand-plum/[0.04] transition-colors${fieldErrors.privacyPolicyAccepted ? " has-error border-[color:var(--brand-rose)]/35 bg-[color:var(--brand-rose)]/[0.06]" : ""}`}
           hidden={mobileStepper && !visibleFields?.has("privacyPolicyAccepted")}
@@ -846,12 +845,12 @@ export function ContactLeadForm({
             ? (
               <>
                 <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-white/60 border-t-white" aria-hidden />
-                Sending your plan...
+                Sending your enquiry...
               </>
             )
             : mobileStepper && currentStep < stepFieldGroups.length - 1
               ? "Continue to next step"
-              : mode === "consultation" ? "Confirm Booking" : "Start your journey"}
+              : mode === "consultation" ? "Confirm discussion booking" : "Send enquiry"}
         </motion.button>
       </div>
 

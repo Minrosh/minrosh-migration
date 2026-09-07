@@ -54,7 +54,7 @@ export function EnquiryDetailDrawer({ enquiry, open, onClose, onConverted }) {
 
   const convertToCustomer = useCallback(async () => {
     if (!enquiry) return;
-    const name = enquiryFullName(enquiry) || "Prospective client";
+    const name = enquiryFullName(enquiry) || "Prospective enquirer";
     const email = String(enquiry.email || "").trim();
     if (!email) {
       setFeedback(

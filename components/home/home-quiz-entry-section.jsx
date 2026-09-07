@@ -13,15 +13,14 @@ export function HomeQuizEntrySection() {
         <div className="grid gap-6 lg:grid-cols-[1.35fr_1fr] lg:items-end">
           <div>
             <p className="inline-flex rounded-full border border-brand-rose/15 bg-brand-rose/[0.06] px-3 py-1 text-[11px] font-bold uppercase tracking-[0.22em] text-brand-rose">
-              Pathway questionnaire
+              Official Information Finder
             </p>
             <h2 id="home-quiz-heading" className="mt-4 text-2xl font-bold tracking-tight text-brand-plum sm:text-3xl">
-              Start your free pathway check
+              Explore public information by topic
             </h2>
             <p className="mt-4 max-w-3xl text-sm font-medium leading-relaxed text-brand-plum/75 sm:text-base">
-              Use our structured questionnaire to map your possible next step across Australia, Canada, the UK, and New
-              Zealand. Results are indicative planning guidance based on your inputs and should be confirmed with official
-              rules and case-specific advice.
+              Choose a broad topic to find general information and official links. This tool does not assess
+              eligibility, recommend a visa, or provide immigration assistance.
             </p>
           </div>
 
@@ -33,28 +32,28 @@ export function HomeQuizEntrySection() {
                 href="/assessment"
                 eventName="cta_click"
                 eventParams={{
-                  cta_id: "home_quiz_entry_assessment",
+                  cta_id: "home_information_finder",
                   cta_location: "home_quiz_entry",
                   destination: "/assessment",
                 }}
-                aria-label="Start free pathway check"
-                className="home-hero-premium__cta inline-flex min-h-[52px] w-full items-center justify-center rounded-full border-2 border-white px-7 py-3.5 text-center text-base font-bold text-white shadow-[0_14px_36px_rgba(136,19,55,0.22)] outline-none ring-offset-2 ring-offset-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-[0_18px_44px_rgba(136,19,55,0.3)] focus-visible:ring-2 focus-visible:ring-brand-rose/45"
+                aria-label="Open Official Information Finder"
+                className="inline-flex min-h-[48px] items-center justify-center rounded-full bg-brand-rose px-5 py-3 text-sm font-bold text-white transition hover:opacity-95"
               >
-                Start Free Pathway Check
+                Explore General Information →
               </TrackedLink>
               <TrackedLink
-                id="home-quiz-entry-secondary"
-                href="/book-consultation"
+                id="home-quiz-entry-education"
+                href="/education-consultation"
                 eventName="cta_click"
                 eventParams={{
-                  cta_id: "home_quiz_entry_book_consultation",
+                  cta_id: "home_education_enquiry",
                   cta_location: "home_quiz_entry",
-                  destination: "/book-consultation",
+                  destination: "/education-consultation",
                 }}
-                aria-label="Book consultation with MinRosh Migration"
-                className="inline-flex min-h-[52px] w-full items-center justify-center rounded-full border-2 border-brand-plum/18 bg-white px-7 py-3.5 text-center text-base font-bold text-brand-plum transition-all duration-300 hover:border-brand-rose/45 hover:text-brand-rose focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-rose/35"
+                aria-label="Education course enquiry"
+                className="inline-flex min-h-[48px] items-center justify-center rounded-full border border-brand-plum/20 bg-white px-5 py-3 text-sm font-bold text-brand-plum transition hover:bg-brand-cream/60"
               >
-                Book Consultation
+                Education Course Enquiry
               </TrackedLink>
             </div>
           </div>

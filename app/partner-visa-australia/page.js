@@ -3,10 +3,12 @@ import seoPages from "../../data/seo-pages.json";
 import { ContentPage } from "../../components/content-page";
 import { SiteShell } from "../../components/site-shell";
 import { StructuredData } from "../../components/structured-data";
+import { getComplianceConfig } from "../../lib/compliance";
 import { buildMetadata, breadcrumbJsonLd, faqJsonLd } from "../../lib/seo";
 import { HubClusterNavigator } from "../../components/seo/hub-cluster-navigator";
 
 const pageData = seoPages.servicePages.partnerVisa;
+const compliance = getComplianceConfig(siteData);
 
 export const metadata = buildMetadata({
   title: pageData.metaTitle,
@@ -63,6 +65,8 @@ export default function PartnerVisaPage() {
         ]}
         officialResources={pageData.officialResources ?? []}
         currentPath={pageData.path}
+        complianceBanner={compliance.categoryPageBanner}
+        complianceFooter={compliance.categoryPageFooter}
         sections={pageData.sections}
         faq={pageData.faq}
         mainLead={<HubClusterNavigator category="partner" currentPath={pageData.path} />}

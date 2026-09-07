@@ -600,7 +600,7 @@ export function CustomerDetailDrawer({ customerId, open, onClose, onRefresh, boo
               <section className="space-y-3">
                 <h3 className="text-sm font-semibold text-foreground">Upload link</h3>
                 <p className="text-xs text-muted-foreground">
-                  Only shown in this panel. Send this link to the client — upload only, no admin access.
+                  Only shown in this panel. Send this link to the enquirer — upload only, no admin access.
                 </p>
                 <div className="flex flex-col gap-2">
                   <Input readOnly value={magicUrl} className="font-mono text-xs" placeholder="No token — regenerate" />
@@ -652,7 +652,7 @@ export function CustomerDetailDrawer({ customerId, open, onClose, onRefresh, boo
                   </Button>
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  Opens the exact Google Sheets row used for client portal status tracking.
+                  Opens the exact Google Sheets row used for enquirer portal status tracking.
                 </p>
               </section>
 

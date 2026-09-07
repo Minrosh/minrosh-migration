@@ -33,7 +33,7 @@ const consultants = [
       "The team focuses on turning stressful migration decisions into staged action plans with clear evidence priorities and timing checkpoints.",
   },
   {
-    name: "Client Experience Team",
+    name: "Enquirer Experience Team",
     role: "Onboarding and Document Readiness",
     languages: "English, Hindi",
     story:

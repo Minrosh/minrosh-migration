@@ -3,6 +3,7 @@ import seoPages from "../../data/seo-pages.json";
 import { ContentPage } from "../../components/content-page";
 import { SiteShell } from "../../components/site-shell";
 import { StructuredData } from "../../components/structured-data";
+import { getComplianceConfig } from "../../lib/compliance";
 import { getHomeSiteData } from "../../lib/home-site-data";
 import { buildMetadata, breadcrumbJsonLd, faqJsonLd } from "../../lib/seo";
 
@@ -17,6 +18,7 @@ export const metadata = buildMetadata({
 
 export default function VisitorVisasPage() {
   const siteData = getHomeSiteData(siteDataStatic);
+  const compliance = getComplianceConfig(siteData);
   return (
     <SiteShell siteData={siteData} currentPath={pageData.path}>
       <StructuredData
@@ -30,6 +32,8 @@ export default function VisitorVisasPage() {
         eyebrow={pageData.eyebrow}
         title={pageData.headline}
         intro={pageData.intro}
+        complianceBanner={compliance.categoryPageBanner}
+        complianceFooter={compliance.categoryPageFooter}
         breadcrumbs={[
           { href: "/", label: "Home" },
           { href: pageData.path, label: "Visitor Visas" },

@@ -19,6 +19,8 @@ const ExitIntentPopup = dynamic(() => import("./exit-intent-popup").then(mod => 
 export function GlobalClientWidgets({ siteData }) {
   const [showStickyCta, setShowStickyCta] = useState(false);
   const [showEngagementWidgets, setShowEngagementWidgets] = useState(false);
+  const aiChatEnabled =
+    process.env.NEXT_PUBLIC_ENABLE_PUBLIC_AI_CHAT === "true";
 
   useEffect(() => {
     const stickyTimer = window.setTimeout(() => setShowStickyCta(true), 1200);
@@ -56,7 +58,7 @@ export function GlobalClientWidgets({ siteData }) {
   return (
     <>
       {showStickyCta ? <StickyMobileCTA /> : null}
-      {showEngagementWidgets ? <AIConciergeLazy siteData={siteData} /> : null}
+      {showEngagementWidgets && aiChatEnabled ? <AIConciergeLazy siteData={siteData} /> : null}
       {showEngagementWidgets ? <ExitIntentPopup /> : null}
     </>
   );

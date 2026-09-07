@@ -81,7 +81,7 @@ export default function StudentOver25Page() {
         related={[
           { href: "/student-visa-australia", title: "Student Visa Australia" },
           { href: "/student-visa-australia-requirements", title: "Student Visa Requirements" },
-          { href: "/book-consultation", title: "Book Consultation" },
+          { href: "/book-information-session", title: "Book Consultation" },
         ]}
       />
     </SiteShell>

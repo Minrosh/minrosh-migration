@@ -77,7 +77,7 @@ export default async function ImmigrationNewsArticlePage({ params }) {
                 Open official announcement
               </a>
             ) : null}
-            <Link href="/book-consultation" className="btn btn-ghost min-h-[48px] touch-manipulation">
+            <Link href="/book-information-session" className="btn btn-ghost min-h-[48px] touch-manipulation">
               Book a consultation
             </Link>
             <Link href="/immigration-news" className="btn btn-ghost min-h-[48px] touch-manipulation">
@@ -95,9 +95,9 @@ export default async function ImmigrationNewsArticlePage({ params }) {
 
         <aside className="immigration-news-article__aside" role="note">
           <p>
-            MinRosh Migration is a registered migration practice in Australia. These notes summarise public
-            information for orientation only and are not legal advice. Always verify eligibility, dates, and
-            requirements on the official source before you act.
+            MinRosh Migration provides general migration information and education support using publicly
+            available sources. These notes are for orientation only and are not immigration assistance or
+            legal advice. Always verify eligibility, dates, and requirements on the official source before you act.
           </p>
         </aside>
       </article>

@@ -59,7 +59,7 @@ export default function AustralianVisasOfficialSourcesPage() {
             { href: "/employer-sponsored-visas", title: "Employer-sponsored visas" },
             { href: "/visitor-visas", title: "Visitor visas" },
             { href: "/assessment", title: "Free assessment" },
-            { href: "/tools", title: "Client tools" },
+            { href: "/tools", title: "Planning tools" },
           ]}
         />
       </PremiumPageShell>

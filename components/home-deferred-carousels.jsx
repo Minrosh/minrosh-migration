@@ -46,10 +46,10 @@ export function HomeDeferredCarousels({ newsItems = [] }) {
           <div className="text-center">
             <p className="text-[10px] font-black uppercase tracking-[0.28em] text-brand-rose sm:text-xs">Trust</p>
             <h2 className="mt-3 text-2xl font-black tracking-tight text-brand-plum sm:text-3xl md:text-4xl">
-              Client feedback
+              What people say
             </h2>
             <p className="mx-auto mt-4 max-w-3xl text-sm font-medium leading-relaxed text-brand-plum/70 sm:text-base">
-              Quotes describe past clients&apos; experience of working with MinRosh—organisation, clarity and process
+              Quotes describe past enquirers&apos; experience of working with MinRosh—organisation, clarity and process
               support. They are{" "}
               <strong className="font-black text-brand-plum">not promises about future visa grants or outcomes.</strong>{" "}
               Individual results depend on your facts and current immigration rules.
@@ -59,7 +59,7 @@ export function HomeDeferredCarousels({ newsItems = [] }) {
           <div className="relative mt-8 sm:mt-10">
             <ul
               className="-mx-1 flex list-none snap-x snap-mandatory gap-5 overflow-x-auto overscroll-x-contain px-1 pb-8 pl-0 [-webkit-overflow-scrolling:touch] no-scrollbar sm:gap-6 lg:snap-none lg:grid lg:grid-cols-2 lg:gap-6 lg:overflow-visible lg:pb-6 xl:grid-cols-4"
-              aria-label="Client feedback quotes"
+              aria-label="Enquirer feedback quotes"
             >
               {FEEDBACK.map((item) => (
                 <li

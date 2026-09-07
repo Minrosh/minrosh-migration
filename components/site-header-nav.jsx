@@ -185,12 +185,12 @@ export function SiteHeaderNav({ navLinks, currentPath, enableVisaMega = false })
         <div className="site-nav__toolbar">
           <div className="site-nav__cta-cluster">
             <Link
-              href="/book-consultation"
+              href="/contact"
               scroll
               className="btn btn-primary site-nav__cta site-nav__cta--primary touch-manipulation"
-              onClick={(event) => handleNavClick(event, "/book-consultation")}
+              onClick={(event) => handleNavClick(event, "/contact")}
             >
-              Book consultation
+              Enquire
             </Link>
           </div>
         </div>

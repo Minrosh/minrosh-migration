@@ -4,6 +4,7 @@ import { ContentPage } from "../../components/content-page";
 import { TsmitSalaryCheck } from "../../components/tsmit-salary-check";
 import { SiteShell } from "../../components/site-shell";
 import { StructuredData } from "../../components/structured-data";
+import { getComplianceConfig } from "../../lib/compliance";
 import { getHomeSiteData } from "../../lib/home-site-data";
 import { buildMetadata, breadcrumbJsonLd, faqJsonLd } from "../../lib/seo";
 
@@ -18,6 +19,7 @@ export const metadata = buildMetadata({
 
 export default function EmployerSponsoredPage() {
   const siteData = getHomeSiteData(siteDataStatic);
+  const compliance = getComplianceConfig(siteData);
   return (
     <SiteShell siteData={siteData} currentPath={pageData.path}>
       <StructuredData
@@ -32,6 +34,8 @@ export default function EmployerSponsoredPage() {
         title={pageData.headline}
         intro={pageData.intro}
         alertBanner={pageData.alertBanner}
+        complianceBanner={compliance.categoryPageBanner}
+        complianceFooter={compliance.categoryPageFooter}
         breadcrumbs={[
           { href: "/", label: "Home" },
           { href: pageData.path, label: "Employer-Sponsored Visas" },

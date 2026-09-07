@@ -1,33 +1,40 @@
 "use client";
 
+import { DEFAULT_COMPLIANCE } from "@/lib/compliance";
+
 /**
- * MARN + statutory links for contact and booking surfaces (consumer transparency).
+ * Referral strip: points users to the official Register of Migration Agents.
+ * Never claims MinRosh is registered or displays a MARN placeholder.
  */
-export function AgentRegistrationStrip({ brand, variant = "default" }) {
+export function AgentRegistrationStrip({ brand, variant = "default", compliance }) {
   if (!brand) return null;
-  const marn = String(
-    brand.marn || (typeof process !== "undefined" ? process.env.NEXT_PUBLIC_MARN : "") || ""
-  ).trim();
+  const cfg = { ...DEFAULT_COMPLIANCE, ...(compliance || {}) };
   const registerSearchUrl =
-    brand.migrationAgentsRegisterSearchUrl || "https://www.mara.gov.au/search-the-register-of-migration-agents/";
+    brand.migrationAgentsRegisterSearchUrl ||
+    cfg.authorisedProfessionalReferralUrl ||
+    "https://www.mara.gov.au/search-the-register-of-migration-agents/";
 
   return (
     <aside
       className={`agent-registration-strip ${variant === "compact" ? "agent-registration-strip--compact" : ""}`.trim()}
-      aria-label="Registered migration agent details"
+      aria-label="Authorised professional referral"
     >
       <p className="agent-registration-strip__lead">
         <strong>{brand.name}</strong>
-        {!marn ? (
-          <span className="agent-registration-strip__pending">
-            {" "}
-            · Registered with OMARA —{" "}
-            <a className="agent-registration-strip__register-link" href={registerSearchUrl} target="_blank" rel="noreferrer">
-              search the register
-            </a>{" "}
-            to confirm details
-          </span>
-        ) : null}
+        <span className="agent-registration-strip__pending">
+          {" "}
+          provides general information and education support only — not immigration assistance. For
+          personalised visa advice or application help,{" "}
+          <a
+            className="agent-registration-strip__register-link"
+            href={registerSearchUrl}
+            target="_blank"
+            rel="noreferrer"
+          >
+            {cfg.authorisedProfessionalReferralLabel || "Find a Registered Migration Agent"}
+          </a>
+          .
+        </span>
       </p>
     </aside>
   );

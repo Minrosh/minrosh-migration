@@ -189,7 +189,7 @@ export function PublicUploadForm({ token }) {
     return (
       <div className="mt-8 rounded-lg border border-rose-200 bg-rose-50 p-6 text-sm text-slate-800">
         {status ||
-          "SMS verification is turned on for uploads, but no mobile number is stored for this client. Please contact MinRosh Migration."}
+          "SMS verification is turned on for uploads, but no mobile number is stored for this enquirer. Please contact MinRosh Migration."}
       </div>
     );
   }
@@ -244,7 +244,7 @@ export function PublicUploadForm({ token }) {
     >
       <p className="text-sm text-slate-600">
         Drag and drop files here, or choose below. PDFs and images only — up to 15&nbsp;MB per file, up to 20 files
-        at once. This link expires 72 hours after it was issued unless your agent sends a new one.
+        at once. This link expires 72 hours after it was issued unless MinRosh sends a new one.
       </p>
       {templates.length ? (
         <div className="rounded-md border border-slate-200 bg-slate-50 p-3 text-sm text-slate-700">
@@ -282,7 +282,7 @@ export function PublicUploadForm({ token }) {
       ) : null}
       {portalStatus ? (
         <div className="rounded-md border border-emerald-200 bg-emerald-50 p-3 text-sm text-slate-800">
-          <p className="font-semibold text-emerald-900">Visa application status: {portalStatus.status}</p>
+          <p className="font-semibold text-emerald-900">Submission status: {portalStatus.status}</p>
           {portalStatus.stage ? <p className="mt-1">Stage: {portalStatus.stage}</p> : null}
           {portalStatus.updatedAt ? <p className="mt-1">Last updated: {portalStatus.updatedAt}</p> : null}
           {portalStatus.note ? <p className="mt-1">{portalStatus.note}</p> : null}
@@ -317,7 +317,7 @@ export function PublicUploadForm({ token }) {
       <p className="text-xs text-slate-500">
         For passport identity pages, put <strong>passport</strong>, <strong>travel document</strong>, or{" "}
         <strong>ID</strong> in the file name so the server can try to extract name and date-of-birth hints for your
-        advisor. Results are machine-assisted — your agent will verify against the original.
+        advisor. Results are machine-assisted — MinRosh will verify against the original.
       </p>
       <button
         type="submit"

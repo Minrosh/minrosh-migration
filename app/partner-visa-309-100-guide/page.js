@@ -57,7 +57,7 @@ export default function PartnerVisaOffshoreGuidePage() {
         related={[
           guideData.relatedService,
           { href: "/partner-visa-820-801-guide", title: "820/801 onshore partner guide" },
-          { href: "/book-consultation", title: "Book consultation" },
+          { href: "/book-information-session", title: "Book consultation" },
         ]}
       />
         </div>

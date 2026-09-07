@@ -92,9 +92,11 @@ describe("POST /api/contact", () => {
         lastName: "B",
         email: "a@example.com",
         phone: "+61000000000",
+        enquiryType: "general_information",
         mainNeed: "General Enquiry",
         message: "Hello",
         privacyPolicyAccepted: true,
+        formAcknowledgementAccepted: true,
       }),
     );
     expect(res.status).toBe(429);
@@ -108,9 +110,11 @@ describe("POST /api/contact", () => {
         lastName: "B",
         email: "a@example.com",
         phone: "+61000000000",
+        enquiryType: "general_information",
         mainNeed: "General Enquiry",
         message: "Hello",
         privacyPolicyAccepted: true,
+        formAcknowledgementAccepted: true,
       }),
     );
     expect(res.status).toBe(200);
@@ -133,9 +137,11 @@ describe("POST /api/contact", () => {
         lastName: "B",
         email: "a@example.com",
         phone: "+61000000000",
+        enquiryType: "general_information",
         mainNeed: "General Enquiry",
         message: "Hello",
         privacyPolicyAccepted: true,
+        formAcknowledgementAccepted: true,
       }),
     );
     expect(res.status).toBe(503);
@@ -155,9 +161,11 @@ describe("POST /api/contact", () => {
         lastName: "B",
         email: "a@example.com",
         phone: "+61000000000",
+        enquiryType: "general_information",
         mainNeed: "General Enquiry",
         message: "Hello",
         privacyPolicyAccepted: true,
+        formAcknowledgementAccepted: true,
       }),
     );
     expect(res.status).toBe(503);

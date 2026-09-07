@@ -156,14 +156,14 @@ export function SiteVisasMegaMenu() {
           ) : null}
           <div className="visas-mega__actions">
             <Link href="/assessment" className="visas-mega__footer-cta">
-              Start free assessment
+              Official Information Finder
             </Link>
-            <Link href="/book-consultation" className="visas-mega__footer-cta visas-mega__footer-cta--ghost">
-              Book consultation
+            <Link href="/contact" className="visas-mega__footer-cta visas-mega__footer-cta--ghost">
+              General information enquiry
             </Link>
           </div>
           <p className="visas-mega__disclaimer">
-            Smart tools are advisory only and do not replace official eligibility decisions.
+            Topic tools provide general public information only and do not assess eligibility or provide immigration assistance.
           </p>
         </div>
       </div>

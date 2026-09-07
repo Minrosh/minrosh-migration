@@ -118,9 +118,9 @@ function nextMessageId() {
 
 /** Shown before any user message; after chat starts, prompts update from last user text. */
 const initialSuggestedPrompts = [
-  "Skilled migration options",
-  "Student visa planning",
-  "Partner visa first steps",
+  "Skilled category information",
+  "Student visa category information",
+  "Partner visa category information",
   "Fastest next step (urgent)",
 ];
 
@@ -141,16 +141,16 @@ const contextualPrompts = {
     "Skilled migration overview",
     "Points and skills assessment",
     "State nomination vs independent",
-    "Book strategy discussion",
+    "Official information links",
   ],
-  visitor: ["Visitor visa purpose and ties", "Contact MinRosh", "Book consultation", "Australia hub"],
+  visitor: ["Visitor visa purpose and ties", "Contact MinRosh", "General information enquiry", "Australia hub"],
   destinations: ["Australia hub", "New Zealand hub", "Canada hub", "United Kingdom hub"],
-  sriLanka: ["Sri Lanka → Australia hub", "Skilled migration", "Free assessment", "Book consultation"],
+  sriLanka: ["Sri Lanka → Australia hub", "Skilled migration", "Official Information Finder", "General information enquiry"],
   default: [
-    "Skilled migration options",
-    "Student visa planning",
-    "Partner visa first steps",
-    "Book consultation",
+    "Skilled category information",
+    "Student visa category information",
+    "Partner visa category information",
+    "General information enquiry",
   ],
 };
 
@@ -171,9 +171,9 @@ const fallbackReplies = [
   {
     match: /study|student|university|college|education/i,
     content:
-      "For study goals, MinRosh can help with course planning, education consultation, and student visa preparation. Next step: education consultation or a direct enquiry if timing is tight.",
+      "For study goals, MinRosh can share general course and education-provider information and, where offered, admissions administrative support. We do not prepare student visa applications. Next step: education course enquiry, or ask for official Home Affairs links.",
     actions: [
-      { href: "/education-consultation", label: "Education consultation" },
+      { href: "/education-consultation", label: "Education course enquiry" },
       { href: "/student-visa-australia", label: "Student visas" },
     ],
   },
@@ -183,7 +183,7 @@ const fallbackReplies = [
       "For skilled migration, gather occupation, work history, qualifications, English level, and timing. We can help compare pathways such as 189, 190, or 491 in a strategy session.",
     actions: [
       { href: "/skilled-migration", label: "Skilled migration" },
-      { href: "/assessment", label: "Free assessment" },
+      { href: "/assessment", label: "Official Information Finder" },
     ],
   },
   {
@@ -192,7 +192,7 @@ const fallbackReplies = [
       "Partner and family pathways depend heavily on evidence and relationship history. We can help you plan documents and next steps before you lodge.",
     actions: [
       { href: "/partner-visa-australia", label: "Partner visa" },
-      { href: "/book-consultation", label: "Book consultation" },
+      { href: "/book-information-session", label: "General information enquiry" },
     ],
   },
   {
@@ -201,7 +201,7 @@ const fallbackReplies = [
       "Visitor visas need a clear purpose, funds, and ties home. A short consultation usually helps avoid weak applications.",
     actions: [
       { href: "/contact", label: "Contact" },
-      { href: "/book-consultation", label: "Book consultation" },
+      { href: "/book-information-session", label: "General information enquiry" },
     ],
   },
   {
@@ -233,8 +233,8 @@ function getFallbackReply(message) {
     content:
       "The next step is usually a free assessment or a consultation enquiry so we can review your situation properly.",
     actions: [
-      { href: "/assessment", label: "Free assessment" },
-      { href: "/book-consultation", label: "Book consultation" },
+      { href: "/assessment", label: "Official Information Finder" },
+      { href: "/book-information-session", label: "General information enquiry" },
     ],
   };
 }
@@ -441,7 +441,7 @@ export function AIConcierge({ siteData }) {
           </div>
 
           <div className="ai-concierge__cta-row" aria-label="Quick actions">
-            <Link href="/book-consultation" className="ai-concierge__cta-chip">
+            <Link href="/book-information-session" className="ai-concierge__cta-chip">
               Book
             </Link>
             <Link href="/contact" className="ai-concierge__cta-chip">
@@ -531,7 +531,7 @@ export function AIConcierge({ siteData }) {
             <Link href="/assessment" className="ai-concierge__footer-btn">
               Assessment
             </Link>
-            <Link href="/book-consultation" className="ai-concierge__footer-btn">
+            <Link href="/book-information-session" className="ai-concierge__footer-btn">
               Book
             </Link>
           </div>

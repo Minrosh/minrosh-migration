@@ -16,8 +16,8 @@ export function HomeFinalCta() {
           Not sure where to start?
         </h2>
         <p className="mx-auto mt-4 max-w-2xl text-sm font-medium leading-relaxed text-brand-cream/85 sm:text-base">
-          Take the 2-minute pathway check for indicative direction, or book a consultation when you want tailored
-          guidance. Neither replaces official departmental decisions.
+          Explore general migration information from public sources, or submit an education-course enquiry. For
+          personalised immigration assistance, contact a registered migration agent or Australian legal practitioner.
         </p>
 
         <div className="mx-auto mt-10 flex w-full max-w-lg flex-col gap-3 sm:max-w-none sm:flex-row sm:flex-wrap sm:justify-center sm:gap-4">
@@ -26,33 +26,33 @@ export function HomeFinalCta() {
             href="/assessment"
             eventName="cta_click"
             eventParams={{
-              cta_id: "footer_pathway_questionnaire",
+              cta_id: "footer_information_finder",
               cta_location: "home_footer",
               destination: "/assessment",
             }}
-            aria-label="Start the pathway questionnaire from homepage footer"
+            aria-label="Open Official Information Finder from homepage footer"
             className="btn flex min-h-[48px] w-full touch-manipulation items-center justify-center bg-white px-8 py-4 text-base font-black text-brand-plum shadow-xl transition-all hover:-translate-y-0.5 active:scale-[0.98] sm:w-auto sm:text-lg"
           >
-            Start Free Pathway Check
+            Explore General Information
           </TrackedLink>
           <TrackedLink
             id="footer-cta-consultation"
-            href="/book-consultation"
+            href="/education-consultation"
             eventName="cta_click"
             eventParams={{
-              cta_id: "footer_book_consultation",
+              cta_id: "footer_education_enquiry",
               cta_location: "home_footer",
-              destination: "/book-consultation",
+              destination: "/education-consultation",
             }}
-            aria-label="Book a consultation from homepage footer"
+            aria-label="Education course enquiry from homepage footer"
             className="btn flex min-h-[48px] w-full touch-manipulation items-center justify-center border-2 border-white/50 bg-white/15 px-8 py-4 text-base font-black text-white backdrop-blur-[20px] transition-all hover:border-white/65 hover:bg-white/22 sm:w-auto sm:text-lg"
           >
-            Book a consultation
+            Education Course Enquiry
           </TrackedLink>
         </div>
 
         <p className="mt-12 text-[10px] font-medium uppercase tracking-[0.35em] text-brand-cream/55">
-          Brisbane-based team · Online consultations worldwide
+          Brisbane-based · General information &amp; education support
         </p>
       </div>
     </section>

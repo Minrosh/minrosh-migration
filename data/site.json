@@ -1,14 +1,12 @@
 {
   "brand": {
     "name": "MinRosh Migration",
-    "tagline": "Brisbane-based migration and education consultants helping clients plan pathways to Australia, Canada, the UK and New Zealand.",
-    "marn": "Available on request",
+    "tagline": "Independent migration information and education support using publicly available sources.",
     "migrationAgentsRegulations2026Url": "https://www.legislation.gov.au/F2026L00118/latest",
     "omaraLegislativeUpdatesUrl": "https://www.mara.gov.au/notices-and-reports/news-and-notices/legislative-updates",
     "omaraCodeOfConductUrl": "https://www.mara.gov.au/tools-for-agents/legislation/code-of-conduct",
     "omaraRegisterUrl": "https://www.mara.gov.au/",
     "migrationAgentsRegisterSearchUrl": "https://www.mara.gov.au/search-the-register-of-migration-agents/",
-    "specialistAccreditationNote": "Professional development and compliance practices are maintained in line with current OMARA expectations.",
     "email": "info@minroshmigration.com.au",
     "phone": "0478 100 542",
     "phoneSecondary": "0481 706 474",
@@ -24,59 +22,62 @@
       "tiktok": ""
     }
   },
-  "consultationHoursNote": "Consultations are usually scheduled during business hours (AEST). We confirm your appointment by email or phone after you enquire.",
-  "processSectionLead": "Each step is designed to reduce guesswork: from your first assessment through a clear view of options, a direct conversation, and structured next actions you can follow with confidence.",
+  "consultationHoursNote": "General information and education-course enquiry discussions are usually scheduled during business hours (AEST). We confirm by email or phone after you enquire.",
+  "processSectionLead": "Each step helps you find public information, verify official sources, and decide whether you need authorised professional advice.",
   "hero": {
-    "eyebrow": "Registered migration guidance · Four destinations",
-    "title": "Clear migration and study pathways across Australia, Canada, the UK and New Zealand",
-    "lead": "Structured guidance for student, skilled, partner, employer-sponsored and visitor routes — with official-source habits before you lodge.",
+    "eyebrow": "PUBLIC INFORMATION \u2022 CLEAR EXPLANATIONS",
+    "title": "Explore Australian Migration Information with Greater Clarity",
+    "lead": "We organise and explain publicly available information so you can better understand visa categories, official requirements and education options. We do not provide immigration assistance, legal advice or personalised visa recommendations.",
     "bullets": [
-      "Indicative direction so you know what to verify next (tests, skills assessment, relationship evidence).",
-      "Document-ready coaching aligned to Department of Home Affairs and other official programme expectations.",
-      "Official visa listings and departmental tools highlighted—not forum summaries alone.",
-      "Practical next steps toward the pathway questionnaire or consultation, at the pace that suits you."
+      "Plain-language summaries of publicly listed visa categories with links to official sources.",
+      "Help locating Home Affairs, state/territory, and education-provider information pages.",
+      "Education-course enquiry and admissions administrative support where offered.",
+      "Clear direction to seek a registered migration agent or Australian legal practitioner when you need personalised advice."
     ],
-    "primaryCta": "Start the pathway questionnaire",
-    "secondaryCta": "Book a consultation"
+    "primaryCta": "Explore General Information",
+    "secondaryCta": "Education Course Enquiry"
   },
   "stats": [
     {
-      "value": "Registered Migration Guidance",
-      "label": "Direct case-led support with practical sequencing, not generic template advice."
+      "value": "Public information",
+      "label": "Organised summaries of publicly available migration and education information."
     },
     {
-      "value": "4 Destination Pathways",
-      "label": "Compare Australia, New Zealand, Canada, and UK routes before you commit."
+      "value": "Official sources first",
+      "label": "Links and navigation to Home Affairs and other institutional pages."
     },
     {
-      "value": "Pathway questionnaire",
-      "label": "Indicative direction to prioritise next checks—consultation when you want tailored guidance."
+      "value": "Education support",
+      "label": "Course enquiry and admissions administration support within a defined boundary."
     }
   ],
   "about": {
-    "title": "Migration services in Brisbane you can trust",
-    "body": "At MinRosh Migration, we help individuals and families navigate the Australian visa process with confidence and clarity. We understand that every case is different, so we focus on structured guidance, practical planning, and clear communication rather than generic one-size-fits-all advice.",
+    "title": "What MinRosh Provides",
+    "body": "MinRosh helps users navigate publicly available information about Australian visa categories and study options. Our role is limited to organising official information, providing links to original sources, and offering education-course enquiry and admissions administration support where appropriate. We do not assess individual visa eligibility, recommend a visa, prepare visa documents, lodge applications, communicate with immigration authorities on a person's behalf, or provide immigration legal advice.",
     "points": [
-      "Registered migration guidance for skilled migration, student, partner, and employer-sponsored pathways",
-      "Personalised visa strategies aligned to your background, timing, and goals",
-      "Structured preparation before formal case review, nomination planning, and visa lodgement"
-    ]
+      "General migration information compiled from publicly available sources",
+      "Official-source navigation for Home Affairs and related institutions",
+      "Education course enquiry and admissions administrative support where offered"
+    ],
+    "vision": null,
+    "mission": null,
+    "slogan": "Unlock New Horizons for better tomorrow."
   },
   "countries": {
     "australia": {
       "title": "Australia",
       "hubHref": "/destinations/australia",
-      "copy": "Support across student, skilled, employer-sponsored, partner, and longer-term pathways, with education planning and structured next-step guidance.",
+      "copy": "General information across student, skilled, employer-sponsored, partner, and longer-term pathways, with education planning and structured next-step guidance.",
       "highlights": [
         "Student, graduate, skilled, and family pathways",
-        "Points, nomination, and timing strategy",
+        "Points, nomination, and timing information",
         "Education support aligned with longer-term planning"
       ]
     },
     "nz": {
       "title": "New Zealand",
       "hubHref": "/destinations/new-zealand",
-      "copy": "Guidance for study, work, and residence-related pathways, with practical support around documentation and next-step planning.",
+      "copy": "General information for study, work, and residence-related pathways, with practical support around documentation and next-step planning.",
       "highlights": [
         "Study and post-study route awareness",
         "Work and residence pathway comparisons",
@@ -96,7 +97,7 @@
     "uk": {
       "title": "United Kingdom",
       "hubHref": "/destinations/united-kingdom",
-      "copy": "Migration and education support for student routes, skilled worker planning, and family-based applications where structured next steps matter.",
+      "copy": "Migration and education information for student routes, skilled worker planning, and family-based applications where structured next steps matter.",
       "highlights": [
         "Student and skilled worker pathway context",
         "Family migration and travel-rule awareness",
@@ -106,70 +107,70 @@
   },
   "services": [
     {
-      "title": "Skilled Migration",
-      "href": "/skilled-migration",
-      "summary": "Strategic support for subclass 189, 190, and related skilled migration pathways, including points planning, occupation positioning, Expression of Interest readiness, and document preparation.",
+      "title": "General Migration Information",
+      "href": "/visa-services",
+      "summary": "Plain-language summaries of publicly available information, with links to the relevant official sources. Information is general and may not reflect every individual circumstance.",
       "highlights": [
-        "Preliminary points review and 2026 competitiveness planning",
-        "Occupation and pathway positioning for 189, 190, and 491 options",
-        "EOI, state nomination, and supporting evidence readiness"
+        "Neutral overviews of publicly listed visa categories",
+        "Links to official criteria, forms, and fees pages",
+        "Reminders to verify current requirements yourself"
       ]
     },
     {
-      "title": "Employer-Sponsored Visas",
-      "href": "/employer-sponsored-visas",
-      "summary": "Guidance for applicants and workers exploring employer-sponsored visa options when direct PR is not the strongest immediate pathway.",
-      "highlights": [
-        "Pathway fit discussion for employer-backed routes",
-        "Work history, occupation, and evidence planning",
-        "Alternative strategy when immediate skilled residence pathways are less competitive"
-      ]
-    },
-    {
-      "title": "Student Visas",
-      "href": "/student-visa-australia",
-      "summary": "Support for student visa applicants who need clear guidance around enrolment, document preparation, financial capacity, and longer-term migration planning.",
-      "highlights": [
-        "Study pathway planning and visa document preparation",
-        "Graduate transition guidance and long-term migration positioning",
-        "Clear explanation of student visa requirements and timing"
-      ]
-    },
-    {
-      "title": "Partner & Family Visas",
-      "href": "/partner-visa-australia",
-      "summary": "Guidance for partner and family-based visa matters where relationship evidence, timing, and consistency of documentation are critical.",
-      "highlights": [
-        "Relationship evidence and application planning",
-        "Onshore and offshore partner visa support",
-        "Clear next-step triage for complex family situations"
-      ]
-    },
-    {
-      "title": "Visitor Visas",
-      "href": "/visitor-visas",
-      "summary": "Straightforward guidance for visitor visa applications where clean documentation and clear travel purpose are important.",
-      "highlights": [
-        "Visitor visa pathway orientation",
-        "Document review and application support",
-        "Clear advice on common refusal risks"
-      ]
-    },
-    {
-      "title": "Visa list & official sources",
+      "title": "Official Source Navigation",
       "href": "/australian-visas-official-sources",
-      "summary": "A readable hub on how to use the Department of Home Affairs visa catalogue and Visa Finder alongside MinRosh pathway pages — built for longer reading and safer verification before you lodge.",
+      "summary": "Help locating relevant Home Affairs, state or territory government, education-provider and other official information pages. Users must verify current requirements directly with the source.",
       "highlights": [
-        "Links to the official visa listing, Visa Finder, and ImmiAccount context",
-        "Maps visit, study, work, and family streams to MinRosh service pages",
-        "Plain-language sequencing tips without copying government tables"
+        "Home Affairs visa listing and Visa Finder context",
+        "State and territory program page orientation",
+        "Last-checked habits for time-sensitive summaries"
+      ]
+    },
+    {
+      "title": "Education Course Support",
+      "href": "/education-consultation",
+      "summary": "General information about courses and education providers, plus admissions-related administrative support where offered. This does not include advice about which visa to apply for, visa eligibility, or preparation of a visa application.",
+      "highlights": [
+        "Course and provider information",
+        "Admissions administration support where available",
+        "Clear separation from immigration assistance"
+      ]
+    },
+    {
+      "title": "Skilled category information",
+      "href": "/skilled-migration",
+      "summary": "General information about publicly listed skilled visa categories and official points-tested frameworks. Not an eligibility assessment or recommendation.",
+      "highlights": [
+        "Public criteria overview with official links",
+        "SkillSelect and listing orientation",
+        "When to seek authorised professional advice"
+      ]
+    },
+    {
+      "title": "Student category information",
+      "href": "/student-visa-australia",
+      "summary": "General information about student visa categories and study options from public sources, separate from any visa application assistance.",
+      "highlights": [
+        "Public student visa category overview",
+        "Links to official student visa pages",
+        "Education enquiry pathway when relevant"
+      ]
+    },
+    {
+      "title": "Partner & family category information",
+      "href": "/partner-visa-australia",
+      "summary": "General information about partner and family visa categories from publicly available sources. Not relationship advice or application preparation.",
+      "highlights": [
+        "Public category overviews",
+        "Official partner visa links",
+        "Referral to authorised professionals for personalised advice"
       ]
     }
   ],
   "pathwaySteps": [
     {
-      "title": "Initial Assessment",
-      "description": "Check your age, points profile, occupation fit, and likely pathway options.",
+      "title": "Explore public criteria",
+      "description": "Read publicly listed age, points, occupation, and pathway information on official sources.",
       "detail": "The first stage is not about lodging anything immediately. It is about confirming whether your occupation aligns with skilled lists, whether your points position is realistic for the subclass you prefer, and whether employer-sponsored or family routes might be stronger. Many skilled professionals from Sri Lanka start here before committing to English tests or skills assessment fees. Use the Department of Home Affairs visa listing to see which visa subclasses exist and read the official eligibility summaries before you lock in a strategy.",
       "officialHref": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing",
       "officialLabel": "Home Affairs visa listing"
@@ -177,14 +178,14 @@
     {
       "title": "Skills Assessment",
       "description": "Verify qualifications and employment evidence with the relevant assessing authority.",
-      "detail": "Each assessing authority publishes occupation-specific criteria. You will usually need qualification transcripts, employment references that match the authority’s format, and sometimes additional evidence such as payment records or organisational charts. A positive skills assessment is a prerequisite for many skilled visas, so sequencing this step before English tests or EOI submission often saves time and cost.",
+      "detail": "Each assessing authority publishes occupation-specific criteria. You will usually need qualification transcripts, employment references that match the authority\u2019s format, and sometimes additional evidence such as payment records or organisational charts. A positive skills assessment is a prerequisite for many skilled visas, so sequencing this step before English tests or EOI submission often saves time and cost.",
       "officialHref": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing",
       "officialLabel": "Home Affairs visa listing"
     },
     {
       "title": "English Test & EOI",
       "description": "Strengthen your points profile and prepare a competitive Expression of Interest.",
-      "detail": "English scores can swing your points total significantly. Once you have a valid test and skills assessment (where required), you can submit an Expression of Interest in SkillSelect for relevant subclasses. Remember that submitting an EOI is not a visa application — you must be invited before you can lodge a points-tested skilled visa.",
+      "detail": "English scores can swing your points total significantly. Once you have a valid test and skills assessment (where required), you can submit an Expression of Interest in SkillSelect for relevant subclasses. Remember that submitting an EOI is not a visa application \u2014 you must be invited before you can lodge a points-tested skilled visa.",
       "officialHref": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing",
       "officialLabel": "Home Affairs visa listing"
     },
@@ -196,8 +197,8 @@
       "officialLabel": "Home Affairs visa listing"
     },
     {
-      "title": "Visa Lodgement",
-      "description": "Prepare the final application package with a clean, consistent document set.",
+      "title": "Official application channels",
+      "description": "If you decide to apply, use official Home Affairs channels or engage an authorised professional. MinRosh does not lodge visas.",
       "detail": "After invitation or when your visa stream does not use SkillSelect, lodgement requires form accuracy, consistent dates across documents, health examinations, police certificates, and payment of the visa application charge. Weak or contradictory evidence is a common cause of delays or requests for further information, so a final consistency review matters.",
       "officialHref": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing",
       "officialLabel": "Home Affairs visa listing"
@@ -205,20 +206,20 @@
   ],
   "processSteps": [
     {
-      "title": "Free assessment",
-      "description": "Tell us about your situation, goals, and preferred direction."
+      "title": "Choose an information topic",
+      "description": "Select the visa category or education topic you want to read about."
     },
     {
-      "title": "Initial view",
-      "description": "We identify possible directions and the key issues to think about early."
+      "title": "Review a general summary",
+      "description": "Read a neutral overview compiled from public sources."
     },
     {
-      "title": "Human conversation",
-      "description": "Speak with MinRosh about your practical next steps."
+      "title": "Verify with the official source",
+      "description": "Follow the official links and check the current criteria, forms, fees and processing information yourself."
     },
     {
-      "title": "Move with structure",
-      "description": "Use the right service page, legal information, and contact path to move forward confidently."
+      "title": "Seek authorised advice if needed",
+      "description": "For advice based on your circumstances or help with an application, contact a registered migration agent or Australian legal practitioner."
     }
   ],
   "successStories": [
@@ -227,15 +228,15 @@
       "location": "Brisbane",
       "visa": "Skilled Independent visa (subclass 189)",
       "quote": "The structured points review made the process feel manageable. We knew exactly what to improve before moving forward.",
-      "outcome": "Moved from a scattered document set to a confident 189-ready pathway.",
+      "outcome": "Illustrative education story only \u2014 not a promise of any visa outcome or immigration assistance by MinRosh.",
       "timeline": "Result achieved in 6 months"
     },
     {
       "name": "R. Perera",
       "location": "Melbourne",
       "visa": "Partner visa (subclass 820/801 pathway)",
-      "quote": "From Colombo to partner PR in Melbourne — MinRosh helped us organise relationship evidence and timelines without the stress we expected.",
-      "outcome": "Clear evidence plan and confident lodgement preparation.",
+      "quote": "From Colombo to partner PR in Melbourne \u2014 Public information and structured checklists helped us organise relationship evidence and timelines without the stress we expected.",
+      "outcome": "Illustrative education story only \u2014 not a promise of any visa outcome or immigration assistance by MinRosh.",
       "timeline": "Result achieved in 14 months"
     },
     {
@@ -243,7 +244,7 @@
       "location": "Adelaide",
       "visa": "Skilled Independent visa (subclass 189)",
       "quote": "MinRosh explained the points system in plain language and helped us understand where we actually stood.",
-      "outcome": "Identified a realistic skilled pathway and prepared for the next stage with confidence.",
+      "outcome": "Illustrative education story only \u2014 not a promise of any visa outcome or immigration assistance by MinRosh.",
       "timeline": "Result achieved in 7 months"
     }
   ],
@@ -254,15 +255,15 @@
     },
     {
       "question": "Do I need a migration agent?",
-      "answer": "A migration agent is not legally required for every application, but professional guidance can reduce errors, improve document quality, and help you avoid weak strategy decisions before you lodge."
+      "answer": "You are not required to use a migration agent for every matter, but only a registered migration agent, Australian legal practitioner, or exempt person may lawfully provide immigration assistance in the applicable circumstances. MinRosh is not a registered migration agent and does not provide immigration assistance. If you need personalised advice or help with an application, search the official Register of Migration Agents or speak with an Australian legal practitioner."
     },
     {
       "question": "How much does an Australian visa cost?",
-      "answer": "Visa application charges vary by visa type, and there can also be costs for English tests, skills assessments, health checks, and supporting documents. Contact MinRosh Migration for a clearer estimate based on your situation."
+      "answer": "Visa application charges vary by visa type, and there can also be costs for English tests, skills assessments, health checks, and supporting documents. Confirm current charges on the Department of Home Affairs website. MinRosh can help with general information questions or education-course enquiries, but does not assess your visa costs as immigration assistance."
     },
     {
       "question": "How do I get PR in Australia in 2026?",
-      "answer": "Permanent residence depends on your visa pathway. Common routes include skilled points-tested visas (such as subclasses 189, 190, or 491), employer-sponsored pathways that may lead to permanent options where eligible, partner visas, and some graduate or specialist routes. You usually need to meet health, character, and specific visa criteria, and skilled routes often require a positive skills assessment and competitive English. Check the Department of Home Affairs visa listing for the subclass that matches your situation, then map nomination, residence, and evidence requirements before you lodge."
+      "answer": "Permanent residence depends on your visa pathway. Common routes include skilled points-tested visas (such as subclasses 189, 190, or 491), employer-sponsored pathways that may lead to permanent options where the official criteria are met, partner visas, and some graduate or specialist routes. You usually need to meet health, character, and specific visa criteria, and skilled routes often require a positive skills assessment and competitive English. Check the Department of Home Affairs visa listing for the subclass that matches your situation, then map nomination, residence, and evidence requirements before anyone lodges an application."
     },
     {
       "question": "What are the 190 visa requirements for Queensland in 2026?",
@@ -270,7 +271,7 @@
     },
     {
       "question": "What is the Skills in Demand visa in Australia?",
-      "answer": "Skills in Demand refers to Australia’s employer-sponsored skilled framework that groups roles into streams such as Specialist Skills, Core Skills, and Essential Skills, with different settings for occupations and income thresholds. It replaces the older single-number branding many people still call the 482. The exact name, lists, and rules on the Department of Home Affairs website are authoritative — use those when deciding whether your job fits a sponsored pathway."
+      "answer": "Skills in Demand refers to Australia\u2019s employer-sponsored skilled framework that groups roles into streams such as Specialist Skills, Core Skills, and Essential Skills, with different settings for occupations and income thresholds. It replaces the older single-number branding many people still call the 482. The exact name, lists, and rules on the Department of Home Affairs website are authoritative \u2014 use those when deciding whether your job fits a sponsored pathway."
     },
     {
       "question": "What is the minimum salary for employer sponsored visa Australia 2026?",
@@ -278,11 +279,11 @@
     },
     {
       "question": "How do I get a PR visa in Queensland as a nurse in 2026?",
-      "answer": "As a nurse you would usually start by confirming your occupation and skills assessment pathway (often through ANMAC or the relevant nursing authority), meeting English requirements, and checking whether you will pursue employer-sponsored options (Skills in Demand / permanent routes where eligible) or points-tested skilled visas (189, 190, or 491). Many Sri Lankan-trained nurses map to Australian nursing occupations when registration and assessment align — but you must verify your own pathway against current lists and AHPRA requirements. Queensland runs its own state and regional nomination programs with lists and rules that change over time. Read the current Queensland migration program material and the Department of Home Affairs visa pages for subclasses 190 and 491, then map health and character requirements before you lodge."
+      "answer": "As a nurse you would usually start by confirming your occupation and skills assessment pathway (often through ANMAC or the relevant nursing authority), meeting English requirements, and checking whether you will pursue employer-sponsored options (Skills in Demand / permanent routes where the official criteria are met) or points-tested skilled visas (189, 190, or 491). Many Sri Lankan-trained nurses map to Australian nursing occupations when registration and assessment align \u2014 but you must verify your own pathway against current lists and AHPRA requirements. Queensland runs its own state and regional nomination programs with lists and rules that change over time. Read the current Queensland migration program material and the Department of Home Affairs visa pages for subclasses 190 and 491, then map health and character requirements before anyone lodges an application."
     },
     {
       "question": "Where is the official list of Australian visas?",
-      "answer": "The Department of Home Affairs publishes the visa listing at immi.homeaffairs.gov.au under Getting a visa. It is the authoritative catalogue of subclasses. Use it to open the page for the visa you are considering, then read criteria, charges, and forms there — summaries on blogs or social media can go out of date quickly."
+      "answer": "The Department of Home Affairs publishes the visa listing at immi.homeaffairs.gov.au under Getting a visa. It is the authoritative catalogue of subclasses. Use it to open the page for the visa you are considering, then read criteria, charges, and forms there \u2014 summaries on blogs or social media can go out of date quickly."
     },
     {
       "question": "What is the Department of Home Affairs Visa Finder?",
@@ -290,7 +291,23 @@
     },
     {
       "question": "How can I spend more time understanding visas before I book?",
-      "answer": "Start with the Department of Home Affairs visa listing and Visa Finder, then read MinRosh guides such as the official sources hub, skilled points guide, student requirements guide, and document checklist. When you are ready for sequencing and evidence review tailored to your facts, use the free assessment or book a consultation."
+      "answer": "Start with the Department of Home Affairs visa listing and Visa Finder, then read MinRosh general information pages such as the official sources hub and category summaries. Use the Official Information Finder for topic-based official links. For personalised advice or application help, contact a registered migration agent or Australian legal practitioner. For education-course enquiries, use MinRosh education support."
     }
-  ]
+  ],
+  "compliance": {
+    "businessStatusDisclosure": "MinRosh Migration is an independent migration information and education support service. We make publicly available information easier to find and understand and can assist with education-course enquiries and general administrative support. We are not registered migration agents or Australian legal practitioners and do not provide immigration assistance or immigration legal advice.",
+    "shortDescription": "Independent migration information and education support using publicly available sources.",
+    "shortDisclaimer": "General information only. MinRosh does not provide immigration assistance, legal advice, or personalised visa recommendations.",
+    "aiInformationFinderNotice": "Choose a broad topic to find general information and official links. This tool does not assess eligibility, recommend a visa, or provide immigration assistance.",
+    "educationSupportScope": "We can provide general information about education providers and courses and, where available, administrative support with an education-provider admissions application. This service is separate from immigration assistance.",
+    "noGuaranteeStatement": "Information may change and should be verified through official sources. MinRosh does not guarantee admission, invitation, nomination, or any visa outcome.",
+    "authorisedProfessionalReferralLabel": "Find a Registered Migration Agent",
+    "authorisedProfessionalReferralUrl": "https://www.mara.gov.au/search-the-register-of-migration-agents/",
+    "homeAffairsUrl": "https://immi.homeaffairs.gov.au/",
+    "formAcknowledgementText": "I understand that MinRosh does not provide immigration assistance or legal advice and will not assess my visa eligibility, recommend a visa, or prepare or lodge a visa application.",
+    "restrictedEnquiryMessage": "We cannot assist with personalised visa advice or visa application preparation. Please consult a registered migration agent or Australian legal practitioner. You can search the official Register of Migration Agents using the link provided.",
+    "categoryPageBanner": "General information only: This page summarises publicly available information and is not immigration assistance, legal advice, or an assessment of your eligibility. Requirements can change. Check the linked official source before acting.",
+    "categoryPageFooter": "MinRosh does not recommend a visa or help prepare or lodge visa applications. If you need advice based on your circumstances, help selecting a visa, or assistance with an application, contact a registered migration agent or Australian legal practitioner.",
+    "chatbotRefusal": "I can provide general publicly available information and official links, but I cannot assess your circumstances, recommend a visa, prepare migration documents, or help with a visa application. For that help, please contact a registered migration agent or Australian legal practitioner."
+  }
 }

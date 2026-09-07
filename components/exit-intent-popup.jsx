@@ -78,9 +78,10 @@ export function ExitIntentPopup() {
             </svg>
           </div>
           
-          <h3 className="mb-2 text-2xl font-bold text-brand-plum">Not sure about your visa options?</h3>
+          <h3 className="mb-2 text-2xl font-bold text-brand-plum">Looking for official visa information?</h3>
           <p className="mb-6 text-brand-plum/70">
-            Don&apos;t leave your migration journey to chance. Take our free 2-minute assessment to discover your clearest pathway.
+            Use our Official Information Finder to browse general public information and official links. It does not
+            assess eligibility or recommend a visa.
           </p>
           
           <Link
@@ -88,7 +89,7 @@ export function ExitIntentPopup() {
             onClick={() => setIsVisible(false)}
             className="block w-full rounded-xl bg-brand-rose px-5 py-3.5 text-center font-bold text-white shadow-lg shadow-brand-rose/25 transition-transform hover:-translate-y-0.5 hover:shadow-xl"
           >
-            Try Free Assessment
+            Explore General Information
           </Link>
           <button
             onClick={() => setIsVisible(false)}

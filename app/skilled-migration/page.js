@@ -3,6 +3,7 @@ import seoPages from "../../data/seo-pages.json";
 import { ContentPage } from "../../components/content-page";
 import { SiteShell } from "../../components/site-shell";
 import { StructuredData } from "../../components/structured-data";
+import { getComplianceConfig } from "../../lib/compliance";
 import { buildMetadata, breadcrumbJsonLd, faqJsonLd } from "../../lib/seo";
 import { HubClusterNavigator } from "../../components/seo/hub-cluster-navigator";
 import { VisaRailSkilledAu } from "../../components/visa-rail-skilled-au";
@@ -10,6 +11,7 @@ import { PageHeroStrip } from "../../components/ui/page-hero-strip";
 import { CONVERSION_PREMIUM_PRIMARY_CTA_CLASS } from "../../lib/conversion-premium-cta-class";
 
 const pageData = seoPages.servicePages.skilledMigration;
+const compliance = getComplianceConfig(siteData);
 
 export const metadata = buildMetadata({
   title: pageData.metaTitle,
@@ -80,6 +82,8 @@ export default function SkilledMigrationPage() {
           { href: pageData.path, label: "Skilled Migration" },
             ]}
             currentPath={pageData.path}
+            complianceBanner={compliance.categoryPageBanner}
+            complianceFooter={compliance.categoryPageFooter}
             officialResources={pageData.officialResources ?? []}
             sections={pageData.sections}
             faq={pageData.faq}

@@ -3,6 +3,7 @@ import seoPages from "../../data/seo-pages.json";
 import { ContentPage } from "../../components/content-page";
 import { SiteShell } from "../../components/site-shell";
 import { StructuredData } from "../../components/structured-data";
+import { getComplianceConfig } from "../../lib/compliance";
 import { buildMetadata, breadcrumbJsonLd, faqJsonLd } from "../../lib/seo";
 import { getLifestyleGuide } from "../../lib/lifestyle-guides";
 import { getFirst14Days, getStudentJobBoardAu, getTransportGuide } from "../../lib/experience-data";
@@ -13,6 +14,7 @@ import { CONVERSION_PREMIUM_PRIMARY_CTA_CLASS } from "../../lib/conversion-premi
 import { HubClusterNavigator } from "../../components/seo/hub-cluster-navigator";
 
 const pageData = seoPages.servicePages.studentVisa;
+const compliance = getComplianceConfig(siteData);
 
 export const metadata = buildMetadata({
   title: pageData.metaTitle,
@@ -91,6 +93,8 @@ export default function StudentVisaPage() {
             ]}
             officialResources={pageData.officialResources ?? []}
             currentPath={pageData.path}
+            complianceBanner={compliance.categoryPageBanner}
+            complianceFooter={compliance.categoryPageFooter}
             mainLead={
           <>
             <HubClusterNavigator category="student" currentPath={pageData.path} />

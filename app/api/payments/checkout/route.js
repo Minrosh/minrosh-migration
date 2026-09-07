@@ -19,8 +19,8 @@ export async function POST(request) {
     customerEmail: String(body?.email || "").trim(),
     customerName: String(body?.name || "").trim(),
     metadata: body?.metadata && typeof body.metadata === "object" ? body.metadata : {},
-    successPath: "/book-consultation?payment=success",
-    cancelPath: "/book-consultation?payment=cancelled",
+    successPath: "/book-information-session?payment=success",
+    cancelPath: "/book-information-session?payment=cancelled",
   });
   if (!session.ok) {
     return Response.json({ ok: false, error: session.error || "Stripe checkout failed." }, { status: 502 });

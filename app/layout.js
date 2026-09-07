@@ -43,27 +43,24 @@ export const viewport = {
 export const metadata = {
   metadataBase: new URL("https://minroshmigration.com.au"),
   title: {
-    default:
-      "Migration Agent Brisbane | Australia, Canada, UK & New Zealand Visa Guidance | MinRosh Migration",
+    default: "MinRosh Migration | General Migration Information & Education Support",
     template: "%s | MinRosh Migration",
   },
   description:
-    "Brisbane-based migration and education consultants helping clients plan pathways to Australia, Canada, the UK and New Zealand — skilled, partner, student and employer-sponsored visas in plain English before you lodge.",
+    "Explore general Australian migration information from publicly available sources and receive education-course enquiry support. MinRosh does not provide immigration assistance or legal advice.",
   keywords: [
     "MinRosh Migration",
-    "Australian migration guidance",
-    "Brisbane migration",
-    "migration consultant Brisbane",
-    "Brisbane CBD migration pathways",
-    "Canada UK New Zealand visa guidance",
-    "student visa Australia",
-    "skilled migration Australia",
+    "Australian migration information",
+    "official visa information",
+    "education course support",
+    "study in Australia information",
+    "Home Affairs visa information",
+    "Brisbane migration information",
   ],
   openGraph: {
-    title:
-      "Migration Agent Brisbane | Australia, Canada, UK & New Zealand Visa Guidance | MinRosh Migration",
+    title: "MinRosh Migration | General Migration Information & Education Support",
     description:
-      "Brisbane-based migration guidance for Australia, Canada, the UK and New Zealand — skilled, partner, student and employer-sponsored pathways explained clearly before you lodge.",
+      "Explore general Australian migration information from publicly available sources and receive education-course enquiry support. MinRosh does not provide immigration assistance or legal advice.",
     url: "https://minroshmigration.com.au",
     siteName: "MinRosh Migration",
     locale: "en_AU",
@@ -73,17 +70,15 @@ export const metadata = {
         url: "/images/hero-brisbane-river-cbd.jpg",
         width: 1800,
         height: 1200,
-        alt:
-          "Brisbane River and Brisbane CBD skyline at dusk — MinRosh Migration is Brisbane-based pathways guidance for Australia, Canada, UK and NZ",
+        alt: "Brisbane River and Brisbane CBD skyline — MinRosh Migration general information and education support",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title:
-      "Migration Agent Brisbane | Australia, Canada, UK & NZ Visa Guidance | MinRosh Migration",
+    title: "MinRosh Migration | General Migration Information & Education Support",
     description:
-      "Brisbane-based consultants helping students, skilled workers and families plan pathways to Australia, Canada, the UK and New Zealand.",
+      "Independent migration information and education support using publicly available sources. Not immigration assistance or legal advice.",
     images: ["/images/hero-brisbane-river-cbd.jpg"],
   },
   robots: {

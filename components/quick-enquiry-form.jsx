@@ -13,6 +13,8 @@ import { REQUEST_ID_HEADER } from "@/lib/observability/request-id";
 import trustSignalsData from "../data/quick-enquiry-signals.json";
 import { isHcaptchaPublicEnabled } from "@/lib/config";
 import { HCaptchaField } from "./hcaptcha-field";
+import { DEFAULT_COMPLIANCE } from "@/lib/compliance";
+import { mainNeedFromEnquiryType } from "@/lib/validation/contact-schema";
 
 const CAPTCHA_ENABLED = isHcaptchaPublicEnabled();
 
@@ -22,9 +24,11 @@ const initial = {
   email: "",
   phone: "",
   preferredCountry: "Australia",
+  enquiryType: "general_information",
   mainNeed: "General Enquiry",
   message: "",
   privacyPolicyAccepted: false,
+  formAcknowledgementAccepted: false,
   hCaptchaToken: "",
   referralSource: "",
   referralCode: "",
@@ -89,6 +93,13 @@ function validateQuickEnquiry(form) {
   } else if (message.length < 20) {
     errors.message = "A little more detail helps us triage your enquiry faster.";
   }
+  const enquiryType = String(form.enquiryType || "").trim();
+  if (enquiryType !== "general_information" && enquiryType !== "education_enquiry") {
+    errors.enquiryType = "Please choose an enquiry type.";
+  }
+  if (!form.formAcknowledgementAccepted) {
+    errors.formAcknowledgementAccepted = "Please confirm the acknowledgement before submitting.";
+  }
   if (!form.privacyPolicyAccepted) {
     errors.privacyPolicyAccepted = "Please confirm you have read the Privacy Policy before submitting.";
   }
@@ -111,7 +122,7 @@ export function QuickEnquiryForm({ className = "" }) {
 
   const stepFieldGroups = [
     ["firstName", "lastName", "phone", "email"],
-    ["preferredCountry", "mainNeed", "message", "privacyPolicyAccepted"],
+    ["preferredCountry", "enquiryType", "message", "formAcknowledgementAccepted", "privacyPolicyAccepted"],
   ];
   const visibleFields = mobileStepper ? new Set(stepFieldGroups[currentStep] || []) : null;
 
@@ -162,7 +173,12 @@ export function QuickEnquiryForm({ className = "" }) {
 
   function handleChange(event) {
     const { name, value, type, checked } = event.target;
-    setForm((c) => ({ ...c, [name]: type === "checkbox" ? checked : value }));
+    const nextVal = type === "checkbox" ? checked : value;
+    setForm((c) => {
+      const next = { ...c, [name]: nextVal };
+      if (name === "enquiryType") next.mainNeed = mainNeedFromEnquiryType(String(nextVal || ""));
+      return next;
+    });
     setFieldErrors((current) => {
       if (!current[name]) return current;
       const next = { ...current };
@@ -247,7 +263,10 @@ export function QuickEnquiryForm({ className = "" }) {
         headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify({
           ...form,
-          privacyPolicyAccepted: true,
+          enquiryType: String(form.enquiryType || "general_information"),
+          mainNeed: mainNeedFromEnquiryType(String(form.enquiryType || "general_information")),
+          privacyPolicyAccepted: Boolean(form.privacyPolicyAccepted),
+          formAcknowledgementAccepted: Boolean(form.formAcknowledgementAccepted),
           quickEnquiry: true,
           company: hpRef.current?.value || "",
           quizSummary: quizSummaryLine,
@@ -289,6 +308,18 @@ export function QuickEnquiryForm({ className = "" }) {
       if (!response.ok || !(payload?.ok ?? data?.ok)) {
         throw new Error(withRequestId(`${mapQuickEnquiryErrorMessage(errorCode, errorMessage)}${retryHint}`));
       }
+      if (data.outcome === "referred_to_authorised_professional") {
+        setState({
+          status: "success",
+          message:
+            data.restrictedEnquiryMessage ||
+            data.warning ||
+            DEFAULT_COMPLIANCE.restrictedEnquiryMessage,
+        });
+        setForm(initial);
+        setFieldErrors({});
+        return;
+      }
       const syncNote = processingSummaryNote(data.processing);
       setState({
         status: "success",
@@ -328,7 +359,7 @@ export function QuickEnquiryForm({ className = "" }) {
       ) : null}
       <p className="section-label">Quick enquiry</p>
       <p className="quick-enquiry-form__hint">
-        No email required — share your phone and a short message. Add email if you want a brochure copy.
+        General information or education-course enquiry only. No email required — share your phone and a short message.
       </p>
       <p className="form-security-note">
         This form is sent over HTTPS. Only share what you are comfortable including in an initial enquiry; you can add
@@ -415,17 +446,25 @@ export function QuickEnquiryForm({ className = "" }) {
             <option>United Kingdom</option>
           </select>
         </label>
-        <label hidden={mobileStepper && !visibleFields?.has("mainNeed")}>
-          <span>Main need</span>
-          <select name="mainNeed" value={form.mainNeed} onChange={handleChange}>
-            <option>General Enquiry</option>
-            <option>Skilled Migration</option>
-            <option>Student Visa</option>
-            <option>Partner Visa</option>
-            <option>Employer-Sponsored</option>
-            <option>Student Pathway</option>
-            <option>Family / Complex Case</option>
+        <label
+          className={fieldErrors.enquiryType ? "has-error" : ""}
+          hidden={mobileStepper && !visibleFields?.has("enquiryType")}
+        >
+          <span>Enquiry type</span>
+          <select
+            name="enquiryType"
+            value={form.enquiryType}
+            onChange={handleChange}
+            aria-invalid={fieldErrors.enquiryType ? "true" : undefined}
+          >
+            <option value="general_information">General information / official source link</option>
+            <option value="education_enquiry">Education course or admissions enquiry</option>
           </select>
+          {fieldErrors.enquiryType ? (
+            <span className="field-error" role="alert">
+              {fieldErrors.enquiryType}
+            </span>
+          ) : null}
         </label>
         <label className={`contact-grid__full${fieldErrors.message ? " has-error" : ""}`} hidden={mobileStepper && !visibleFields?.has("message")}>
           <span>Your message</span>
@@ -435,7 +474,7 @@ export function QuickEnquiryForm({ className = "" }) {
             autoComplete="off"
             value={form.message}
             onChange={handleChange}
-            placeholder="e.g. occupation, years of experience, and whether you are in Sri Lanka or already offshore."
+            placeholder="Ask a general information question or describe an education-course enquiry. Do not send visa documents."
             required
             aria-invalid={fieldErrors.message ? "true" : undefined}
             aria-describedby={fieldErrors.message ? "quick-err-message" : undefined}
@@ -447,6 +486,26 @@ export function QuickEnquiryForm({ className = "" }) {
           ) : null}
         </label>
       </div>
+      <label
+        className={`contact-grid__full flex items-start gap-2 text-sm${fieldErrors.formAcknowledgementAccepted ? " has-error" : ""}`}
+        hidden={mobileStepper && !visibleFields?.has("formAcknowledgementAccepted")}
+      >
+        <input
+          type="checkbox"
+          name="formAcknowledgementAccepted"
+          checked={Boolean(form.formAcknowledgementAccepted)}
+          onChange={handleChange}
+          className="mt-1"
+          aria-invalid={fieldErrors.formAcknowledgementAccepted ? "true" : undefined}
+          required
+        />
+        <span>{DEFAULT_COMPLIANCE.formAcknowledgementText}</span>
+      </label>
+      {fieldErrors.formAcknowledgementAccepted ? (
+        <p className="field-error contact-grid__full" role="alert">
+          {fieldErrors.formAcknowledgementAccepted}
+        </p>
+      ) : null}
       <label
         className={`contact-grid__full flex items-start gap-2 text-sm${fieldErrors.privacyPolicyAccepted ? " has-error" : ""}`}
         hidden={mobileStepper && !visibleFields?.has("privacyPolicyAccepted")}

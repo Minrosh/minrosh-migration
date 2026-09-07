@@ -63,7 +63,7 @@ export default function GlobalPathwaysPage() {
           { href: "/visa-services", title: "Visa services directory" },
           { href: "/australia-vs-canada-migration-guide", title: "Australia vs Canada guide" },
           { href: "/faq", title: "Migration FAQ" },
-          { href: "/book-consultation", title: "Book consultation" },
+          { href: "/book-information-session", title: "Book consultation" },
         ]}
       />
     </SiteShell>

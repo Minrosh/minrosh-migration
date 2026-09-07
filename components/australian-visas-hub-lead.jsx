@@ -80,7 +80,7 @@ export function AustralianVisasHubLead() {
           </p>
         </div>
         <PremiumCTAGroup className="mt-0 shrink-0 lg:mt-0">
-          <Link href="/book-consultation" className={`${CONVERSION_PREMIUM_PRIMARY_CTA_CLASS} w-full justify-center sm:w-auto`}>
+          <Link href="/book-information-session" className={`${CONVERSION_PREMIUM_PRIMARY_CTA_CLASS} w-full justify-center sm:w-auto`}>
             Book consultation
           </Link>
           <Link href="/assessment" className="btn btn-ghost inline-flex min-h-[48px] items-center justify-center rounded-full px-5">

@@ -29,7 +29,7 @@ export function HubAustraliaAside() {
           <Link href="/australia-visa-document-checklist-guide">Document checklist guide</Link>
         </li>
         <li>
-          <Link href="/tools">All client tools</Link>
+          <Link href="/tools">All planning tools</Link>
         </li>
       </ul>
     </div>

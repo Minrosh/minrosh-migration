@@ -13,15 +13,15 @@ const TABS = [
   },
   {
     href: "/assessment",
-    label: "Quiz",
-    aria: "Visa quiz and pathway questionnaire",
+    label: "Info",
+    aria: "Official Information Finder",
     isActive: (p) => p === "/assessment" || p.startsWith("/assessment/"),
   },
   {
-    href: "/book-consultation",
-    label: "Book",
-    aria: "Book consultation",
-    isActive: (p) => p === "/book-consultation" || p.startsWith("/book-consultation/"),
+    href: "/education-consultation",
+    label: "Study",
+    aria: "Education course enquiry",
+    isActive: (p) => p === "/education-consultation" || p.startsWith("/education-consultation/"),
   },
   {
     href: "/contact",

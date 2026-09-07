@@ -56,7 +56,7 @@ export default function VisaRefusalAppealGuidePage() {
         related={[
           guideData.relatedService,
           { href: "/contact", title: "Contact MinRosh Migration" },
-          { href: "/book-consultation", title: "Book a migration consultation" },
+          { href: "/book-information-session", title: "Book a migration consultation" },
         ]}
       />
         </div>

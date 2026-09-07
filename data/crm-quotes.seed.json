@@ -8,12 +8,12 @@
       "customerId": "cust-demo-001",
       "customerName": "Nimal Perera",
       "lines": [
-        { "description": "Points assessment and migration strategy", "amount": 900 },
-        { "description": "EOI and documentation support", "amount": 2300 },
-        { "description": "Case management until lodgement", "amount": 1600 }
+        { "description": "General migration information briefing (public sources)", "amount": 900 },
+        { "description": "Education course research and shortlist support", "amount": 2300 },
+        { "description": "Education admissions administrative support", "amount": 1600 }
       ],
       "validUntil": "2026-04-22",
-      "notes": "Quoted fee excludes third-party government charges."
+      "notes": "Quoted fee excludes third-party government or provider charges. Does not include immigration assistance."
     },
     {
       "id": "quote-demo-002",
@@ -23,11 +23,11 @@
       "customerId": "cust-demo-002",
       "customerName": "Ishara Fernando",
       "lines": [
-        { "description": "Partner visa eligibility and evidence review", "amount": 1400 },
-        { "description": "Application preparation and submission", "amount": 2100 }
+        { "description": "Education pathway orientation and document checklist (general)", "amount": 1400 },
+        { "description": "Provider admissions application administrative support", "amount": 2100 }
       ],
       "validUntil": "2026-04-19",
-      "notes": "Urgent lane included; response within one business day."
+      "notes": "Urgent lane included; response within one business day. Does not include visa preparation or lodgement."
     }
   ]
 }

@@ -1,3 +1,8 @@
+/**
+ * DISABLED_PENDING_AUTHORISED_PROFESSIONAL_REVIEW
+ * Do not mount on public routes. Use OfficialInformationFinder instead.
+ * Personalised confidence / pathway results are not lawful for this operating model.
+ */
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -16,7 +21,7 @@ export function SmartNavigator({
   title = "Answer a few questions and get routed to the most relevant next step",
   description = "This guided assessment uses your goal, timing, and support preference to point you toward the right MinRosh pathway before consultation.",
   primaryLabel = "Continue",
-  finalHref = "/book-consultation",
+  finalHref = "/book-information-session",
 }) {
   const searchParams = useSearchParams();
   const emailFormRef = useRef(null);

@@ -1,7 +1,10 @@
 import siteData from "../../data/site.json";
 import { ContentPage } from "../../components/content-page";
+import { ContactLeadForm } from "../../components/contact-lead-form";
+import { AgentRegistrationStrip } from "../../components/agent-registration-strip";
 import { SiteShell } from "../../components/site-shell";
 import { StructuredData } from "../../components/structured-data";
+import { getComplianceConfig } from "../../lib/compliance";
 import { buildMetadata, breadcrumbJsonLd, faqJsonLd } from "../../lib/seo";
 
 const educationOfficialResources = [
@@ -21,100 +24,96 @@ const educationOfficialResources = [
 
 const faq = [
   {
-    question: "What is education consultation in a migration context?",
+    question: "What is an education course enquiry with MinRosh?",
     answer:
-      "Education consultation helps students and families think through course choices, destination fit, visa timing, and how study plans may connect to longer-term migration goals.",
+      "It is a discussion about education providers, courses, and where available, administrative support with an education-provider admissions application. It is separate from immigration assistance.",
   },
   {
-    question: "Can education planning affect future migration options?",
+    question: "Will MinRosh assess whether a course leads to a visa or PR outcome?",
     answer:
-      "Yes. Course level, institution choice, post-study opportunities, and timing can all influence how realistic future migration pathways may be.",
+      "No. We do not advise whether a course will produce a migration outcome, recommend a course as a visa or permanent-residency strategy, assess visa eligibility, or prepare a student visa application.",
   },
 ];
 
 export const metadata = buildMetadata({
-  title: "Education Consultation | Study Pathway Planning | MinRosh",
+  title: "Education Course Enquiry & Admissions Support | MinRosh",
   description:
-    "Explore education consultation with MinRosh Migration for course planning, student pathway strategy, and study decisions aligned with long-term migration goals.",
+    "Enquire about education courses and admissions administration support with MinRosh. Separate from immigration assistance or visa application help.",
   path: "/education-consultation",
   keywords: [
-    "Education consultation Australia",
-    "study pathway planning",
-    "student migration guidance",
+    "Education course enquiry Australia",
+    "admissions support",
+    "study course information",
   ],
 });
 
 export default function EducationConsultationPage() {
+  const compliance = getComplianceConfig(siteData);
   return (
     <SiteShell siteData={siteData} currentPath="/education-consultation">
       <StructuredData
         data={breadcrumbJsonLd([
           { name: "Home", path: "/" },
-          { name: "Education Consultation", path: "/education-consultation" },
+          { name: "Education Course Enquiry", path: "/education-consultation" },
         ])}
       />
       <StructuredData data={faqJsonLd(faq)} />
       <ContentPage
-        eyebrow="Education Consultation"
-        title="Education consultation for students planning study with long-term direction"
-        intro="MinRosh Migration supports students and families who need more than just a course list. We help connect study plans, student visa timing, financial preparation, and future migration thinking into one clearer pathway. Student visa criteria and charges are published on the Department of Home Affairs visa listing — always confirm the official subclass page before you commit to an intake."
+        eyebrow="Education Course Enquiry & Admissions Support"
+        title="Education course enquiry and admissions administration support"
+        intro={compliance.educationSupportScope}
+        complianceBanner={compliance.categoryPageBanner}
+        complianceFooter={compliance.categoryPageFooter}
         breadcrumbs={[
           { href: "/", label: "Home" },
-          { href: "/education-consultation", label: "Education Consultation" },
+          { href: "/education-consultation", label: "Education Course Enquiry" },
         ]}
         officialResources={educationOfficialResources}
         currentPath="/education-consultation"
         sections={[
           {
-            title: "What education consultation usually covers",
-            body: "Education consultation is about more than choosing a course. It usually includes understanding your study goals, exploring suitable institutions, identifying evidence requirements for a student visa, and considering how the study pathway may connect to future work or migration options.",
+            title: "What this service covers",
+            body: "We can provide general information about education providers and courses and, where available, administrative support with an education-provider admissions application. This service is separate from immigration assistance.",
             bullets: [
-              "Course and institution planning linked to practical outcomes",
-              "Student visa preparation context, timing, and documentation guidance",
-              "Long-term migration thinking alongside immediate study decisions",
+              "Course and provider information from publicly available sources",
+              "Admissions administration support where offered",
+              "Clear separation from visa eligibility or lodgement help",
             ],
           },
           {
-            title: "Why structured study planning matters",
-            body: "A rushed course decision can create problems later. Stronger planning helps students align budget, academic history, destination preference, and post-study expectations before they make commitments that are expensive to reverse.",
+            title: "What we do not do",
+            body: "We do not advise whether a course will produce a migration outcome, recommend a course as a visa or permanent-residency strategy, assess visa eligibility, prepare a student visa application, or guarantee admission or a visa outcome.",
           },
           {
-            title: "How MinRosh supports education pathways",
-            body: "MinRosh helps students and families organise the early questions that often feel overwhelming: what to study, where to study, what documents matter first, and how the student pathway fits into a broader migration journey.",
+            title: "Information helpful for an education enquiry",
+            body: "Share education preferences and admissions-related details only. Do not send migration history, refusal details, visa strategy questions, passports, or visa application documents.",
             bullets: [
-              "Calm, practical guidance instead of generic institution lists",
-              "Support for students comparing destinations and longer-term goals",
-              "A clearer pathway into student visa preparation and consultation",
+              "Preferred study field, level, and intake period",
+              "Academic background relevant to course entry",
+              "Budget range for tuition where you are comfortable sharing",
             ],
           },
           {
-            title: "Typical education consultation flow",
-            body: "A structured consultation keeps planning grounded in real outcomes and timing. We map your target intake, evidence readiness, and next decisions so your study pathway is not disconnected from your migration goals.",
-            bullets: [
-              "Profile and destination fit review",
-              "Course and institution shortlisting strategy",
-              "Timeline planning for admissions and visa preparation",
-            ],
-          },
-          {
-            title: "Information to prepare before your session",
-            body: "Bringing the right information helps the session move faster and produces clearer recommendations.",
-            bullets: [
-              "Academic history and latest qualification details",
-              "English test status and target intake period",
-              "Budget range and preferred destination options",
-            ],
-          },
-          {
-            title: "Using the official visa catalogue with course planning",
-            body: "Course marketing materials are not the same as visa criteria. Use the visa listing to open the student visa subclass page relevant to you, note financial and English evidence themes, then compare institution offers against those realities. MinRosh helps you translate official requirements into a practical document and timing plan.",
+            title: "Official study visa information",
+            body: "Course marketing materials are not the same as visa criteria. Use the Home Affairs visa listing and study pages to read official subclass information. For personalised immigration assistance, contact a registered migration agent or Australian legal practitioner.",
           },
         ]}
         faq={faq}
+        belowHero={
+          <div className="mx-auto mt-8 w-full max-w-3xl rounded-[2rem] border border-brand-plum/10 bg-white/80 p-4 shadow-sm md:p-6">
+            <AgentRegistrationStrip brand={siteData.brand} compliance={compliance} />
+            <ContactLeadForm
+              className="mt-4"
+              defaultEnquiryType="education_enquiry"
+              lockEnquiryType
+              acknowledgementText={compliance.formAcknowledgementText}
+            />
+          </div>
+        }
         related={[
-          { href: "/student-visa-australia", title: "Student Visa Australia guidance" },
-          { href: "/updates", title: "Open the Updates Hub" },
-          { href: "/contact", title: "Speak with MinRosh Migration" },
+          { href: "/student-visa-australia", title: "Student visa category information" },
+          { href: "/assessment", title: "Official Information Finder" },
+          { href: "/contact", title: "Contact MinRosh" },
         ]}
       />
     </SiteShell>

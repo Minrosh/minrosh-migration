@@ -20,6 +20,9 @@ import { LifestyleExperienceBlock } from "../../../../components/lifestyle/lifes
 import { DestinationOutcomeSimulator } from "../../../../components/destination-outcome-simulator";
 import { DestinationConfidenceStrip } from "../../../../components/destination-confidence-strip";
 
+/** Soft-disabled: confidence / outcome framing is not compliant for public no-MARN mode. */
+const SHOW_DESTINATION_CONFIDENCE_TOOLS = false;
+
 function lifestyleGuideForSection(slug, section) {
   if (section !== "student") return null;
   if (slug === "australia") return getLifestyleGuide("student-australia");
@@ -112,21 +115,25 @@ export default async function DestinationSectionPage({ params }) {
         officialResources={data.officialResources ?? []}
         mainLead={
           <>
-            <DestinationOutcomeSimulator
-              destinationName={hub.name}
-              sectionLabel={sectionLabel}
-              scenarios={outcomeScenarios}
-            />
-            <DestinationConfidenceStrip
-              title={confidenceStrip.title ?? `${hub.name} Confidence Strip`}
-              summary={
-                confidenceStrip.summary ??
-                `Keep your ${sectionLabel.toLowerCase()} plan structured with confidence checks.`
-              }
-              metrics={confidenceStrip.metrics ?? []}
-              proof={confidenceStrip.proof ?? []}
-              nextMilestones={confidenceStrip.nextMilestones ?? []}
-            />
+            {SHOW_DESTINATION_CONFIDENCE_TOOLS ? (
+              <>
+                <DestinationOutcomeSimulator
+                  destinationName={hub.name}
+                  sectionLabel={sectionLabel}
+                  scenarios={outcomeScenarios}
+                />
+                <DestinationConfidenceStrip
+                  title={confidenceStrip.title ?? `${hub.name} Confidence Strip`}
+                  summary={
+                    confidenceStrip.summary ??
+                    `Keep your ${sectionLabel.toLowerCase()} plan structured with confidence checks.`
+                  }
+                  metrics={confidenceStrip.metrics ?? []}
+                  proof={confidenceStrip.proof ?? []}
+                  nextMilestones={confidenceStrip.nextMilestones ?? []}
+                />
+              </>
+            ) : null}
             <LifestyleExperienceBlock
               guide={lifestyleGuide}
               first14={first14}

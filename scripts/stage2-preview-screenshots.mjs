@@ -42,7 +42,7 @@ async function capture() {
   await mobile.waitForTimeout(400);
   await tools.screenshot({ path: path.join(outDir, "home-mobile-390-tools-section.png") });
 
-  const feedback = mobile.locator("section.home-section").filter({ has: mobile.getByRole("heading", { name: "Client feedback" }) });
+  const feedback = mobile.locator("section.home-section").filter({ has: mobile.getByRole("heading", { name: "What people say" }) });
   await feedback.first().waitFor({ state: "visible", timeout: 120_000 });
   await feedback.first().scrollIntoViewIfNeeded();
   await feedback.first().screenshot({ path: path.join(outDir, "home-mobile-390-client-feedback-section.png") });

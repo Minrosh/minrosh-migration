@@ -76,7 +76,7 @@ export default function ReferralProgramPage() {
             <Link href="/contact?ref=referral_program" className="btn btn-primary">
               Contact partnership desk
             </Link>
-            <Link href="/book-consultation?ref=referral_program" className="btn btn-ghost">
+            <Link href="/book-information-session?ref=referral_program" className="btn btn-ghost">
               Book partner call
             </Link>
           </div>

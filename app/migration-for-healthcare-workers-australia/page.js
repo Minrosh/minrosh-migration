@@ -81,7 +81,7 @@ export default function HealthcareWorkersPage() {
         related={[
           { href: "/skilled-migration", title: "Skilled Migration" },
           { href: "/employer-sponsored-visas", title: "Employer-Sponsored Visas" },
-          { href: "/book-consultation", title: "Book Consultation" },
+          { href: "/book-information-session", title: "Book Consultation" },
         ]}
       />
     </SiteShell>

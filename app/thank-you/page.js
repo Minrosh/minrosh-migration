@@ -60,8 +60,9 @@ export default async function ThankYouPage({ searchParams }) {
               Thank you
             </h1>
             <p className="mb-8 text-pretty leading-relaxed text-[var(--muted)]">
-              We&apos;ve received your message. Our Brisbane-based registered migration team will reply during business
-              hours (AEST) when you asked for a response. For urgent matters, use the phone number in the site footer.
+              We&apos;ve received your message. Our Brisbane-based information and education support team will reply
+              during business hours (AEST) when you asked for a response. For urgent matters, use the phone number in
+              the site footer.
             </p>
             <Link
               href="/"

@@ -79,7 +79,7 @@ export default function StudentCountryCostPlannerPage() {
               the free assessment
             </Link>{" "}
             or{" "}
-            <Link href="/book-consultation" className="font-semibold text-brand-rose underline underline-offset-4">
+            <Link href="/book-information-session" className="font-semibold text-brand-rose underline underline-offset-4">
               book a consultation
             </Link>{" "}
             for sequencing, evidence, and course-to-visa alignment.

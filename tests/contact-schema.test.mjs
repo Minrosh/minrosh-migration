@@ -24,12 +24,29 @@ describe("parseContactSubmission", () => {
       lastName: "B",
       email: "a@example.com",
       phone: "+61000000000",
+      enquiryType: "general_information",
       mainNeed: "General Enquiry",
       message: "Hello",
       privacyPolicyAccepted: true,
+      formAcknowledgementAccepted: true,
     });
     expect(r.ok).toBe(true);
     expect(r.value.privacyPolicyAccepted).toBe(true);
+    expect(r.value.formAcknowledgementAccepted).toBe(true);
+  });
+
+  it("rejects missing compliance acknowledgement", () => {
+    const r = parseContactSubmission({
+      firstName: "A",
+      lastName: "B",
+      email: "a@example.com",
+      phone: "+61000000000",
+      enquiryType: "general_information",
+      message: "Hello",
+      privacyPolicyAccepted: true,
+      formAcknowledgementAccepted: false,
+    });
+    expect(r.ok).toBe(false);
   });
 
   it("accepts consultation time from time input as HH:MM:SS within allowed window", () => {
@@ -40,13 +57,15 @@ describe("parseContactSubmission", () => {
       lastName: "B",
       email: "a@example.com",
       phone: "+61000000000",
-      mainNeed: "General Enquiry",
+      enquiryType: "education_enquiry",
+      mainNeed: "Student Pathway",
       message: "Book me",
       preferredDate: "2026-05-04",
       preferredTime: "19:00:00",
       timeZone: "Australia/Brisbane",
       consultationDurationMins: "30",
       privacyPolicyAccepted: true,
+      formAcknowledgementAccepted: true,
     });
     vi.useRealTimers();
     expect(r.ok).toBe(true);
@@ -61,6 +80,7 @@ describe("parseContactSubmission", () => {
       lastName: "B",
       email: "a@example.com",
       phone: "+61000000000",
+      enquiryType: "general_information",
       mainNeed: "General Enquiry",
       message: "Book me",
       preferredDate: "2026-05-04",
@@ -68,6 +88,7 @@ describe("parseContactSubmission", () => {
       timeZone: "Australia/Brisbane",
       consultationDurationMins: "60",
       privacyPolicyAccepted: true,
+      formAcknowledgementAccepted: true,
     });
     vi.useRealTimers();
     expect(r.ok).toBe(false);

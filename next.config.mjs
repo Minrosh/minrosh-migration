@@ -43,6 +43,16 @@ const nextConfig = {
         destination: "/visitor-visas",
         permanent: true,
       },
+      {
+        source: "/book-consultation",
+        destination: "/book-information-session",
+        permanent: true,
+      },
+      {
+        source: "/book-consultation/:path*",
+        destination: "/book-information-session",
+        permanent: true,
+      },
     ];
   },
   async headers() {

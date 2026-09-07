@@ -39,7 +39,7 @@
     "related": [
       { "title": "Australia migration hub", "href": "/destinations/australia" },
       { "title": "Extended skilled migration guide", "href": "/skilled-migration" },
-      { "title": "Book consultation", "href": "/book-consultation" }
+      { "title": "Book consultation", "href": "/book-information-session" }
     ],
     "heroImage": {
       "src": "/images/hero-brisbane-river-cbd-hd.jpg",
@@ -286,7 +286,7 @@
     "faq": [],
     "related": [
       { "title": "Main contact & form", "href": "/contact" },
-      { "title": "Book consultation", "href": "/book-consultation" },
+      { "title": "Book consultation", "href": "/book-information-session" },
       { "title": "Australia hub", "href": "/destinations/australia" }
     ],
     "heroImage": {

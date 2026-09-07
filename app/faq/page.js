@@ -87,8 +87,8 @@ export default function FAQPage() {
         faq={faqItems}
         related={[
           { href: "/australian-visas-official-sources", title: "Australian visas official sources hub" },
-          { href: "/assessment", title: "Free Assessment" },
-          { href: "/book-consultation", title: "Book Consultation" },
+          { href: "/assessment", title: "Official Information Finder" },
+          { href: "/education-consultation", title: "Education Course Enquiry" },
           { href: "/contact", title: "Contact MinRosh" },
         ]}
       />

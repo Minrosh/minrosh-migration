@@ -18,6 +18,7 @@ import {
   PremiumSectionHeader,
 } from "../../components/premium";
 import { CONVERSION_PREMIUM_PRIMARY_CTA_CLASS } from "@/lib/conversion-premium-cta-class";
+import { getComplianceConfig } from "@/lib/compliance";
 import "../home.css";
 
 const pageData = seoPages.servicePages.contact;
@@ -31,6 +32,7 @@ export const metadata = buildMetadata({
 
 export default function ContactPage() {
   const siteData = getHomeSiteData(siteDataStatic);
+  const compliance = getComplianceConfig(siteData);
   const supportEmailLabel = String(siteData?.brand?.email || "").trim();
   const waPrimary = buildWhatsAppUrl(siteData.brand.whatsapp, WHATSAPP_LEAD_MESSAGE);
   const trustSignals = Array.isArray(readinessSignals?.trustSignals) ? readinessSignals.trustSignals : [];
@@ -45,9 +47,9 @@ export default function ContactPage() {
       />
       <PremiumPageShell id="contact-page" className="page-contact-shell contact-page--flush-top">
         <PremiumPageHero
-          eyebrow="Contact MinRosh Migration"
-          title="Clear next-step guidance from real humans"
-          lead="Share your migration background, timing, and goal. We will review your enquiry and send practical next steps for skilled, student, partner, employer-sponsored, and complex pathways."
+          eyebrow="Contact MinRosh"
+          title="General information or education-course enquiry"
+          lead="Contact us with a general information question or an education-course enquiry. Please do not send passports, identity documents, visa application documents, health information, police checks, financial evidence, or other sensitive migration documents."
         >
           {trustSignals.length ? (
             <div className="mt-5 grid gap-3 sm:grid-cols-3">
@@ -80,8 +82,8 @@ export default function ContactPage() {
               >
                 Chat on WhatsApp
               </TrackedAnchor>
-              <TrackedLink href="/book-consultation" className="btn btn-ghost min-h-[48px] rounded-full px-5">
-                Book consultation
+              <TrackedLink href="/book-information-session" className="btn btn-ghost min-h-[48px] rounded-full px-5">
+                Book information discussion
               </TrackedLink>
             </PremiumCTAGroup>
 
@@ -114,8 +116,15 @@ export default function ContactPage() {
             id="contact-enquiry-form"
             className="contact-form-column premium-contact-shell p-4 md:p-6 lg:sticky lg:top-[calc(var(--site-header-chrome-height,88px)+16px)]"
           >
-            <PremiumSectionHeader eyebrow="Enquiry form" title="Send your details" />
-            <ContactLeadForm className="premium-contact-form mt-4" />
+            <PremiumSectionHeader
+              eyebrow="Enquiry form"
+              title="Send your details"
+              description="Choose general information or an education-course enquiry. Two enquiry types only."
+            />
+            <ContactLeadForm
+              className="premium-contact-form mt-4"
+              acknowledgementText={compliance.formAcknowledgementText}
+            />
           </PremiumGlassCard>
         </PremiumContentGrid>
       </PremiumPageShell>

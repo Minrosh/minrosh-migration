@@ -11,11 +11,11 @@ import { PublicFileImg } from "../../components/public-file-img";
 const path = "/tools";
 
 export const metadata = buildMetadata({
-  title: "Client tools",
+  title: "Planning tools",
   description:
-    "MinRosh Migration client tools — eligibility assessment, points wizard entry, and guides. New interactive features ship here first.",
+    "MinRosh Migration planning tools — official information finder entry points, student cost planner, and guides. New interactive features ship here first.",
   path,
-  keywords: ["migration tools Australia", "visa assessment", "MinRosh tools"],
+  keywords: ["migration tools Australia", "visa information tools", "MinRosh tools"],
 });
 
 const toolCards = [
@@ -68,10 +68,10 @@ const toolCards = [
     cta: "View guide",
   },
   {
-    href: "/book-consultation",
-    title: "Book consultation",
-    body: "When your case needs sequencing, evidence planning, or a tight timeline, book a focused session with the team.",
-    cta: "Book now",
+    href: "/contact",
+    title: "General information enquiry",
+    body: "Ask a general information question or request education-course support. MinRosh does not provide immigration assistance.",
+    cta: "Contact us",
   },
 ];
 
@@ -101,7 +101,7 @@ export default function ToolsPage() {
         <section className="content-hero glass-card premium-frosted-surface">
           <div className="content-hero__grid">
             <div className="content-hero__copy">
-              <p className="section-label">Client tools</p>
+              <p className="section-label">Planning tools</p>
               <h1>Explore, assess, then book with confidence</h1>
               <p>
                 Interactive tools and deep guides are grouped here so high-traffic marketing pages stay

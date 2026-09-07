@@ -1,0 +1,36 @@
+{
+  "signalChips": [
+    {
+      "id": "clarity",
+      "value": "4.9/5",
+      "label": "decision clarity after first strategy call"
+    },
+    {
+      "id": "next-step",
+      "value": "14-day",
+      "label": "action plan window for first milestones"
+    },
+    {
+      "id": "confidence",
+      "value": "90%",
+      "label": "move forward after consult roadmap"
+    }
+  ],
+  "journeyRail": [
+    {
+      "id": "intake",
+      "title": "Profile intake",
+      "description": "Capture your background, timing, and migration intent."
+    },
+    {
+      "id": "strategy",
+      "title": "Route strategy",
+      "description": "Compare viable pathways with trade-offs and risk signals."
+    },
+    {
+      "id": "execution",
+      "title": "Execution map",
+      "description": "Leave with next actions for evidence, timing, and priorities."
+    }
+  ]
+}

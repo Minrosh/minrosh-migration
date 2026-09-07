@@ -68,7 +68,7 @@ export default function DocumentChecklistGuidePage() {
             related={[
           guideData.relatedService,
           { href: "/australia-visa-fees-and-costs-guide", title: "Visa fees and costs guide" },
-          { href: "/book-consultation", title: "Book a consultation" },
+          { href: "/book-information-session", title: "Book a consultation" },
             ]}
           />
         </div>

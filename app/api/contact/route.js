@@ -16,8 +16,16 @@ import { obsLogger } from "@/lib/observability/logger";
 import { API_ERROR_CODES, apiFail, apiOk, requestContextFromRequest } from "@/lib/api/response";
 import { hCaptchaEnabledOnServer, verifyHCaptchaToken } from "@/lib/security/hcaptcha";
 import { consultationChargeAmountCents, createStripeCheckoutSession, stripeEnabled } from "@/lib/payments/stripe";
+import {
+  DEFAULT_COMPLIANCE,
+  getComplianceConfig,
+  looksLikeImmigrationAssistanceRequest,
+} from "@/lib/compliance";
+import siteData from "../../../data/site.json";
 
 const MULTIPART_MAX_BYTES = 18 * 1024 * 1024;
+/** Public contact forms do not accept migration/resume document uploads. */
+const PUBLIC_RESUME_UPLOADS_ENABLED = false;
 
 export async function POST(request) {
   const context = requestContextFromRequest(request);
@@ -26,6 +34,7 @@ export async function POST(request) {
     return apiFail({ code: API_ERROR_CODES.RATE_LIMITED, message: "Too many requests. Try again later.", status: 429 }, context);
   }
 
+  const compliance = getComplianceConfig(siteData);
   const contentType = String(request.headers.get("content-type") || "");
   const isMultipart = contentType.includes("multipart/form-data");
 
@@ -52,6 +61,17 @@ export async function POST(request) {
     if (r && typeof r === "object" && "arrayBuffer" in r && typeof r.arrayBuffer === "function") {
       const f = /** @type {File} */ (r);
       if (f.size > 0) {
+        if (!PUBLIC_RESUME_UPLOADS_ENABLED) {
+          return apiFail(
+            {
+              code: API_ERROR_CODES.VALIDATION_FAILED,
+              message:
+                "Document uploads are not accepted on public enquiry forms. Please do not send passports, visas, or migration documents.",
+              status: 400,
+            },
+            context
+          );
+        }
         resumeFile = f;
       }
     }
@@ -85,6 +105,17 @@ export async function POST(request) {
     return apiFail({ code: API_ERROR_CODES.VALIDATION_FAILED, message: validated.error, status: 400 }, context);
   }
 
+  if (validated.value.formAcknowledgementAccepted !== true) {
+    return apiFail(
+      {
+        code: API_ERROR_CODES.VALIDATION_FAILED,
+        message: "Please confirm the acknowledgement before submitting.",
+        status: 400,
+      },
+      context
+    );
+  }
+
   if (String(process.env.REQUIRE_PRIVACY_CONSENT_ON_CONTACT || "").toLowerCase() === "true") {
     if (validated.value.privacyPolicyAccepted !== true) {
       return apiFail(
@@ -115,6 +146,58 @@ export async function POST(request) {
     }
   }
 
+  const restrictedMessage =
+    compliance.restrictedEnquiryMessage || DEFAULT_COMPLIANCE.restrictedEnquiryMessage;
+  if (looksLikeImmigrationAssistanceRequest(validated.value.message)) {
+    const policyVersionEarly = String(process.env.PRIVACY_POLICY_VERSION || "").trim();
+    const privacyConsentLogEarly = {
+      recordedAt: new Date().toISOString(),
+      clientIp: ip,
+      policyVersion: policyVersionEarly || null,
+      clientConfirmed: validated.value.privacyPolicyAccepted === true,
+    };
+    const enquiryCoreEarly = { ...validated.value };
+    delete enquiryCoreEarly.privacyPolicyAccepted;
+    delete enquiryCoreEarly.formAcknowledgementAccepted;
+    const restrictedRecord = {
+      ...enquiryCoreEarly,
+      privacyConsentLog: privacyConsentLogEarly,
+      outcome: "referred_to_authorised_professional",
+      resumeUploadStatus: "not_accepted",
+      resumeFileName: "",
+      leadDriveFolderId: "",
+      leadDriveFolderUrl: "",
+    };
+    saveEnquiry(restrictedRecord);
+    try {
+      await sendContactEmails({
+        ...restrictedRecord,
+        message: `[RESTRICTED — referred to authorised professional]\n\n${restrictedRecord.message}`,
+      });
+    } catch {
+      /* best-effort */
+    }
+    return apiOk(
+      {
+        id: restrictedRecord.id,
+        ok: true,
+        outcome: "referred_to_authorised_professional",
+        restrictedEnquiryMessage: restrictedMessage,
+        warning: restrictedMessage,
+        internalSent: false,
+        thankYouSent: false,
+        consultationBooked: false,
+        processing: {
+          driveFolder: "skipped",
+          supabaseDualWrite: "skipped",
+          crmLeadCapture: "skipped",
+          sheetSync: "skipped",
+        },
+      },
+      context
+    );
+  }
+
   const policyVersion = String(process.env.PRIVACY_POLICY_VERSION || "").trim();
   const privacyConsentLog = {
     recordedAt: new Date().toISOString(),
@@ -142,14 +225,18 @@ export async function POST(request) {
   }
 
   const folderId = leadDrive.created ? leadDrive.folderId : "";
-  const resumeResult = await uploadConsultationResumeIfPresent({
-    resumeFile,
-    folderId: String(folderId || "").trim(),
-    enquiryId: validated.value.id,
-  });
+  const resumeResult =
+    PUBLIC_RESUME_UPLOADS_ENABLED && resumeFile
+      ? await uploadConsultationResumeIfPresent({
+          resumeFile,
+          folderId: String(folderId || "").trim(),
+          enquiryId: validated.value.id,
+        })
+      : { status: "not_accepted", fileName: "" };
 
   const enquiryCore = { ...validated.value };
   delete enquiryCore.privacyPolicyAccepted;
+  delete enquiryCore.formAcknowledgementAccepted;
   const enquiryRecord = {
     ...enquiryCore,
     privacyConsentLog,

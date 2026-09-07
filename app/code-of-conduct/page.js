@@ -4,8 +4,9 @@ import { SiteShell } from "../../components/site-shell";
 import { buildMetadata } from "../../lib/seo";
 
 export const metadata = buildMetadata({
-  title: "Code of Conduct | MinRosh Migration",
-  description: "Read how MinRosh Migration aligns with regulatory expectations and the OMARA Code of Conduct.",
+  title: "OMARA Code of Conduct Information | MinRosh Migration",
+  description:
+    "Learn about the OMARA Code of Conduct for registered migration agents. MinRosh provides general information only and is not an OMARA-regulated practice.",
   path: "/code-of-conduct",
 });
 
@@ -13,29 +14,29 @@ export default function CodeOfConductPage() {
   return (
     <SiteShell siteData={siteData} currentPath="/code-of-conduct">
       <ContentPage
-        eyebrow="Compliance"
-        title="Code of Conduct"
-        intro="MinRosh Migration aims to operate in a professional, transparent, and client-first way, with service behaviour aligned to the Migration Agents Regulations 2026 and the OMARA Code of Conduct."
+        eyebrow="Information"
+        title="OMARA Code of Conduct"
+        intro="This page summarises publicly available information about the OMARA Code of Conduct for people seeking authorised migration help. MinRosh Migration is an independent migration information and education support service. We are not registered migration agents and are not regulated by OMARA."
         breadcrumbs={[
           { href: "/", label: "Home" },
           { href: "/code-of-conduct", label: "Code of Conduct" },
         ]}
         sections={[
           {
-            title: "Professional standards",
-            body: "Clients should expect honest communication, practical next-step guidance, respect for confidentiality, and a clear explanation of what is general information versus what requires formal personalised review.",
+            title: "Why this code matters",
+            body: "Registered migration agents in Australia are subject to professional standards published by OMARA, including honesty, transparency, and clear client communication. If you need personalised immigration assistance, you should engage an authorised professional and understand the standards that apply to them.",
           },
           {
-            title: "Regulatory alignment",
-            body: "This page is a professional starter version and should be reviewed against the exact regulatory obligations, registration details, and complaint-handling standards that apply to your final business setup.",
+            title: "What MinRosh provides",
+            body: "MinRosh helps readers find and understand publicly available migration and education information. We do not provide immigration assistance, legal advice, eligibility assessments, or visa preparation or lodgement. Our website communication should remain clear, respectful, and transparent about that scope.",
           },
           {
             title: "Official code reference",
-            body: "Visitors who want to understand the regulatory framework in more detail should review the official OMARA Code of Conduct and any related migration-agent guidance published by the Australian Government.",
+            body: "Readers who want authorised help should review the official OMARA Code of Conduct and search the Register of Migration Agents before engaging anyone for immigration assistance.",
             bullets: [
-              "General website information is not a substitute for tailored case advice",
-              "Clients should always rely on current legal requirements and formal review",
-              "Service communication should remain clear, respectful, and transparent",
+              "General website information is not a substitute for immigration assistance or legal advice",
+              "Always rely on current official requirements and an authorised professional for personalised matters",
+              "Use the official register to find a registered migration agent when you need regulated advice",
             ],
           },
         ]}

@@ -19,44 +19,44 @@ import { CONVERSION_PREMIUM_PRIMARY_CTA_CLASS } from "@/lib/conversion-premium-c
 import "../home.css";
 
 export const metadata = buildMetadata({
-  title: "About MinRosh Migration | Brisbane Migration Guidance",
+  title: "About MinRosh Migration | Information & Education Support",
   description:
-    "Learn more about MinRosh Migration, our Brisbane-based approach, and how we support skilled, student, partner, and education pathways with structured guidance.",
+    "MinRosh Migration makes complex, publicly available migration and education information easier to navigate. We are not registered migration agents and do not provide immigration assistance.",
   path: "/about",
   keywords: [
     "about MinRosh Migration",
-    "Brisbane migration guidance",
-    "migration consultancy Brisbane",
+    "migration information Brisbane",
+    "education course support",
   ],
 });
 
 const timeline = [
   {
     year: "Step 01",
-    title: "Initial profile orientation",
-    body: "We map your situation against likely visa streams before you commit to expensive steps.",
+    title: "Choose an information topic",
+    body: "Select the visa category or education topic you want to read about from public sources.",
   },
   {
     year: "Step 02",
-    title: "Strategy design and risk screening",
-    body: "Documentation, timing, and pathway viability are sequenced to avoid rework and uncertainty.",
+    title: "Review a general summary",
+    body: "Read a neutral overview compiled from publicly available information.",
   },
   {
     year: "Step 03",
-    title: "Evidence quality and lodgement readiness",
-    body: "We pressure-test consistency so your application narrative is clear before formal submission.",
+    title: "Verify with the official source",
+    body: "Follow official links and check current criteria, forms, fees and processing information yourself.",
   },
   {
     year: "Step 04",
-    title: "Decision support and transition planning",
-    body: "After key milestones, we keep guidance practical with next actions, not policy noise.",
+    title: "Seek authorised advice if needed",
+    body: "For advice based on your circumstances or help with an application, contact a registered migration agent or Australian legal practitioner.",
   },
 ];
 
 const team = [
-  { name: "Case Strategy Lead", focus: "Pathway sequencing and refusal-risk reduction", image: "/images/hero-brisbane-river-cbd-hd.jpg" },
-  { name: "Education Pathway Specialist", focus: "Study-to-career migration planning context", image: "/images/hero-brisbane-river-cbd-hd.jpg" },
-  { name: "Client Success Desk", focus: "Progress communication and action follow-through", image: "/images/hero-brisbane-river-cbd-hd.jpg" },
+  { name: "Information desk", focus: "Organising public migration and education information", image: "/images/hero-brisbane-river-cbd-hd.jpg" },
+  { name: "Education support", focus: "Course enquiry and admissions administration support", image: "/images/hero-brisbane-river-cbd-hd.jpg" },
+  { name: "Enquirer success desk", focus: "Clear communication on general information questions", image: "/images/hero-brisbane-river-cbd-hd.jpg" },
 ];
 
 export default function AboutPage() {
@@ -82,7 +82,7 @@ export default function AboutPage() {
 
         <PremiumPageHero
           eyebrow="About MinRosh"
-          title="A migration story built around clarity, care, and confident decisions"
+          title="Making public migration and education information easier to navigate"
           lead={siteData.about.body}
         >
           <div className="mt-5 flex flex-wrap gap-2" role="list">
@@ -90,10 +90,10 @@ export default function AboutPage() {
               Brisbane-based
             </span>
             <span className={PREMIUM_BADGE_CLASS} role="listitem">
-              Australia, Canada, UK &amp; NZ pathways
+              Not a registered migration agent
             </span>
             <span className={PREMIUM_BADGE_CLASS} role="listitem">
-              Plain-English guidance
+              Education course support
             </span>
           </div>
           <ul className="feature-list mt-6">
@@ -103,10 +103,10 @@ export default function AboutPage() {
           </ul>
           <PremiumCTAGroup>
             <TrackedLink href="/assessment" className={CONVERSION_PREMIUM_PRIMARY_CTA_CLASS}>
-              Start free assessment
+              Explore general information
             </TrackedLink>
-            <TrackedLink href="/book-consultation" className="btn btn-ghost min-h-[48px] rounded-full px-5">
-              Book consultation
+            <TrackedLink href="/education-consultation" className="btn btn-ghost min-h-[48px] rounded-full px-5">
+              Education course enquiry
             </TrackedLink>
           </PremiumCTAGroup>
         </PremiumPageHero>

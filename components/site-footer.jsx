@@ -1,13 +1,13 @@
 import Link from "next/link";
 import { FOOTER_SERVICE_LINKS } from "../lib/public-indexable-routes";
+import { getComplianceConfig } from "../lib/compliance";
 import { SiteFooterInteractive } from "./site-footer-interactive";
-import { SiteHeaderMetaRow } from "./site-header-meta-row";
 
 const serviceLinks = FOOTER_SERVICE_LINKS;
 
 const businessLinks = [
   { href: "/about", label: "About" },
-  { href: "/assessment", label: "Free Assessment" },
+  { href: "/assessment", label: "Information Finder" },
   { href: "/faq", label: "FAQ" },
   { href: "/contact", label: "Contact" },
 ];
@@ -19,17 +19,33 @@ const destinationLinks = [
   { href: "/destinations/united-kingdom", label: "United Kingdom" },
 ];
 
-const legalLinks = [
-  { href: "/privacy-policy", label: "Privacy Policy" },
-  { href: "/disclaimer", label: "Disclaimer" },
-  { href: "/complaints", label: "Complaints" },
-  { href: "/code-of-conduct", label: "Code of Conduct" },
-  { href: "/terms-of-use", label: "Terms of Use" },
-  { href: "/sitemap.xml", label: "Sitemap" },
-];
-
 export function SiteFooter({ siteData, initialStats }) {
   const publicBrand = { ...siteData.brand, email: "" };
+  const compliance = getComplianceConfig(siteData);
+  const homeAffairsUrl = compliance.homeAffairsUrl || "https://immi.homeaffairs.gov.au/";
+  const maraSearchUrl =
+    siteData?.brand?.migrationAgentsRegisterSearchUrl ||
+    compliance.authorisedProfessionalReferralUrl ||
+    "https://www.mara.gov.au/search-the-register-of-migration-agents/";
+
+  const legalLinks = [
+    { href: "/disclaimer", label: "General Information Disclaimer" },
+    { href: "/privacy-policy", label: "Privacy Policy" },
+    { href: "/terms-of-use", label: "Terms of Use" },
+    { href: homeAffairsUrl, label: "Official Home Affairs Website", external: true },
+    {
+      href: maraSearchUrl,
+      label: compliance.authorisedProfessionalReferralLabel || "Find a Registered Migration Agent",
+      external: true,
+    },
+    { href: "/code-of-conduct", label: "OMARA Code of Conduct (reference)" },
+    { href: "/complaints", label: "Complaints" },
+    { href: "/sitemap.xml", label: "Sitemap" },
+  ];
+
+  const noticeText =
+    compliance.businessStatusDisclosure ||
+    "MinRosh Migration provides general information based on publicly available sources and education-related support. We are not registered migration agents or Australian legal practitioners and do not provide immigration assistance.";
 
   return (
     <footer className="site-footer site-footer--rich">
@@ -76,18 +92,24 @@ export function SiteFooter({ siteData, initialStats }) {
       </div>
 
       <div className="site-footer__notice-wrap">
-        <div className="site-footer__notice">
-          General information only. Personal circumstances should be reviewed in consultation.
+        <div className="site-footer__notice" role="note">
+          <strong className="block mb-1">Important notice</strong>
+          {noticeText}
         </div>
       </div>
 
-
       <div className="site-footer__legalbar">
-        {legalLinks.map((link) => (
-          <Link key={link.href} href={link.href}>
-            {link.label}
-          </Link>
-        ))}
+        {legalLinks.map((link) =>
+          link.external ? (
+            <a key={link.href} href={link.href} target="_blank" rel="noreferrer">
+              {link.label}
+            </a>
+          ) : (
+            <Link key={link.href} href={link.href}>
+              {link.label}
+            </Link>
+          )
+        )}
       </div>
     </footer>
   );

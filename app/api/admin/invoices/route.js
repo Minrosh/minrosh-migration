@@ -68,7 +68,18 @@ export async function POST(request) {
     return apiOk(out, context);
   }
   if (body?.action === "update") {
-    const row = updateInvoice(body.id, body.patch || {});
+    let row;
+    try {
+      row = updateInvoice(body.id, body.patch || {});
+    } catch (err) {
+      if (err?.code === "INVOICE_LINE_COMPLIANCE") {
+        return apiFail(
+          { code: API_ERROR_CODES.VALIDATION_FAILED, message: err.message, status: 400 },
+          context
+        );
+      }
+      throw err;
+    }
     if (!row) return apiFail({ code: API_ERROR_CODES.NOT_FOUND, message: "Not found", status: 404 }, context);
     appendAudit(AUDIT_ACTIONS.INVOICE_UPDATE, row.invoiceNumber, auditContext);
     return apiOk({ invoice: row }, context);
@@ -156,27 +167,38 @@ export async function POST(request) {
     return apiOk({ sent: true }, context);
   }
 
-  const row = createInvoice({
-    customerId: body.customerId,
-    customerName: body.customerName,
-    customerEmail: body.customerEmail,
-    customerContact: body.customerContact,
-    customerAddress: body.customerAddress,
-    customerCountry: body.customerCountry,
-    date: body.date,
-    dueDate: body.dueDate,
-    amount: body.amount,
-    service: body.service,
-    status: body.status,
-    lineItems: body.lineItems,
-    currency: body.currency,
-    templateId: body.templateId,
-    terms: body.terms,
-    notes: body.notes,
-    recurringRuleId: body.recurringRuleId,
-    discount: body.discount,
-    discountDescription: body.discountDescription,
-  });
+  let row;
+  try {
+    row = createInvoice({
+      customerId: body.customerId,
+      customerName: body.customerName,
+      customerEmail: body.customerEmail,
+      customerContact: body.customerContact,
+      customerAddress: body.customerAddress,
+      customerCountry: body.customerCountry,
+      date: body.date,
+      dueDate: body.dueDate,
+      amount: body.amount,
+      service: body.service,
+      status: body.status,
+      lineItems: body.lineItems,
+      currency: body.currency,
+      templateId: body.templateId,
+      terms: body.terms,
+      notes: body.notes,
+      recurringRuleId: body.recurringRuleId,
+      discount: body.discount,
+      discountDescription: body.discountDescription,
+    });
+  } catch (err) {
+    if (err?.code === "INVOICE_LINE_COMPLIANCE") {
+      return apiFail(
+        { code: API_ERROR_CODES.VALIDATION_FAILED, message: err.message, status: 400 },
+        context
+      );
+    }
+    throw err;
+  }
   appendAudit(AUDIT_ACTIONS.INVOICE_CREATE, row.invoiceNumber, auditContext);
   return apiOk({ invoice: row }, context);
 }

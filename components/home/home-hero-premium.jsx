@@ -89,13 +89,13 @@ function IconTrustedBadge({ className = "h-5 w-5", stroke = plumDark }) {
 
 const FEATURES = [
   {
-    title: "Expert support",
-    text: "Employer sponsorship and education consultation",
+    title: "Public information",
+    text: "Plain-language summaries with official source links",
     Icon: IconBriefcase,
   },
   {
-    title: "Plain-English guidance",
-    text: "Honest advice and ongoing support before you spend money",
+    title: "Clear explanations",
+    text: "General information based on publicly available sources — not personalised advice",
     Icon: IconShieldCheck,
   },
 ];
@@ -103,22 +103,22 @@ const FEATURES = [
 const TRUST_PILLARS = [
   {
     title: "Brisbane-based",
-    body: "Local experts with a global outlook",
+    body: "Local team with multi-destination information",
     Icon: IconLocationPin,
   },
   {
-    title: "Global reach",
-    body: "Australia, Canada, the UK & NZ",
+    title: "Official sources",
+    body: "Home Affairs and institutional links first",
     Icon: IconGlobe,
   },
   {
-    title: "All pathways",
-    body: "Student, Skilled, Partner, Family",
+    title: "Category overviews",
+    body: "Student, skilled, partner, family information",
     Icon: IconPeople,
   },
   {
-    title: "Trusted guidance",
-    body: "Step-by-step planning from start to finish",
+    title: "Education support",
+    body: "Course enquiry and admissions administration",
     Icon: IconTrustedBadge,
   },
 ];
@@ -174,9 +174,9 @@ export function HomeHeroPremium({ whatsappHref }) {
                     </span>
                     <span className="min-w-0 text-pretty leading-snug" style={{ color: charcoal }}>
                       <strong className="font-bold" style={{ color: plumMid }}>
-                        Brisbane-based
+                        PUBLIC INFORMATION
                       </strong>
-                      <span className="font-semibold"> • Pathways to Australia, Canada, the UK & NZ</span>
+                      <span className="font-semibold"> • CLEAR EXPLANATIONS</span>
                     </span>
                   </p>
 
@@ -185,12 +185,17 @@ export function HomeHeroPremium({ whatsappHref }) {
                     className="home-hero-premium__heading relative z-10 max-w-none text-balance font-bold leading-[1.12] tracking-[-0.02em] text-[clamp(1.65rem,4vw,2.85rem)]"
                     style={{ color: plumDark }}
                   >
-                    Plan your move to{" "}
+                    Explore Australian Migration Information with{" "}
                     <span className="font-bold" style={{ color: plumMid }}>
-                      Australia, Canada, UK or New Zealand
-                    </span>{" "}
-                    with clear visa and study pathway guidance
+                      Greater Clarity
+                    </span>
                   </h1>
+
+                  <p className="relative z-10 mt-4 max-w-xl text-sm leading-relaxed text-brand-plum/80 sm:text-base" style={{ color: charcoal }}>
+                    We organise and explain publicly available information so you can better understand visa
+                    categories, official requirements and education options. We do not provide immigration
+                    assistance, legal advice or personalised visa recommendations.
+                  </p>
 
                   <div
                     className="home-hero-premium__accent-line mt-4 h-1.5 w-14 rounded-full sm:mt-5 sm:w-16 lg:h-2 lg:w-[4.25rem]"
@@ -204,28 +209,48 @@ export function HomeHeroPremium({ whatsappHref }) {
                       href="/assessment"
                       eventName="cta_click"
                       eventParams={{
-                        cta_id: "hero_pathway_check",
+                        cta_id: "hero_explore_information",
                         cta_location: "home_hero",
                         destination: "/assessment",
                       }}
-                      aria-label="Start free pathway check"
+                      aria-label="Explore general information"
                       className="home-hero-premium__cta inline-flex min-h-[52px] w-full items-center justify-center rounded-full border-2 border-white px-7 py-3.5 text-center text-base font-bold text-white shadow-[0_14px_36px_rgba(136,19,55,0.28)] outline-none ring-offset-2 ring-offset-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-[0_18px_44px_rgba(136,19,55,0.35)] focus-visible:ring-2 focus-visible:ring-[#881337]/45 sm:w-auto sm:min-w-[280px]"
                       style={{ backgroundColor: plumMid }}
                     >
-                      Start Free Pathway Check →
+                      Explore General Information →
                     </TrackedLink>
+
+                    <TrackedLink
+                      id="hero-cta-education"
+                      href="/education-consultation"
+                      eventName="cta_click"
+                      eventParams={{
+                        cta_id: "hero_education_enquiry",
+                        cta_location: "home_hero",
+                        destination: "/education-consultation",
+                      }}
+                      aria-label="Education course enquiry"
+                      className="inline-flex min-h-[48px] w-full items-center justify-center rounded-full border-2 border-brand-plum/25 bg-white/80 px-6 py-3 text-center text-sm font-bold text-brand-plum backdrop-blur-sm transition hover:bg-white sm:w-auto"
+                    >
+                      Education Course Enquiry
+                    </TrackedLink>
+
+                    <p className="text-xs leading-relaxed text-brand-plum/70" style={{ color: charcoal }}>
+                      For personal migration advice or help with a visa application, use a registered migration
+                      agent or Australian legal practitioner.
+                    </p>
 
                     <TrackedAnchor
                       id="hero-cta-whatsapp"
                       href={whatsappHref}
                       eventName="whatsapp_clicked"
                       eventParams={{ cta_id: "hero_whatsapp", cta_location: "home_hero", destination: "whatsapp" }}
-                      aria-label="Talk to a human on WhatsApp"
+                      aria-label="Ask a general information question on WhatsApp"
                       className="home-hero-premium__cta home-hero-premium__cta--secondary inline-flex min-h-[52px] w-full items-center justify-center rounded-full border-2 border-[#881337]/25 bg-white/90 px-7 py-3.5 text-center text-base font-bold text-[#881337] shadow-sm outline-none ring-offset-2 ring-offset-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-[#881337]/40 hover:bg-white focus-visible:ring-2 focus-visible:ring-[#881337]/35 sm:w-auto sm:min-w-[280px]"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      Talk to a Human on WhatsApp
+                      Ask a General Information Question
                     </TrackedAnchor>
                   </div>
                 </div>

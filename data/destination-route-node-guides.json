@@ -49,7 +49,7 @@
       ],
       "docLinks": [
         { "label": "Global pathways", "href": "/global-pathways" },
-        { "label": "Book consultation", "href": "/book-consultation" }
+        { "label": "Book consultation", "href": "/book-information-session" }
       ]
     },
     "points": {
@@ -100,7 +100,7 @@
         "Set week-one and month-one checkpoints"
       ],
       "docLinks": [
-        { "label": "Book consultation", "href": "/book-consultation" },
+        { "label": "Book consultation", "href": "/book-information-session" },
         { "label": "Global pathways", "href": "/global-pathways" }
       ]
     }

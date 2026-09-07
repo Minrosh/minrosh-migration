@@ -91,8 +91,8 @@ export async function POST(request) {
   const bcc = unique.join(", ");
   const siteBase = (process.env.PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_SITE_URL || "").replace(/\/$/, "");
   const complianceFooter = siteBase
-    ? `\n\n---\nMinRosh Migration — prospective client update. Newsletter preferences: ${siteBase}/newsletter/unsubscribe`
-    : "\n\n---\nMinRosh Migration — prospective client update. Reply to this email if you no longer wish to receive similar messages.";
+    ? `\n\n---\nMinRosh Migration — prospective enquirer update. Newsletter preferences: ${siteBase}/newsletter/unsubscribe`
+    : "\n\n---\nMinRosh Migration — prospective enquirer update. Reply to this email if you no longer wish to receive similar messages.";
   const textWithFooter = `${text}${complianceFooter}`;
 
   try {
