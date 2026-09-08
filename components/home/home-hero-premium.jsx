@@ -164,7 +164,7 @@ export function HomeHeroPremium({ whatsappHref }) {
             <div className="home-hero-premium__upper flex min-h-0 flex-1 flex-col justify-end pb-3 lg:justify-center lg:pb-0">
               <div className="home-hero-premium__glass-wrap hero__content home-hero-premium__content-card min-w-0">
                 <div className="hero__glass home-hero-premium__glass-inner relative px-0 py-6 sm:py-8 lg:px-0 lg:py-9">
-                  <p className="home-hero-premium__badge relative z-10 mb-6 inline-flex max-w-[34rem] flex-wrap items-center gap-2 rounded-full border border-white/45 bg-white/60 px-3.5 py-2.5 text-sm font-semibold shadow-sm sm:mb-7 sm:max-w-[36rem] sm:px-4 sm:py-3 sm:text-[0.9375rem] backdrop-blur-[20px]">
+                  <p className="home-hero-premium__badge relative z-10 mb-4 inline-flex max-w-[34rem] flex-wrap items-center gap-2 rounded-full border border-white/45 bg-white/60 px-3.5 py-2.5 text-sm font-semibold shadow-sm sm:mb-7 sm:max-w-[36rem] sm:px-4 sm:py-3 sm:text-[0.9375rem] backdrop-blur-[20px]">
                     <span
                       className="flex shrink-0 items-center justify-center rounded-full p-1.5"
                       style={{ backgroundColor: iconSoft }}
@@ -191,19 +191,19 @@ export function HomeHeroPremium({ whatsappHref }) {
                     </span>
                   </h1>
 
-                  <p className="relative z-10 mt-4 max-w-xl text-sm leading-relaxed text-brand-plum/80 sm:text-base" style={{ color: charcoal }}>
+                  <p className="relative z-10 mt-3 max-w-xl text-xs leading-relaxed text-brand-plum/80 sm:mt-4 sm:text-base" style={{ color: charcoal }}>
                     We organise and explain publicly available information so you can better understand visa
                     categories, official requirements and education options. We do not provide immigration
                     assistance, legal advice or personalised visa recommendations.
                   </p>
 
                   <div
-                    className="home-hero-premium__accent-line mt-4 h-1.5 w-14 rounded-full sm:mt-5 sm:w-16 lg:h-2 lg:w-[4.25rem]"
+                    className="home-hero-premium__accent-line mt-3 h-1.5 w-14 rounded-full sm:mt-5 sm:w-16 lg:h-2 lg:w-[4.25rem]"
                     style={{ backgroundColor: plumMid }}
                     aria-hidden
                   />
 
-                  <div className="relative z-10 mt-8 flex max-w-lg flex-col gap-3 sm:mt-9">
+                  <div className="relative z-10 mt-6 flex max-w-lg flex-col gap-2.5 sm:mt-9 sm:gap-3">
                     <TrackedLink
                       id="hero-cta-assessment"
                       href="/assessment"
@@ -260,7 +260,7 @@ export function HomeHeroPremium({ whatsappHref }) {
             <div
               className="home-hero-premium__bottom-bar w-full shrink-0"
               role="region"
-              aria-label="Pathway highlights and trust signals"
+              aria-label="Information highlights and trust signals"
             >
               <ul className="home-hero-premium__bottom-bar-list flex list-none flex-nowrap items-stretch gap-0 overflow-x-auto overscroll-x-contain py-1 pl-0 [-webkit-overflow-scrolling:touch] sm:flex-nowrap sm:justify-between sm:overflow-visible sm:py-0">
                 {FEATURES.map((item, index) => {
