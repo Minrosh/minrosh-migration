@@ -13,7 +13,7 @@
     "prebuild": "npm run check:sync",
     "cleanup": "node cleanup-dev-files.js",
     "deploy:server": "bash ./deploy-server.sh",
-    "build": "node scripts/verify-required-assets.mjs && node scripts/optimize-hero-lcp.mjs && next build && node scripts/copy-standalone-assets.mjs",
+    "build": "node scripts/assert-release-build-env.mjs && node scripts/verify-required-assets.mjs && node scripts/optimize-hero-lcp.mjs && next build && node scripts/verify-robots-build-artifact.mjs && node scripts/copy-standalone-assets.mjs",
     "build:deploy": "npm run build && DEPLOY_CLEANUP=1 npm run cleanup",
     "analyze": "ANALYZE=true npm run build",
     "start": "next start",

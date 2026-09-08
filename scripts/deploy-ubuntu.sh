@@ -12,6 +12,13 @@
 set -euo pipefail
 
 ROOT="${1:-$HOME/minrosh-migration}"
+LIVE_TREE="/home/minrosh/minrosh-migration"
+RESOLVED_ROOT="$(cd "$ROOT" 2>/dev/null && pwd || echo "$ROOT")"
+if [[ "$RESOLVED_ROOT" == "$LIVE_TREE" && "${ALLOW_LIVE_TREE_BUILD:-}" != "1" ]]; then
+  echo "REFUSED: deploy-ubuntu against live tree $LIVE_TREE is frozen (prod zombie-standalone incident)." >&2
+  echo "See /home/minrosh/incident-records/prod-zombie-standalone-20260908/ and DO_NOT_BUILD_HERE.md" >&2
+  exit 99
+fi
 cd "$ROOT"
 ENV_FILE="$ROOT/.env"
 
