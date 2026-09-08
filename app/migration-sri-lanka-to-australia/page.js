@@ -17,7 +17,6 @@ export const metadata = buildMetadata({
     "Migration Sri Lanka to Australia",
     "Australian PR from Sri Lanka",
     "Skilled migration Sri Lanka",
-    "MARA agent Sri Lanka",
   ],
 });
 

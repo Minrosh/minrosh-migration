@@ -56,7 +56,7 @@ const timeline = [
 const team = [
   { name: "Information desk", focus: "Organising public migration and education information", image: "/images/hero-brisbane-river-cbd-hd.jpg" },
   { name: "Education support", focus: "Course enquiry and admissions administration support", image: "/images/hero-brisbane-river-cbd-hd.jpg" },
-  { name: "Enquirer success desk", focus: "Clear communication on general information questions", image: "/images/hero-brisbane-river-cbd-hd.jpg" },
+  { name: "Enquirer information desk", focus: "Clear communication on general information questions", image: "/images/hero-brisbane-river-cbd-hd.jpg" },
 ];
 
 export default function AboutPage() {
@@ -125,11 +125,12 @@ export default function AboutPage() {
             <div className="flex flex-col justify-center p-6 md:p-8">
               <p className="section-label">Brisbane-based identity</p>
               <h2 className="mt-2 text-2xl font-bold text-brand-plum [font-family:var(--font-display),Georgia,serif]">
-                Local experts with a global outlook
+                Brisbane-based information and education support
               </h2>
               <p className="mt-3 text-sm leading-relaxed text-brand-plum/75 sm:text-base">
-                We help clients plan skilled, student, partner, and employer-sponsored pathways with structured guidance
-                grounded in official sources — not guesswork.
+                We organise publicly available information about skilled, student, partner, and employer-sponsored visa
+                categories and can assist with education-course enquiries — grounded in official sources, not personalised
+                immigration assistance.
               </p>
             </div>
           </div>
@@ -139,7 +140,7 @@ export default function AboutPage() {
           <PremiumGlassCard className="mt-8 p-6 md:mt-10 md:p-8" aria-labelledby="about-stats-heading">
             <PremiumSectionHeader
               eyebrow="Trust & clarity"
-              title="Signals clients reference after early sessions"
+              title="How MinRosh frames public information"
             />
             <div className="about-premium-stats-strip__grid mt-6">
               {trustSignals.map((item) => (

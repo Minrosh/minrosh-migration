@@ -2,6 +2,7 @@
 
 **Branch:** `compliance/no-marn-update`  
 **Generated:** 2026-09-07 from **code inspection only**  
+**Updated:** 2026-09-08 — expanded invoices / Google mirrors / accessibility notes (final public-copy + CMS rollback pass). Historical records **not** modified.  
 **Policy:** Do **not** auto-delete historical records. Privacy/minimisation actions require authorised human review.
 
 This document maps where personal and migration-adjacent data may still live so counsel/ops can decide retention, access hardening, and lawful basis — not to purge data from the app.
@@ -19,7 +20,7 @@ This document maps where personal and migration-adjacent data may still live so 
 | Quiz / points leads | Email + Supabase `quiz_submissions` + `enquiries_mirror` QUIZ-* | **API 410** unless `ENABLE_PERSONALISED_QUIZ_RESULTS` | High (profile answers, score, email) | Admin / SMTP inbox / DB |
 | AI pathway funnel | CRM lead + nurture | **API 410** unless `ENABLE_AI_PATHWAY_FUNNEL` | High (answers, insights) | Admin |
 | Nurture queue | `data/nurture-queue.json` | Enqueued from contact / (disabled) AI nurture | Medium (email + sequence meta) | Cron + admin |
-| Invoices / payments | `data/invoices.json` (+ mirror) | Portal token read (invoice only) | Medium (billing PII); line text now compliance-guarded | Admin + tokenised portal |
+| Invoices / payments | `data/invoices.json` (+ optional `invoices_mirror` / Supabase) | Portal token read (invoice only); not open web | Medium (billing PII); historical line text deferred to legal/accounting/privacy; new lines compliance-guarded | Admin + tokenised portal |
 | Newsletter | `data/newsletter*.json` (via newsletter flows) | Opt-in forms | Low–medium (email) | Admin / unsubscribe |
 | Audit log | `data/audit-log.json` | System | Low–medium (actions, ids) | Admin |
 | Google Sheets / Drive / Calendar | External Google APIs | When configured | High if used for status/docs | Service account + delegated user |
@@ -103,10 +104,23 @@ This document maps where personal and migration-adjacent data may still live so 
 
 | Item | Detail |
 | --- | --- |
-| **Storage** | `data/invoices.json` + related invoice-* JSON; optional `invoices_mirror`. |
-| **Public** | Tokenised `GET /api/portal/invoices`, profile, payment-method — billing only, not visa stages. |
-| **Compliance guard (this branch)** | `lib/invoice/line-description-guard.js` rejects/sanitizes line descriptions claiming immigration assistance / lodgement / visa application preparation. |
-| **Recommended** | Audit historical invoice line text for prohibited claims; correct descriptions on future invoices only (do not silently rewrite paid historical PDFs without finance/legal process). |
+| **Where descriptions live** | Primary: `data/invoices.json` (and related invoice-* JSON under `data/`). Optional dual-write / mirror: `invoices_mirror` (Supabase) when CRM dual-write is configured. |
+| **Public accessibility** | **Not** open web. Tokenised portal billing only (`GET /api/portal/invoices`, profile, payment-method). Otherwise **admin-only**. No visa-stage / matter UI on these endpoints. |
+| **New invoices (forward-looking)** | Blocked / guarded via `lib/invoice/line-description-guard.js` — rejects or sanitizes line descriptions claiming immigration assistance, lodgement, or visa application preparation. |
+| **Historical records** | **Do not modify** in this compliance pass. Description wording decisions deferred to **legal / accounting / privacy**. Prefer amending future invoices and recording a compliance note over silently rewriting paid historical PDFs or destroying audit trails. |
+| **Recommended** | Inventory historical line text for counsel; leave rows in place until authorised process decides correction vs retention. |
+
+---
+
+## 7a. Google Sheets / Drive / Calendar mirrors
+
+| Item | Detail |
+| --- | --- |
+| **Configuration** | Env-driven (`GOOGLE_SHEETS_*`, `GOOGLE_DRIVE_*`, `GOOGLE_CALENDAR_ID`, service-account / delegated-user vars). When unset, sync paths skip / report not configured. |
+| **Access** | Google Cloud **service account** (+ optional workspace delegated user). Not public website content. |
+| **Sensitive data risk** | High if used for portal status, customer docs, or matter timelines. |
+| **Retention** | Leave retention and ACL hardening for **legal / privacy** review. Do not auto-delete mirrors from this branch. |
+| **Credential rotation** | Status tracked in `data/admin-credential-rotation-checklist.json` (SMTP, SA key, webhook secret, Maps restrictions) — status only; never stores secrets. Items remain **pending** until admin confirms. |
 
 ---
 
@@ -117,7 +131,7 @@ This document maps where personal and migration-adjacent data may still live so 
 | CMS / marketing | `site.json`, `seo-pages.json`, `news.json`, destination JSON | No (copy) | Content already compliance-edited on branch |
 | Signal / UX JSON | `*-signals.json`, planners | No | None |
 | Seeds | `*.seed.json` for CRM/invoices | Synthetic / sample | Replace seed wording that says “Client…” over time |
-| Success stories | `success-stories.json` | Possibly if real names | Counsel review outcomes framing |
+| Success stories | `success-stories.json` (admin); public `site.json` / `getHomeSiteData` force empty | Possibly if real names | Emptied publicly 2026-09-08; counsel review before any republish |
 | Social / intelligence | `intelligence-*`, `social-*` | Usually not end-user PII | Standard admin ACLs |
 
 ---
@@ -142,8 +156,10 @@ This document maps where personal and migration-adjacent data may still live so 
 2. **Inventory:** Export counts (not full dumps into tickets) for enquiries, QUIZ-* mirrors, ai_funnel leads, customers with documents.
 3. **Retention:** Align with published privacy policy; document periods for enquiries vs identity uploads vs invoices (financial retention may differ).
 4. **Minimisation going forward:** Keep personalised quiz/AI funnel/portal flags OFF; contact schema already restricts enquiry types.
-5. **Historical correction:** Where invoice/CRM notes claim immigration assistance, record a compliance note; prefer amending future documents over destroying audit trails.
+5. **Historical correction:** Where invoice/CRM notes claim immigration assistance, record a compliance note; prefer amending future documents over destroying audit trails. **Do not rewrite historical invoice descriptions in this pass.**
 6. **No silent purge:** This branch intentionally leaves all historical JSON/DB rows in place.
+7. **Google mirrors:** Review service-account ACLs and retention; leave data until privacy/legal decide.
+8. **Credentials:** Confirm rotation via checklist API/file statuses only after rotating outside the app.
 
 ---
 
@@ -155,4 +171,5 @@ This document maps where personal and migration-adjacent data may still live so 
 - `lib/nurture-sequences.js`, `lib/nurture-sequences-ai.js`  
 - `app/api/quiz-results/route.js`, `app/api/ai-funnel/route.js`, `app/api/contact/route.js`  
 - `app/api/upload/[token]/route.js` + `COMPLIANCE_FEATURE_FLAGS.PUBLIC_MIGRATION_MATTER_PORTAL`  
-- `lib/invoice/line-description-guard.js`
+- `lib/invoice/line-description-guard.js`  
+- `data/admin-credential-rotation-checklist.json`, `app/api/admin/credential-rotation-checklist/route.js`

@@ -2,35 +2,35 @@
   "signalChips": [
     {
       "id": "clarity",
-      "value": "4.9/5",
-      "label": "decision clarity after first strategy call"
+      "value": "Public sources",
+      "label": "orientation to official information after a general session"
     },
     {
       "id": "next-step",
       "value": "14-day",
-      "label": "action plan window for first milestones"
+      "label": "suggested reading window for official pages"
     },
     {
       "id": "confidence",
-      "value": "90%",
-      "label": "move forward after consult roadmap"
+      "value": "Clearer",
+      "label": "topics to verify yourself on government sites"
     }
   ],
   "journeyRail": [
     {
       "id": "intake",
-      "title": "Profile intake",
-      "description": "Capture your background, timing, and migration intent."
+      "title": "Topic intake",
+      "description": "Share the category or education topic you want general information about."
     },
     {
-      "id": "strategy",
-      "title": "Route strategy",
-      "description": "Compare viable pathways with trade-offs and risk signals."
+      "id": "orientation",
+      "title": "Official-source orientation",
+      "description": "Walk through publicly available themes and where to verify criteria on official sites."
     },
     {
-      "id": "execution",
-      "title": "Execution map",
-      "description": "Leave with next actions for evidence, timing, and priorities."
+      "id": "next-reading",
+      "title": "Next reading map",
+      "description": "Leave with links and topics to check—not a visa plan or eligibility conclusion."
     }
   ]
 }

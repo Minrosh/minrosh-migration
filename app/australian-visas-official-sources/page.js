@@ -58,7 +58,7 @@ export default function AustralianVisasOfficialSourcesPage() {
             { href: "/student-visa-australia", title: "Student visa Australia" },
             { href: "/employer-sponsored-visas", title: "Employer-sponsored visas" },
             { href: "/visitor-visas", title: "Visitor visas" },
-            { href: "/assessment", title: "Free assessment" },
+            { href: "/assessment", title: "Official Information Finder" },
             { href: "/tools", title: "Planning tools" },
           ]}
         />

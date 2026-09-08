@@ -4,6 +4,7 @@ import { AUDIT_ACTIONS } from "@/lib/admin/audit-actions";
 import { readAdminSuccessStories, writeAdminSuccessStories } from "@/lib/admin/json-store";
 import { getClientIp } from "@/lib/security/request-ip";
 import { API_ERROR_CODES, apiFail, apiOk, requestContextFromRequest } from "@/lib/api/response";
+import { assertCanPublishNewsCopy } from "@/lib/cms-content-restore";
 
 function normalizeStoryBody(body) {
   return {
@@ -51,6 +52,23 @@ export async function POST(request) {
     return apiFail({ code: API_ERROR_CODES.VALIDATION_FAILED, message: "name and quote required", status: 400 }, context);
   }
 
+  try {
+    assertCanPublishNewsCopy(story.name, story.outcome || story.visa || "", `${story.quote}\n${story.timeline}`);
+  } catch (err) {
+    if (err?.code === "COMPLIANCE_BLOCKED") {
+      return apiFail(
+        {
+          code: API_ERROR_CODES.VALIDATION_FAILED,
+          message: `Success story blocked by compliance guard: ${err.message}`,
+          status: 400,
+          details: { validation: err.validation },
+        },
+        context
+      );
+    }
+    throw err;
+  }
+
   const data = readAdminSuccessStories();
   const stories = [story, ...(data.stories || [])];
   writeAdminSuccessStories({ stories });
@@ -80,6 +98,22 @@ export async function PATCH(request) {
   const story = normalizeStoryBody(body);
   if (!story.name || !story.quote) {
     return apiFail({ code: API_ERROR_CODES.VALIDATION_FAILED, message: "name and quote required", status: 400 }, context);
+  }
+  try {
+    assertCanPublishNewsCopy(story.name, story.outcome || story.visa || "", `${story.quote}\n${story.timeline}`);
+  } catch (err) {
+    if (err?.code === "COMPLIANCE_BLOCKED") {
+      return apiFail(
+        {
+          code: API_ERROR_CODES.VALIDATION_FAILED,
+          message: `Success story blocked by compliance guard: ${err.message}`,
+          status: 400,
+          details: { validation: err.validation },
+        },
+        context
+      );
+    }
+    throw err;
   }
   const data = readAdminSuccessStories();
   const stories = Array.isArray(data.stories) ? [...data.stories] : [];

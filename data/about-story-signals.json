@@ -1,37 +1,37 @@
 {
   "trustSignals": [
     {
-      "id": "clarity",
-      "value": "4.9/5",
-      "label": "strategy clarity after first roadmap session"
+      "id": "sources",
+      "value": "Public sources",
+      "label": "summaries drawn from publicly available material"
     },
     {
-      "id": "pace",
-      "value": "10-day",
-      "label": "average time to first evidence milestones"
+      "id": "links",
+      "value": "Official links",
+      "label": "navigation toward Home Affairs and institutional pages"
     },
     {
-      "id": "confidence",
-      "value": "93%",
-      "label": "continue with structured migration plan"
+      "id": "education",
+      "value": "Education support",
+      "label": "course enquiry and admissions admin where offered"
     }
   ],
   "timelineAmplifiers": [
     {
       "step": "Step 01",
-      "proof": "Most clients gain immediate pathway clarity after profile triage."
+      "proof": "Readers can start with category overviews and official links."
     },
     {
       "step": "Step 02",
-      "proof": "Risk-screening catches common document-sequencing errors early."
+      "proof": "Verify current criteria on government and assessing-authority pages."
     },
     {
       "step": "Step 03",
-      "proof": "Consistency reviews reduce late-stage rework before submission."
+      "proof": "Use education-course enquiry support where it is offered separately."
     },
     {
       "step": "Step 04",
-      "proof": "Transition planning keeps post-milestone actions practical and calm."
+      "proof": "Seek a registered migration agent or legal practitioner for personalised advice."
     }
   ]
 }

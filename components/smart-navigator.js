@@ -19,7 +19,7 @@ import { CONVERSION_PREMIUM_PRIMARY_CTA_CLASS } from "@/lib/conversion-premium-c
 
 export function SmartNavigator({
   title = "Answer a few questions and get routed to the most relevant next step",
-  description = "This guided assessment uses your goal, timing, and support preference to point you toward the right MinRosh pathway before consultation.",
+  description = "This tool is disabled pending review. Use the Official Information Finder for topic-based official links instead.",
   primaryLabel = "Continue",
   finalHref = "/book-information-session",
 }) {
@@ -145,7 +145,7 @@ export function SmartNavigator({
             <div>
               <p className="section-label">Step {stepIndex + 1}</p>
               <h3 className="[font-family:var(--font-display),Georgia,serif]">
-                {isEmailStep ? "Where should we send your pathway results?" : currentStep.title}
+                {isEmailStep ? "Where should we send your information summary?" : currentStep.title}
               </h3>
             </div>
             <span className="quiz-wizard__count">
@@ -341,7 +341,7 @@ export function SmartNavigator({
             </>
           ) : (
             <>
-              <h3>Build your pathway summary</h3>
+              <h3>Build your information summary</h3>
               <p>
                 This expanded navigator now looks at country, goal, timing, support preference, and
                 profile signals to suggest a sensible next step.

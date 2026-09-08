@@ -11,7 +11,7 @@ const path = "/popular-routes";
 export const metadata = buildMetadata({
   title: "Popular migration routes | Australia, UK, NZ & Canada | MinRosh",
   description:
-    "Explore MinRosh pathway hubs for skilled, student, partner, visitor, and global migration routes — filter by destination and open structured guidance before you lodge.",
+    "Explore MinRosh information hubs for skilled, student, partner, visitor, and destination topics — filter by country and open structured general guidance with links to official sources.",
   path,
   keywords: [
     "popular visa routes Australia",

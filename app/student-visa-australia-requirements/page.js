@@ -66,7 +66,7 @@ export default function StudentVisaGuidePage() {
         takeaways={[
           "Confirm your exact subclass and requirement page from official sources first.",
           "Prepare CoE, financial and supporting evidence together as one consistent application pack.",
-          "Decide whether to continue self-guided or book a strategy session for complex or time-sensitive cases.",
+          "Decide whether to continue reading official sources yourself or book a general information session. For personalised advice or applications, contact a registered migration agent or Australian legal practitioner.",
         ]}
         sections={orderedSections}
         faq={guideData.faq}

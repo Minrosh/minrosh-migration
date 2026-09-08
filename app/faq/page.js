@@ -8,7 +8,7 @@ import { mergedFaqItems } from "../../lib/intelligence/faq";
 export const metadata = buildMetadata({
   title: "Migration FAQ | MinRosh Migration",
   description:
-    "Read MinRosh Migration's frequently asked questions covering Australian visa timing, migration agent support, costs, and common next-step concerns.",
+    "Read MinRosh Migration's frequently asked questions covering Australian visa timing, costs, official sources, and when to seek a registered migration agent or Australian legal practitioner.",
   path: "/faq",
   keywords: [
     "migration FAQ Australia",
@@ -40,17 +40,17 @@ const conversationalFaqItems = [
   {
     question: "How can I get an Australian partner visa if we are not married yet?",
     answer:
-      "You may still qualify as de facto partners if you can show evidence of a genuine and continuing relationship. You usually need documents across financial, social, and household categories, plus timeline consistency.",
+      "Home Affairs materials describe de facto partner categories where evidence of a genuine and continuing relationship is typically discussed, often across financial, social, and household themes. MinRosh does not assess whether someone qualifies. Read the official partner visa subclass pages and seek a registered migration agent or Australian legal practitioner for personalised advice.",
   },
   {
     question: "How long does a skilled visa usually take after I lodge?",
     answer:
-      "Processing timelines vary by visa subclass, case complexity, and policy settings. MinRosh uses official Home Affairs updates as the baseline and then maps likely timing risks from your profile.",
+      "Processing timelines vary by visa subclass, case complexity, and policy settings. Official Home Affairs processing-time tools and subclass pages are the authoritative baseline. MinRosh does not estimate timing from individual profiles or provide immigration assistance.",
   },
   {
     question: "Can I move from student visa to permanent residency in Australia?",
     answer:
-      "Some students later move into skilled, employer-sponsored, or partner pathways. The best route depends on your occupation, location strategy, English profile, and evidence readiness.",
+      "Public materials describe several later categories that some former students explore, including skilled, employer-sponsored, or partner options. Each has separate published criteria. MinRosh does not recommend a best route or assess eligibility. Use the Home Affairs visa listing and seek authorised professional advice for personalised conclusions.",
   },
 ];
 
@@ -75,8 +75,8 @@ export default function FAQPage() {
       />
       <ContentPage
         eyebrow="FAQ"
-        title="Frequently asked questions about migration pathways and next steps"
-        intro="These answers cover some of the most common questions MinRosh receives before consultation. They are general in nature and should not replace advice tailored to your own circumstances. For subclass-specific rules, always use the Department of Home Affairs visa listing and the page for your visa. For a walkthrough of those tools with links to MinRosh services, see the official sources hub."
+        title="Frequently asked questions about migration information and next steps"
+        intro="These answers cover some of the most common general questions MinRosh receives. They are general in nature and are not personalised advice or an eligibility assessment. For subclass-specific rules, always use the Department of Home Affairs visa listing and the page for the visa of interest. For a walkthrough of those tools with links to MinRosh information pages, see the official sources hub."
         breadcrumbs={[
           { href: "/", label: "Home" },
           { href: "/faq", label: "FAQ" },

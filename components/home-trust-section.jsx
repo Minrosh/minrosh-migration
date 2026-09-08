@@ -4,16 +4,16 @@ import { TrackedLink } from "./tracked-link";
 
 const TRUST_ITEMS = [
   {
-    title: "Evidence-first guidance",
-    body: "We point you to official sources and realistic sequencing—not hype or outcome promises.",
+    title: "Official-source first",
+    body: "We point you to public Home Affairs and institutional pages—not hype or outcome promises.",
   },
   {
     title: "Transparent process",
-    body: "You see what we need, what happens next, and where decisions sit with departments.",
+    body: "You see what information we share, what happens next, and where decisions sit with departments.",
   },
   {
     title: "Official-source checking",
-    body: "Policy changes often; we encourage verifying fees, work rights, and criteria before you lodge.",
+    body: "Policy changes often; we encourage verifying fees, work rights, and criteria on official pages.",
   },
   {
     title: "Privacy-first handling",
@@ -31,17 +31,17 @@ export function HomeTrustSection() {
       <div className="relative isolate mx-auto w-full min-w-0 overflow-hidden rounded-[2rem] border border-brand-plum/10 bg-gradient-to-b from-[#FBF6F4]/90 via-white to-[#FBF6F4]/75 p-5 shadow-[var(--shadow-lux)] sm:p-7">
         <div className="relative z-10 mx-auto w-full min-w-0">
           <p className="text-center text-[11px] font-bold uppercase tracking-[0.28em] text-brand-rose">
-            Why plan with MinRosh
+            Why read with MinRosh
           </p>
           <h2
             id="home-trust-heading"
             className="mt-3 text-center text-2xl font-bold tracking-tight text-brand-plum sm:text-3xl"
           >
-            Clear visa planning before you spend money
+            Clear information before you spend money
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-center text-sm font-medium leading-relaxed text-brand-plum/70 sm:text-base">
-            Compare your study, work and PR options in plain English. Make informed decisions before lodging—not after
-            fees are paid.
+            Compare published study, work and PR category information in plain English. Make informed decisions using
+            official sources—before fees are paid.
           </p>
 
           <ul className="mt-8 grid min-w-0 list-none grid-cols-1 gap-4 pl-0 sm:grid-cols-2 lg:grid-cols-3">

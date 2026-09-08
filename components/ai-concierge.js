@@ -180,7 +180,7 @@ const fallbackReplies = [
   {
     match: /skilled|work|job|occupation|eoi|points|sponsor/i,
     content:
-      "For skilled migration, gather occupation, work history, qualifications, English level, and timing. We can help compare pathways such as 189, 190, or 491 in a strategy session.",
+      "For skilled migration topics, official pages cover occupation lists, work history themes, qualifications, English, and timing. Use the Official Information Finder for category links, or contact a registered migration agent for personalised advice.",
     actions: [
       { href: "/skilled-migration", label: "Skilled migration" },
       { href: "/assessment", label: "Official Information Finder" },
@@ -189,7 +189,7 @@ const fallbackReplies = [
   {
     match: /partner|family|spouse|parent|relationship/i,
     content:
-      "Partner and family pathways depend heavily on evidence and relationship history. We can help you plan documents and next steps before you lodge.",
+      "Partner and family categories are described on official pages with strong emphasis on evidence themes. MinRosh can share general information and official links; we do not plan lodgement or prepare applications.",
     actions: [
       { href: "/partner-visa-australia", label: "Partner visa" },
       { href: "/book-information-session", label: "General information enquiry" },
@@ -198,7 +198,7 @@ const fallbackReplies = [
   {
     match: /visitor|tourist/i,
     content:
-      "Visitor visas need a clear purpose, funds, and ties home. A short consultation usually helps avoid weak applications.",
+      "Visitor visa pages typically discuss purpose of stay, funds, and ties home. Use official Home Affairs materials, or ask an authorised professional for personalised advice.",
     actions: [
       { href: "/contact", label: "Contact" },
       { href: "/book-information-session", label: "General information enquiry" },
@@ -207,7 +207,7 @@ const fallbackReplies = [
   {
     match: /australia|new zealand|canada|uk|united kingdom/i,
     content:
-      "MinRosh supports four destination systems. Open the hub that matches your goal, then book a consultation for tailored sequencing.",
+      "MinRosh publishes general information hubs for four destination systems. Open the hub that matches your topic, then verify rules on the official government site.",
     actions: [
       { href: "/destinations/australia", label: "Australia" },
       { href: "/destinations/new-zealand", label: "New Zealand" },
@@ -218,7 +218,7 @@ const fallbackReplies = [
   {
     match: /sri lanka|colombo|lankan/i,
     content:
-      "Many skilled clients start with occupation fit, skills assessment sequencing, and a realistic points view. See the Sri Lanka hub for context.",
+      "Many enquirers from Sri Lanka start by reading occupation-list and skills-assessment pages. See the Sri Lanka hub for general context and official links.",
     actions: [
       { href: "/migration-sri-lanka-to-australia", label: "Sri Lanka → Australia" },
       { href: "/skilled-migration", label: "Skilled migration" },
@@ -231,7 +231,7 @@ function getFallbackReply(message) {
   if (matched) return matched;
   return {
     content:
-      "The next step is usually a free assessment or a consultation enquiry so we can review your situation properly.",
+      "A useful next step is the Official Information Finder for topic-based official links, the contact form for general enquiries, or the Register of Migration Agents if you need personalised immigration assistance.",
     actions: [
       { href: "/assessment", label: "Official Information Finder" },
       { href: "/book-information-session", label: "General information enquiry" },

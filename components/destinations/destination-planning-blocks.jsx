@@ -13,7 +13,7 @@ export function DestinationPlanningBlocks({ destinationName, blocks = [] }) {
         Planning overview — {destinationName}
       </h2>
       <p className="mt-3 max-w-3xl text-sm font-medium leading-relaxed text-brand-plum/75">
-        Indicative planning notes only. Rules, fees and processing change—confirm with official sources before you lodge.
+        Indicative planning notes only. Rules, fees and processing change—confirm with official sources.
       </p>
 
       <div className="mt-8 grid min-w-0 gap-6 lg:grid-cols-2">
@@ -42,7 +42,7 @@ export function DestinationPlanningBlocks({ destinationName, blocks = [] }) {
           eventParams={{ cta_id: "destination_pathway_check", cta_location: "destination_planning", destination: "/assessment" }}
           className="btn btn-primary inline-flex min-h-[48px] items-center justify-center rounded-full px-6"
         >
-          Start free pathway check
+          Official Information Finder
         </TrackedLink>
         <TrackedLink
           href="/book-information-session"

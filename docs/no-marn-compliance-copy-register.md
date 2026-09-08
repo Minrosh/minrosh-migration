@@ -2,6 +2,8 @@
 
 Approved public copy used on branch `compliance/no-marn-update`. CMS fields live under `data/site.json` → `compliance` and related page content.
 
+**Final public-copy + CMS rollback pass:** 2026-09-08 (private staging only). Not legal clearance.
+
 | Surface | Approved copy / notes |
 | --- | --- |
 | Brand short | Independent migration information and education support using publicly available sources. |
@@ -42,10 +44,26 @@ Approved public copy used on branch `compliance/no-marn-update`. CMS fields live
 | 404 page | Heading “Page not found”; CTAs Return Home / Browse General Information / Education Course Enquiry |
 | Tools hub | “General Information Tools” with scope disclaimer; no disabled personalised tool cards |
 | Permanent Migration Information Explorer | `/tools/pr-pathway-explorer` — topic → official links only |
+| CTAs (public) | No “Check eligibility” / “Free assessment” |
+| Success stories / FEEDBACK | Public `successStories: []`; FEEDBACK carousel empty; no AggregateRating / Review schema |
+| News seed | `news-seed-001` (`migration-sri-lanka-australia-2026`) unpublished |
+| Pathway / personalised | Neutral information framing only; no personalised pathway recommendations in public copy |
 
 ## Intentionally remaining “registered migration agent” wording
 
-Referral / educational only (not self-claims): disclaimer, FAQ answers clarifying MinRosh is **not** an RMA, OMARA Code page as third-party information, lawyer-vs-agent educational guide, Information Finder “who can help” topic.
+Referral / educational only (not self-claims): disclaimer, FAQ answers clarifying MinRosh is **not** an RMA, OMARA Code page as third-party information, lawyer-vs-agent educational guide, Information Finder “who can help” topic. Publish guard masks safe referral snippets so these are not treated as self-claims.
+
+## Intentionally retained public “client” occurrences (protective / third-party)
+
+Marketing uses of “client” were scrubbed in the 2026-09-08 pass. These remain intentionally:
+
+| Surface | Why retained |
+| --- | --- |
+| `app/disclaimer/page.js` | Negates creation of registered migration agent–client / solicitor–client relationship |
+| `app/terms-of-use/page.js` | Negates adviser-client relationship from website use alone |
+| `app/code-of-conduct/page.js` | OMARA standards language about registered agents’ duties to *their* clients (third-party) |
+
+See `docs/no-marn-client-terminology-inventory.md` for full classification.
 
 ## Staging-only configuration (not production)
 
@@ -56,15 +74,15 @@ Referral / educational only (not self-claims): disclaimer, FAQ answers clarifyin
 ## Deliberately disabled functions
 
 - Public AI chat, AI pathway funnel, personalised quiz results, public migration upload portal, Smart Navigator, destination confidence/route-strategy UI.
+- Direct CMS restore-to-public of non-compliant historical snapshots (draft-only restore; publish re-validated).
 
 ## Remaining items requiring external legal or privacy review
 
 1. Historical CRM/quiz/AI-funnel/upload data retention and access (see historical-data inventory).
 2. Any future re-enablement of public generative AI.
-3. Admin CRM “client/customer” relationship language.
-4. Testimonials / success stories with outcome-adjacent wording.
-5. CMS rollback controls for pre-compliance copy.
-6. Historical invoice descriptions and Google Sheet matter mirrors.
-7. Remaining `public-needs-review` “client” hits in the terminology inventory.
-8. Rotation of SMTP and Google credentials previously present on the old staging PM2 process (see technical report).
-
+3. Testimonials / success stories — legal review before republish.
+4. Historical invoice descriptions — deferred to legal / accounting / privacy (do not modify historical records in this pass).
+5. Google Sheets / Drive / Calendar mirrors — access and retention.
+6. Credential rotation checklist confirmation (all items still pending).
+7. Residual intentional referral / protective keyword matches.
+8. Admin CRM “client/customer” relationship language.

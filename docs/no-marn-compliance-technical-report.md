@@ -2,7 +2,8 @@
 
 **Branch:** `compliance/no-marn-update` (from `main` @ pre-change HEAD)  
 **Deploy status:** **Nothing deployed to production.** Staging/local verification only.  
-**CMS production feature flag:** left OFF / unchanged for production publish workflows.
+**CMS production feature flag:** left OFF / unchanged for production publish workflows.  
+**Final public-copy + CMS rollback pass:** 2026-09-08 (private staging).
 
 This report is an implementation summary for engineering review. It is **not** legal advice or a final legal certification.
 
@@ -25,6 +26,44 @@ This report is an implementation summary for engineering review. It is **not** l
 | `COMPLIANCE_FEATURE_FLAGS.PUBLIC_AI_CHAT` | `false` (`ENABLE_PUBLIC_AI_CHAT`) | `/api/chat` returns **410**; UI also needs `NEXT_PUBLIC_ENABLE_PUBLIC_AI_CHAT` |
 | `COMPLIANCE_FEATURE_FLAGS.PUBLIC_MIGRATION_MATTER_PORTAL` | `false` | Public `/upload` portal gated |
 | `SITE_ENVIRONMENT` | unset / `production` on live; `staging` on private staging | Staging-only noindex + robots Disallow |
+
+## Final public-copy pass (2026-09-08)
+
+Engineering safeguards and public-copy cleanup on private staging. **Not legal clearance.** Production untouched.
+
+### CMS publish / rollback safeguards
+
+| Component | Behaviour |
+| --- | --- |
+| `lib/compliance-publish-guard.js` | Contextual **block** + **warning** patterns; masks safe RMA referral snippets before self-claim matching |
+| `lib/cms-content-restore.js` | `restorePublishHistoryEntryToDraft` — restores to intelligence **draft only**; `assertCanPublishNewsCopy`; `canRestoreSnapshotDirectlyToPublic` (pure validation helper) |
+| `POST /api/admin/intelligence/publish-history` | `action: restore_to_draft` \| `restore` → draft restore, **never auto-publishes**; default / unspecified action remains emergency **unpublish** (`rollbackPublishedDraft`) |
+| Admin news POST/PATCH | Gated by `assertCanPublishNewsCopy` |
+| Admin success-stories POST/PATCH | Gated by `assertCanPublishNewsCopy` |
+| `getHomeSiteData` (`lib/home-site-data.js`) | Forces `successStories: []` — admin success-stories store is **not** merged onto the public homepage |
+| `tests/cms-rollback-compliance.test.mjs` | Asserts these cannot restore directly to public: “Migration Agent Brisbane”; “MARN Available on request”; “we assess your eligibility”; “we lodge your visa application” |
+
+### Public content (this pass)
+
+- Residual cleanup: destination sections, CTAs (no Check eligibility / Free assessment), howWeHelp, FAQs, seo-pages, news seed.
+- Unpublished `news-seed-001` (`migration-sri-lanka-australia-2026`).
+- `successStories` emptied; FEEDBACK carousel empty; no AggregateRating / Review schema.
+- Pathway / personalised rules applied to public marketing surfaces.
+- Public marketing “client” scrubbed; protective legal / OMARA third-party uses retained (see client terminology inventory).
+
+### Credential rotation checklist (status only)
+
+| Item | Detail |
+| --- | --- |
+| Store | `data/admin-credential-rotation-checklist.json` |
+| API | GET/PATCH `/api/admin/credential-rotation-checklist` |
+| Status values | `pending` \| `rotated` \| `verified` \| `n_a` — **never stores secrets** |
+| Items | SMTP password; Google service-account key; Google webhook secret; Maps API HTTP-referrer restrictions |
+| Current | All items still **pending** until an administrator confirms rotation outside this file |
+
+### Invoices / mirrors (do not modify historical records)
+
+See expanded inventory in `docs/no-marn-historical-data-inventory.md`. Forward-looking guard: `lib/invoice/line-description-guard.js`. Historical invoice wording deferred to legal / accounting / privacy.
 
 ## Staging review follow-up (resolved)
 
@@ -62,6 +101,7 @@ Previous private staging PM2 process (`minrosh-staging` before isolation) had pr
 4. **Maps key:** Cloud Console → Credentials → application restrictions (HTTP referrers for production host only).
 5. Do **not** delete PM2 logs as part of rotation; retain for forensics.
 6. Do **not** paste secret values into tickets or chat.
+7. Record status only in `data/admin-credential-rotation-checklist.json` (or PATCH the admin checklist API) after confirming rotation outside the app.
 
 ## Disabled / replaced endpoints & surfaces
 
@@ -78,30 +118,35 @@ Previous private staging PM2 process (`minrosh-staging` before isolation) had pr
 | Resume / migration document upload | Rejected on public contact path |
 | Destination confidence tools | Gated off |
 | Skilled cost/timeline estimator on `/tools` | Removed from tools hub (personalised scenario framing) |
+| CMS restore of historical publish snapshots | Draft-only; blocked from direct public restore when non-compliant |
 
 ## Data / CMS
 
 - Added central `data/site.json` → `compliance` fields (disclosure, disclaimers, referral URLs, form acknowledgement, AI notice, category banners).
 - Removed public `brand.marn`.
-- `validatePublishableCopy()` blocks prohibited registration/agent self-claims on intelligence news publish (`lib/intelligence/publish.js`).
+- `validatePublishableCopy()` / `lib/compliance-publish-guard.js` blocks prohibited registration/agent self-claims on publish paths.
 - Enquiry categories normalised to `general_information` / `education_enquiry` with server-side acknowledgement requirement.
 - Restricted enquiry outcome: `referred_to_authorised_professional` when message looks like immigration assistance.
+- Success stories emptied publicly; homepage never merges admin success-stories store.
 
 ## Privacy / legal human review still required
 
 See **Remaining items requiring external legal or privacy review** below.
 
-## Key files changed (staging review pass)
+## Key files changed (staging review + 2026-09-08 pass)
 
 - 404 / tools / explorer: `app/not-found.js`, `app/tools/page.js`, `app/tools/pr-pathway-explorer/page.js`, `components/tools/pr-pathway-explorer-client.jsx`
 - Staging robots: `lib/site-environment.js`, `lib/seo-robots.js`, `app/robots.js`, `app/layout.js`, `middleware.js`
 - Contact telemetry: `app/api/contact/route.js`, `lib/google-sheets-crm.js`
 - Zones / standalone: `lib/zone-manifest.mjs`, `scripts/copy-standalone-assets.mjs`
-- Tests: `tests/site-environment-and-sheet-sync.test.mjs`, `tests/robots-site-environment.test.mjs`, contact route tests
+- CMS rollback: `lib/compliance-publish-guard.js`, `lib/cms-content-restore.js`, `app/api/admin/intelligence/publish-history/route.js`, `app/api/admin/news/route.js`, `app/api/admin/success-stories/route.js`, `lib/home-site-data.js`
+- Credential checklist: `data/admin-credential-rotation-checklist.json`, `app/api/admin/credential-rotation-checklist/route.js`
+- Invoice guard: `lib/invoice/line-description-guard.js`
+- Tests: `tests/cms-rollback-compliance.test.mjs`, `tests/site-environment-and-sheet-sync.test.mjs`, `tests/robots-site-environment.test.mjs`, contact route tests
 
 ## Database / content backup
 
-No destructive CMS migration was run against production. Local `data/*.json` edited on the compliance branch only. Historical CRM/quiz/AI-funnel records were **not** deleted.
+No destructive CMS migration was run against production. Local `data/*.json` edited on the compliance branch only. Historical CRM/quiz/AI-funnel/invoice records were **not** deleted or rewritten for past wording.
 
 ## Unrelated workspace note
 
@@ -111,12 +156,10 @@ Untracked `reports/seo-meta-audit.md` was left untouched.
 
 1. Historical CRM, quiz, AI-funnel, upload, and nurture records — retention, lawful basis, access hardening (see `docs/no-marn-historical-data-inventory.md`). **Do not auto-delete.**
 2. Re-enabling public generative AI (`ENABLE_PUBLIC_AI_CHAT`) — counsel approval required; generative drift cannot be fully eliminated by prompts alone.
-3. Admin CRM terminology and any residual adviser–client relationship framing.
-4. Success stories / testimonials with subclass or timeline language.
-5. Educational RMA/lawyer comparison pages — confirm third-person referral framing.
-6. CMS rollback / republish of pre-compliance copy — require explicit confirmation.
-7. Historical invoices that may have described immigration assistance — commercial/legal review (forward-looking line guard only).
-8. Google Sheets/Drive/Calendar migration-status mirrors — access and retention.
-9. Remaining `client` strings classified `public-needs-review` in `docs/no-marn-client-terminology-inventory.md`.
-10. Complete SMTP + Google credential rotation per table above (administrator action).
-
+3. Testimonials / success stories — legal review before any republish.
+4. Historical invoice descriptions — deferred to legal / accounting / privacy (forward-looking line guard only; do not modify historical records).
+5. Google Sheets / Drive / Calendar migration-status mirrors — access and retention (env-driven; service account).
+6. Credential rotation checklist confirmation — SMTP, Google SA key, webhook secret, Maps restrictions; all still **pending**.
+7. Residual keyword matches that are intentional RMA referrals or protective legal phrasing.
+8. Admin CRM terminology and any residual adviser–client relationship framing.
+9. Educational RMA/lawyer comparison pages — confirm third-person referral framing.

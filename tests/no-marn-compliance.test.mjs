@@ -60,6 +60,14 @@ describe("no-MARN compliance", () => {
     expect(JSON.stringify(ld)).not.toMatch(/Available on request/i);
   });
 
+  it("does not emit AggregateRating or Review structured data from site seed", () => {
+    const ld = businessJsonLd(siteData);
+    expect(ld.aggregateRating).toBeUndefined();
+    expect(ld.review).toBeUndefined();
+    expect(JSON.stringify(ld)).not.toMatch(/AggregateRating|"@type":"Review"/i);
+    expect(Array.isArray(siteData.successStories) ? siteData.successStories.length : 0).toBe(0);
+  });
+
   it("Official Information Finder topics are deterministic and non-scoring", () => {
     expect(INFORMATION_FINDER_TOPICS.length).toBeGreaterThanOrEqual(5);
     for (const topic of INFORMATION_FINDER_TOPICS) {

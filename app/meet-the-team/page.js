@@ -18,7 +18,7 @@ const coFounders = [
   {
     name: "Minoli Bandaranayake",
     role: "Founder & Director",
-    responsibilities: "Responsible for migration planning and education consultations.",
+    responsibilities: "Responsible for general migration information and education-course consultations.",
     imageSrc: "/images/team/minoli-bandaranayake.v1.webp",
     alt: "Minoli Bandaranayake, Founder and Director of MinRosh Migration",
   },
@@ -26,34 +26,34 @@ const coFounders = [
 
 const consultants = [
   {
-    name: "MinRosh Advisory Team",
-    role: "Migration Strategy and Case Planning",
+    name: "MinRosh Information Team",
+    role: "General Information and Education Support",
     languages: "English, Sinhala, Tamil",
     story:
-      "The team focuses on turning stressful migration decisions into staged action plans with clear evidence priorities and timing checkpoints.",
+      "The team helps organise publicly available visa-category information and education options, with clear links to official sources.",
   },
   {
     name: "Enquirer Experience Team",
-    role: "Onboarding and Document Readiness",
+    role: "Onboarding and Administrative Support",
     languages: "English, Hindi",
     story:
-      "This team supports clients with secure uploads, checklist clarity, and practical preparation so cases move forward without avoidable delays.",
+      "This team supports enquirers with secure uploads, checklist clarity for education admissions where offered, and practical orientation to public materials.",
   },
   {
     name: "Compliance and Quality Team",
-    role: "Submission Quality and Risk Controls",
+    role: "Source Alignment and Content Quality",
     languages: "English",
     story:
-      "The quality team reviews case flow, consistency, and official-source alignment to reduce rework and strengthen decision confidence.",
+      "The quality team reviews published summaries for official-source alignment and keeps information framing within education-support boundaries.",
   },
 ];
 
 export const metadata = buildMetadata({
   title: "Meet the Team | Leadership",
   description:
-    "Meet Roshan Samarawickrema (Director) and Minoli Bandaranayake (Founder & Director) at MinRosh Migration, and learn how the wider team supports your migration journey.",
+    "Meet Roshan Samarawickrema (Director) and Minoli Bandaranayake (Founder & Director) at MinRosh Migration, and learn how the wider team supports general information and education enquiries.",
   path,
-  keywords: ["migration team Brisbane", "migration consultant profiles", "MinRosh team"],
+  keywords: ["migration team Brisbane", "migration information team", "MinRosh team"],
 });
 
 export default function MeetTheTeamPage() {
@@ -92,11 +92,12 @@ export default function MeetTheTeamPage() {
                 <div className="content-hero__copy">
                   <p className="section-label">Trust and credentials</p>
                   <h1 className="text-[var(--brand-navy)] [font-family:var(--font-display),Georgia,serif]">
-                    Meet the people behind your migration journey
+                    Meet the people behind MinRosh information support
                   </h1>
                   <p>
-                    Migration outcomes depend on clarity, consistency, and timing. Meet our co-founders and support team
-                    who combine human consultation with structured systems so clients can make decisions with confidence.
+                    Clear public information and careful source checking matter. Meet our co-founders and support team who
+                    organise official materials and education-course enquiry support so enquirers can navigate published
+                    options with greater clarity.
                   </p>
                 </div>
                 <div className="content-hero__media" aria-hidden="true">

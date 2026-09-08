@@ -9,7 +9,7 @@
         "List your strongest pathway and one fallback option"
       ],
       "docLinks": [
-        { "label": "Free assessment", "href": "/assessment" },
+        { "label": "Official Information Finder", "href": "/assessment" },
         { "label": "Official sources hub", "href": "/australian-visas-official-sources" }
       ]
     },
@@ -32,7 +32,7 @@
       "risk": "Submitting early with missing signals can create preventable refusals.",
       "actions": [
         "Confirm mandatory readiness markers before paying charges",
-        "Stress-test your pathway against current policy updates"
+        "Stress-test published category assumptions against current policy updates"
       ],
       "docLinks": [
         { "label": "Processing times guide", "href": "/australia-visa-processing-times-guide" },

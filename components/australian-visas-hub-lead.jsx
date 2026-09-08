@@ -75,16 +75,16 @@ export function AustralianVisasHubLead() {
             Choose your route — then verify on Home Affairs
           </h2>
           <p className="mt-3 max-w-2xl text-sm font-medium leading-relaxed text-brand-plum/75 sm:text-base">
-            Official visa listings stay authoritative. Filter by pathway family, then open a hub for sequencing and evidence
-            habits in plain language before you lodge.
+            Official visa listings stay authoritative. Filter by category family, then open a hub for plain-language
+            summaries of publicly available themes—always verify on Home Affairs.
           </p>
         </div>
         <PremiumCTAGroup className="mt-0 shrink-0 lg:mt-0">
           <Link href="/book-information-session" className={`${CONVERSION_PREMIUM_PRIMARY_CTA_CLASS} w-full justify-center sm:w-auto`}>
-            Book consultation
+            Book information session
           </Link>
           <Link href="/assessment" className="btn btn-ghost inline-flex min-h-[48px] items-center justify-center rounded-full px-5">
-            Free assessment
+            Official Information Finder
           </Link>
         </PremiumCTAGroup>
       </div>

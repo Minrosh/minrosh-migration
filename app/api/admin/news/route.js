@@ -12,6 +12,7 @@ import {
 } from "@/lib/news-store";
 import { revalidateNewsArticlePath, revalidateNewsBoardPaths } from "@/lib/news-data";
 import { API_ERROR_CODES, apiFail, apiOk, requestContextFromRequest } from "@/lib/api/response";
+import { assertCanPublishNewsCopy } from "@/lib/cms-content-restore";
 
 function isValidHttpUrl(s) {
   try {
@@ -55,6 +56,23 @@ export async function POST(request) {
   const bodyText = String(body.body || "").trim() || summary;
   const date = String(body.date || "").trim() || new Date().toISOString().slice(0, 10);
   let requestedSlug = String(body.slug || "").trim();
+
+  try {
+    assertCanPublishNewsCopy(title, summary, bodyText);
+  } catch (err) {
+    if (err?.code === "COMPLIANCE_BLOCKED") {
+      return apiFail(
+        {
+          code: API_ERROR_CODES.VALIDATION_FAILED,
+          message: err.message,
+          status: 400,
+          details: { validation: err.validation },
+        },
+        context
+      );
+    }
+    throw err;
+  }
 
   const row = withNewsMutation(() => {
     const entries = readNewsList();
@@ -107,6 +125,34 @@ export async function PATCH(request) {
   const sourceUrl = body.sourceUrl !== undefined ? String(body.sourceUrl || "").trim() : undefined;
   if (sourceUrl !== undefined && sourceUrl && !isValidHttpUrl(sourceUrl)) {
     return apiFail({ code: API_ERROR_CODES.VALIDATION_FAILED, message: "sourceUrl must be a valid http(s) URL", status: 400 }, context);
+  }
+
+  // Pre-validate merged copy when any text field is being updated.
+  {
+    const existing = readNewsList().find((e) => e.id === id);
+    if (!existing) {
+      return apiFail({ code: API_ERROR_CODES.NOT_FOUND, message: "News item not found", status: 404 }, context);
+    }
+    const title = body.title !== undefined ? String(body.title || "").trim() || existing.title : existing.title;
+    const summary =
+      body.summary !== undefined ? String(body.summary || "").trim() || existing.summary : existing.summary;
+    const bodyText = body.body !== undefined ? String(body.body || "").trim() : existing.body;
+    try {
+      assertCanPublishNewsCopy(title, summary, bodyText);
+    } catch (err) {
+      if (err?.code === "COMPLIANCE_BLOCKED") {
+        return apiFail(
+          {
+            code: API_ERROR_CODES.VALIDATION_FAILED,
+            message: err.message,
+            status: 400,
+            details: { validation: err.validation },
+          },
+          context
+        );
+      }
+      throw err;
+    }
   }
 
   const prevSlug = withNewsMutation(() => {

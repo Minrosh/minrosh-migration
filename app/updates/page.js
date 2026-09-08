@@ -101,7 +101,7 @@ export default function UpdatesPage() {
         <section className="content-section bento-hover">
           <h2>Featured planning guides</h2>
           <p>
-            Use these practical guides to plan budget, timing, and document readiness before you lodge.
+            Use these practical guides to plan budget, timing, and document themes discussed in public materials. Always verify on official sources.
           </p>
           <div className="content-links">
             {latestGuides.map((guide) => (

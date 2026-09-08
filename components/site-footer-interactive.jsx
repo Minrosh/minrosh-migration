@@ -72,7 +72,7 @@ export function SiteFooterInteractive({ brand, initialStats, children }) {
           </span>
         </Link>
         <p className="site-footer__summary">
-          Clear migration and education guidance for clients across Australia (and destination hubs worldwide).
+          Clear migration information and education support for enquirers across Australia (and destination hubs worldwide).
         </p>
         <div className="site-footer__quick-contact">
           <Link href="/contact" aria-label="Open contact page for email enquiries">

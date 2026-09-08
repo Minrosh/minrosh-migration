@@ -28,11 +28,11 @@ export function PopularRoutesHub({ routes }) {
       <header className="popular-routes-hub__intro mb-10 text-center sm:mb-12">
         <p className="text-[10px] font-black uppercase tracking-[0.22em] text-brand-rose">Popular routes</p>
         <h1 className="mt-2 text-3xl font-black tracking-tight text-brand-plum sm:text-4xl md:text-[2.35rem]">
-          Pathways clients compare most often
+          Categories enquirers compare most often
         </h1>
         <p className="mx-auto mt-4 max-w-2xl text-sm font-medium leading-relaxed text-brand-plum/70 sm:text-base">
           Filter by destination, then open a hub for sequencing, official-source habits, and clear next steps. Always
-          confirm eligibility on the relevant government site before you lodge.
+          confirm criteria on the relevant government site before anyone lodges.
         </p>
       </header>
 
@@ -104,24 +104,24 @@ export function PopularRoutesHub({ routes }) {
         aria-labelledby="popular-routes-cta-heading"
       >
         <h2 id="popular-routes-cta-heading" className="text-xl font-black tracking-tight text-brand-plum sm:text-2xl">
-          Not sure which route fits you?
+          Looking for official category information?
         </h2>
         <p className="mx-auto mt-3 max-w-xl text-sm font-medium text-brand-plum/70 sm:text-base">
-          Start with the free Smart Navigator assessment — a few structured questions, then a practical next-step
-          suggestion. It does not replace official eligibility decisions.
+          Use the Official Information Finder for topic-based links to public sources. It does not assess eligibility
+          or recommend a visa.
         </p>
         <div className="mt-6 flex flex-wrap justify-center gap-3">
           <Link
             href="/assessment"
             className="btn btn-primary inline-flex min-h-[48px] items-center justify-center rounded-full px-8 transition-transform hover:-translate-y-0.5"
           >
-            Check eligibility
+            Official Information Finder
           </Link>
           <Link
             href="/#popular-routes"
             className="btn btn-ghost inline-flex min-h-[48px] items-center justify-center rounded-full px-6"
           >
-            Homepage pathway tiles
+            Homepage category tiles
           </Link>
         </div>
       </section>

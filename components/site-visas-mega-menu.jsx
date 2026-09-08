@@ -24,7 +24,7 @@ const COLUMNS = [
       { href: "/partner-visa-820-801-guide", label: "820 / 801 onshore guide" },
       { href: "/partner-visa-309-100-guide", label: "309 / 100 offshore guide" },
     ],
-    hint: "Evidence and pathway planning",
+    hint: "Evidence themes and category overviews",
   },
   {
     title: "Study, work, visit",
@@ -104,7 +104,7 @@ export function SiteVisasMegaMenu() {
       </summary>
       <div className="visas-mega__panel" role="region" aria-label="Australian visa pathways">
         <div className="visas-mega__hero">
-          <p className="visas-mega__hero-label">Pathway navigator</p>
+          <p className="visas-mega__hero-label">Category navigator</p>
           <h3 className="visas-mega__hero-title">Find the right visa lane in under a minute</h3>
           <p className="visas-mega__hero-copy">
             Choose the lane that matches your intent, then move with official-source clarity and a

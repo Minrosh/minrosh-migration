@@ -13,7 +13,7 @@ export function CountryCoverage({ countries }) {
       <div className="section-head">
         <div>
           <p className="section-label">Countries We Cover</p>
-          <h2>Advice pathways for four major destination systems</h2>
+          <h2>Information hubs for four major destination systems</h2>
         </div>
       </div>
 

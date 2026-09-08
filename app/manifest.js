@@ -3,7 +3,7 @@ export default function manifest() {
     id: "/",
     name: "MinRosh Migration",
     short_name: "MinRosh",
-    description: "Migration guidance and visa pathway support for Australia and beyond.",
+    description: "General migration information and education support for Australia and related destinations.",
     start_url: "/",
     scope: "/",
     display: "standalone",

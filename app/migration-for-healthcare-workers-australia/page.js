@@ -9,25 +9,25 @@ const path = "/migration-for-healthcare-workers-australia";
 export const metadata = buildMetadata({
   title: "Migration for Healthcare Workers",
   description:
-    "Australia migration guidance for nurses, allied health professionals, and healthcare support roles with practical pathway checkpoints.",
+    "General information about Australian visa categories often researched by nurses and allied health professionals, with links to official sources.",
   path,
   keywords: ["healthcare workers migration Australia", "nurse migration pathway", "allied health visa options"],
 });
 
 const sections = [
   {
-    title: "Where healthcare profiles usually fit",
+    title: "Categories healthcare readers often research",
     body:
-      "Healthcare professionals often evaluate skilled, employer-sponsored, and regional pathways. The best route depends on your occupation mapping, registration context, and timing priorities.",
+      "Public materials describe skilled, employer-sponsored, and regional visa categories that may list healthcare occupations, depending on current occupation lists and assessing-authority rules. MinRosh does not recommend a category or assess fit.",
   },
   {
-    title: "Evidence to organize early",
+    title: "Evidence themes often discussed publicly",
     body:
-      "Prepare qualifications, employment history, identity documents, and English results in a consistent bundle. Early evidence quality usually reduces rework later in the process.",
+      "Official and assessing-authority pages commonly discuss qualifications, employment history, identity documents, and English results. Consistency across those themes is frequently mentioned; MinRosh summarises publicly available information only.",
     bullets: [
-      "Occupation and role history aligned with your target pathway",
-      "Registration and licensing evidence where relevant",
-      "Timeline planning for assessment, tests, and employer steps",
+      "Occupation list and assessing-authority pages for the role you are reading about",
+      "Registration and licensing themes where the official materials mention them",
+      "Published timing notes for assessments and tests—verify on the source",
     ],
   },
 ];
@@ -36,12 +36,12 @@ const faq = [
   {
     question: "Can nurses apply through skilled migration pathways in Australia?",
     answer:
-      "Many nursing profiles do evaluate skilled pathways, but eligibility depends on current occupation settings, assessment outcomes, and your personal profile details.",
+      "Official materials describe skilled and other work-related categories that may list nursing occupations, depending on current occupation lists and assessing-authority rules. MinRosh cannot conclude whether any individual is eligible. Read the Home Affairs visa listing and relevant assessing-authority pages, and seek a registered migration agent or Australian legal practitioner for personalised advice.",
   },
   {
     question: "Is employer sponsorship better for healthcare applicants?",
     answer:
-      "For some applicants, employer sponsorship may be faster or more practical than points-tested routes. It depends on role demand, employer readiness, and your documentation timeline.",
+      "MinRosh does not compare options for individual circumstances or recommend a visa. Employer-sponsored and points-tested categories are published separately on Home Affairs with different criteria. Verify current subclass pages, and consult an authorised professional if you need advice based on your situation.",
   },
 ];
 
@@ -57,14 +57,14 @@ export default function HealthcareWorkersPage() {
           webPageSpeakableJsonLd({
             path,
             title: "Migration for Healthcare Workers | MinRosh Migration",
-            description: "Voice-search friendly guidance for healthcare migration pathways to Australia.",
+            description: "Voice-search friendly general information on healthcare-related Australian visa categories.",
           }),
         ]}
       />
       <ContentPage
         eyebrow="Healthcare migration"
         title="Migration for healthcare workers in Australia"
-        intro="This page is built for healthcare applicants who want a practical pathway map before committing to one visa strategy."
+        intro="General orientation to publicly described Australian visa categories that healthcare professionals often research. Always verify criteria on official sources. MinRosh does not provide immigration assistance."
         breadcrumbs={[
           { href: "/", label: "Home" },
           { href: path, label: "Healthcare Migration" },
@@ -72,16 +72,16 @@ export default function HealthcareWorkersPage() {
         currentPath={path}
         sections={sections}
         faq={faq}
-        summary="Healthcare applicants often need a sequencing-first strategy across registration, evidence quality, and pathway selection."
+        summary="Healthcare readers often research registration, evidence themes, and several published visa categories. MinRosh shares general information only."
         takeaways={[
-          "Map your occupation and target pathway first",
-          "Build a clean evidence set before high-stakes submissions",
-          "Use consultation for timing decisions and risk control",
+          "Read occupation and assessing-authority pages first",
+          "Treat evidence themes as public orientation, not a personal checklist",
+          "Seek a registered migration agent for personalised advice",
         ]}
         related={[
           { href: "/skilled-migration", title: "Skilled Migration" },
           { href: "/employer-sponsored-visas", title: "Employer-Sponsored Visas" },
-          { href: "/book-information-session", title: "Book Consultation" },
+          { href: "/book-information-session", title: "Book information session" },
         ]}
       />
     </SiteShell>

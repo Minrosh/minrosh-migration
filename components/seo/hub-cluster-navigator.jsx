@@ -3,16 +3,16 @@ import Link from "next/link";
 const clusters = {
   skilled: {
     title: "Skilled Migration Hub",
-    description: "Your comprehensive guide to Australian skilled work visas, points tests, and occupation lists.",
+    description: "General information about Australian skilled work visa categories, points tests, and occupation lists, with links to official sources.",
     links: [
       { href: "/skilled-migration", label: "Skilled Migration Overview" },
       { href: "/skilled-migration-australia-points-guide", label: "Points Test Guide" },
-      { href: "/assessment", label: "Free Eligibility Assessment" },
+      { href: "/assessment", label: "Official Information Finder" },
     ]
   },
   partner: {
     title: "Partner Visa Hub",
-    description: "Everything you need to know about bringing your partner to Australia, from evidence to lodgement.",
+    description: "General information about partner visa categories and published evidence themes, with links to official Home Affairs pages.",
     links: [
       { href: "/partner-visa-australia", label: "Partner Visa Overview" },
       { href: "/partner-visa-australia-guide", label: "Comprehensive Guide" },
@@ -22,7 +22,7 @@ const clusters = {
   },
   student: {
     title: "Student Visa Hub",
-    description: "Start your Australian education journey with our student visa requirements and course guides.",
+    description: "General information about student visa categories and study options, with links to official requirements pages.",
     links: [
       { href: "/student-visa-australia", label: "Student Visa Overview" },
       { href: "/student-visa-australia-requirements", label: "Visa Requirements" },

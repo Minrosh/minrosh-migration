@@ -5,35 +5,35 @@ import Link from "next/link";
 const TILES = [
   {
     title: "Skilled Migration",
-    body: "Points-tested pathways discussed against current policy lists—indicative planning until formally assessed.",
+    body: "General information on points-tested categories against current public policy lists—verify criteria on official pages.",
     href: "/skilled-migration",
     cta: "Skilled migration hub",
     tone: "rose",
   },
   {
     title: "Student Visa & Education Consultation",
-    body: "Course fit, genuine student factors and document preparation—with realistic sequencing, not outcome promises.",
+    body: "Course and student-category orientation with education enquiry support where offered—not visa application assistance.",
     href: "/student-visa-australia",
     cta: "Student visa hub",
     tone: "cream",
   },
   {
     title: "Partner & Family Visas",
-    body: "Relationship evidence, consistency and lodgement sequencing for partner and family-style routes.",
+    body: "General information on relationship evidence themes and partner categories from public sources.",
     href: "/partner-visa-australia",
     cta: "Partner & family hub",
     tone: "gold",
   },
   {
     title: "Employer Sponsorship",
-    body: "Sponsorship and nomination pathways where employer-backed routes fit your brief and timeline.",
+    body: "Overview of sponsorship and nomination categories as published by Home Affairs and related programs.",
     href: "/employer-sponsored-visas",
     cta: "Employer-sponsored visas",
     tone: "burgundyOutline",
   },
   {
     title: "Visitor Visas",
-    body: "Short stays with clear travel purpose and document readiness—reducing common refusal risks where possible.",
+    body: "Short-stay category orientation with links to official purpose, funds, and document themes.",
     href: "/visitor-visas",
     cta: "Visitor visas",
     tone: "white",
@@ -79,10 +79,10 @@ export function HomeServicesPathways() {
             id="home-services-heading"
             className="text-center text-2xl font-black tracking-tight text-brand-plum sm:text-3xl md:text-4xl"
           >
-            Pathways we guide most often
+            Visa categories we explain most often
           </h2>
           <p className="mx-auto mt-3 max-w-3xl text-center text-sm font-medium leading-relaxed text-brand-plum/70 sm:text-base">
-            General migration information and education support led from Brisbane, with online enquiries for clients
+            General migration information and education support led from Brisbane, with online enquiries for enquirers
             worldwide. We cite official sources and highlight what departments publish—not forum summaries alone.
           </p>
         </div>

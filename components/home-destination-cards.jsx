@@ -47,7 +47,7 @@ export function HomeDestinationCards({ countries }) {
           }}
         />
         <p className="relative z-10 text-center text-[11px] font-bold uppercase tracking-[0.28em] text-brand-rose">
-          Pathways to your future
+          Destination information hubs
         </p>
         <h2
           id="home-destinations-heading"

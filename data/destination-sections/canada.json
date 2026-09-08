@@ -4,7 +4,7 @@
     "metaDescription": "Skilled pathways for Canada: Express Entry concepts, work permits, and PNPs at a high level. Always verify on Canada.ca / IRCC.",
     "eyebrow": "Canada · Skilled",
     "headline": "Canada skilled immigration planning",
-    "intro": "Canada’s economic immigration includes Express Entry-managed programs, provincial nominations, and various work permits. Eligibility depends on age, language, education, work experience, and sometimes a job offer or provincial criteria. Use IRCC’s official tools and program instructions; MinRosh helps you organise questions and sequencing before you invest in language tests or credential assessments.",
+    "intro": "Canada’s economic immigration includes Express Entry-managed programs, provincial nominations, and various work permits. Eligibility depends on age, language, education, work experience, and sometimes a job offer or provincial criteria. Use IRCC’s official tools and program instructions; MinRosh shares general orientation topics before you invest in language tests or credential assessments.",
     "officialResources": [
       {
         "label": "Canada.ca — visit / entry requirements (IRCC)",
@@ -17,12 +17,12 @@
     ],
     "sections": [
       {
-        "title": "Where clients often start",
-        "body": "Language scores, educational credential assessment (where applicable), and a clear work history narrative are common foundations. We help you see how those pieces connect to the program you are considering.",
+        "title": "Where enquirers often start",
+        "body": "Language scores, educational credential assessment (where applicable), and a clear work history narrative are common foundations. Public materials often describe how those pieces connect to the program you are considering.",
         "bullets": [
-          "Language testing strategy",
+          "Language testing themes on official pages",
           "ECA and qualification matching",
-          "Provincial program fit versus federal tracks"
+          "Provincial program descriptions versus federal tracks"
         ]
       },
       {
@@ -65,7 +65,7 @@
     "sections": [
       {
         "title": "Planning sponsorship",
-        "body": "We help sponsors and applicants understand evidence expectations and timelines at a high level before you commit to a complex paper trail."
+        "body": "Public materials describe evidence expectations and timelines at a high level before you commit to a complex paper trail."
       },
       {
         "title": "Common family-route risk points",
@@ -75,7 +75,7 @@
     "faq": [
       {
         "question": "Does sponsor income always matter in Canada family applications?",
-        "answer": "Financial requirements depend on the stream and who is being sponsored. Always follow the specific IRCC pathway checklist."
+        "answer": "Financial requirements depend on the stream and who is being sponsored. Always follow the specific IRCC category checklist on official pages."
       }
     ],
     "related": [
@@ -102,7 +102,7 @@
     "sections": [
       {
         "title": "Institution and province",
-        "body": "DLI choice, province, and post-graduation work permit rules can interact. We help you ask the right questions early."
+        "body": "DLI choice, province, and post-graduation work permit rules can interact. MinRosh shares general information so readers can ask the right questions early."
       },
       {
         "title": "Student compliance essentials",
@@ -138,7 +138,7 @@
     "metaDescription": "Course and institution planning for Canada with study permit awareness.",
     "eyebrow": "Canada · Education",
     "headline": "Education planning for Canada",
-    "intro": "Selecting a programme and DLI affects your study permit narrative and costs. MinRosh helps align education choices with realistic visa documentation.",
+    "intro": "Selecting a programme and DLI affects your study permit narrative and costs. MinRosh shares education-course information; visa documentation themes must be verified on official pages.",
     "officialResources": [
       {
         "label": "Canada.ca — Immigration and citizenship",
@@ -148,7 +148,7 @@
     "sections": [
       {
         "title": "Shortlisting",
-        "body": "We compare options for credibility, duration, total cost, and how they support your stated study goals."
+        "body": "Readers often compare options for credibility, duration, total cost, and how they support stated study goals."
       },
       {
         "title": "Budget planning before offer acceptance",
@@ -167,10 +167,10 @@
   },
   "updates": {
     "metaTitle": "Canada immigration updates | IRCC changes | MinRosh",
-    "metaDescription": "Tracking Canadian immigration updates via IRCC. MinRosh helps interpret impact on your case.",
+    "metaDescription": "Tracking Canadian immigration updates via IRCC. MinRosh shares general notes with links to official sources.",
     "eyebrow": "Canada · Updates",
     "headline": "Canada immigration updates",
-    "intro": "IRCC publishes news releases, intake pauses, and instruction updates. Treat social media summaries as secondary to Canada.ca. We help clients understand whether a change touches their category.",
+    "intro": "IRCC publishes news releases, intake pauses, and instruction updates. Treat social media summaries as secondary to Canada.ca. MinRosh shares general notes so readers can see whether a change is described as touching a published category.",
     "officialResources": [
       {
         "label": "Canada.ca — Immigration and citizenship",
@@ -199,7 +199,7 @@
   },
   "faq": {
     "metaTitle": "Canada visa FAQ | MinRosh Migration",
-    "metaDescription": "Introductory FAQ for Canada-bound clients working with MinRosh from Australia or abroad.",
+    "metaDescription": "Introductory FAQ for Canada-bound enquirers reading MinRosh general information from Australia or abroad.",
     "eyebrow": "Canada · FAQ",
     "headline": "Canada immigration questions",
     "intro": "Answers here are high-level. Use IRCC for binding eligibility and document lists.",
@@ -217,7 +217,7 @@
       },
       {
         "question": "Can MinRosh help with Express Entry points?",
-        "answer": "We can help you understand factor breakdowns conceptually and what to verify next; precise scoring is determined by IRCC rules in force when you apply."
+        "answer": "We can point to publicly described factor themes and what to verify on IRCC; precise scoring is determined by IRCC rules. MinRosh does not calculate individual scores."
       }
     ],
     "related": [
@@ -234,7 +234,7 @@
     "metaDescription": "How MinRosh supports Canada visa and education planning alongside Australian services.",
     "eyebrow": "Canada · About",
     "headline": "MinRosh and Canadian migration",
-    "intro": "We help clients compare timing and effort across destinations. For Canada, we emphasise official IRCC guidance and realistic preparation for language tests and document-heavy applications.",
+    "intro": "We publish general comparisons of timing and effort themes across destinations. For Canada, we emphasise official IRCC guidance and realistic orientation to language tests and document-heavy applications—without assessing individual eligibility.",
     "officialResources": [
       {
         "label": "Canada.ca — Immigration and citizenship",
@@ -247,8 +247,8 @@
         "body": "Structured triage, sequencing, and clarity—not a substitute for reading IRCC instructions where you self-represent."
       },
       {
-        "title": "When deeper review is recommended",
-        "body": "If you have refusals, inadmissibility concerns, or a compressed timeline, consultation-first planning is safer than self-navigation."
+        "title": "When to seek authorised professional advice",
+        "body": "If you have refusals, inadmissibility concerns, or a compressed timeline, seek an authorised professional rather than relying on general summaries alone."
       }
     ],
     "faq": [],
@@ -280,13 +280,13 @@
       },
       {
         "title": "What to include in your first message",
-        "body": "Share your goal, current location, language test status, and intended timeline so we can route you to the right service path quickly."
+        "body": "Share your goal, current location, language test status, and intended timeline so we can point you to the right information hub or education enquiry option."
       }
     ],
     "faq": [],
     "related": [
       { "title": "Main contact", "href": "/contact" },
-      { "title": "Book consultation", "href": "/book-information-session" },
+      { "title": "Book information session", "href": "/book-information-session" },
       { "title": "Canada hub", "href": "/destinations/canada" }
     ],
     "heroImage": {

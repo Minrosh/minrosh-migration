@@ -9,25 +9,25 @@ const path = "/student-migration-over-25-australia";
 export const metadata = buildMetadata({
   title: "Student Migration for Applicants Over 25",
   description:
-    "Australia student migration guidance for applicants over 25 with practical planning for Genuine Student requirements and post-study strategy.",
+    "General information about Australian student visa topics often researched by applicants over 25, with links to official Genuine Student and related sources.",
   path,
   keywords: ["student visa over 25 Australia", "genuine student guidance", "study to migration pathway"],
 });
 
 const sections = [
   {
-    title: "Why applicants over 25 need clear positioning",
+    title: "Themes often discussed for older applicants",
     body:
-      "For many applicants over 25, clarity of study purpose and progression logic matters. Your profile should show why the course is coherent with your background and future plan.",
+      "Public materials discuss Genuine Student factors, course purpose, and consistency between background and study plans. MinRosh summarises those themes; we do not assess whether any individual meets the criteria.",
   },
   {
-    title: "How to strengthen your Genuine Student narrative",
+    title: "Genuine Student topics on official pages",
     body:
-      "Your statement and evidence should align your prior education/work history, course selection, and intended outcomes. Consistency across documents is key.",
+      "Home Affairs pages commonly cover how study purpose, prior education or work, and financial capacity are described. Read the official student visa materials for current wording.",
     bullets: [
-      "Show course relevance to your background or intended career direction",
-      "Prepare financial evidence early and keep it internally consistent",
-      "Avoid generic statements that do not match your profile reality",
+      "Course relevance themes as described on official guidance",
+      "Financial evidence themes published for the subclass",
+      "Avoid treating third-party templates as official requirements",
     ],
   },
 ];
@@ -36,12 +36,12 @@ const faq = [
   {
     question: "Can I apply for an Australian student visa if I am over 25?",
     answer:
-      "Yes, many applicants over 25 apply successfully. What matters most is profile coherence, course rationale, and evidence consistency.",
+      "Home Affairs publishes student visa criteria for the relevant subclass; age alone is not described as an automatic bar on the public materials MinRosh summarises. MinRosh cannot say whether any person should apply or will succeed. Confirm current Genuine Student and other requirements on the official student visa pages, and seek authorised professional advice for personalised conclusions.",
   },
   {
     question: "Does age automatically reduce my student visa chance?",
     answer:
-      "Age alone does not decide outcomes. The quality and consistency of your Genuine Student evidence and supporting documentation are usually the key factors.",
+      "MinRosh does not predict outcomes or chances. Official pages set out criteria such as Genuine Student factors, funds, and English where applicable. Age is one biographical fact among many that decision-makers may consider in context; only official sources and authorised professionals can advise on individual circumstances.",
   },
 ];
 
@@ -57,14 +57,14 @@ export default function StudentOver25Page() {
           webPageSpeakableJsonLd({
             path,
             title: "Student Migration Over 25 | MinRosh Migration",
-            description: "Voice-search focused guidance for student migration applicants over 25 in Australia.",
+            description: "Voice-search focused general information for student visa topics often researched by applicants over 25.",
           }),
         ]}
       />
       <ContentPage
-        eyebrow="Student strategy"
-        title="Student migration planning for applicants over 25"
-        intro="This niche guide helps applicants over 25 structure a student pathway that is coherent, evidence-led, and aligned to official requirements."
+        eyebrow="Student visa information"
+        title="Student visa topics for applicants over 25"
+        intro="General orientation to publicly described student visa themes that applicants over 25 often research. Always verify on official Home Affairs pages. MinRosh does not provide immigration assistance."
         breadcrumbs={[
           { href: "/", label: "Home" },
           { href: path, label: "Student Migration Over 25" },
@@ -72,16 +72,16 @@ export default function StudentOver25Page() {
         currentPath={path}
         sections={sections}
         faq={faq}
-        summary="Applicants over 25 usually benefit from stronger course rationale, financial clarity, and a staged study-to-pathway plan."
+        summary="Official pages set out student visa criteria. Age is one biographical detail among many; MinRosh does not draw personal conclusions."
         takeaways={[
-          "Build a clear course rationale connected to your profile",
-          "Keep all GS and financial evidence consistent",
-          "Use a staged timeline for study and next-step migration options",
+          "Read official Genuine Student and subclass pages",
+          "Treat evidence themes as public orientation only",
+          "Seek authorised professional advice for personalised conclusions",
         ]}
         related={[
           { href: "/student-visa-australia", title: "Student Visa Australia" },
           { href: "/student-visa-australia-requirements", title: "Student Visa Requirements" },
-          { href: "/book-information-session", title: "Book Consultation" },
+          { href: "/book-information-session", title: "Book information session" },
         ]}
       />
     </SiteShell>

@@ -499,7 +499,7 @@ export function ContactLeadForm({
         <div className="flex flex-wrap gap-4">
           <div className="flex items-center gap-2 bg-brand-rose/5 px-3 py-1.5 rounded-full border border-brand-rose/10">
             <span className="text-yellow-500">★★★★★</span>
-            <span className="text-[10px] font-black uppercase tracking-wider text-brand-rose">4.9/5 Rating</span>
+            <span className="text-[10px] font-black uppercase tracking-wider text-brand-rose">General information</span>
           </div>
           <div className="flex items-center gap-2 bg-brand-gold/5 px-3 py-1.5 rounded-full border border-brand-gold/10">
             <span className="text-[10px] font-black uppercase tracking-wider text-brand-gold">Fast Response</span>

@@ -30,25 +30,25 @@ export default function PartnerVisaPage() {
       <ContentPage
         routeAccent="partner"
         eligibilityChecklist={[
-          "Relationship type confirmed (married or de facto) with a consistent timeline across forms and evidence.",
-          "Financial, social, and household categories mapped for evidence—not a single “photo album” narrative.",
-          "Immigration history and prior visas reviewed for disclosure completeness.",
-          "Health and character requirements understood as part of overall preparation.",
+          "Official pages typically cover relationship types (married or de facto) and how timelines are described.",
+          "Published partner materials often discuss financial, social, and household evidence themes.",
+          "Home Affairs guidance commonly addresses immigration history disclosure and prior visas.",
+          "Health and character requirements are outlined on the relevant subclass pages.",
         ]}
         howWeHelp={[
           {
-            title: "Evidence coaching",
-            body: "We help you present relationship proof clearly across categories expected by decision-makers.",
+            title: "General information",
+            body: "Plain-language summaries of publicly available partner visa category information.",
             icon: "documents",
           },
           {
-            title: "Onshore/offshore clarity",
-            body: "Subclass choice is framed around your living situation and lodgement strategy—not guesses.",
+            title: "Official sources",
+            body: "Links to Home Affairs partner and family visa pages so you can verify current criteria yourself.",
             icon: "strategy",
           },
           {
-            title: "Consistency reviews",
-            body: "Forms, statements, and attachments are checked for alignment before submission milestones.",
+            title: "Education referral",
+            body: "Where relevant, education-course enquiry support—separate from visa applications. For personalised advice, seek an authorised professional.",
             icon: "documents",
           },
         ]}
@@ -72,9 +72,9 @@ export default function PartnerVisaPage() {
         mainLead={<HubClusterNavigator category="partner" currentPath={pageData.path} />}
         summary="Partner visas allow spouses or de facto partners of Australian citizens or PRs to live in Australia. The process focuses on proving a genuine and continuing relationship across financial, social, and household categories."
         takeaways={[
-          "Gather relationship evidence (financial, social, household)",
-          "Determine if onshore (820) or offshore (309) is your path",
-          "Map your marriage or de facto history for consistency"
+          "Official pages discuss relationship evidence themes (financial, social, household)",
+          "Onshore (820) and offshore (309) streams are described separately on Home Affairs",
+          "Published materials emphasise consistent timelines across forms and evidence"
         ]}
         related={[
           ...pageData.relatedGuides,

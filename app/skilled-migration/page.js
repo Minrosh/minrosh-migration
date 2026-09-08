@@ -54,23 +54,23 @@ export default function SkilledMigrationPage() {
             eligibilityChecklist={[
           "Occupation and skills assessment pathway identified against current priority lists — lists change.",
           "Points posture understood for subclasses you are considering (189/190/491 and related streams).",
-          "English testing plan aligned to the level required for your pathway.",
+          "English testing themes aligned to levels described for the official category you are reading about.",
           "State or territory nomination research captured where relevant to your timeline.",
             ]}
             howWeHelp={[
           {
-            title: "Evidence structure",
-            body: "Skills assessment and employment narratives are organised so reviewers see a consistent story.",
+            title: "Public evidence themes",
+            body: "Plain-language summaries of how official materials commonly describe skills assessment and employment evidence themes.",
             icon: "documents",
           },
           {
-            title: "Sequencing clarity",
-            body: "We map dependencies (assessment → EOI/ROI → nomination → visa) so expensive steps land in the right order.",
+            title: "Published process orientation",
+            body: "General orientation to steps often described on official pages (assessment, EOI/ROI, nomination, visa)—not a personalised sequence for your case.",
             icon: "strategy",
           },
           {
             title: "Official-source habits",
-            body: "Advice stays anchored to Home Affairs instruments and departmental guidance—not forum summaries alone.",
+            body: "Information stays anchored to Home Affairs instruments and departmental guidance—not forum summaries alone.",
             icon: "strategy",
           },
             ]}

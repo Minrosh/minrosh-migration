@@ -67,27 +67,27 @@
     "australia": {
       "title": "Australia",
       "hubHref": "/destinations/australia",
-      "copy": "General information across student, skilled, employer-sponsored, partner, and longer-term pathways, with education planning and structured next-step guidance.",
+      "copy": "General information across student, skilled, employer-sponsored, partner, and longer-term categories, with education planning and links to official next-step resources.",
       "highlights": [
-        "Student, graduate, skilled, and family pathways",
-        "Points, nomination, and timing information",
-        "Education support aligned with longer-term planning"
+        "Student, graduate, skilled, and family categories",
+        "Points, nomination, and timing information from public sources",
+        "Education support kept separate from visa applications"
       ]
     },
     "nz": {
       "title": "New Zealand",
       "hubHref": "/destinations/new-zealand",
-      "copy": "General information for study, work, and residence-related pathways, with practical support around documentation and next-step planning.",
+      "copy": "General information for study, work, and residence-related categories, with practical orientation to official documentation themes.",
       "highlights": [
         "Study and post-study route awareness",
-        "Work and residence pathway comparisons",
-        "Clear early-stage planning before commitments"
+        "Work and residence category comparisons",
+        "Early orientation before formal applications"
       ]
     },
     "canada": {
       "title": "Canada",
       "hubHref": "/destinations/canada",
-      "copy": "Structured guidance for study permits, skilled-style pathways, family migration, and the practical issues that affect document readiness.",
+      "copy": "Structured general information for study permits, skilled-style categories, family migration, and document themes discussed on official pages.",
       "highlights": [
         "Study and institution planning context",
         "Skilled migration and family route awareness",
@@ -97,11 +97,11 @@
     "uk": {
       "title": "United Kingdom",
       "hubHref": "/destinations/united-kingdom",
-      "copy": "Migration and education information for student routes, skilled worker planning, and family-based applications where structured next steps matter.",
+      "copy": "Migration and education information for student routes, skilled worker categories, and family-based topics with emphasis on GOV.UK sources.",
       "highlights": [
-        "Student and skilled worker pathway context",
+        "Student and skilled worker category context",
         "Family migration and travel-rule awareness",
-        "Early clarification before formal applications"
+        "Early clarification using official pages before formal applications"
       ]
     }
   },
@@ -170,36 +170,36 @@
   "pathwaySteps": [
     {
       "title": "Explore public criteria",
-      "description": "Read publicly listed age, points, occupation, and pathway information on official sources.",
-      "detail": "The first stage is not about lodging anything immediately. It is about confirming whether your occupation aligns with skilled lists, whether your points position is realistic for the subclass you prefer, and whether employer-sponsored or family routes might be stronger. Many skilled professionals from Sri Lanka start here before committing to English tests or skills assessment fees. Use the Department of Home Affairs visa listing to see which visa subclasses exist and read the official eligibility summaries before you lock in a strategy.",
+      "description": "Read publicly listed age, points, occupation, and category information on official sources.",
+      "detail": "Public Home Affairs pages list visa subclasses and summarise published criteria such as age, points, and occupation lists. MinRosh does not assess eligibility or recommend a category. Use the Department of Home Affairs visa listing to see which subclasses exist and read the official summaries, then verify current rules yourself or with an authorised professional.",
       "officialHref": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing",
       "officialLabel": "Home Affairs visa listing"
     },
     {
       "title": "Skills Assessment",
-      "description": "Verify qualifications and employment evidence with the relevant assessing authority.",
-      "detail": "Each assessing authority publishes occupation-specific criteria. You will usually need qualification transcripts, employment references that match the authority\u2019s format, and sometimes additional evidence such as payment records or organisational charts. A positive skills assessment is a prerequisite for many skilled visas, so sequencing this step before English tests or EOI submission often saves time and cost.",
+      "description": "Review how assessing authorities describe qualifications and employment evidence.",
+      "detail": "Each assessing authority publishes occupation-specific criteria on its own website. Public materials often mention qualification transcripts, employment references in a required format, and sometimes additional evidence. A positive skills assessment is described as a prerequisite for many skilled visas on official pages. MinRosh does not prepare skills-assessment applications.",
       "officialHref": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing",
       "officialLabel": "Home Affairs visa listing"
     },
     {
       "title": "English Test & EOI",
-      "description": "Strengthen your points profile and prepare a competitive Expression of Interest.",
-      "detail": "English scores can swing your points total significantly. Once you have a valid test and skills assessment (where required), you can submit an Expression of Interest in SkillSelect for relevant subclasses. Remember that submitting an EOI is not a visa application \u2014 you must be invited before you can lodge a points-tested skilled visa.",
+      "description": "Read how English scores and Expressions of Interest are described on official pages.",
+      "detail": "Official materials explain that English scores can affect points totals, and that an Expression of Interest in SkillSelect is not itself a visa application for points-tested subclasses. Confirm current English and EOI rules on Home Affairs and SkillSelect pages. MinRosh does not lodge EOIs or advise on individual points strategy.",
       "officialHref": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing",
       "officialLabel": "Home Affairs visa listing"
     },
     {
       "title": "State Nomination",
-      "description": "Explore nomination pathways that can lift your competitiveness for 190 or regional options.",
-      "detail": "States and territories run their own nomination programs with occupation lists, minimum points, and sometimes work or residence requirements. Subclass 190 adds five points; subclass 491 regional nomination adds fifteen points but comes with regional residence obligations. Compare programs across states that match your occupation and personal circumstances rather than assuming one size fits all.",
+      "description": "Explore how states and territories describe nomination programs for subclasses such as 190 or regional options.",
+      "detail": "States and territories publish their own nomination programs with occupation lists, minimum points, and sometimes work or residence requirements. Official materials describe point additions and regional residence obligations for relevant subclasses. Compare published program pages rather than assuming one approach fits everyone. MinRosh does not assess nomination eligibility.",
       "officialHref": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing",
       "officialLabel": "Home Affairs visa listing"
     },
     {
       "title": "Official application channels",
-      "description": "If you decide to apply, use official Home Affairs channels or engage an authorised professional. MinRosh does not lodge visas.",
-      "detail": "After invitation or when your visa stream does not use SkillSelect, lodgement requires form accuracy, consistent dates across documents, health examinations, police certificates, and payment of the visa application charge. Weak or contradictory evidence is a common cause of delays or requests for further information, so a final consistency review matters.",
+      "description": "If someone decides to apply, official Home Affairs channels or an authorised professional are the lawful options. MinRosh does not lodge visas.",
+      "detail": "Official application materials typically cover forms, supporting documents, health examinations, police certificates, and visa application charges. Requirements and checklists are published by Home Affairs and can change. MinRosh provides general information only and does not review applications, coach lodgement, or submit visas.",
       "officialHref": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing",
       "officialLabel": "Home Affairs visa listing"
     }
@@ -222,32 +222,7 @@
       "description": "For advice based on your circumstances or help with an application, contact a registered migration agent or Australian legal practitioner."
     }
   ],
-  "successStories": [
-    {
-      "name": "A. Fernando",
-      "location": "Brisbane",
-      "visa": "Skilled Independent visa (subclass 189)",
-      "quote": "The structured points review made the process feel manageable. We knew exactly what to improve before moving forward.",
-      "outcome": "Illustrative education story only \u2014 not a promise of any visa outcome or immigration assistance by MinRosh.",
-      "timeline": "Result achieved in 6 months"
-    },
-    {
-      "name": "R. Perera",
-      "location": "Melbourne",
-      "visa": "Partner visa (subclass 820/801 pathway)",
-      "quote": "From Colombo to partner PR in Melbourne \u2014 Public information and structured checklists helped us organise relationship evidence and timelines without the stress we expected.",
-      "outcome": "Illustrative education story only \u2014 not a promise of any visa outcome or immigration assistance by MinRosh.",
-      "timeline": "Result achieved in 14 months"
-    },
-    {
-      "name": "S. Wickramasinghe",
-      "location": "Adelaide",
-      "visa": "Skilled Independent visa (subclass 189)",
-      "quote": "MinRosh explained the points system in plain language and helped us understand where we actually stood.",
-      "outcome": "Illustrative education story only \u2014 not a promise of any visa outcome or immigration assistance by MinRosh.",
-      "timeline": "Result achieved in 7 months"
-    }
-  ],
+  "successStories": [],
   "faq": [
     {
       "question": "How long does an Australian visa take?",
@@ -263,23 +238,23 @@
     },
     {
       "question": "How do I get PR in Australia in 2026?",
-      "answer": "Permanent residence depends on your visa pathway. Common routes include skilled points-tested visas (such as subclasses 189, 190, or 491), employer-sponsored pathways that may lead to permanent options where the official criteria are met, partner visas, and some graduate or specialist routes. You usually need to meet health, character, and specific visa criteria, and skilled routes often require a positive skills assessment and competitive English. Check the Department of Home Affairs visa listing for the subclass that matches your situation, then map nomination, residence, and evidence requirements before anyone lodges an application."
+      "answer": "Permanent residence is described across several published visa categories on the Department of Home Affairs website, including skilled points-tested subclasses (such as 189, 190, or 491), certain employer-sponsored options, partner visas, and some graduate or specialist routes. Official pages set out health, character, and other criteria; skilled categories often refer to skills assessment and English requirements. MinRosh does not assess eligibility or recommend a category. Read the Home Affairs visa listing and the relevant subclass pages, and seek a registered migration agent or Australian legal practitioner for personalised advice."
     },
     {
       "question": "What are the 190 visa requirements for Queensland in 2026?",
-      "answer": "Subclass 190 is a state-nominated skilled visa. Queensland runs its own nomination program with occupation lists, minimum points, and work or residence conditions that change over time. You must also meet Home Affairs eligibility for subclass 190, including skills assessment and English where required. Always read the current Queensland migration program pages and the official 190 visa page before planning, because lists and rules are updated regularly."
+      "answer": "Subclass 190 is described as a state-nominated skilled visa. Queensland publishes its own nomination program with occupation lists, minimum points, and work or residence conditions that change over time. Home Affairs also publishes eligibility criteria for subclass 190, including skills assessment and English where required. MinRosh does not assess eligibility. Always read the current Queensland migration program pages and the official 190 visa page, because lists and rules are updated regularly."
     },
     {
       "question": "What is the Skills in Demand visa in Australia?",
-      "answer": "Skills in Demand refers to Australia\u2019s employer-sponsored skilled framework that groups roles into streams such as Specialist Skills, Core Skills, and Essential Skills, with different settings for occupations and income thresholds. It replaces the older single-number branding many people still call the 482. The exact name, lists, and rules on the Department of Home Affairs website are authoritative \u2014 use those when deciding whether your job fits a sponsored pathway."
+      "answer": "Skills in Demand refers to Australia\u2019s employer-sponsored skilled framework that groups roles into streams such as Specialist Skills, Core Skills, and Essential Skills, with different settings for occupations and income thresholds. It replaces the older single-number branding many people still call the 482. The exact name, lists, and rules on the Department of Home Affairs website are authoritative. MinRosh does not assess whether a particular job fits a sponsored category."
     },
     {
       "question": "What is the minimum salary for employer sponsored visa Australia 2026?",
-      "answer": "Employer-sponsored skilled nominations must meet the Temporary Skilled Migration Income Threshold (TSMIT) that applies when the nomination is decided, together with any other income rules for your visa stream. TSMIT is updated over time, including typical annual indexation from 1 July. Do not rely on old blog figures: confirm the current threshold and exemptions on the Department of Home Affairs employer-sponsored visa pages before you accept a job offer or lodge."
+      "answer": "Employer-sponsored skilled nominations must meet the Temporary Skilled Migration Income Threshold (TSMIT) that applies when the nomination is decided, together with any other income rules for the relevant stream. TSMIT is updated over time, including typical annual indexation from 1 July. Do not rely on old blog figures: confirm the current threshold and exemptions on the Department of Home Affairs employer-sponsored visa pages. MinRosh does not assess individual salary or nomination eligibility."
     },
     {
       "question": "How do I get a PR visa in Queensland as a nurse in 2026?",
-      "answer": "As a nurse you would usually start by confirming your occupation and skills assessment pathway (often through ANMAC or the relevant nursing authority), meeting English requirements, and checking whether you will pursue employer-sponsored options (Skills in Demand / permanent routes where the official criteria are met) or points-tested skilled visas (189, 190, or 491). Many Sri Lankan-trained nurses map to Australian nursing occupations when registration and assessment align \u2014 but you must verify your own pathway against current lists and AHPRA requirements. Queensland runs its own state and regional nomination programs with lists and rules that change over time. Read the current Queensland migration program material and the Department of Home Affairs visa pages for subclasses 190 and 491, then map health and character requirements before anyone lodges an application."
+      "answer": "Nursing-related permanent residence topics are often discussed across skills assessment (for example ANMAC or the relevant nursing authority), English requirements, employer-sponsored options, and points-tested skilled subclasses (189, 190, or 491), plus AHPRA registration where relevant. Queensland publishes state and regional nomination program material that changes over time. MinRosh does not assess eligibility or recommend a category for nurses or any occupation. Read current Queensland migration program pages and the Department of Home Affairs visa pages for the subclasses of interest, and seek authorised professional advice for personalised conclusions."
     },
     {
       "question": "Where is the official list of Australian visas?",
@@ -287,7 +262,7 @@
     },
     {
       "question": "What is the Department of Home Affairs Visa Finder?",
-      "answer": "Visa Finder is an official tool that helps you explore visa options by answering questions about your situation. It is useful for early orientation, but it does not replace reading the legal criteria for the specific subclass you intend to apply for. Always cross-check results on the visa listing and the subclass page before lodging."
+      "answer": "Visa Finder is an official tool that helps explore visa options by answering questions about circumstances. It is useful for early orientation, but it does not replace reading the legal criteria for a specific subclass. Always cross-check results on the visa listing and the subclass page. MinRosh does not assess eligibility."
     },
     {
       "question": "How can I spend more time understanding visas before I book?",

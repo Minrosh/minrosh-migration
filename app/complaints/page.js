@@ -23,7 +23,7 @@ export default function ComplaintsPage() {
         sections={[
           {
             title: "How to raise a concern",
-            body: "Clients or visitors can raise concerns by email or through the contact page, providing a clear summary of the issue, key dates, and the outcome they are seeking.",
+            body: "Enquirers or visitors can raise concerns by email or through the contact page, providing a clear summary of the issue, key dates, and the outcome they are seeking.",
           },
           {
             title: "How complaints are reviewed",

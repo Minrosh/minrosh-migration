@@ -66,17 +66,17 @@ export default function StudentVisaPage() {
             howWeHelp={[
           {
             title: "Plain-English orientation",
-            body: "We translate departmental language into practical sequencing so you know what to verify next—not outcome guarantees.",
+            body: "We summarise departmental language into general topics so you know what to verify on official pages—not outcome guarantees.",
             icon: "strategy",
           },
           {
-            title: "Document sequencing",
-            body: "Evidence is organised before lodgement to reduce rework and inconsistent narratives.",
+            title: "Document themes",
+            body: "Public materials often discuss consistency across enrolment, funds, and identity evidence. We explain those themes; we do not prepare applications.",
             icon: "documents",
           },
           {
-            title: "Course and timeline alignment",
-            body: "Study plans are stress-tested against your background so preparation stays coherent with GS factors.",
+            title: "Education-course enquiry",
+            body: "Where relevant, we can help with education-course research. Course choice and Genuine Student factors must be confirmed on official sources and with authorised professionals when you need personalised advice.",
             icon: "strategy",
           },
             ]}

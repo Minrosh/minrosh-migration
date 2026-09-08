@@ -1,10 +1,11 @@
 # No-MARN Compliance Audit
 
 **Branch:** `compliance/no-marn-update`  
-**Date:** 2026-09-07  
-**Scope:** Public site, CMS defaults, APIs, forms, AI tools, schema, emails  
+**Date:** 2026-09-07 (inventory); **Final public-copy + CMS rollback pass:** 2026-09-08  
+**Scope:** Public site, CMS defaults, APIs, forms, AI tools, schema, emails, CMS rollback safeguards  
 **Premise:** MinRosh has no registered migration agent and no MARN.  
-**Status:** Phase 1 inventory (pre- and in-flight remediation). This is not legal advice.
+**Status:** Public-copy + CMS rollback safeguards pass complete on private staging. Awaiting **external legal review**. This is not legal advice and does **not** claim legal clearance.  
+**Deploy:** Production untouched; private staging only.
 
 | Location | Current wording/behaviour | Risk | Required action | Replacement/decision |
 | --- | --- | --- | --- | --- |
@@ -60,6 +61,40 @@
 | Success stories with timelines/outcomes | Implies MinRosh delivered visa outcomes | medium | Soften or frame as illustrative education stories without lodgement claims |
 | OMARA register link framed as “verify us” | Self-registration implication | critical | Label as Find a Registered Migration Agent (referral) |
 
+## Final public-copy pass (2026-09-08)
+
+Completed on private staging only. Not legal clearance.
+
+### CMS rollback & publish safeguards
+
+| Item | Status |
+| --- | --- |
+| `lib/compliance-publish-guard.js` | Contextual **block** + **warning** patterns; masks safe RMA referral snippets before matching |
+| `lib/cms-content-restore.js` | `restorePublishHistoryEntryToDraft` (draft only); `assertCanPublishNewsCopy`; `canRestoreSnapshotDirectlyToPublic` |
+| `POST /api/admin/intelligence/publish-history` | Supports `restore_to_draft` \| `restore` (never auto-publishes); default action remains emergency **unpublish** (`rollback`) |
+| Admin news POST/PATCH | Gated by compliance validation |
+| Admin success-stories POST/PATCH | Gated by compliance validation |
+| `getHomeSiteData` | Forces `successStories: []` — admin success-stories store is **not** merged to public |
+| `tests/cms-rollback-compliance.test.mjs` | Proves these cannot restore directly to public: “Migration Agent Brisbane”; “MARN Available on request”; “we assess your eligibility”; “we lodge your visa application” |
+
+### Public content cleanup
+
+| Item | Status |
+| --- | --- |
+| Destination sections, CTAs, howWeHelp, FAQs, seo-pages, news seed | Residual cleanup; no “Check eligibility” / “Free assessment” CTAs |
+| `news-seed-001` (`migration-sri-lanka-australia-2026`) | Unpublished |
+| `successStories` | Emptied; FEEDBACK carousel empty; no AggregateRating / Review schema |
+| Pathway / personalised rules | Applied per approved positioning |
+| Public “client” marketing | Scrubbed; protective legal / OMARA third-party uses retained (see client terminology inventory) |
+
+### Invoices / mirrors / credentials (inventory only — historical records not modified)
+
+| Item | Status |
+| --- | --- |
+| Invoice descriptions | Live in `data/invoices.json` (+ optional `invoices_mirror` / Supabase); tokenised portal billing only; new lines blocked via `lib/invoice/line-description-guard.js` |
+| Google Sheets / Drive / Calendar | Env-driven; service-account access; retention left for legal/privacy |
+| Credential rotation checklist | `data/admin-credential-rotation-checklist.json` + GET/PATCH `/api/admin/credential-rotation-checklist` — status only; all items still **pending** until admin confirms |
+
 ## Residual items for counsel / follow-up (post-implementation)
 
 | Location | Issue | Risk | Status |
@@ -70,11 +105,12 @@
 | AI Concierge | Generative drift | high | **OFF by default** (`ENABLE_PUBLIC_AI_CHAT`); API 410; hard refusal + injection tests |
 | Historical CRM/quiz/AI-funnel | Sensitive retention | high | Documented in `docs/no-marn-historical-data-inventory.md` — not deleted |
 | Public migration upload portal | Visa docs/stages | high | OFF by default (`PUBLIC_MIGRATION_MATTER_PORTAL`) |
-| Remaining “client” strings | Mixed internal/public | medium | Inventory in `docs/no-marn-client-terminology-inventory.md` |
+| Remaining “client” strings | Mixed internal/public | medium | Inventory in `docs/no-marn-client-terminology-inventory.md`; marketing scrubbed 2026-09-08 |
+| CMS version rollback | Pre-compliance republish risk | high | **Mitigated 2026-09-08** — draft-only restore + publish guards (counsel may still review residual intentional referral matches) |
 
 ## Verification (local, continuation pass)
 
-- Unit tests: **93 passed** (includes staging robots / sheet-sync / contact telemetry tests)
+- Unit tests: includes CMS rollback compliance + staging robots / sheet-sync / contact telemetry tests
 - Lint: run before commit
 - Build: use `ACKNOWLEDGE_SHARED_RISK=1` when shared zones changed; unknown zones classified in `lib/zone-manifest.mjs` (prefer classification over `ACKNOWLEDGE_UNKNOWN_RISK`)
 - Private staging: `SITE_ENVIRONMENT=staging` on `127.0.0.1:3001` only
@@ -91,17 +127,16 @@
 | False `sheetSync: "ok"` | Resolved — accurate statuses; omitted from public API |
 | Unclassified `data/*` zones | Resolved in zone-manifest |
 | Staging noindex via untracked overlay | Resolved — `SITE_ENVIRONMENT=staging` |
-| Credential exposure | Documented for admin rotation (not auto-rotated) |
+| Credential exposure | Documented for admin rotation (not auto-rotated); checklist statuses still pending |
 
 ## Remaining items requiring external legal or privacy review
 
 1. Historical CRM, quiz, AI-funnel, upload, and nurture records — retention, lawful basis, access hardening, and whether any fields must be redacted or quarantined (see historical-data inventory). **Do not auto-delete.**
 2. Whether generative public AI may ever be re-enabled; if so, under what counsel-approved controls. Current default is OFF because safe generative enforcement cannot be guaranteed.
-3. Admin CRM “customer/client” naming and any residual adviser–client relationship framing in admin-only tools.
-4. Success stories / testimonials that still mention visa subclasses or timelines — confirm educational framing is sufficient.
-5. Lawyer-vs-agent educational SEO page and other pages that discuss RMAs in third-person — confirm referral-only presentation.
-6. CMS version rollback safeguards so pre-compliance copy cannot be republished without explicit admin confirmation.
-7. Invoice/payment products historically sold as migration assistance — commercial/legal review of past charges (invoice line guard is forward-looking only).
-8. External Google Sheets/Drive/Calendar mirrors of migration matter status — access and retention review.
-9. Administrator rotation of SMTP and Google credentials previously present on the old staging PM2 process (see technical report).
-
+3. Testimonials / success stories — legal review before any republish (public store emptied; admin store not merged to homepage).
+4. Historical invoice description wording — deferred to legal / accounting / privacy (forward-looking line guard only; do not modify historical records in this pass).
+5. External Google Sheets / Drive / Calendar mirrors — access and retention review (env-driven; service account).
+6. Administrator confirmation of credential rotation checklist (SMTP password, Google SA key, Google webhook secret, Maps API restrictions) — all still **pending**.
+7. Residual keyword matches that are intentional RMA / OMARA referrals or protective legal phrasing — confirm framing remains appropriate.
+8. Admin CRM “customer/client” naming and any residual adviser–client relationship framing in admin-only tools.
+9. Lawyer-vs-agent educational SEO page and other pages that discuss RMAs in third-person — confirm referral-only presentation.

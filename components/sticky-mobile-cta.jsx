@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 
 /**
- * Single pathway FAB above the mobile tab bar (avoids duplicating Book / Assessment strips).
+ * Single information-finder FAB above the mobile tab bar (avoids duplicating Book / Assessment strips).
  */
 export function StickyMobileCTA() {
   const pathname = usePathname() || "";
@@ -38,7 +38,7 @@ export function StickyMobileCTA() {
             href="/assessment"
             className="mobile-sticky-quiz-cta touch-manipulation motion-safe:transition-transform motion-safe:active:scale-[0.98]"
           >
-            Pathway check
+            Information Finder
           </Link>
         </motion.div>
       ) : null}
