@@ -1,14 +1,13 @@
 import Link from "next/link";
+import { buildMetadata } from "@/lib/seo";
 
-export const metadata = {
+export const metadata = buildMetadata({
   title: "Upgrading for a better experience",
   description:
     "MinRosh Migration is briefly upgrading the website. Please check back shortly or contact the team directly.",
-  robots: {
-    index: false,
-    follow: false,
-  },
-};
+  path: "/maintenance",
+  robots: { index: false, follow: false },
+});
 
 export default function MaintenancePage() {
   return (

@@ -35,6 +35,33 @@ describe("document titles", () => {
     expect(meta.twitter.title).toBe("MinRosh Migration | General Migration Information & Education Support");
   });
 
+  it("drops a short MinRosh stub so the template can add the full brand once", () => {
+    expect(titleWithoutBrandSuffix("Canada partner & family immigration | MinRosh")).toBe(
+      "Canada partner & family immigration"
+    );
+    const meta = buildMetadata({
+      title: "Australia skilled migration | 189, 190, 491 categories | MinRosh",
+      description: "General information about points-tested skilled categories.",
+      path: "/destinations/australia/skilled",
+    });
+    expect(meta.title).toBe("Australia skilled migration | 189, 190, 491 categories");
+    expect(meta.openGraph.title).toBe(
+      "Australia skilled migration | 189, 190, 491 categories | MinRosh Migration"
+    );
+  });
+
+  it("does not append the brand again when the title already names MinRosh Migration mid-sentence", () => {
+    const meta = buildMetadata({
+      title: "About MinRosh Migration | Information & Education Support",
+      description: "How MinRosh presents public migration and education information.",
+      path: "/about",
+    });
+    expect(meta.title).toEqual({
+      absolute: "About MinRosh Migration | Information & Education Support",
+    });
+    expect(meta.openGraph.title).toBe("About MinRosh Migration | Information & Education Support");
+  });
+
   it("leaves titles that do not already include the brand unchanged", () => {
     const meta = buildMetadata({
       title: "Skilled Migration Australia 189/190/491",

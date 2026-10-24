@@ -1,6 +1,6 @@
 # Stage 0 — Indexability audit
 
-Generated: 2026-10-24T12:04:17.206Z
+Generated: 2026-10-24T12:34:18.120Z
 URLs audited: 85
 
 ## Root cause hypotheses (automated heuristics)
@@ -16,7 +16,7 @@ URLs audited: 85
 
 ## robots.txt
 
-- http://127.0.0.1:3124/robots.txt → HTTP 200 ok=true
+- http://127.0.0.1:3128/robots.txt → HTTP 200 ok=true
 
 ```
 User-Agent: GPTBot
@@ -40,7 +40,7 @@ Sitemap: https://minroshmigration.com.au/sitemap.xml
 
 ## sitemap.xml parity
 
-- http://127.0.0.1:3124/sitemap.xml → HTTP 200 ok=true
+- http://127.0.0.1:3128/sitemap.xml → HTTP 200 ok=true
 - `<loc>` count: 85
 
 ## URLs needing attention
