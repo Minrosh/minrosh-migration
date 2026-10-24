@@ -19,7 +19,7 @@ const destinationLinks = [
   { href: "/destinations/united-kingdom", label: "United Kingdom" },
 ];
 
-export function SiteFooter({ siteData, initialStats }) {
+export function SiteFooter({ siteData }) {
   const publicBrand = { ...siteData.brand, email: "" };
   const compliance = getComplianceConfig(siteData);
   const homeAffairsUrl = compliance.homeAffairsUrl || "https://immi.homeaffairs.gov.au/";
@@ -50,7 +50,7 @@ export function SiteFooter({ siteData, initialStats }) {
   return (
     <footer className="site-footer site-footer--rich">
       <div className="site-footer__inner site-footer__inner--rich">
-        <SiteFooterInteractive brand={publicBrand} initialStats={initialStats}>
+        <SiteFooterInteractive brand={publicBrand}>
           <>
             <div className="site-footer__nav-col">
               <strong>Services</strong>

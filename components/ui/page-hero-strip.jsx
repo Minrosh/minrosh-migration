@@ -17,7 +17,7 @@ export function PageHeroStrip({
   const resolvedBlurDataURL = blurDataURL || (bgImage === "/images/hero-brisbane-river-cbd-hd.jpg" ? HERO_BRISBANE_BLUR_DATA_URL : "");
   return (
     <section
-      className={`relative left-1/2 flex h-[350px] w-screen -translate-x-1/2 items-center justify-center overflow-hidden ${className}`.trim()}
+      className={`guide-page-hero-strip relative flex w-full items-center overflow-hidden ${className}`.trim()}
     >
       <Image
         src={bgImage}
@@ -26,17 +26,17 @@ export function PageHeroStrip({
         priority
         fetchPriority="high"
         sizes="(max-width: 768px) 100vw, 1600px"
-        className="object-cover object-[70%_center] md:object-[center_bottom]"
+        className="object-cover object-[center_42%]"
         placeholder={resolvedBlurDataURL ? "blur" : "empty"}
         {...(resolvedBlurDataURL ? { blurDataURL: resolvedBlurDataURL } : {})}
       />
       <div className={`page-hero-strip__fog absolute inset-0 ${overlayClassName}`.trim()} aria-hidden />
-      <div className={`relative z-10 mx-auto w-full max-w-[var(--content-max)] px-[var(--content-pad)] text-center text-white ${contentClassName}`.trim()}>
+      <div className={`relative z-10 mx-auto w-full max-w-[var(--content-max)] px-[var(--content-pad)] py-10 text-left text-[#1f1020] ${contentClassName}`.trim()}>
         {eyebrow ? (
-          <p className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-brand-gold">{eyebrow}</p>
+          <p className="mb-3 text-xs font-bold uppercase tracking-[0.16em] text-[#881337]">{eyebrow}</p>
         ) : null}
-        <h1 className="text-balance font-serif text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl md:text-5xl">{title}</h1>
-        {subtitle ? <p className="mx-auto mt-4 max-w-3xl text-sm leading-relaxed text-white/85 sm:text-base">{subtitle}</p> : null}
+        <h1 className="max-w-3xl text-balance font-serif text-[clamp(1.875rem,4vw,3rem)] font-extrabold leading-[1.12] tracking-tight text-[#1f1020]">{title}</h1>
+        {subtitle ? <p className="mt-4 max-w-3xl text-sm leading-relaxed text-[#1f1020]/80 sm:text-base">{subtitle}</p> : null}
       </div>
     </section>
   );

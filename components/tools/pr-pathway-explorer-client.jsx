@@ -77,12 +77,7 @@ export function PermanentMigrationInformationExplorerClient({ disclaimer }) {
   const topic = TOPICS[key];
 
   return (
-    <div className="space-y-8">
-      <p className="text-sm leading-relaxed text-brand-plum/75" role="note">
-        Select a general topic to view publicly available information and official sources. This tool does not assess
-        your circumstances or recommend a visa.
-      </p>
-
+    <div className="space-y-6">
       <div className="flex flex-wrap gap-3" role="tablist" aria-label="Permanent migration information topics">
         {Object.entries(TOPICS).map(([id, item]) => (
           <button
@@ -105,14 +100,14 @@ export function PermanentMigrationInformationExplorerClient({ disclaimer }) {
       <div className="rounded-2xl border border-brand-plum/10 bg-white p-6 shadow-sm sm:p-8">
         <h2 className="text-xl font-black text-brand-plum">{topic.title}</h2>
         <p className="mt-4 text-sm leading-relaxed text-brand-plum/75">{topic.summary}</p>
-        <ul className="mt-6 space-y-3">
+        <ul className="mt-6 grid list-none gap-3 pl-0 sm:grid-cols-2">
           {topic.officialLinks.map((link) => (
             <li key={link.href}>
               <a
                 href={link.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-bold text-brand-rose underline underline-offset-4 hover:text-brand-plum"
+                className="flex min-h-[48px] items-center rounded-2xl border border-brand-plum/10 bg-brand-cream/50 px-4 py-3 text-sm font-semibold text-brand-plum transition hover:border-brand-rose/30 hover:text-brand-rose"
               >
                 {link.label}
               </a>

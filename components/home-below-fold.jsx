@@ -3,7 +3,7 @@ import { HomeDestinationCards } from "./home-destination-cards";
 import { HomeServicesPathways } from "./home-services-pathways";
 import { HomePlanningTools } from "./home-planning-tools";
 import { HomeTrustSection } from "./home-trust-section";
-import { HomeDeferredCarouselsLazy } from "./home-deferred-carousels-lazy";
+import { HomeDeferredCarousels } from "./home-deferred-carousels";
 import { HomeFinalCta } from "./home-final-cta";
 
 export function HomeBelowFold({ countries, newsItems }) {
@@ -14,7 +14,7 @@ export function HomeBelowFold({ countries, newsItems }) {
       <HomeServicesPathways />
       <HomePlanningTools />
       <HomeTrustSection />
-      <HomeDeferredCarouselsLazy newsItems={newsItems} />
+      <HomeDeferredCarousels newsItems={newsItems} />
       <HomeFinalCta />
     </>
   );

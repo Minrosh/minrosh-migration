@@ -1,5 +1,3 @@
-"use client";
-
 import { TrackedLink } from "./tracked-link";
 
 const MAROON = "var(--brand-rose)";
@@ -92,7 +90,7 @@ export function HomeBuyerJourneyStrip() {
             ))}
           </ol>
 
-          <div className="mt-10 flex min-w-0 flex-col gap-3 sm:mx-auto sm:mt-12 sm:max-w-2xl sm:flex-row sm:flex-wrap sm:justify-center sm:gap-4">
+          <p className="mt-8 text-center text-sm font-medium text-brand-plum/75">
             <TrackedLink
               id="journey-cta-information-finder"
               href="/assessment"
@@ -102,30 +100,11 @@ export function HomeBuyerJourneyStrip() {
                 cta_location: "home_journey_strip",
                 destination: "/assessment",
               }}
-              aria-label="Open Official Information Finder"
-              className="btn flex min-h-[52px] w-full touch-manipulation items-center justify-center rounded-full px-8 py-3.5 text-base font-bold text-white shadow-[0_14px_36px_rgba(136,19,55,0.22)] transition-all hover:-translate-y-0.5 hover:shadow-[0_18px_44px_rgba(136,19,55,0.28)] active:scale-[0.98] sm:w-auto sm:text-lg"
-              style={{ backgroundColor: MAROON }}
+              className="inline-flex min-h-[44px] items-center font-bold text-brand-rose underline decoration-2 underline-offset-4"
             >
-              Explore General Information
-              <span className="ml-2 inline-block" aria-hidden="true">
-                →
-              </span>
+              Continue in the Official Information Finder
             </TrackedLink>
-            <TrackedLink
-              id="journey-cta-education"
-              href="/education-consultation"
-              eventName="cta_click"
-              eventParams={{
-                cta_id: "journey_education_enquiry",
-                cta_location: "home_journey_strip",
-                destination: "/education-consultation",
-              }}
-              aria-label="Education Course Enquiry"
-              className="premium-frosted-surface btn flex min-h-[52px] w-full touch-manipulation items-center justify-center rounded-full border-2 border-brand-rose/25 px-8 py-3.5 text-base font-bold text-brand-plum transition-all hover:border-brand-rose/45 active:scale-[0.98] sm:w-auto sm:text-lg"
-            >
-              Education Course Enquiry
-            </TrackedLink>
-          </div>
+          </p>
         </div>
       </div>
     </section>

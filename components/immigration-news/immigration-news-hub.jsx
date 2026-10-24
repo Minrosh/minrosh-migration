@@ -62,11 +62,11 @@ export function ImmigrationNewsHub({ items }) {
           return (
             <li key={item.id || `${item.date}-${item.title}-${item.slug || ""}`}>
               <article className="immigration-news-hub__card bento-hover">
+                <h2 className="immigration-news-hub__card-title">{item.title}</h2>
                 <div className="immigration-news-hub__card-meta">
                   <span className="news-card__country">{item.country}</span>
                   <time dateTime={item.date}>{item.date}</time>
                 </div>
-                <h2 className="immigration-news-hub__card-title">{item.title}</h2>
                 <p className="immigration-news-hub__card-summary">{item.summary}</p>
                 <div className="immigration-news-hub__card-actions">
                   <Link href={href} className="btn btn-primary immigration-news-hub__btn">

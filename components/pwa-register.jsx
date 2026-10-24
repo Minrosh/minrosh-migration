@@ -52,9 +52,11 @@ export function PWARegister() {
         // Non-blocking: app works normally if registration fails.
       });
 
+    const hadController = Boolean(navigator.serviceWorker.controller);
     let reloaded = false;
     navigator.serviceWorker.addEventListener("controllerchange", () => {
-      if (reloaded) return;
+      /* The first controller is a new install, not an update. Reloading here interrupts the page the visitor just opened. */
+      if (!hadController || reloaded) return;
       reloaded = true;
       window.location.reload();
     });

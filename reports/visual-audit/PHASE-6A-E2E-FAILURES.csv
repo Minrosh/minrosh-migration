@@ -1,0 +1,25 @@
+id,spec,viewport_or_case,route,classification,evidence,related_issue
+E2E-01,e2e/mobile-layout-live.spec.mjs,320px,/destinations/australia,timing-or-environmental,"page.evaluate failed: execution context destroyed during navigation, at the header-overlap check. The same route passed at other widths in this run.",ISS-011
+E2E-02,e2e/mobile-layout-live.spec.mjs,320px,/destinations/australia/student,timing-or-environmental,"page.evaluate failed: execution context destroyed during navigation. Not a stable assertion failure.",ISS-011
+E2E-03,e2e/mobile-layout-live.spec.mjs,390px,/student-visa-australia,timing-or-environmental,"page.evaluate failed: execution context destroyed during navigation. Student visa passed at other widths.",
+E2E-04,e2e/mobile-layout-live.spec.mjs,390px,/education-consultation,timing-or-environmental,"page.evaluate failed: execution context destroyed during navigation.",
+E2E-05,e2e/mobile-layout-live.spec.mjs,390px,/destinations/australia/student,genuine-application-defect,"locator('#main-content') resolved to two elements: loading-screen main 'Preparing destination guidance' and portal-main. Source: app/destinations/loading.js uses id main-content and an H1.",ISS-011
+E2E-06,e2e/mobile-layout-live.spec.mjs,390px,/destinations/new-zealand,timing-or-environmental,"page.evaluate failed: execution context destroyed during navigation.",ISS-011
+E2E-07,e2e/mobile-layout-live.spec.mjs,390px,/tools,timing-or-environmental,"page.evaluate failed: execution context destroyed during navigation. /tools has no destination loading shell.",
+E2E-08,e2e/mobile-layout-live.spec.mjs,414px,/student-visa-australia,timing-or-environmental,"page.evaluate failed: execution context destroyed during navigation.",
+E2E-09,e2e/mobile-layout-live.spec.mjs,430px,/destinations/new-zealand,timing-or-environmental,"page.evaluate failed: execution context destroyed during navigation.",ISS-011
+E2E-10,e2e/mobile-layout-live.spec.mjs,430px,/tools,timing-or-environmental,"page.evaluate failed: execution context destroyed during navigation.",
+E2E-11,e2e/mobile-layout-live.spec.mjs,768px,/destinations/australia,timing-or-environmental,"page.evaluate failed: execution context destroyed during navigation.",ISS-011
+E2E-12,e2e/mobile-layout-live.spec.mjs,768px,/destinations/australia/student,genuine-application-defect,"Two #main-content nodes: destination loading shell plus the real portal main.",ISS-011
+E2E-13,e2e/mobile-layout-live.spec.mjs,768px,/destinations/canada,timing-or-environmental,"page.evaluate failed: execution context destroyed during navigation.",ISS-011
+E2E-14,e2e/mobile-layout-live.spec.mjs,768px,/contact,timing-or-environmental,"page.evaluate failed: execution context destroyed during navigation. This is not the measured header-overlap defect.",ISS-023
+E2E-15,e2e/mobile-layout-local.spec.mjs,320px,/student-visa-australia,timing-or-environmental,"page.evaluate failed: execution context destroyed during navigation.",
+E2E-16,e2e/mobile-layout-local.spec.mjs,360px,/destinations/canada,genuine-application-defect,"Two #main-content nodes: destination loading shell plus the real portal main.",ISS-011
+E2E-17,e2e/mobile-layout-local.spec.mjs,390px,/destinations/australia,timing-or-environmental,"page.evaluate failed: execution context destroyed during navigation.",ISS-011
+E2E-18,e2e/mobile-layout-local.spec.mjs,430px,/contact,timing-or-environmental,"form submit scrollIntoViewIfNeeded failed because the element was not attached. Consistent with a navigation or hydration replacement, not with a wrong expected label.",ISS-023
+E2E-19,e2e/mobile-layout-local.spec.mjs,768px,/destinations/australia,timing-or-environmental,"page.evaluate failed: execution context destroyed during navigation.",ISS-011
+E2E-20,e2e/mobile-layout-local.spec.mjs,1024px,/education-consultation,timing-or-environmental,"page.evaluate failed: execution context destroyed during navigation.",
+E2E-21,e2e/mobile-layout-local.spec.mjs,1024px,/destinations/canada,genuine-application-defect,"Two #main-content nodes: destination loading shell plus the real portal main.",ISS-011
+E2E-22,e2e/public-visual-regression.spec.mjs,390px,multiple,genuine-application-defect,"Visible H1 count 2 on /destinations/australia/skilled and /immigration-news/partner-visa-australia-2026-guide. /newsletter/unsubscribe title is 'Unsubscribe | MinRosh Migration | MinRosh Migration' and the page has no header. Checked immediately after domcontentloaded.",ISS-011; ISS-004; ISS-007
+E2E-23,e2e/public-visual-regression.spec.mjs,768px,/newsletter/unsubscribe,genuine-application-defect,"Doubled document title and missing header. app/newsletter/unsubscribe/page.js sets title to 'Unsubscribe | MinRosh Migration' while app/layout.js appends the same suffix.",ISS-004
+E2E-24,e2e/public-visual-regression.spec.mjs,1440px,multiple,genuine-application-defect,"Visible H1 count 2 on /immigration-news, /destinations/australia/skilled, /destinations/canada/about, /destinations/united-kingdom/skilled, /destinations/united-kingdom/updates, /destinations/united-kingdom/about, and three news articles. Unsubscribe title doubled and header missing.",ISS-011; ISS-004

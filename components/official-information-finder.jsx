@@ -3,15 +3,13 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { INFORMATION_FINDER_TOPICS } from "@/lib/official-information-finder";
-import { DEFAULT_COMPLIANCE } from "@/lib/compliance";
 import { trackEvent } from "@/lib/client-analytics";
 
 /**
  * Non-personalised Official Information Finder.
  * Topic selection only — no eligibility, confidence, ranking, or pathway recommendation.
  */
-export function OfficialInformationFinder({ notice } = {}) {
-  const intro = notice || DEFAULT_COMPLIANCE.aiInformationFinderNotice;
+export function OfficialInformationFinder() {
   const [topicId, setTopicId] = useState("");
   const topic = useMemo(
     () => INFORMATION_FINDER_TOPICS.find((t) => t.id === topicId) || null,
@@ -48,7 +46,9 @@ export function OfficialInformationFinder({ notice } = {}) {
       <h2 id="information-finder-heading" className="mt-2 text-2xl font-bold text-brand-plum">
         Explore public information by topic
       </h2>
-      <p className="mt-3 max-w-3xl text-sm leading-relaxed text-brand-plum/80 sm:text-base">{intro}</p>
+      <p className="mt-3 max-w-3xl text-sm leading-relaxed text-brand-plum/80 sm:text-base">
+        Select a topic to open a short public summary and the official links for that topic.
+      </p>
 
       <label className="mt-6 block text-sm font-semibold text-brand-plum" htmlFor="information-topic">
         Choose a broad topic

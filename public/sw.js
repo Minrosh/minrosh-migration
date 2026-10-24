@@ -12,7 +12,7 @@ self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(CACHE_STATIC).then((cache) => cache.addAll(PRECACHE_URLS)).catch(() => Promise.resolve()),
   );
-  self.skipWaiting();
+  /* Stay waiting on the first install. Taking control immediately reloads the open page and aborts in-flight navigations. An already-controlled page sends SKIP_WAITING when an update is ready. */
 });
 
 self.addEventListener("activate", (event) => {

@@ -9,7 +9,15 @@ function ScrollRestorerInner() {
   const query = searchParams?.toString() || "";
 
   useEffect(() => {
-    // Reset scroll only when route/search actually changes.
+    const hash = window.location.hash;
+    if (hash.length > 1) {
+      const id = decodeURIComponent(hash.slice(1));
+      const target = document.getElementById(id);
+      if (target) {
+        target.scrollIntoView({ block: "start", behavior: "auto" });
+        return;
+      }
+    }
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   }, [pathname, query]);
 

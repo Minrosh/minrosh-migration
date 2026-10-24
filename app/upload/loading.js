@@ -1,10 +1,10 @@
 export default function UploadLoading() {
   return (
-    <main id="main-content" className="loading-screen" aria-label="Loading secure upload portal">
+    <div className="loading-screen" role="status" aria-live="polite" aria-busy="true">
       <section className="loading-screen__card">
         <div className="loading-screen__copy">
           <p className="loading-screen__eyebrow">Secure upload</p>
-          <h1>Preparing your document portal</h1>
+          <p className="loading-screen__title">Preparing your document portal</p>
           <p>Setting up secure token validation and upload workflows.</p>
         </div>
         <div className="loading-screen__skeleton" aria-hidden="true">
@@ -13,6 +13,6 @@ export default function UploadLoading() {
           <span className="loading-screen__line loading-screen__line--sm" />
         </div>
       </section>
-    </main>
+    </div>
   );
 }

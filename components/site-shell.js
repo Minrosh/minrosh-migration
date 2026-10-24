@@ -5,7 +5,6 @@ import { SiteHeaderNav } from "./site-header-nav";
 import { SitePublicStickyHeader } from "./site-public-sticky-header";
 import { SiteHeaderMobileUtilities } from "./site-header-mobile-utilities";
 import { SiteMobileTabBar } from "./site-mobile-tab-bar";
-import { getFooterStats } from "../lib/site-stats";
 import { getDestinationNavLinks } from "../lib/destination-nav";
 import { GLOBAL_HEADER_PRIMARY_LINKS } from "../lib/public-indexable-routes";
 import { buildWhatsAppUrl, WHATSAPP_LEAD_MESSAGE } from "../lib/whatsapp-prefill";
@@ -25,7 +24,6 @@ export function SiteShell({
   destinationContext = null,
   headerBackdrop: initialHeaderBackdrop = "au",
 }) {
-  const footerStats = getFooterStats();
   const primaryWhatsAppUrl = buildWhatsAppUrl(siteData.brand.whatsapp, WHATSAPP_LEAD_MESSAGE);
   const publicBrand = { ...siteData.brand, email: "" };
   const navLinks = destinationContext
@@ -102,7 +100,7 @@ export function SiteShell({
       <main id="main-content" className="portal-main portal-main--immersive">
         {children}
       </main>
-      <SiteFooter siteData={siteData} initialStats={footerStats} />
+      <SiteFooter siteData={siteData} />
       <SiteMobileTabBar />
     </div>
     </>

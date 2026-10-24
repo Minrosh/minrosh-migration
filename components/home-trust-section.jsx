@@ -1,5 +1,3 @@
-"use client";
-
 import { TrackedLink } from "./tracked-link";
 
 const TRUST_ITEMS = [

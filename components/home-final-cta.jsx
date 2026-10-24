@@ -1,5 +1,3 @@
-"use client";
-
 import { TrackedLink } from "./tracked-link";
 
 export function HomeFinalCta() {
@@ -20,7 +18,7 @@ export function HomeFinalCta() {
           personalised immigration assistance, contact a registered migration agent or Australian legal practitioner.
         </p>
 
-        <div className="mx-auto mt-10 flex w-full max-w-lg flex-col gap-3 sm:max-w-none sm:flex-row sm:flex-wrap sm:justify-center sm:gap-4">
+        <div className="mx-auto mt-8 flex w-full max-w-lg flex-col items-center gap-4">
           <TrackedLink
             id="footer-cta-questionnaire"
             href="/assessment"
@@ -30,8 +28,7 @@ export function HomeFinalCta() {
               cta_location: "home_footer",
               destination: "/assessment",
             }}
-            aria-label="Open Official Information Finder from homepage footer"
-            className="btn flex min-h-[48px] w-full touch-manipulation items-center justify-center bg-white px-8 py-4 text-base font-black text-brand-plum shadow-xl transition-all hover:-translate-y-0.5 active:scale-[0.98] sm:w-auto sm:text-lg"
+            className="btn flex min-h-[48px] w-full touch-manipulation items-center justify-center bg-white px-8 py-4 text-base font-black text-brand-plum shadow-xl transition-all hover:-translate-y-0.5 active:scale-[0.98] sm:w-auto"
           >
             Explore General Information
           </TrackedLink>
@@ -44,10 +41,9 @@ export function HomeFinalCta() {
               cta_location: "home_footer",
               destination: "/education-consultation",
             }}
-            aria-label="Education course enquiry from homepage footer"
-            className="btn flex min-h-[48px] w-full touch-manipulation items-center justify-center border-2 border-white/50 bg-white/15 px-8 py-4 text-base font-black text-white backdrop-blur-[20px] transition-all hover:border-white/65 hover:bg-white/22 sm:w-auto sm:text-lg"
+            className="inline-flex min-h-[44px] items-center text-sm font-bold text-white underline decoration-white/50 underline-offset-4"
           >
-            Education Course Enquiry
+            Or send an education course enquiry
           </TrackedLink>
         </div>
 

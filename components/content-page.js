@@ -146,7 +146,6 @@ export function ContentPage({
         />
       ) : null}
 
-      <ContentBodyWithOptionalLeftRail leftRail={leftRail}>
       {heroSlot ? (
         heroSlot
       ) : (
@@ -176,7 +175,7 @@ export function ContentPage({
                 alt={heroImage.alt}
                 width={1600}
                 height={900}
-                className="h-full w-full object-cover object-center sm:object-[70%_center] md:object-[center_bottom]"
+                className="h-full w-full object-cover"
                 priority
                 fetchPriority="high"
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 1600px, 100vw"
@@ -185,6 +184,8 @@ export function ContentPage({
           </div>
         </MotionReveal>
       )}
+
+      <ContentBodyWithOptionalLeftRail leftRail={leftRail}>
 
       {complianceBanner ? (
         <div className="mx-auto mt-6 w-full max-w-7xl px-4 sm:px-6 lg:px-8">

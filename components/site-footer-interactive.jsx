@@ -1,64 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import { PublicFileImg } from "./public-file-img";
 import { NewsletterForm } from "./newsletter-form";
 import { SiteSocialIcons } from "./site-social-icons";
 
 /**
- * Client island: brand + stats, optional middle columns (nav), newsletter last.
+ * Public footer brand column. Operational counts stay off this surface.
  */
-export function SiteFooterInteractive({ brand, initialStats, children }) {
-  const [stats, setStats] = useState(initialStats);
-
-  useEffect(() => {
-    const ua = typeof navigator !== "undefined" ? navigator.userAgent || "" : "";
-    const isCrawler = /bot|crawler|spider|googlebot|bingbot|slurp|duckduckbot/i.test(ua);
-    if (isCrawler) return;
-
-    let cancelled = false;
-
-    async function refreshStats() {
-      try {
-        const response = await fetch("/api/stats", { cache: "no-store" });
-        if (!response.ok) return;
-        const rawText = await response.text();
-        let payload;
-        try {
-          payload = rawText ? JSON.parse(rawText) : {};
-        } catch {
-          return;
-        }
-        const data = payload?.data && typeof payload.data === "object" ? payload.data : payload;
-        if (cancelled) return;
-        setStats((current) => ({
-          ...current,
-          enquiryCount: Number.isFinite(data?.enquiryCount) ? data.enquiryCount : current.enquiryCount,
-          newsletterCount: Number.isFinite(data?.newsletterCount)
-            ? data.newsletterCount
-            : current.newsletterCount,
-          updatesCount: Number.isFinite(data?.updatesCount) ? data.updatesCount : current.updatesCount,
-        }));
-      } catch {
-        // Keep server-rendered initial stats if refresh fails.
-      }
-    }
-
-    refreshStats();
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  useEffect(() => {
-    function handleEnquiryCreated() {
-      setStats((current) => ({ ...current, enquiryCount: current.enquiryCount + 1 }));
-    }
-    window.addEventListener("minrosh:enquiry-created", handleEnquiryCreated);
-    return () => window.removeEventListener("minrosh:enquiry-created", handleEnquiryCreated);
-  }, []);
-
+export function SiteFooterInteractive({ brand, children }) {
   return (
     <>
       <div className="site-footer__brand-col">
@@ -81,20 +31,6 @@ export function SiteFooterInteractive({ brand, initialStats, children }) {
           <a href={`tel:${brand.phone.replace(/\s+/g, "")}`}>{brand.phone}</a>
         </div>
         <SiteSocialIcons brand={brand} variant="footer" />
-        <div className="site-footer__stats">
-          <div className="site-footer__stat">
-            <strong>{stats.enquiryCount}</strong>
-            <span>Enquiry count</span>
-          </div>
-          <div className="site-footer__stat">
-            <strong>{stats.newsletterCount}</strong>
-            <span>Newsletter signups</span>
-          </div>
-          <div className="site-footer__stat">
-            <strong>{stats.updatesCount}</strong>
-            <span>Updates tracked</span>
-          </div>
-        </div>
       </div>
 
       {children}
@@ -102,14 +38,7 @@ export function SiteFooterInteractive({ brand, initialStats, children }) {
       <div className="site-footer__newsletter">
         <strong>Newsletter</strong>
         <p>Get migration and visa updates by email.</p>
-        <NewsletterForm
-          onSubscribed={() =>
-            setStats((current) => ({
-              ...current,
-              newsletterCount: current.newsletterCount + 1,
-            }))
-          }
-        />
+        <NewsletterForm />
       </div>
     </>
   );

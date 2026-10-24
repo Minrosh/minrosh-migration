@@ -1,10 +1,15 @@
 import Link from "next/link";
+import siteData from "../../../data/site.json";
 import { NewsletterUnsubscribeClient } from "@/components/newsletter-unsubscribe-client";
+import { SiteShell } from "@/components/site-shell";
+import { buildMetadata } from "@/lib/seo";
 
-export const metadata = {
-  title: "Unsubscribe | MinRosh Migration",
+export const metadata = buildMetadata({
+  title: "Unsubscribe",
+  description: "Stop marketing emails from MinRosh Migration. Transactional messages about an enquiry you sent are not affected.",
+  path: "/newsletter/unsubscribe",
   robots: { index: false, follow: false },
-};
+});
 
 export default async function NewsletterUnsubscribePage({ searchParams }) {
   const sp = await searchParams;
@@ -14,7 +19,8 @@ export default async function NewsletterUnsubscribePage({ searchParams }) {
   const reason = String(sp?.reason || "");
 
   return (
-    <main id="main-content" className="mx-auto max-w-lg px-4 py-16">
+    <SiteShell siteData={siteData} currentPath="/newsletter/unsubscribe">
+    <section className="mx-auto max-w-lg px-4 py-16">
       <h1 className="text-2xl font-semibold tracking-tight">Marketing emails</h1>
       {ok ? (
         already ? (
@@ -58,6 +64,7 @@ export default async function NewsletterUnsubscribePage({ searchParams }) {
           Back to home
         </Link>
       </p>
-    </main>
+    </section>
+    </SiteShell>
   );
 }

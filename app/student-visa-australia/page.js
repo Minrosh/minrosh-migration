@@ -30,7 +30,7 @@ export default function StudentVisaPage() {
   const jobBoard = getStudentJobBoardAu();
   const heroStrip = (
     <PageHeroStrip
-      className="guide-page-hero-strip h-[320px] sm:h-[360px]"
+      className="guide-page-hero-strip"
       overlayClassName="guide-page-hero-strip__overlay"
       eyebrow="Student Visa Australia"
       title={pageData.headline}

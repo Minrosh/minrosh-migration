@@ -1,7 +1,7 @@
 {
   "skilled": {
     "metaTitle": "UK Skilled Worker & work routes | GOV.UK alignment | MinRosh",
-    "metaDescription": "Skilled work routes for the United Kingdom: sponsored employment and visa planning context. Confirm on GOV.UK.",
+    "metaDescription": "Skilled work routes for the United Kingdom: sponsored employment and visa planning context. Confirm current rules on GOV.UK. General information only.",
     "eyebrow": "United Kingdom · Skilled",
     "headline": "United Kingdom skilled work routes",
     "intro": "The Skilled Worker route usually requires a licensed sponsor, a job at the appropriate skill and salary level, and English ability. Other work visas exist for specific circumstances. Always read the relevant GOV.UK visa page for your situation; MinRosh shares general category orientation and official links before you engage authorised professionals in the UK.",
@@ -43,7 +43,7 @@
   },
   "partner": {
     "metaTitle": "UK partner & family visas | MinRosh",
-    "metaDescription": "Partner and family visa context for the UK. Financial requirement and relationship evidence on GOV.UK.",
+    "metaDescription": "Partner and family visa context for the UK, including the financial requirement and relationship evidence published on GOV.UK. General information only.",
     "eyebrow": "United Kingdom · Partner",
     "headline": "United Kingdom partner and family visas",
     "intro": "Partner and family categories on GOV.UK set out financial thresholds, relationship evidence, and sometimes English requirements. Rules change with immigration statements; verify the current Immigration Rules and guidance.",
@@ -80,7 +80,7 @@
   },
   "student": {
     "metaTitle": "UK Student visa planning | study in Britain | MinRosh",
-    "metaDescription": "Student route guidance for the UK: CAS, funds, and genuine student factors. Official detail on GOV.UK.",
+    "metaDescription": "Student route guidance for the UK: CAS, funds, and genuine student factors. Read the official detail on GOV.UK before you act. General information only.",
     "eyebrow": "United Kingdom · Student",
     "headline": "Study in the United Kingdom",
     "intro": "The Student route requires an offer from a licensed student sponsor and a Confirmation of Acceptance for Studies. You must meet financial and English requirements and show a genuine intention to study. Read GOV.UK for the latest maintenance figures and document list.",
@@ -126,7 +126,7 @@
   },
   "education": {
     "metaTitle": "UK education consultation | CAS & visa alignment | MinRosh",
-    "metaDescription": "Institution and course planning for the UK with Student route awareness.",
+    "metaDescription": "Institution and course planning for the UK with Student route awareness. Confirm the current route rules on GOV.UK. General information only.",
     "eyebrow": "United Kingdom · Education",
     "headline": "Education planning for the United Kingdom",
     "intro": "Selecting a programme affects your CAS, fees, and living cost story. MinRosh shares education-course information; UKVI expectations must be verified on GOV.UK to see in a coherent application.",
@@ -158,7 +158,7 @@
   },
   "updates": {
     "metaTitle": "UK immigration updates | Home Office changes | MinRosh",
-    "metaDescription": "Tracking UK visa changes via GOV.UK and statements. MinRosh shares general information with official links.",
+    "metaDescription": "Tracking UK visa changes via GOV.UK and official statements. MinRosh shares general information with links back to those sources.",
     "eyebrow": "United Kingdom · Updates",
     "headline": "United Kingdom immigration updates",
     "intro": "UK immigration rules are published in law and guidance and can change with policy statements. Rely on GOV.UK and the Immigration Rules for authoritative text.",
@@ -190,7 +190,7 @@
   },
   "faq": {
     "metaTitle": "UK visa FAQ | MinRosh Migration",
-    "metaDescription": "Introductory UK visa questions with general information from MinRosh.",
+    "metaDescription": "Introductory UK visa questions answered with general information from MinRosh and links to GOV.UK. Confirm current rules before you act.",
     "eyebrow": "United Kingdom · FAQ",
     "headline": "United Kingdom visa questions",
     "intro": "General guidance only. Confirm every requirement on GOV.UK before applying.",
@@ -222,7 +222,7 @@
   },
   "about": {
     "metaTitle": "MinRosh & United Kingdom pathways | migration guidance",
-    "metaDescription": "How MinRosh supports UK visa and education planning.",
+    "metaDescription": "How MinRosh shares general information for UK visa and education planning, with links to GOV.UK. This is not immigration assistance.",
     "eyebrow": "United Kingdom · About",
     "headline": "MinRosh and United Kingdom visas",
     "intro": "We publish general information for readers comparing Australia with the UK—or exploring UK-bound topics—with emphasis on GOV.UK accuracy. MinRosh does not provide immigration assistance.",
@@ -254,7 +254,7 @@
   },
   "contact": {
     "metaTitle": "Contact MinRosh | United Kingdom visa enquiry",
-    "metaDescription": "Contact MinRosh Migration about UK study, work, or family visa planning.",
+    "metaDescription": "Contact MinRosh Migration about UK study, work, or family visa planning. General information and education support only, not immigration assistance.",
     "eyebrow": "United Kingdom · Contact",
     "headline": "Contact us about the United Kingdom",
     "intro": "Tell us your goal—Student, Skilled Worker, partner, or visitor—and your timeline. We will suggest reading on GOV.UK and whether an information session or authorised professional advice is the right next step.",

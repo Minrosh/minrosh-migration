@@ -290,7 +290,8 @@ async function run() {
         el.click();
       });
       await page.waitForURL(/\/assessment/, { timeout: 15_000 });
-      await page.getByText(/Smart Navigator|Visa Decision Engine/i).first().waitFor({ timeout: 12_000 });
+      /* Smart Navigator stays disabled (COMPLIANCE_FEATURE_FLAGS.PERSONALISED_NAVIGATOR is false). */
+      await page.getByRole("heading", { name: "Official Information Finder", exact: true }).waitFor({ timeout: 12_000 });
     } catch (err) {
       fail(`Start your pathway flow failed: ${err.message}`);
     }

@@ -1,10 +1,10 @@
 export default function DestinationsLoading() {
   return (
-    <main id="main-content" className="loading-screen" aria-label="Loading destination content">
+    <div className="loading-screen" role="status" aria-live="polite" aria-busy="true">
       <section className="loading-screen__card">
         <div className="loading-screen__copy">
           <p className="loading-screen__eyebrow">Global pathways</p>
-          <h1>Preparing destination guidance</h1>
+          <p className="loading-screen__title">Preparing destination guidance</p>
           <p>Loading route-specific migration content, official resources, and next-step actions.</p>
         </div>
         <div className="loading-screen__skeleton" aria-hidden="true">
@@ -13,6 +13,6 @@ export default function DestinationsLoading() {
           <span className="loading-screen__line loading-screen__line--sm" />
         </div>
       </section>
-    </main>
+    </div>
   );
 }

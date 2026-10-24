@@ -1,5 +1,3 @@
-"use client";
-
 import Image from "next/image";
 import { HERO_BRISBANE_BLUR_DATA_URL } from "@/lib/marketing/hero-brisbane-blur";
 import { TrackedAnchor, TrackedLink } from "../tracked-link";
@@ -134,16 +132,14 @@ export function HomeHeroPremium({ whatsappHref }) {
       className="home-hero-premium-section home-hero-premium-section--viewport-fit relative flex w-full min-w-0 flex-col overflow-x-clip"
       aria-labelledby="home-hero-heading"
     >
-      <div className="relative flex min-h-0 w-full flex-1 flex-col">
+      <div className="relative flex min-h-0 w-full flex-col">
         <div className="pointer-events-none absolute inset-0 z-0">
           <Image
             src={HERO_BRISBANE_IMAGE.src}
             alt={HERO_BRISBANE_IMAGE.alt}
             fill
-            className="object-cover object-[70%_center] md:object-bottom md:object-center"
+            className="object-cover object-[center_42%]"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 1600px, 100vw"
-            priority
-            fetchPriority="high"
             decoding="async"
             placeholder="blur"
             blurDataURL={HERO_BRISBANE_BLUR_DATA_URL}
@@ -159,9 +155,9 @@ export function HomeHeroPremium({ whatsappHref }) {
           <div className="home-hero-premium__fog-gradient h-full w-full" />
         </div>
 
-        <div className="home-hero-premium__content-column relative z-[2] flex min-h-0 w-full flex-1 flex-col">
-          <div className="home-hero-premium__lane mx-auto flex w-full min-w-0 max-w-[var(--content-max)] flex-1 flex-col justify-end px-[var(--content-pad)] pb-20 pt-6 sm:pb-20 sm:pt-8 lg:pb-20 lg:pt-8">
-            <div className="home-hero-premium__upper flex min-h-0 flex-1 flex-col justify-end pb-3 lg:justify-center lg:pb-0">
+        <div className="home-hero-premium__content-column relative z-[2] flex min-h-0 w-full flex-col">
+          <div className="home-hero-premium__lane mx-auto flex w-full min-w-0 max-w-[var(--content-max)] flex-col px-[var(--content-pad)]">
+            <div className="home-hero-premium__upper flex min-h-0 flex-col pb-3 lg:pb-0">
               <div className="home-hero-premium__glass-wrap hero__content home-hero-premium__content-card min-w-0">
                 <div className="hero__glass home-hero-premium__glass-inner relative px-0 py-6 sm:py-8 lg:px-0 lg:py-9">
                   <p className="home-hero-premium__badge relative z-10 mb-4 inline-flex max-w-[34rem] flex-wrap items-center gap-2 rounded-full border border-white/45 bg-white/60 px-3.5 py-2.5 text-sm font-semibold shadow-sm sm:mb-7 sm:max-w-[36rem] sm:px-4 sm:py-3 sm:text-[0.9375rem] backdrop-blur-[20px]">
@@ -182,7 +178,7 @@ export function HomeHeroPremium({ whatsappHref }) {
 
                   <h1
                     id="home-hero-heading"
-                    className="home-hero-premium__heading relative z-10 max-w-none text-balance font-bold leading-[1.12] tracking-[-0.02em] text-[clamp(1.65rem,4vw,2.85rem)]"
+                    className="home-hero-premium__heading relative z-10 max-w-none text-balance font-bold leading-[1.08] tracking-[-0.02em]"
                     style={{ color: plumDark }}
                   >
                     Explore Australian Migration Information with{" "}
@@ -191,7 +187,7 @@ export function HomeHeroPremium({ whatsappHref }) {
                     </span>
                   </h1>
 
-                  <p className="relative z-10 mt-3 max-w-xl text-xs leading-relaxed text-brand-plum/80 sm:mt-4 sm:text-base" style={{ color: charcoal }}>
+                  <p className="relative z-10 mt-3 max-w-xl text-sm leading-relaxed sm:mt-4 sm:text-base" style={{ color: charcoal }}>
                     We organise and explain publicly available information so you can better understand visa
                     categories, official requirements and education options. We do not provide immigration
                     assistance, legal advice or personalised visa recommendations.
@@ -235,7 +231,7 @@ export function HomeHeroPremium({ whatsappHref }) {
                       Education Course Enquiry
                     </TrackedLink>
 
-                    <p className="text-xs leading-relaxed text-brand-plum/70" style={{ color: charcoal }}>
+                    <p className="text-sm leading-relaxed" style={{ color: charcoal }}>
                       For personal migration advice or help with a visa application, use a registered migration
                       agent or Australian legal practitioner.
                     </p>
@@ -246,7 +242,7 @@ export function HomeHeroPremium({ whatsappHref }) {
                       eventName="whatsapp_clicked"
                       eventParams={{ cta_id: "hero_whatsapp", cta_location: "home_hero", destination: "whatsapp" }}
                       aria-label="Ask a general information question on WhatsApp"
-                      className="home-hero-premium__cta home-hero-premium__cta--secondary inline-flex min-h-[52px] w-full items-center justify-center rounded-full border-2 border-[#881337]/25 bg-white/90 px-7 py-3.5 text-center text-base font-bold text-[#881337] shadow-sm outline-none ring-offset-2 ring-offset-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-[#881337]/40 hover:bg-white focus-visible:ring-2 focus-visible:ring-[#881337]/35 sm:w-auto sm:min-w-[280px]"
+                      className="inline-flex min-h-11 w-fit items-center text-sm font-semibold text-[#881337] underline decoration-[#881337]/35 underline-offset-4 outline-none ring-offset-2 focus-visible:ring-2 focus-visible:ring-[#881337]/40"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
@@ -256,19 +252,23 @@ export function HomeHeroPremium({ whatsappHref }) {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
 
+      <div className="home-hero-premium__lane mx-auto w-full min-w-0 max-w-[var(--content-max)] px-[var(--content-pad)] pb-2">
             <div
               className="home-hero-premium__bottom-bar w-full shrink-0"
               role="region"
               aria-label="Information highlights and trust signals"
             >
-              <ul className="home-hero-premium__bottom-bar-list flex list-none flex-nowrap items-stretch gap-0 overflow-x-auto overscroll-x-contain py-1 pl-0 [-webkit-overflow-scrolling:touch] sm:flex-nowrap sm:justify-between sm:overflow-visible sm:py-0">
-                {FEATURES.map((item, index) => {
+              <ul className="home-hero-premium__bottom-bar-list">
+                {FEATURES.map((item) => {
                   const FeatureIcon = item.Icon;
                   return (
                     <li
                       key={item.title}
-                      className={`home-hero-premium__bottom-bar-item flex min-w-[10.5rem] shrink-0 items-center justify-center gap-2.5 px-3 py-2 sm:min-w-0 sm:flex-1 sm:basis-0 sm:max-w-none sm:px-2 ${index > 0 ? "border-l border-[#1f1020]/10" : ""}`}
+                      className="home-hero-premium__bottom-bar-item"
                     >
                       <div
                         className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full shadow-inner sm:h-10 sm:w-10"
@@ -277,21 +277,19 @@ export function HomeHeroPremium({ whatsappHref }) {
                       >
                         <FeatureIcon className="h-[18px] w-[18px] sm:h-[22px] sm:w-[22px]" stroke={plumMid} />
                       </div>
-                      <div className="min-w-0 text-center">
-                        <p className="text-xs font-bold leading-snug text-[#1f1020] sm:text-sm">{item.title}</p>
-                        <p className="mt-0.5 line-clamp-2 text-[10px] font-medium leading-snug text-[#1f1020]/68 sm:text-xs">
-                          {item.text}
-                        </p>
+                      <div className="min-w-0">
+                        <p className="home-hero-premium__trust-title">{item.title}</p>
+                        <p className="home-hero-premium__trust-body">{item.text}</p>
                       </div>
                     </li>
                   );
                 })}
-                {TRUST_PILLARS.map((pillar, index) => {
+                {TRUST_PILLARS.map((pillar) => {
                   const PillarIcon = pillar.Icon;
                   return (
                     <li
                       key={pillar.title}
-                      className={`home-hero-premium__bottom-bar-item flex min-w-[10.5rem] shrink-0 items-center justify-center gap-2.5 px-3 py-2 sm:min-w-0 sm:flex-1 sm:basis-0 sm:max-w-none sm:px-2 ${FEATURES.length > 0 || index > 0 ? "border-l border-[#1f1020]/10" : ""}`}
+                      className="home-hero-premium__bottom-bar-item"
                     >
                       <div
                         className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full sm:h-10 sm:w-10"
@@ -300,19 +298,15 @@ export function HomeHeroPremium({ whatsappHref }) {
                       >
                         <PillarIcon className="h-[18px] w-[18px] sm:h-[22px] sm:w-[22px]" stroke={plumMid} />
                       </div>
-                      <div className="min-w-0 text-center">
-                        <p className="text-xs font-bold leading-snug text-[#1f1020] sm:text-sm">{pillar.title}</p>
-                        <p className="mt-0.5 line-clamp-2 text-[10px] font-medium leading-snug text-[#1f1020]/68 sm:text-xs">
-                          {pillar.body}
-                        </p>
+                      <div className="min-w-0">
+                        <p className="home-hero-premium__trust-title">{pillar.title}</p>
+                        <p className="home-hero-premium__trust-body">{pillar.body}</p>
                       </div>
                     </li>
                   );
                 })}
               </ul>
             </div>
-          </div>
-        </div>
       </div>
     </section>
   );

@@ -68,7 +68,6 @@ export default function EducationConsultationPage() {
           { href: "/", label: "Home" },
           { href: "/education-consultation", label: "Education Course Enquiry" },
         ]}
-        officialResources={educationOfficialResources}
         currentPath="/education-consultation"
         sections={[
           {
@@ -100,14 +99,38 @@ export default function EducationConsultationPage() {
         ]}
         faq={faq}
         belowHero={
-          <div className="mx-auto mt-8 w-full max-w-3xl rounded-[2rem] border border-brand-plum/10 bg-white/80 p-4 shadow-sm md:p-6">
-            <AgentRegistrationStrip brand={siteData.brand} compliance={compliance} />
-            <ContactLeadForm
-              className="mt-4"
-              defaultEnquiryType="education_enquiry"
-              lockEnquiryType
-              acknowledgementText={compliance.formAcknowledgementText}
-            />
+          <div className="mt-8 grid items-start gap-6 lg:grid-cols-2">
+            <section className="rounded-[1.5rem] border border-brand-plum/10 bg-white p-5 shadow-sm" aria-labelledby="education-official-heading">
+              <h2 id="education-official-heading" className="text-lg font-bold text-brand-plum">
+                Official study pages
+              </h2>
+              <p className="mt-2 text-sm leading-relaxed text-brand-plum/75">
+                Course marketing is not visa criteria. Read the current subclass pages before you enquire.
+              </p>
+              <ul className="mt-4 grid list-none gap-3 pl-0">
+                {educationOfficialResources.map((item) => (
+                  <li key={item.href}>
+                    <a
+                      href={item.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex min-h-[48px] items-center rounded-2xl border border-brand-plum/10 bg-brand-cream/50 px-4 py-3 text-sm font-semibold text-brand-plum hover:text-brand-rose"
+                    >
+                      {item.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </section>
+            <div className="rounded-[1.5rem] border border-brand-plum/10 bg-white/90 p-4 shadow-sm">
+              <AgentRegistrationStrip brand={siteData.brand} compliance={compliance} />
+              <ContactLeadForm
+                className="mt-4"
+                defaultEnquiryType="education_enquiry"
+                lockEnquiryType
+                acknowledgementText={compliance.formAcknowledgementText}
+              />
+            </div>
           </div>
         }
         related={[

@@ -125,7 +125,7 @@ export default async function AssessmentPage() {
           </PremiumCTAGroup>
         </PremiumPageHero>
 
-        <section className="mt-10" aria-labelledby="finder-how-heading">
+        <section className="mt-6" aria-labelledby="finder-how-heading">
           <PremiumSectionHeader
             id="finder-how-heading"
             eyebrow="How it works"
@@ -143,9 +143,9 @@ export default async function AssessmentPage() {
           </div>
         </section>
 
-        <div className="mt-10">
+        <div className="mt-6">
           <Suspense fallback={<FinderFallback />}>
-            <OfficialInformationFinder notice={compliance.aiInformationFinderNotice} />
+            <OfficialInformationFinder />
           </Suspense>
         </div>
 

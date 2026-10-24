@@ -93,6 +93,7 @@ export function SiteHeaderNav({ navLinks, currentPath, enableVisaMega = false })
   function handleNavClick(event, href) {
     closeMenu();
     if (typeof window === "undefined") return;
+    if (typeof href === "string" && href.includes("#")) return;
     window.scrollTo({ top: 0, behavior: "auto" });
   }
 
@@ -140,7 +141,7 @@ export function SiteHeaderNav({ navLinks, currentPath, enableVisaMega = false })
             const isActive = isActiveNavHref(normalizedHref);
             const isVisaHub = VISA_HUB_PATHS.has(normalizedHref);
             const collapseDesktop = enableVisaMega && isVisaHub;
-            const isPopularRoutes = link.label === "POPULAR ROUTES";
+            const isPopularRoutes = normalizedHref === "/popular-routes";
 
             if (enableVisaMega && isPopularRoutes) {
               return (
@@ -167,8 +168,8 @@ export function SiteHeaderNav({ navLinks, currentPath, enableVisaMega = false })
                   aria-current={isActive ? "page" : undefined}
                   onClick={(event) => handleNavClick(event, normalizedHref)}
                 >
-                  {link.label === "POPULAR ROUTES" && enableVisaMega ? (
-                    <span className="sr-only">POPULAR ROUTES (opens pathway menu)</span>
+                  {isPopularRoutes && enableVisaMega ? (
+                    <span className="sr-only">Popular routes (opens pathway menu)</span>
                   ) : (
                     link.label
                   )}

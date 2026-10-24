@@ -19,7 +19,7 @@ export const metadata = buildMetadata({
 export default function VisaFeesGuidePage() {
   const heroStrip = (
     <PageHeroStrip
-      className="guide-page-hero-strip h-[320px] sm:h-[360px]"
+      className="guide-page-hero-strip"
       overlayClassName="guide-page-hero-strip__overlay"
       eyebrow="Cost Planning Guide"
       title={guideData.headline}

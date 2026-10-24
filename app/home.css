@@ -202,9 +202,10 @@
   }
 }
 
-/* Premium hero: 85vh min height; viewport-wide left fog (white → clear) + bottom glass stats bar. */
+/* Premium hero grows with its content. Min-height is a floor, not a viewport lock. */
 .portal-shell--premium-home .home-hero-premium-section.home-hero-premium-section--viewport-fit {
-  height: calc(100svh - var(--site-header-chrome-height));
+  height: auto;
+  min-height: 0;
 }
 
 /* Full-bleed fog from viewport left; copy stays in --content-max lane above (z-index). */
@@ -255,8 +256,10 @@
 .portal-shell--premium-home .home-hero-premium__lane {
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: flex-start;
   min-height: 0;
+  padding-top: calc(var(--site-header-chrome-height, 7.5rem) + 1.25rem);
+  padding-bottom: 1.5rem;
 }
 
 .portal-shell--premium-home .home-hero-premium__upper {
@@ -291,7 +294,8 @@
   box-shadow: none;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
-  margin-top: clamp(34px, 3.2vw, 56px);
+  margin-top: 0;
+  min-height: 0;
 }
 
 @media (max-width: 920px) {
@@ -312,45 +316,41 @@
 
 .portal-shell--premium-home .home-hero-premium__bottom-bar,
 .portal-shell--premium-home .home-hero-premium__trust-shell {
-  position: absolute;
-  right: 0;
-  bottom: clamp(-60px, -4.1vw, -30px);
-  left: 0;
-  transform: none;
-  width: calc(100% - 3rem);
-  margin-inline: auto;
-  border-radius: 1rem;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0.86) 100%);
-  backdrop-filter: saturate(1.2) blur(24px);
-  -webkit-backdrop-filter: saturate(1.2) blur(24px);
-  @media (max-width: 720px) {
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-    background: #ffffff;
-  }
+  position: static;
+  width: 100%;
+  margin-top: 1.25rem;
+  border-radius: 1.25rem;
+  background: rgba(255, 253, 251, 0.94);
   border: 1px solid rgba(255, 255, 255, 0.82);
   box-shadow:
-    0 -12px 40px rgba(31, 16, 32, 0.08),
+    0 12px 32px rgba(31, 16, 32, 0.08),
     inset 0 1px 0 rgba(255, 255, 255, 0.78);
-  padding: 0.8rem 0.55rem 0.9rem;
+  padding: 0.85rem 1rem 1rem;
 }
 
 @media (min-width: 640px) {
   .portal-shell--premium-home .home-hero-premium__bottom-bar {
-    width: calc(100% - 5rem);
-    border-radius: 1.25rem;
-    padding: 0.95rem 0.7rem 1.05rem;
-  }
-}
-
-@media (min-width: 1024px) {
-  .portal-shell--premium-home .home-hero-premium__bottom-bar {
-    /* Shorten desktop bar so its right edge sits near Ask MinRosh left edge. */
-    width: calc(100% - 18rem);
+    padding: 1rem 1.1rem 1.15rem;
   }
 }
 
 @media (max-width: 720px) {
+  .portal-shell--premium-home .home-hero-premium__glass-inner.hero__glass {
+    padding: 0.85rem 1rem 0.5rem;
+    background: rgba(255, 253, 251, 0.92);
+    border-radius: 1.25rem;
+  }
+
+  .portal-shell--premium-home .home-hero-premium__bottom-bar,
+  .portal-shell--premium-home .home-hero-premium__trust-shell {
+    margin-top: 0.75rem;
+    padding: 0.65rem 0.75rem 0.75rem;
+  }
+
+  .portal-shell--premium-home .home-hero-premium__bottom-bar-list {
+    gap: 0.55rem 0.7rem;
+  }
+
   .portal-shell--mobile-tab-bar.portal-shell--premium-home
     .home-hero-premium-section.home-hero-premium-section--viewport-fit {
     /* Let content define height on small phones to avoid large dead space/clip. */
@@ -364,29 +364,27 @@
   }
 
   .portal-shell--premium-home .home-hero-premium__fog-gradient {
-    --hero-fog-fade-end: 100%;
-    /* Mobile readability: stronger cream wash under copy, softer fade toward CTA/image. */
+    --hero-fog-fade-end: 58%;
+    /* Keep the heading panel readable and let the river show beneath it. */
     background: linear-gradient(
       to bottom,
-      rgba(255, 255, 255, 1) 0%,
-      rgba(255, 255, 255, 0.96) 44%,
-      rgba(255, 255, 255, 0.62) 68%,
-      rgba(255, 255, 255, 0.2) 82%,
-      rgba(255, 255, 255, 0) 100%
+      rgba(255, 255, 255, 0.9) 0%,
+      rgba(255, 255, 255, 0.45) 34%,
+      rgba(255, 255, 255, 0) 58%
     );
     -webkit-mask-image: linear-gradient(
       to bottom,
       #000 0%,
-      #000 42%,
-      rgba(0, 0, 0, 0.68) 70%,
-      transparent 100%
+      #000 28%,
+      rgba(0, 0, 0, 0.35) 48%,
+      transparent 58%
     );
     mask-image: linear-gradient(
       to bottom,
       #000 0%,
-      #000 42%,
-      rgba(0, 0, 0, 0.68) 70%,
-      transparent 100%
+      #000 28%,
+      rgba(0, 0, 0, 0.35) 48%,
+      transparent 58%
     );
     -webkit-mask-size: 100% 100%;
     mask-size: 100% 100%;
@@ -395,18 +393,7 @@
   }
 
   .portal-shell--premium-home .home-hero-premium__bottom-bar {
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 253, 251, 0.84) 100%);
-  }
-
-  .portal-shell--premium-home .home-hero-premium__bottom-bar-list {
-    white-space: nowrap;
-    overflow-x: auto;
-    overflow-y: hidden;
-    flex-wrap: nowrap;
-  }
-
-  .portal-shell--premium-home .home-hero-premium__bottom-bar-item {
-    flex: 0 0 auto;
+    background: #fffdfb;
   }
 
   .portal-shell--premium-home .home-hero-premium__glass-wrap {
@@ -440,14 +427,7 @@
   }
 }
 
-/* Premium hero: reserve thumb tab bar so primary CTAs stay above fixed nav (CWV / thumb-zone). */
-@media (max-width: 920px) {
-  .portal-shell--mobile-tab-bar.portal-shell--premium-home
-    .home-hero-premium-section.home-hero-premium-section--viewport-fit {
-    min-height: calc(100svh - var(--site-mobile-tab-stack, calc(4.25rem + env(safe-area-inset-bottom, 0px))));
-    height: calc(100svh - var(--site-mobile-tab-stack, calc(4.25rem + env(safe-area-inset-bottom, 0px))));
-  }
-}
+/* Thumb tab bar is in the page flow below the hero. The hero itself is not locked to the viewport. */
 
 @media (max-width: 767px) {
   .portal-shell--mobile-tab-bar.portal-shell--premium-home
@@ -462,9 +442,7 @@
 
   .portal-shell--premium-home .home-hero-premium__lane {
     justify-content: flex-start;
-    /* Clear mobile utility strip below the sticky header so badge/title are never clipped. */
-    padding-top: clamp(7.8rem, 28vw, 9.8rem);
-    padding-bottom: clamp(7.6rem, 24vw, 9.4rem);
+    padding-bottom: 1.25rem;
   }
 
   .portal-shell--premium-home .home-hero-premium__upper {
@@ -475,17 +453,11 @@
   .portal-shell--premium-home .home-hero-premium__glass-inner.hero__glass {
     border-radius: 1.35rem;
     border: 1px solid rgba(255, 255, 255, 0.72);
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.74) 0%, rgba(255, 250, 246, 0.58) 100%);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(255, 250, 246, 0.92) 100%);
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.82),
       0 12px 32px rgba(31, 16, 32, 0.08);
     padding: clamp(14px, 4.5vw, 20px);
-  }
-
-  .portal-shell--premium-home .home-hero-premium__heading {
-    font-size: clamp(2rem, 9.2vw, 2.45rem);
-    line-height: 1.06;
-    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.56);
   }
 
   .portal-shell--premium-home .home-hero-premium__cta {
@@ -514,55 +486,7 @@
   }
 }
 
-/**
- * One-screen hero on lg+: glass + trust fit within viewport (see home-hero-premium-section--viewport-fit).
- * Inner column uses overflow-y:auto only if content still exceeds after tightened spacing.
- */
-@media (min-width: 1024px) {
-  .portal-shell--premium-home .home-hero-premium-section.home-hero-premium-section--viewport-fit {
-    height: calc(100vh - var(--site-header-chrome-height));
-    display: flex;
-    flex-direction: column;
-    overflow-x: clip;
-    overflow-y: visible;
-    padding-bottom: 0;
-    box-sizing: border-box;
-  }
-
-  .portal-shell--premium-home .home-hero-premium-section.home-hero-premium-section--viewport-fit > div:first-child {
-    flex: 1 1 auto;
-    min-height: 0;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .portal-shell--premium-home .home-hero-premium-section--viewport-fit .home-hero-premium__content-column {
-    flex: 1 1 auto;
-    min-height: 0;
-    overflow: visible;
-  }
-}
-
-@media (min-width: 1024px) and (max-height: 880px) {
-  .portal-shell--premium-home .home-hero-premium-section--viewport-fit .home-hero-premium__glass-inner {
-    padding-top: 1.75rem !important;
-    padding-bottom: 1.75rem !important;
-  }
-
-  .portal-shell--premium-home .home-hero-premium-section--viewport-fit .home-hero-premium__bottom-bar {
-    padding-top: 0.5rem !important;
-    padding-bottom: 0.5rem !important;
-  }
-
-  .portal-shell--premium-home .home-hero-premium-section--viewport-fit #home-hero-heading {
-    font-size: clamp(1.5rem, 3.2vw, 2.35rem);
-    line-height: 1.1;
-  }
-
-  .portal-shell--premium-home .home-hero-premium__consult-secondary {
-    display: none;
-  }
-}
+/* Desktop hero stays in normal flow so short laptop heights cannot clip the heading or CTAs. */
 
 /* Premium public header: floating glass capsule (homepage + marketing inner pages) */
 .portal-shell--premium-header .site-header.site-header--backdrop,
@@ -638,12 +562,34 @@
     0 4px 14px rgba(74, 24, 48, 0.06) !important;
 }
 
+.portal-shell--premium-header .brand__mark,
+.portal-shell--premium-home .brand__mark {
+  width: 68px;
+  height: 68px;
+}
+
 @media (max-width: 920px) {
   .portal-shell--premium-header .site-header__inner,
   .portal-shell--premium-home .site-header__inner {
-    border-radius: 1.35rem;
-    padding-block: 9px;
-    min-height: 54px;
+    border-radius: 1.25rem;
+    padding-block: 6px;
+    min-height: 0;
+    margin-top: 6px;
+    margin-bottom: 0;
+  }
+}
+
+/* Mid desktop: keep the brand compact so the primary links fit inside the capsule. */
+@media (min-width: 921px) and (max-width: 1180px) {
+  .portal-shell--premium-header .brand__mark,
+  .portal-shell--premium-home .brand__mark {
+    width: 48px;
+    height: 48px;
+  }
+
+  .portal-shell--premium-header .site-header__inner,
+  .portal-shell--premium-home .site-header__inner {
+    padding-inline: 12px;
   }
 }
 
@@ -657,10 +603,16 @@
   max-width: 16rem;
 }
 
-@media (max-width: 520px) {
+@media (max-width: 920px) {
   .portal-shell--premium-header .brand__tagline,
   .portal-shell--premium-home .brand__tagline {
     display: none;
+  }
+
+  .portal-shell--premium-header .brand__mark,
+  .portal-shell--premium-home .brand__mark {
+    width: 44px;
+    height: 44px;
   }
 }
 
@@ -670,10 +622,11 @@
   font-size: clamp(1.18rem, 1.05rem + 0.34vw, 1.36rem);
 }
 
-.portal-shell--premium-header .brand__mark,
-.portal-shell--premium-home .brand__mark {
-  width: 68px;
-  height: 68px;
+@media (max-width: 1180px) {
+  .portal-shell--premium-header .brand__tagline,
+  .portal-shell--premium-home .brand__tagline {
+    display: none;
+  }
 }
 
 .portal-shell--premium-header .site-nav__link--header:not(.is-active),
@@ -724,6 +677,32 @@
   }
 }
 
+@media (min-width: 921px) and (max-width: 1180px) {
+  .portal-shell--premium-header .site-nav__group--main,
+  .portal-shell--premium-home .site-nav__group--main {
+    flex: 1 1 auto;
+    min-width: 0;
+    justify-content: flex-start;
+    column-gap: 0;
+    padding-inline: 0;
+    overflow: visible;
+  }
+
+  .portal-shell--premium-header .site-nav__group--main .site-nav__link--header,
+  .portal-shell--premium-header .site-nav__group--main .site-nav__mega-host,
+  .portal-shell--premium-home .site-nav__group--main .site-nav__link--header,
+  .portal-shell--premium-home .site-nav__group--main .site-nav__mega-host {
+    flex: 0 1 auto;
+  }
+
+  .portal-shell--premium-header .site-nav__link--header,
+  .portal-shell--premium-home .site-nav__link--header {
+    padding: 6px 5px 8px;
+    font-size: 0.75rem;
+    letter-spacing: -0.01em;
+  }
+}
+
 .portal-shell--premium-header .site-nav__cta--primary,
 .portal-shell--premium-home .site-nav__cta--primary {
   background: #881337 !important;
@@ -751,7 +730,61 @@
 }
 
 .portal-shell--premium-home .home-hero-premium__heading {
-  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(2.25rem, 8vw, 2.5rem);
+  line-height: 1.08;
+  color: #1f1020;
+}
+
+@media (min-width: 768px) {
+  .portal-shell--premium-home .home-hero-premium__heading {
+    font-size: clamp(2.75rem, 4.4vw, 3rem);
+  }
+}
+
+@media (min-width: 1024px) {
+  .portal-shell--premium-home .home-hero-premium__heading {
+    font-size: clamp(3.5rem, 3.3vw, 3.75rem);
+  }
+}
+
+.portal-shell--premium-home .home-hero-premium__bottom-bar-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.85rem 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow: visible;
+}
+
+@media (min-width: 1100px) {
+  .portal-shell--premium-home .home-hero-premium__bottom-bar-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.portal-shell--premium-home .home-hero-premium__bottom-bar-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.portal-shell--premium-home .home-hero-premium__trust-title {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: #1f1020;
+}
+
+.portal-shell--premium-home .home-hero-premium__trust-body {
+  margin: 0.15rem 0 0;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.45;
+  color: rgba(31, 16, 32, 0.78);
 }
 
 .portal-shell--premium-home .home-hero-premium__cta:not(.home-hero-premium__cta--secondary) {

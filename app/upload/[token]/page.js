@@ -4,7 +4,7 @@ import { PublicUploadForm } from "@/components/admin/public-upload-form";
 import { COMPLIANCE_FEATURE_FLAGS, DISABLED_PENDING_AUTHORISED_PROFESSIONAL_REVIEW } from "@/lib/compliance";
 
 export const metadata = {
-  title: "Upload documents | MinRosh Migration",
+  title: "Upload documents",
   robots: { index: false, follow: false },
 };
 
