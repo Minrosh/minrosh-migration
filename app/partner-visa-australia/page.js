@@ -4,7 +4,7 @@ import { ContentPage } from "../../components/content-page";
 import { SiteShell } from "../../components/site-shell";
 import { StructuredData } from "../../components/structured-data";
 import { getComplianceConfig } from "../../lib/compliance";
-import { buildMetadata, breadcrumbJsonLd, faqJsonLd } from "../../lib/seo";
+import { buildMetadata, breadcrumbJsonLd } from "../../lib/seo";
 import { HubClusterNavigator } from "../../components/seo/hub-cluster-navigator";
 
 const pageData = seoPages.servicePages.partnerVisa;
@@ -26,7 +26,6 @@ export default function PartnerVisaPage() {
           { name: pageData.title, path: pageData.path },
         ])}
       />
-      <StructuredData data={faqJsonLd(pageData.faq)} />
       <ContentPage
         routeAccent="partner"
         eligibilityChecklist={[

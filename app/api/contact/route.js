@@ -348,14 +348,12 @@ export async function POST(request) {
     !hasConsultationSlot
       ? undefined
       : !availabilityResult.available
-        ? "Selected consultation time is no longer available. Please choose another slot."
-        : calendarResult.reason === "google_calendar_not_configured"
-          ? "Consultation booking is currently offline (calendar not configured). Your enquiry is saved and our team will confirm manually."
-          : calendarResult.reason === "calendar_error"
-            ? "Enquiry saved, but calendar provider is temporarily unavailable. We will confirm your slot manually."
-            : !calendarResult.created
-              ? "Enquiry saved, but calendar booking could not be created."
-              : undefined;
+        ? "That time is not available. Please choose another slot."
+        : calendarResult.reason === "google_calendar_not_configured" ||
+            calendarResult.reason === "calendar_error" ||
+            !calendarResult.created
+          ? "Your preferred time is saved. This is not a confirmed appointment until we contact you to confirm it."
+          : undefined;
 
   if (hasConsultationSlot && stripeEnabled()) {
     try {
@@ -437,6 +435,7 @@ export async function POST(request) {
 
   if (!mailResult.internalSent) {
     if (mailResult.reason === "smtp_not_configured") {
+      obsLogger.warn("contact_mail_not_configured", { enquiryId: enquiryRecord.id });
       return apiOk(
         publicContactSuccessPayload({
           id: enquiryRecord.id,
@@ -447,7 +446,9 @@ export async function POST(request) {
           slotAvailable: availabilityResult.available,
           meetUrl: calendarResult.meetUrl || undefined,
           checkoutUrl: checkoutUrl || undefined,
-          warning: "Enquiry saved, but SMTP is not configured yet.",
+          warning: hasConsultationSlot
+            ? "Your enquiry has been received. We will reply using the contact details you provided. A calendar appointment has not been confirmed."
+            : "Your enquiry has been received. We will reply using the contact details you provided.",
         }),
         context
       );

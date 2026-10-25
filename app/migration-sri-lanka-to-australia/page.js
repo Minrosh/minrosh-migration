@@ -4,7 +4,7 @@ import { MigrationPopularRoutes } from "../../components/migration-popular-route
 import { ContentPage } from "../../components/content-page";
 import { SiteShell } from "../../components/site-shell";
 import { StructuredData } from "../../components/structured-data";
-import { buildMetadata, breadcrumbJsonLd, faqJsonLd } from "../../lib/seo";
+import { buildMetadata, breadcrumbJsonLd } from "../../lib/seo";
 import { getHomeSiteData } from "../../lib/home-site-data";
 
 const pageData = seoPages.servicePages.sriLankaMigration;
@@ -31,7 +31,6 @@ export default function SriLankaMigrationPage() {
           { name: pageData.title, path: pageData.path },
         ])}
       />
-      <StructuredData data={faqJsonLd(pageData.faq)} />
       <ContentPage
         eyebrow="Sri Lanka to Australia"
         title={pageData.headline}

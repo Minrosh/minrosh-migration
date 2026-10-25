@@ -4,7 +4,7 @@ import { ContentPage } from "../../components/content-page";
 import { SiteShell } from "../../components/site-shell";
 import { StructuredData } from "../../components/structured-data";
 import { getComplianceConfig } from "../../lib/compliance";
-import { buildMetadata, breadcrumbJsonLd, faqJsonLd } from "../../lib/seo";
+import { buildMetadata, breadcrumbJsonLd } from "../../lib/seo";
 import { HubClusterNavigator } from "../../components/seo/hub-cluster-navigator";
 import { VisaRailSkilledAu } from "../../components/visa-rail-skilled-au";
 import { PageHeroStrip } from "../../components/ui/page-hero-strip";
@@ -41,7 +41,6 @@ export default function SkilledMigrationPage() {
           { name: pageData.title, path: pageData.path },
         ])}
       />
-      <StructuredData data={faqJsonLd(pageData.faq)} />
       <div className="guide-premium-shell relative min-w-0 bg-[var(--brand-cream)]">
         <div className="w-full max-w-[var(--content-max)] mx-auto px-[var(--content-pad)] pb-16">
           <ContentPage

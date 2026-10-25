@@ -5,7 +5,7 @@ import { AgentRegistrationStrip } from "../../components/agent-registration-stri
 import { SiteShell } from "../../components/site-shell";
 import { StructuredData } from "../../components/structured-data";
 import { getComplianceConfig } from "../../lib/compliance";
-import { buildMetadata, breadcrumbJsonLd, faqJsonLd } from "../../lib/seo";
+import { buildMetadata, breadcrumbJsonLd } from "../../lib/seo";
 
 const educationOfficialResources = [
   {
@@ -57,7 +57,6 @@ export default function EducationConsultationPage() {
           { name: "Education Course Enquiry", path: "/education-consultation" },
         ])}
       />
-      <StructuredData data={faqJsonLd(faq)} />
       <ContentPage
         eyebrow="Education Course Enquiry & Admissions Support"
         title="Education course enquiry and admissions administration support"

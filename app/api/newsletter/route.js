@@ -60,15 +60,26 @@ export async function POST(request) {
       emailReason = "mail_send_failed";
     }
   }
+  if (emailReason) {
+    console.info(
+      JSON.stringify({
+        ts: new Date().toISOString(),
+        level: emailSent ? "info" : "warn",
+        event: "newsletter_welcome_mail",
+        reason: emailReason,
+      })
+    );
+  }
 
   return apiOk({
     exists: result.exists || false,
     emailSent,
-    emailReason,
     message: result.resubscribed
       ? "Your subscription is active again. You can unsubscribe from any marketing email."
       : result.exists
         ? "This email is already subscribed."
-        : "Thanks for subscribing. You will receive migration and visa updates by email.",
+        : emailSent
+          ? "Thanks for subscribing. You will receive migration and visa updates by email."
+          : "Your subscription is saved. A welcome email has not been sent yet.",
   }, context);
 }

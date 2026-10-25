@@ -6,7 +6,7 @@ import { SiteShell } from "../../components/site-shell";
 import { StructuredData } from "../../components/structured-data";
 import { getComplianceConfig } from "../../lib/compliance";
 import { getHomeSiteData } from "../../lib/home-site-data";
-import { buildMetadata, breadcrumbJsonLd, faqJsonLd } from "../../lib/seo";
+import { buildMetadata, breadcrumbJsonLd } from "../../lib/seo";
 
 const pageData = seoPages.servicePages.employerSponsored;
 
@@ -28,7 +28,6 @@ export default function EmployerSponsoredPage() {
           { name: "Employer-Sponsored Visas", path: pageData.path },
         ])}
       />
-      <StructuredData data={faqJsonLd(pageData.faq)} />
       <ContentPage
         eyebrow={pageData.eyebrow}
         title={pageData.headline}

@@ -1,6 +1,6 @@
 # Stage 0 — Indexability audit
 
-Generated: 2026-10-24T12:34:18.120Z
+Generated: 2026-10-24T23:59:23.836Z
 URLs audited: 85
 
 ## Root cause hypotheses (automated heuristics)
@@ -28,7 +28,6 @@ Disallow: /
 User-Agent: *
 Allow: /
 Allow: /api/reviews
-Allow: /api/stats
 Disallow: /admin
 Disallow: /api
 Disallow: /upload

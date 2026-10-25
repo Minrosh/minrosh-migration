@@ -17,6 +17,8 @@ describe("buildRobotsConfig staging vs production", () => {
     expect(result.sitemap).toBe("https://minroshmigration.com.au/sitemap.xml");
     const star = result.rules.find((r) => r.userAgent === "*");
     expect(star.allow).toContain("/");
+    expect(star.allow).toContain("/api/reviews");
+    expect(star.allow).not.toContain("/api/stats");
     expect(star.disallow).toEqual(expect.arrayContaining(["/admin", "/api", "/upload"]));
   });
 

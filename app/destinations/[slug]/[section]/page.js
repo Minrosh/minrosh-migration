@@ -6,7 +6,7 @@ import destinationConfidenceStripData from "../../../../data/destination-confide
 import { ContentPage } from "../../../../components/content-page";
 import { SiteShell } from "../../../../components/site-shell";
 import { StructuredData } from "../../../../components/structured-data";
-import { buildMetadata, breadcrumbJsonLd, faqJsonLd } from "../../../../lib/seo";
+import { buildMetadata, breadcrumbJsonLd } from "../../../../lib/seo";
 import {
   DESTINATION_SECTION_IDS,
   destinationHeaderBackdrop,
@@ -89,9 +89,6 @@ export default async function DestinationSectionPage({ params }) {
       { name: sectionLabel, path },
     ]),
   ];
-  if (data.faq?.length) {
-    jsonLd.push(faqJsonLd(data.faq));
-  }
 
   return (
     <SiteShell

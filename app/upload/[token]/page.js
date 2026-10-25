@@ -3,11 +3,6 @@ import { findCustomerByMagicToken } from "@/lib/admin/customers-service";
 import { PublicUploadForm } from "@/components/admin/public-upload-form";
 import { COMPLIANCE_FEATURE_FLAGS, DISABLED_PENDING_AUTHORISED_PROFESSIONAL_REVIEW } from "@/lib/compliance";
 
-export const metadata = {
-  title: "Upload documents",
-  robots: { index: false, follow: false },
-};
-
 export default async function PublicUploadPage({ params }) {
   const { token } = await params;
   const customer = findCustomerByMagicToken(token);

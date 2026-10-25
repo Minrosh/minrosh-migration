@@ -129,6 +129,9 @@ describe("POST /api/contact", () => {
     expect(j.processing).toBeUndefined();
     expect(j.leadDriveFolderId).toBeUndefined();
     expect(j.leadDriveFolderUrl).toBeUndefined();
+    expect(JSON.stringify(j)).not.toMatch(/SMTP|smtp_not_configured|not configured/i);
+    expect(j.warning).toMatch(/has been received/i);
+    expect(j.consultationBooked).toBe(false);
   });
 
   it("does not expose a successful sheetSync when Sheets CRM is not configured", async () => {

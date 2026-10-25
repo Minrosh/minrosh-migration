@@ -39,7 +39,7 @@ export function buildRobotsConfig(env = process.env) {
       },
       {
         userAgent: "*",
-        allow: ["/", "/api/reviews", "/api/stats"],
+        allow: ["/", "/api/reviews"],
         disallow: ["/admin", "/api", "/upload"],
       },
     ],

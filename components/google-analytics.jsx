@@ -16,7 +16,12 @@ window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 window.gtag = gtag;
 gtag('js', new Date());
-gtag('config', '${id}');
+var pagePath = location.pathname || '/';
+if (pagePath.indexOf('/upload/') === 0) {
+  gtag('config', '${id}', { page_path: '/upload', page_location: location.origin + '/upload' });
+} else {
+  gtag('config', '${id}');
+}
 window.minroshTrack = function(eventName, params){
   try {
     gtag('event', eventName, params || {});

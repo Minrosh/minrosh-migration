@@ -2,7 +2,8 @@ import { createStripeCheckoutSession, stripeEnabled } from "@/lib/payments/strip
 
 export async function POST(request) {
   if (!stripeEnabled()) {
-    return Response.json({ ok: false, error: "Stripe is not configured." }, { status: 503 });
+    console.info(JSON.stringify({ ts: new Date().toISOString(), level: "warn", event: "checkout_provider_not_configured" }));
+    return Response.json({ ok: false, error: "Card payment is not available. No payment has been taken." }, { status: 503 });
   }
   let body;
   try {
@@ -23,7 +24,8 @@ export async function POST(request) {
     cancelPath: "/book-information-session?payment=cancelled",
   });
   if (!session.ok) {
-    return Response.json({ ok: false, error: session.error || "Stripe checkout failed." }, { status: 502 });
+    console.info(JSON.stringify({ ts: new Date().toISOString(), level: "warn", event: "checkout_provider_failed", reason: session.reason || "unknown" }));
+    return Response.json({ ok: false, error: "Payment could not be started. No payment has been taken." }, { status: 502 });
   }
   return Response.json({ ok: true, checkoutUrl: session.url, checkoutSessionId: session.id });
 }
