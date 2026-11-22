@@ -1,16 +1,17 @@
 # Phase 00B — Baseline decision
 
 **Date:** 22 Nov 2026 (Australia/Brisbane)  
+**Re-checked:** same day on local checkout `/home/minrosh/minrosh-migration` (MinRosh-Server)  
 **Decision:** **BLOCKED** — do not start Phase 01  
 **Audit PR:** https://github.com/Minrosh/minrosh-migration/pull/9  
-**Workspace branch:** `cursor/phase-00-route-audit-437c` @ `3d85bed`  
+**Workspace branch:** `cursor/phase-00-route-audit-437c` @ `5cb4b41`  
 **Compliance candidate (not checked out for redesign yet):** `origin/fix/phase-6b-critical-repairs`
 
 ## Step 1 — Git state
 
 | Check | Result |
 | --- | --- |
-| Fetched `main`, `cursor/phase-00-route-audit-437c`, `fix/phase-6b-critical-repairs` | Yes |
+| Fetched `main`, `cursor/phase-00-route-audit-437c`, `fix/phase-6b-critical-repairs` | Yes (local + remotes) |
 | Working tree | Clean (no uncommitted changes) |
 | Overwrote existing work | No |
 
@@ -20,8 +21,8 @@
 
 | File | Status |
 | --- | --- |
-| `MinRosh-Cursor-Next-Step-Prompts.md` | **MISSING** — not in `/workspace`, agent metadata, or stores |
-| `MinRosh-Cursor-Phase00B-Handoff.zip` | **MISSING** — not in `/workspace`, agent metadata, or stores |
+| `MinRosh-Cursor-Next-Step-Prompts.md` | **MISSING** — not in repo root, Downloads, Desktop, Cursor attachments/uploads, or agent stores |
+| `MinRosh-Cursor-Phase00B-Handoff.zip` | **MISSING** — same search; chat attachment names did not mount to disk |
 
 ### Original redesign kit (required by Phase 00B)
 

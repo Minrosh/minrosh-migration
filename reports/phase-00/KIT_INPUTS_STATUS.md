@@ -1,17 +1,17 @@
 # Phase 00 / 00B — Kit inputs status
 
-**Last updated:** 22 Nov 2026 (Australia/Brisbane)  
-**Workspace:** `cursor/phase-00-route-audit-437c`  
+**Last updated:** 22 Nov 2026 (Australia/Brisbane) — recheck on MinRosh-Server  
+**Workspace:** `/home/minrosh/minrosh-migration` on `cursor/phase-00-route-audit-437c`  
 **Constraint:** Audit / baseline docs only — no functionality changes.
 
-## Phase 00B handoff attachments (this turn)
+## Phase 00B handoff attachments
 
-| File | Status in Cloud Agent checkout |
+| File | Status |
 | --- | --- |
 | `MinRosh-Cursor-Next-Step-Prompts.md` | **MISSING** |
 | `MinRosh-Cursor-Phase00B-Handoff.zip` | **MISSING** |
 
-Searched: `/workspace`, `/cursor/stores`, agent meta-data API, home directory, common upload mounts. No file bodies were mounted for this turn.
+Searched (Cloud Agent earlier + local server now): repo root, `/home/minrosh/Downloads`, Desktop, `.cursor/.../attachments`, `uploads`, agent-stores. Filenames appear in chat; **file bodies never landed on disk**.
 
 ## Original redesign kit (still required)
 
