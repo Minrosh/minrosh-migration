@@ -13,7 +13,10 @@ Audit-only package for the MinRosh public route reconciliation. **No site functi
 | [FEATURE_INVENTORY.md](./FEATURE_INVENTORY.md) | Public + CRM features to preserve |
 | [ADMIN_CRM_RISK_REGISTER.md](./ADMIN_CRM_RISK_REGISTER.md) | Shared-zone / CRM breakage risks |
 | [SUBAGENT_ROUTE_INVENTORY.md](./SUBAGENT_ROUTE_INVENTORY.md) | Expanded route matrix from parallel inventory pass |
+| [PHASE_00B_BASELINE_DECISION.md](./PHASE_00B_BASELINE_DECISION.md) | Phase 00B decision — currently **BLOCKED** (kit/handoff missing) |
 
 ## Stop
 
-Phase 00 complete. Do not start implementation phases until kit files are available and the compliance/`main` base branch is chosen.
+- Phase 00 complete (audit docs).  
+- Phase **00B BLOCKED**: redesign kit + `MinRosh-Cursor-Phase00B-Handoff.zip` / `MinRosh-Cursor-Next-Step-Prompts.md` not in checkout.  
+- Do **not** start Phase 01 until 00B passes.
