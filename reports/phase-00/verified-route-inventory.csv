@@ -1,0 +1,92 @@
+path,type,main_app_router,in_main_sitemap_source,in_live_sitemap,indexable_intent,notes
+/,homepage,yes,yes,yes,yes,
+/about,content,yes,yes,yes,yes,
+/assessment,tool,yes,yes,yes,yes,
+/australia-visa-document-checklist-guide,guide,yes,yes,yes,yes,
+/australia-visa-fees-and-costs-guide,guide,yes,yes,yes,yes,
+/australia-visa-processing-times-guide,guide,yes,yes,yes,yes,
+/australia-vs-canada-migration-guide,guide,yes,yes,yes,yes,
+/australian-visas-official-sources,service,yes,yes,yes,yes,
+/book-consultation,conversion,yes,yes,no,redirect-only,LIVE 308→/book-information-session; main still has page.js; many CTAs still point here; In main sitemap source but not live sitemap
+/book-information-session,conversion,no-missing-on-main,no,yes,yes,LIVE 200; present on fix/phase-6b; ABSENT from git main; In live sitemap but not main STATIC/derived set
+/code-of-conduct,legal,yes,yes,yes,yes,
+/complaints,legal,yes,yes,yes,yes,
+/contact,conversion,yes,yes,yes,yes,
+/destinations/australia,destination-hub,yes-dynamic,yes,yes,yes,
+/destinations/australia/about,destination-section,yes-dynamic,yes,yes,yes,Thin/duplicate risk vs global /about /contact /faq
+/destinations/australia/contact,destination-section,yes-dynamic,yes,yes,yes,Thin/duplicate risk vs global /about /contact /faq
+/destinations/australia/education,destination-section,yes-dynamic,yes,yes,yes,
+/destinations/australia/faq,destination-section,yes-dynamic,yes,yes,yes,Thin/duplicate risk vs global /about /contact /faq
+/destinations/australia/partner,destination-section,yes-dynamic,yes,yes,yes,
+/destinations/australia/skilled,destination-section,yes-dynamic,yes,yes,yes,
+/destinations/australia/student,destination-section,yes-dynamic,yes,yes,yes,
+/destinations/australia/updates,destination-section,yes-dynamic,yes,yes,yes,
+/destinations/canada,destination-hub,yes-dynamic,yes,yes,yes,
+/destinations/canada/about,destination-section,yes-dynamic,yes,yes,yes,Thin/duplicate risk vs global /about /contact /faq
+/destinations/canada/contact,destination-section,yes-dynamic,yes,yes,yes,Thin/duplicate risk vs global /about /contact /faq
+/destinations/canada/education,destination-section,yes-dynamic,yes,yes,yes,
+/destinations/canada/faq,destination-section,yes-dynamic,yes,yes,yes,Thin/duplicate risk vs global /about /contact /faq
+/destinations/canada/partner,destination-section,yes-dynamic,yes,yes,yes,
+/destinations/canada/skilled,destination-section,yes-dynamic,yes,yes,yes,
+/destinations/canada/student,destination-section,yes-dynamic,yes,yes,yes,
+/destinations/canada/updates,destination-section,yes-dynamic,yes,yes,yes,
+/destinations/new-zealand,destination-hub,yes-dynamic,yes,yes,yes,
+/destinations/new-zealand/about,destination-section,yes-dynamic,yes,yes,yes,Thin/duplicate risk vs global /about /contact /faq
+/destinations/new-zealand/contact,destination-section,yes-dynamic,yes,yes,yes,Thin/duplicate risk vs global /about /contact /faq
+/destinations/new-zealand/education,destination-section,yes-dynamic,yes,yes,yes,
+/destinations/new-zealand/faq,destination-section,yes-dynamic,yes,yes,yes,Thin/duplicate risk vs global /about /contact /faq
+/destinations/new-zealand/partner,destination-section,yes-dynamic,yes,yes,yes,
+/destinations/new-zealand/skilled,destination-section,yes-dynamic,yes,yes,yes,
+/destinations/new-zealand/student,destination-section,yes-dynamic,yes,yes,yes,
+/destinations/new-zealand/updates,destination-section,yes-dynamic,yes,yes,yes,
+/destinations/united-kingdom,destination-hub,yes-dynamic,yes,yes,yes,
+/destinations/united-kingdom/about,destination-section,yes-dynamic,yes,yes,yes,Thin/duplicate risk vs global /about /contact /faq
+/destinations/united-kingdom/contact,destination-section,yes-dynamic,yes,yes,yes,Thin/duplicate risk vs global /about /contact /faq
+/destinations/united-kingdom/education,destination-section,yes-dynamic,yes,yes,yes,
+/destinations/united-kingdom/faq,destination-section,yes-dynamic,yes,yes,yes,Thin/duplicate risk vs global /about /contact /faq
+/destinations/united-kingdom/partner,destination-section,yes-dynamic,yes,yes,yes,
+/destinations/united-kingdom/skilled,destination-section,yes-dynamic,yes,yes,yes,
+/destinations/united-kingdom/student,destination-section,yes-dynamic,yes,yes,yes,
+/destinations/united-kingdom/updates,destination-section,yes-dynamic,yes,yes,yes,
+/disclaimer,legal,yes,yes,yes,yes,
+/education-consultation,conversion,yes,yes,yes,yes,
+/employer-sponsored-visas,service,yes,yes,yes,yes,
+/faq,content,yes,yes,yes,yes,
+/global-pathways,service,yes,no,yes,yes,Near-duplicate of /popular-routes; historically missing from some sitemaps; In live sitemap but not main STATIC/derived set
+/immigration-lawyer-australia-vs-registered-migration-agent-guide,guide,yes,yes,yes,yes,
+/immigration-news,content,yes,yes,yes,yes,
+/immigration-news/canada-border-system-2026,news-article,yes-dynamic,yes,yes,yes,
+/immigration-news/canada-integrity-fraud-prevention-2026,news-article,yes-dynamic,yes,yes,yes,
+/immigration-news/migration-sri-lanka-australia-2026,news-article,yes-dynamic,yes,no,yes,In main sitemap source but not live sitemap
+/immigration-news/nz-visa-fraud-partnerships-2025,news-article,yes-dynamic,yes,yes,yes,
+/immigration-news/partner-visa-australia-2026-guide,news-article,yes-dynamic,yes,yes,yes,
+/immigration-news/skilled-migration-australia-points-2026,news-article,yes-dynamic,yes,yes,yes,
+/immigration-news/student-visa-australia-requirements-2026,news-article,yes-dynamic,yes,yes,yes,
+/immigration-news/uk-eta-travel-permission-2025,news-article,yes-dynamic,yes,yes,yes,
+/maintenance,utility,yes,no,no,no,Utility; expect noindex
+/meet-the-team,content,yes,yes,yes,yes,
+/migration-for-healthcare-workers-australia,content,yes,yes,yes,yes,
+/migration-sri-lanka-to-australia,content,yes,yes,yes,yes,
+/newsletter/unsubscribe,utility,yes,no,no,no,Utility; expect noindex
+/partner-visa-309-100-guide,guide,yes,yes,yes,yes,
+/partner-visa-820-801-guide,guide,yes,yes,yes,yes,
+/partner-visa-australia,service,yes,yes,yes,yes,
+/partner-visa-australia-guide,guide,yes,yes,yes,yes,
+/popular-routes,service,yes,yes,yes,yes,
+/privacy-policy,legal,yes,yes,yes,yes,
+/referral-program,content,yes,yes,yes,yes,
+/skilled-migration,service,yes,yes,yes,yes,
+/skilled-migration-australia-points-guide,guide,yes,yes,yes,yes,
+/student-migration-over-25-australia,content,yes,yes,yes,yes,
+/student-visa-australia,service,yes,yes,yes,yes,
+/student-visa-australia-requirements,guide,yes,yes,yes,yes,
+/terms-of-use,legal,yes,yes,yes,yes,
+/thank-you,utility,yes,no,no,no,Utility; expect noindex
+/tools,tool,yes,yes,yes,yes,
+/tools/pr-pathway-explorer,tool,yes,yes,yes,yes,
+/tools/student-country-cost-planner,tool,yes,yes,yes,yes,
+/updates,content,yes,yes,yes,yes,
+/visa-refusal-help-australia-and-aat-migration-appeal-guide,guide,yes,yes,yes,yes,
+/visa-services,service,yes,no,yes,yes,Overlaps service hubs / popular-routes; In live sitemap but not main STATIC/derived set
+/visitor-visas,service,yes,yes,yes,yes,
+/upload/[token],utility,yes-dynamic,no,no,no,Tokenised upload portal; not marketing
