@@ -1,0 +1,66 @@
+{
+  "audit_date_brisbane": "2026-11-22",
+  "git_workspace_head": "5e7123e",
+  "workspace_branch": "cursor/phase-00-route-audit-437c",
+  "base_ref": "main",
+  "live_origin": "https://minroshmigration.com.au",
+  "live_sitemap_count": 85,
+  "main_sitemap_source_count": 84,
+  "inventory_rows": 91,
+  "public_static_page_templates": 45,
+  "dynamic_public_templates": [
+    "/destinations/[slug]",
+    "/destinations/[slug]/[section]",
+    "/immigration-news/[slug]",
+    "/upload/[token]"
+  ],
+  "admin_route_count": 18,
+  "admin_routes": [
+    "/admin",
+    "/admin/audit",
+    "/admin/automations",
+    "/admin/crm",
+    "/admin/crm-insights",
+    "/admin/customers",
+    "/admin/inbox",
+    "/admin/intelligence",
+    "/admin/invoices",
+    "/admin/leads",
+    "/admin/login",
+    "/admin/news",
+    "/admin/pipeline",
+    "/admin/quotes",
+    "/admin/reports",
+    "/admin/success-stories",
+    "/admin/tasks",
+    "/admin/users"
+  ],
+  "dest_slugs": [
+    "australia",
+    "new-zealand",
+    "canada",
+    "united-kingdom"
+  ],
+  "news_slug_count": 8,
+  "news_slugs": [
+    "migration-sri-lanka-australia-2026",
+    "partner-visa-australia-2026-guide",
+    "student-visa-australia-requirements-2026",
+    "skilled-migration-australia-points-2026",
+    "canada-integrity-fraud-prevention-2026",
+    "canada-border-system-2026",
+    "uk-eta-travel-permission-2025",
+    "nz-visa-fraud-partnerships-2025"
+  ],
+  "live_only_vs_main_sitemap": [
+    "/book-information-session",
+    "/global-pathways",
+    "/visa-services"
+  ],
+  "main_sitemap_not_live": [
+    "/book-consultation",
+    "/immigration-news/migration-sri-lanka-australia-2026"
+  ],
+  "kit_files_present": false,
+  "compliance_branch_ref": "origin/fix/phase-6b-critical-repairs"
+}
