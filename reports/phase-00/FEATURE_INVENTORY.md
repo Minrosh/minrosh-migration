@@ -12,10 +12,11 @@ Public and admin features that a redesign must keep operational unless a later p
 | Guide / SEO articles | `*-guide` pages + `data/seo-pages.json` | |
 | Popular / global / visa hubs | `/popular-routes`, `/global-pathways`, `/visa-services` | Overlap cluster |
 | Official sources hub | `/australian-visas-official-sources` | |
-| Contact enquiry | `/contact` → `app/api/contact` | CRM lead intake |
-| Booking / information session | `/book-consultation` (`main`) / `/book-information-session` (live) | **Drift** |
+| Contact enquiry | `/contact` → `app/api/contact` | CRM lead intake → enquiries + leads + customers |
+| Booking / information session | `/book-consultation` (`main`) / `/book-information-session` (live) | **Drift**; same contact API + optional Stripe/calendar |
 | Education enquiry | `/education-consultation` | Admissions support framing on live |
-| Assessment / Information Finder | `/assessment`, `components/smart-navigator.js` | Repositioned on compliance |
+| Assessment / Information Finder | `/assessment`, `components/smart-navigator.js` | Repositioned on compliance; live lead path via `/api/ai-funnel` |
+| CRM enquiry hub | `/admin/crm` → `/api/admin/enquiries` | Website form source of truth (`data/enquiries.json`) |
 | Tools hub | `/tools` | |
 | Student cost planner | `/tools/student-country-cost-planner` | Disclaimers required |
 | PR pathway explorer | `/tools/pr-pathway-explorer` | Sequencing only |

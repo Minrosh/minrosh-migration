@@ -8,7 +8,7 @@
 
 `main` and live production are **not the same product surface**. Live (`fix/phase-6b-critical-repairs` lineage) is a no-MARN **general information & education support** site. Git `main` still markets **registered migration guidance**, still serves `/book-consultation`, and still ships `brand.marn: "Available on request"`. Any redesign started from `main` without first aligning to production compliance will reintroduce regulated-assistance claims.
 
-Kit files named in the kickoff were **not present** in this environment (see `KIT_INPUTS_STATUS.md`). Findings below are from repo + live + compliance-branch evidence.
+Kit files named in the kickoff were **not present** in this environment (see `KIT_INPUTS_STATUS.md`). Findings below are from repo + live + compliance-branch evidence, with parallel inventory/compliance/CRM passes folded in (see also `SUBAGENT_ROUTE_INVENTORY.md`).
 
 ---
 
@@ -68,9 +68,15 @@ Full CSV: [`verified-route-inventory.csv`](./verified-route-inventory.md) / [`ve
 ### High severity (if `main` were deployed as-is)
 
 - Placeholder MARN “Available on request” + schema/`agent-registration-strip` paths that can imply OMARA registration  
-- Hero/services copy: registered guidance, pathway questionnaire, book consultation  
+- `withPublicMarn()` only overlays `NEXT_PUBLIC_MARN` when `brand.marn` is **empty** — the placeholder **blocks** env overlay (`lib/home-site-data.js`)  
+- `businessJsonLd()` would emit `identifier` / `MARN Available on request` if that placeholder stays truthy (`lib/seo.js`)  
+- `agent-registration-strip.jsx`: aria-label “Registered migration agent details”; with placeholder marn it suppresses pending UI and still never prints a real number  
+- Hero/services copy: registered guidance, pathway questionnaire, book consultation; root title “Migration Agent Brisbane” (`app/layout.js` / `app/page.js`)  
+- `main` components have **no** “we are not registered / do not provide immigration assistance” strings (live footer does)  
 - AI chat / quiz / navigator framed as personalised pathway / eligibility tools on `main`  
-- Email copy in `lib/contact.js`: “registered migration agents”
+- Email copy in `lib/contact.js`: “registered migration agents”  
+- `data/seo-pages.json` still contains “best migration agent” / “Contact Migration Agent Brisbane” style keywords  
+- Legal starters are thin: complaints page self-labels unfinished; privacy lacks retention/AI processing; code-of-conduct claims OMARA alignment while live denies RMA status
 
 ### Production baseline (must not regress)
 
@@ -94,11 +100,13 @@ From `docs/no-marn-compliance-audit.md` on `fix/phase-6b`:
 | --- | --- | --- |
 | Title brand doubling (historical) | Many titles were `… \| MinRosh Migration \| MinRosh Migration`; fixed on phase-6b via `buildMetadata` | Was P1; verify before any `lib/seo.js` redesign |
 | Long titles retained | ~36 titles still >60 chars by design (subclass/destination intent) | Accept or shorten deliberately |
-| Thin destination meta | UK/Canada section descriptions historically <75–110 chars; fixed on phase-6b | Watch if section JSON rewritten |
+| Thin destination meta / body | UK/Canada section descriptions historically short; destination `about`/`contact`/`faq` bodies often ~46–83 words | Medium |
 | Duplicate topic clusters | `/popular-routes` ≈ `/global-pathways` ≈ `/visa-services`; partner service + 3 partner guides; destination `about/contact/faq` vs global pages | Medium cannibalisation |
-| Sitemap parity | Live includes booking/info + visa-services + global-pathways; `main` still lists `/book-consultation` | High if deploying `main` |
-| News slug drift | `migration-sri-lanka-australia-2026` on `main` data, not live sitemap | Medium |
+| Sitemap parity | Live includes booking/info + visa-services + global-pathways; `main` still lists `/book-consultation`; STATIC omits `/visa-services` + `/global-pathways` even though `page.js` exists | High if deploying `main` |
+| News slug drift | `migration-sri-lanka-australia-2026` on `main` data (live page may 200), not live sitemap | Medium |
 | Loading shells | Destination/news `loading.js` historically injected second `<main>`/`<h1>` (ISS-011; fixed on phase-6b) | High if regressing |
+| OG image path drift | Default OG/layout image `hero-brisbane-river-cbd.jpg` vs LCP hero `hero-brisbane-river-cbd-hd.jpg` | Low–Medium |
+| Live robots vs repo | Live `robots.txt` Cloudflare Content-Signal / AI-bot rules; repo `app/robots.js` smaller ruleset | Medium ops drift |
 
 ---
 
@@ -120,8 +128,9 @@ Do **not** delete any of these in Phase 00. Later phases must decide keep / merg
 ### Still relevant from `docs/MOBILE-STAGE1-NOTES.md`
 
 - Visa mega menu desktop-only (≥921px); mobile depends on drawer IA  
-- AI concierge / floating widgets can overlap sticky CTAs on short viewports  
+- AI concierge / floating widgets can overlap sticky CTAs on short viewports (`sticky-mobile-cta`, floating dock CSS)  
 - Wide tables/embeds may still overflow inside cards  
+- Form pages: confirm submit controls clear tab bar + WhatsApp + Ask MinRosh dock (`--site-mobile-floating-dock`); `/book-consultation` relies on `:has(.content-page form)` padding, not a dedicated shell class 
 
 ### From visual-audit issue register (phase-6b; many marked fixed there)
 

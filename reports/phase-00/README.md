@@ -12,6 +12,7 @@ Audit-only package for the MinRosh public route reconciliation. **No site functi
 | [ROUTE_RECONCILIATION.md](./ROUTE_RECONCILIATION.md) | Keep / overlap / drift decisions |
 | [FEATURE_INVENTORY.md](./FEATURE_INVENTORY.md) | Public + CRM features to preserve |
 | [ADMIN_CRM_RISK_REGISTER.md](./ADMIN_CRM_RISK_REGISTER.md) | Shared-zone / CRM breakage risks |
+| [SUBAGENT_ROUTE_INVENTORY.md](./SUBAGENT_ROUTE_INVENTORY.md) | Expanded route matrix from parallel inventory pass |
 
 ## Stop
 

@@ -26,23 +26,41 @@ Redesign work that only “touches the public site” can still break admin/CRM 
 | CRM-12 | Localhost admin bypass mistaken for prod auth | Medium | `lib/admin/dev-bypass.js` | Never treat local bypass as security proof |
 | CRM-13 | Invoice line-description / historical CRM data | Medium | Compliance inventory leaves historical records | Do not bulk-delete CRM data in redesign |
 | CRM-14 | Admin CSS (`app/admin/admin.css`) overridden by marketing CSS | High | Known product default | Scope marketing CSS away from `.admin-root` |
+| CRM-15 | `globals.css` listed **public** in zone manifest but loads globally | Medium | `check:sync` may not flag shared blast radius | Dual-zone visual QA after any global token/selector change |
+| CRM-16 | Break `PublicSiteWidgetsGate` admin skip | High | Concierge/footer dock can pollute `/admin` | Keep gate; smoke admin after layout widget edits |
+| CRM-17 | Accidental `NEXT_PUBLIC_*` / SMTP / Stripe / hCaptcha / Calendar env churn | Medium–High | Forms “succeed” UI with empty CRM or blocked captcha | Do not rename keys in redesign PRs; keep `.env` out of commits |
+| CRM-18 | Touch `PublicUploadForm` / `/upload/[token]` for “public polish” | Medium | Shared admin component; client doc intake | Leave unless explicitly tasked |
+| CRM-19 | `POST /api/quiz-results` still live with no current UI fetch | Low | Legacy / shared intake + Supabase dual-write | Keep API shape; do not delete casually |
+
+## Public → CRM intake (must stay intact)
+
+| Public surface | Endpoint | CRM effect |
+| --- | --- | --- |
+| Contact / booking forms | `POST /api/contact` | Enquiries + leads + customer identity; nurture; automations; optional Calendar/Drive/Sheets/Stripe/Supabase |
+| Assessment / AI funnel | `POST /api/ai-funnel` | Lead `source: ai_navigator_funnel` |
+| Quiz results API | `POST /api/quiz-results` | Email + optional Supabase (no current in-repo UI caller found) |
+| Newsletter | `POST /api/newsletter` | Newsletter store + welcome email |
+| Uploads | `/api/upload/[token]*` | Customer docs under `storage/uploads/` |
+| Payments | `/api/payments/*` | Stripe consultation checkout; return URLs still `/book-consultation` on `main` |
+| Chat | `POST /api/chat` | Advisory only; CTA links — no direct lead write |
 
 ## Shared files (treat as dual-zone)
 
 Per `docs/ADMIN_PUBLIC_SEPARATION.md`:
 
-- `middleware.js`, `app/layout.js`, `components/ui/**`, `lib/csp/**`  
+- `middleware.js`, `app/layout.js`, `components/ui/**`, `lib/csp/**`, `lib/contact.js`  
 - Classifier: `lib/zone-manifest.mjs`  
-- Safety: `npm run check:sync`
+- Safety: `npm run check:sync` (note CRM-15 false-confidence on `globals.css`)
 
 ## Must-not-break smoke list (for later phases)
 
 1. `/admin/login` → authenticated `/admin` (not stuck on Loading…)  
 2. `GET /api/admin/health`  
 3. `GET /api/admin/stats` with session  
-4. Create lead via `/contact` (and booking path) → visible in `/admin/leads`  
+4. Create lead via `/contact` (and booking path) → visible in `/admin/crm` / `/admin/leads`  
 5. Admin news draft save (and compliance publish guard on compliance tree)  
 6. Public homepage + one destination + `/assessment` still 200  
+7. `/upload/[token]` still accepts a test token upload in staging  
 
 ## Phase 00 action
 
